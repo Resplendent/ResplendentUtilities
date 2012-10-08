@@ -13,33 +13,41 @@
 @implementation UIButton (Utility)
 
 #pragma mark - Static methods
-+(UIButton*)buttonWithCrossFrame:(CGRect)frame
++(UIButton*)buttonCrossWithFrame:(CGRect)buttonFrame
 {
-    return [UIButton buttonWithCrossFrame:frame crossColor:[UIColor whiteColor]];
+    return [UIButton buttonCrossWithFrame:buttonFrame crossColor:[UIColor whiteColor]];
 }
 
-+(UIButton*)buttonWithCrossFrame:(CGRect)frame crossColor:(UIColor*)crossColor
++(UIButton*)buttonCrossWithFrame:(CGRect)buttonFrame crossColor:(UIColor*)crossColor
 {
-    return [UIButton buttonWithCrossFrame:frame crossColor:crossColor crossHeight:kUIButtonCrossHeightDefault];
+    return [UIButton buttonCrossWithFrame:buttonFrame crossColor:crossColor crossWidth:CGRectGetWidth(buttonFrame)];
 }
 
-+(UIButton*)buttonWithCrossFrame:(CGRect)frame crossColor:(UIColor*)crossColor crossHeight:(CGFloat)crossHeight
++(UIButton*)buttonCrossWithFrame:(CGRect)buttonFrame crossColor:(UIColor*)crossColor crossWidth:(CGFloat)crossWidth
+{
+    return [UIButton buttonCrossWithFrame:buttonFrame crossColor:crossColor crossSize:CGSizeMake(crossWidth, kUIButtonCrossHeightDefault)];
+}
+
++(UIButton*)buttonCrossWithFrame:(CGRect)buttonFrame crossColor:(UIColor*)crossColor crossSize:(CGSize)crossSize
 {
     UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setFrame:frame];
-
-    UIView* xDiagPiece1 = [[UIView alloc] initWithFrame:CGRectMake(0, (button.frame.size.height - crossHeight) / 2.0f, button.frame.size.width, crossHeight)];
+    [button setBackgroundColor:[UIColor greenColor]];
+    [button setFrame:buttonFrame];
+    
+    CGFloat xCoord = (CGRectGetWidth(buttonFrame) - crossSize.width) / 2.0f;
+    CGFloat yCoord = (button.frame.size.height - crossSize.height) / 2.0f;
+    UIView* xDiagPiece1 = [[UIView alloc] initWithFrame:CGRectMake(xCoord, yCoord, crossSize.width, crossSize.height)];
     [xDiagPiece1 setBackgroundColor:[UIColor whiteColor]];
     [xDiagPiece1 setUserInteractionEnabled:NO];
     xDiagPiece1.transform = CGAffineTransformMakeRotation(M_PI * 1.0f / 4.0f);
     [button addSubview:xDiagPiece1];
     
-    UIView* xDiagPiece2 = [[UIView alloc] initWithFrame:CGRectMake(0, (button.frame.size.height - crossHeight) / 2.0f, button.frame.size.width, crossHeight)];
+    UIView* xDiagPiece2 = [[UIView alloc] initWithFrame:CGRectMake(xCoord, yCoord, crossSize.width, crossSize.height)];
     [xDiagPiece2 setBackgroundColor:[UIColor whiteColor]];
     [xDiagPiece2 setUserInteractionEnabled:NO];
     xDiagPiece2.transform = CGAffineTransformMakeRotation(M_PI * 3.0f / 4.0f);
     [button addSubview:xDiagPiece2];
-
+    
     return button;
 }
 

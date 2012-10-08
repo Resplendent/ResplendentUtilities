@@ -31,8 +31,9 @@ CG_INLINE CGSize textSizeForButton(UIButton* button)
 
 @interface UIButton (Utility)
 
-+(UIButton*)buttonWithCrossFrame:(CGRect)frame;
-+(UIButton*)buttonWithCrossFrame:(CGRect)frame crossColor:(UIColor*)crossColor;
-+(UIButton*)buttonWithCrossFrame:(CGRect)frame crossColor:(UIColor*)crossColor crossHeight:(CGFloat)crossHeight;
++(UIButton*)buttonCrossWithFrame:(CGRect)buttonFrame;
++(UIButton*)buttonCrossWithFrame:(CGRect)buttonFrame crossColor:(UIColor*)crossColor;
++(UIButton*)buttonCrossWithFrame:(CGRect)buttonFrame crossColor:(UIColor*)crossColor crossWidth:(CGFloat)crossWidth;
++(UIButton*)buttonCrossWithFrame:(CGRect)buttonFrame crossColor:(UIColor*)crossColor crossSize:(CGSize)crossSize;
 
 @end
