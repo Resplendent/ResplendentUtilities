@@ -41,12 +41,12 @@
         }
         else
         {
-            if (MM_DEBUG) NSLog(@"bad setterName %@ for updateValue",setterName);
+            NSLog(@"bad setterName %@ for updateValue",setterName);
         }
     }
     else
     {
-        if (MM_DEBUG) NSLog(@"bad getterName %@ for updateValue",getterName);
+        NSLog(@"bad getterName %@ for updateValue",getterName);
     }
 }
 
