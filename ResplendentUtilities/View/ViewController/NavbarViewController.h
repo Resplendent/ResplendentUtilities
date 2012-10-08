@@ -1,0 +1,20 @@
+//
+//  NavbarViewController.h
+//  Everycam
+//
+//  Created by Benjamin Maer on 10/2/12.
+//  Copyright (c) 2012 Resplendent G.P. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@class Navbar;
+
+@interface NavbarViewController : UIViewController
+
+@property (nonatomic, strong) Navbar* navbar;
+@property (nonatomic, readonly) CGRect contentFrame;
+
+-(void)loadNavBar;
+
+@end
