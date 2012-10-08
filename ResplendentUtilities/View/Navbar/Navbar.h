@@ -10,8 +10,6 @@
 
 @interface Navbar : UIView
 
-@property (nonatomic, retain)UIImageView* background;
-@property (nonatomic, retain)UIImageView* logo;
 @property (nonatomic, retain) UILabel* titleLabel;
 
 @property (nonatomic, strong) UIButton* leftButton;
@@ -19,5 +17,7 @@
 @property (nonatomic, assign) BOOL      autoAdjustButtons;
 
 -(id)initWithFrame:(CGRect)frame autoAdjustButtons:(BOOL)autoAdjustButtons;
+
+-(void)setAlphaForComponents:(CGFloat)alpha;
 
 @end

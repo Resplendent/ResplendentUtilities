@@ -8,10 +8,19 @@
 
 #import "NavbarViewController.h"
 #import "Navbar.h"
+#import "UIView+Utility.h"
+
+@interface NavbarViewController ()
+
+-(void)pushViewController:(NavbarViewController*)navbarViewController completion:(void (^)())completion;
+-(void)popViewControllerCompletion:(void (^)())completion;
+
+@end
 
 @implementation NavbarViewController
 
 @synthesize navbar;
+@synthesize parentNBViewController = _parentNBViewController;
 
 -(void)loadNavBar
 {
@@ -45,5 +54,75 @@
 {
     return CGRectMake(0, CGRectGetMaxY(self.navbar.frame), self.view.frame.size.width, self.view.frame.size.height - CGRectGetMaxY(self.navbar.frame));
 }
+
+#pragma mark - Public methods
+-(void)pushViewController:(NavbarViewController*)navbarViewController
+{
+    [self pushViewController:navbarViewController completion:nil];
+}
+
+-(void)popViewController
+{
+    [self popViewControllerCompletion:nil];
+}
+
+#pragma mark - Private methods
+#define kNavbarViewControllerPushPopAnimationDuration 0.5f
+
+-(void)pushViewController:(NavbarViewController*)navbarViewController completion:(void (^)())completion
+{
+    [navbarViewController setParentNBViewController:self];
+    [self addChildViewController:navbarViewController];
+
+    setCoords(navbarViewController.view, CGRectGetWidth(self.view.frame), 0);
+    [navbarViewController.navbar setAlphaForComponents:0.0f];
+
+    [self.view addSubview:navbarViewController.view];
+    [self.view bringSubviewToFront:self.navbar];
+
+    [self viewWillDisappear:YES];
+    [UIView animateWithDuration:kNavbarViewControllerPushPopAnimationDuration animations:^{
+        [self.navbar setAlphaForComponents:0.0f];
+
+        [navbarViewController.navbar setAlphaForComponents:1.0f];
+
+        setXCoord(navbarViewController.view, 0);
+    } completion:^(BOOL finished) {
+        [self.view bringSubviewToFront:navbarViewController.view];
+        [self viewDidDisappear:YES];
+
+        if (completion)
+            completion();
+    }];
+}
+
+-(void)popViewControllerCompletion:(void (^)())completion
+{
+    [_parentNBViewController viewWillAppear:YES];
+    [_parentNBViewController.navbar setAlphaForComponents:0.0f];
+    
+    [self.navbar removeFromSuperview];
+    [_parentNBViewController.view addSubview:self.navbar];
+
+    [UIView animateWithDuration:kNavbarViewControllerPushPopAnimationDuration animations:^{
+        [self.navbar setAlphaForComponents:0.0f];
+
+        [_parentNBViewController.navbar setAlphaForComponents:1.0f];
+
+        setXCoord(self.view, CGRectGetWidth(_parentNBViewController.view.frame));
+    } completion:^(BOOL finished) {
+        [self.navbar removeFromSuperview];
+        [self.view addSubview:self.navbar];
+        [self.view removeFromSuperview];
+
+        [_parentNBViewController viewDidAppear:YES];
+        [self removeFromParentViewController];
+        [self setParentNBViewController:nil];
+
+        if (completion)
+            completion();
+    }];
+}
+
 
 @end

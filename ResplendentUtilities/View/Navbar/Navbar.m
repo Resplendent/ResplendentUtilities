@@ -16,20 +16,17 @@
 @synthesize rightButton = _rightButton;
 @synthesize titleLabel = _titleLabel;
 
+-(id)init
+{
+    return ([self initWithFrame:CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds), 44.0f) autoAdjustButtons:YES]);
+}
+
 -(id)initWithFrame:(CGRect)frame autoAdjustButtons:(BOOL)autoAdjustButtons
 {
     _autoAdjustButtons = autoAdjustButtons;
     if (self = [super initWithFrame:frame])
     {
         [self setUserInteractionEnabled:YES];
-        
-        [self setBackground:[[UIImageView alloc]initWithFrame:frame]];
-        [_background setImage:[UIImage imageNamed:@"Navbar-BG"]];
-        [self addSubview:_background];
-        
-        [self setLogo:[[UIImageView alloc]initWithFrame:CGRectMake((frame.size.width / 2) - 65, 0, 130, 44)]];
-        [_logo setImage:[UIImage imageNamed:@"Navbar-logo"]];
-        [self addSubview:_logo];
     }
     
     return self;
@@ -72,6 +69,13 @@
     _rightButton = rightButton;
     [_rightButton setShowsTouchWhenHighlighted:NO];
     [self addSubview:_rightButton];
+}
+
+#pragma mark - Public methods
+-(void)setAlphaForComponents:(CGFloat)alpha
+{
+    [_leftButton setAlpha:alpha];
+    [_rightButton setAlpha:alpha];
 }
 
 #pragma mark - Getter methods

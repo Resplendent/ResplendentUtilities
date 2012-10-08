@@ -15,6 +15,11 @@
 @property (nonatomic, strong) Navbar* navbar;
 @property (nonatomic, readonly) CGRect contentFrame;
 
+@property (nonatomic, retain) NavbarViewController* parentNBViewController;
+
 -(void)loadNavBar;
+
+-(void)pushViewController:(NavbarViewController*)navbarViewController;
+-(void)popViewController;
 
 @end
