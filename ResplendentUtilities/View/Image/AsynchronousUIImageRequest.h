@@ -8,16 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-//@class AsynchronousUIImageRequest;
-
-//@protocol AsynchronousUIImageRequestDelegate <NSObject>
-//
-//-(void)asynchronousUIImageRequest:(AsynchronousUIImageRequest*)request didFinishDownloadingImage:(UIImage*)image;
-//
-//@optional
-//-(void)asynchronousUIImageRequestDidFail:(AsynchronousUIImageRequest*)request;
-//
-//@end
+//#define __AsynchronousUIImageRequest_DEBUG 1
 
 typedef void (^imageErrorBlock)(UIImage* image, NSError* error);
 
@@ -27,6 +18,9 @@ typedef void (^imageErrorBlock)(UIImage* image, NSError* error);
     NSMutableData*      _data;
     NSString*           _cacheName;
     imageErrorBlock     _block;
+    
+//#if __AsynchronousUIImageRequest_DEBUG
+//    NSString* __urlStringDubug;
 }
 
 @property (nonatomic, retain) NSString* url;

@@ -75,7 +75,7 @@ static NSMutableDictionary* fetchedImages;
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    NSLog(@"Error downloading image: %@",error);
+    NSLog(@"Error downloading from url %@ with error %@",self.url,error);
     if (_block)
         _block(nil,error);
 }
