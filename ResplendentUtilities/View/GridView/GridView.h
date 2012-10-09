@@ -29,6 +29,12 @@
 
 @end
 
+@protocol GridViewDataSourceSelectionDelegate <NSObject>
+
+-(void)gridView:(GridView*)gridView didSelectViewAtIndex:(NSUInteger)index;
+
+@end
+
 
 
 @interface GridView : UIView <UIScrollViewDelegate>
@@ -49,6 +55,7 @@
 
 @property (nonatomic, assign) id<GridViewDelegate> delegate;
 @property (nonatomic, assign) id<GridViewDataSource> dataSource;
+@property (nonatomic, assign) id<GridViewDataSourceSelectionDelegate> selectionDelegate;
 
 -(void)reloadData;
 

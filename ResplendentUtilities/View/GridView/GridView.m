@@ -34,6 +34,8 @@
 -(void)deleteCellAtIndexString:(NSString*)key;
 -(void)addCellAtIndex:(NSUInteger)index;
 
+-(void)pressedGridViewButton:(UIButton*)button;
+
 @end
 
 
@@ -124,6 +126,20 @@
     return floor(_scrollView.contentOffset.y / (_cellWidth + _modifiedSpaceBetweenCells));
 }
 
+#pragma mark - Action methods
+-(void)pressedGridViewButton:(UIButton*)button
+{
+    if (_selectionDelegate)
+    {
+        UIView* view = button.superview;
+
+        NSUInteger viewRow = floor(CGRectGetMinY(view.frame) / (_cellWidth + _modifiedSpaceBetweenCells));
+        NSUInteger viewColumn = floor(CGRectGetMinX(view.frame) / (_cellWidth + _modifiedSpaceBetweenCells));
+
+        [_selectionDelegate gridView:self didSelectViewAtIndex:viewRow * _numberOfColumns + viewColumn];
+    }
+}
+
 #pragma mark - Private instance methods
 -(void)deleteCellAtIndex:(NSUInteger)index
 {
@@ -146,7 +162,16 @@
 -(void)addCellAtIndex:(NSUInteger)index
 {
     UIView* view = [_delegate gridView:self newViewForIndex:index];
+
     [_cellsDictionary setObject:view forKey:[NSString stringWithFormat:@"%i",index]];
+
+    [view setUserInteractionEnabled:YES];
+    UIButton* viewButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [viewButton setFrame:view.bounds];
+    [viewButton setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
+    [viewButton addTarget:self action:@selector(pressedGridViewButton:) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:viewButton];
+
     [_scrollView addSubview:view];
 }
 

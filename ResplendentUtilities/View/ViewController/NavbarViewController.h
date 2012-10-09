@@ -22,4 +22,7 @@
 -(void)pushViewController:(NavbarViewController*)navbarViewController;
 -(void)popViewController;
 
+-(void)pushViewController:(NavbarViewController*)navbarViewController completion:(void (^)())completion;
+-(void)popViewControllerCompletion:(void (^)())completion;
+
 @end
