@@ -104,12 +104,9 @@
 {
     if (params && [params objectForKey:dataParamKey] != data)
     {
-        NSDate* testDate = [NSDate date];
-        NSLog(@"time test started at %@",testDate);
         NSMutableDictionary* mDict = [NSMutableDictionary dictionaryWithDictionary:params];
-        [mDict setObject:data forKey:dataParamKey];
+        [mDict removeObjectForKey:dataParamKey];
         params = [NSDictionary dictionaryWithDictionary:mDict];
-        NSLog(@"time test finished at %f",[[NSDate date] timeIntervalSinceDate:testDate]);
     }
 
     NSMutableURLRequest* uploadRequest = uploadRequest = [_network multipartFormRequestWithMethod:@"POST" path:url parameters:params constructingBodyWithBlock:constructingBodyBlock];
