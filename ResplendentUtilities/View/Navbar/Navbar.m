@@ -14,7 +14,9 @@
 @synthesize autoAdjustButtons = _autoAdjustButtons;
 @synthesize leftButton = _leftButton;
 @synthesize rightButton = _rightButton;
+
 @synthesize titleLabel = _titleLabel;
+@synthesize titleLabelTopEdgeInset = _titleLabelTopEdgeInset;
 
 -(id)init
 {
@@ -27,6 +29,7 @@
     if (self = [super initWithFrame:frame])
     {
         [self setUserInteractionEnabled:YES];
+        [self setTitleLabelTopEdgeInset:0.0f];
     }
     
     return self;
@@ -47,7 +50,7 @@
         ceilCoordinates(_rightButton);
     }
 
-    [_titleLabel setFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
+    [_titleLabel setFrame:CGRectMake(0, _titleLabelTopEdgeInset, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame) - _titleLabelTopEdgeInset)];
 }
 
 -(void)setLeftButton:(UIButton *)leftButton
@@ -79,13 +82,14 @@
 }
 
 #pragma mark - Getter methods
--(UILabel *)titleLabel
+-(NIAttributedLabel *)titleLabel
 {
     if (!_titleLabel)
     {
-        _titleLabel = [[UILabel alloc] init];
+        _titleLabel = [[NIAttributedLabel alloc] init];
         [_titleLabel setBackgroundColor:[UIColor clearColor]];
         [_titleLabel setTextAlignment:NSTextAlignmentCenter];
+        [_titleLabel setVerticalTextAlignment:NIVerticalTextAlignmentMiddle];
         [self addSubview:_titleLabel];
         [self setNeedsLayout];
     }

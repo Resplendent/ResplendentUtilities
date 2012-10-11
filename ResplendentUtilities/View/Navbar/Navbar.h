@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NIAttributedLabel.h"
 
 @interface Navbar : UIView
 
-@property (nonatomic, retain) UILabel* titleLabel;
+@property (nonatomic, retain) NIAttributedLabel* titleLabel;
+@property (nonatomic, assign) CGFloat titleLabelTopEdgeInset;
 
 @property (nonatomic, strong) UIButton* leftButton;
 @property (nonatomic, strong) UIButton* rightButton;
