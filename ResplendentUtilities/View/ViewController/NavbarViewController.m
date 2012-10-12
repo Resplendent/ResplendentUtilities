@@ -10,12 +10,16 @@
 #import "Navbar.h"
 #import "UIView+Utility.h"
 
+#define kNavbarViewControllerPushPopAnimationDuration 0.5f
+
 @interface NavbarViewController ()
 
 -(void)pushViewController:(NavbarViewController*)navbarViewController completion:(void (^)())completion;
 -(void)popViewControllerCompletion:(void (^)())completion;
 
 @end
+
+
 
 @implementation NavbarViewController
 
@@ -40,7 +44,7 @@
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
-    
+
     [self.navbar removeFromSuperview];
     [self setNavbar:nil];
 }
@@ -67,7 +71,6 @@
 }
 
 #pragma mark - Private methods
-#define kNavbarViewControllerPushPopAnimationDuration 0.5f
 
 -(void)pushViewController:(NavbarViewController*)navbarViewController completion:(void (^)())completion
 {
