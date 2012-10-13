@@ -8,6 +8,7 @@
 
 #import "NavbarViewController.h"
 #import "Navbar.h"
+#import "RUConstants.h"
 #import "UIView+Utility.h"
 
 #define kNavbarViewControllerPushPopAnimationDuration 0.5f
@@ -28,7 +29,7 @@
 
 -(void)loadNavBar
 {
-    [NSException raise:NSInternalInconsistencyException format:@"method %@ for class %@ must be overloaded", NSStringFromSelector(_cmd),NSStringFromClass([self class])];
+    RU_MUST_OVERRIDE
 }
 
 - (void)viewDidLoad
