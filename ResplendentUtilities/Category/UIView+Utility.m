@@ -4,7 +4,8 @@
 //
 
 #import "UIView+Utility.h"
-#import <QuartzCore/QuartzCore.h>
+#import <QuartzCore/CALayer.h>
+#import <QuartzCore/CAShapeLayer.h>
 
 #define kAnimateWithFallfrontDuration1  0.3f
 #define kAnimateWithFallfrontDuration2  0.3f
