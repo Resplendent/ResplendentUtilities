@@ -9,25 +9,11 @@
 #import "UILabel+Utility.h"
 #import "UIView+Utility.h"
 
-CG_INLINE void setSizeToImageAndCoordinates(UIButton* button, CGFloat xCoord, CGFloat yCoord)
-{
-    UIImage* image = button.imageView.image;
-    
-    if (!image)
-        image = [button backgroundImageForState:UIControlStateNormal];
-    
-    [button setFrame:CGRectMake(xCoord, yCoord, image.size.width, image.size.height)];
-}
+extern void setButtonSizeToImageAndCoordinates(UIButton* button, CGFloat xCoord, CGFloat yCoord);
 
-CG_INLINE void setSizeToImage(UIButton* button)
-{
-    setSizeToImageAndCoordinates(button, button.frame.origin.x, button.frame.origin.y);
-}
+extern void setButtonSizeToImage(UIButton* button);
 
-CG_INLINE CGSize textSizeForButton(UIButton* button)
-{
-    return [[button titleForState:UIControlStateNormal] sizeWithFont:button.titleLabel.font];
-}
+extern CGSize textSizeForButton(UIButton* button);
 
 @interface UIButton (Utility)
 

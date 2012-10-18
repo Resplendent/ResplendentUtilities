@@ -12,6 +12,33 @@
 
 @implementation UIButton (Utility)
 
+#pragma mark - C methods
+void setButtonSizeToImageAndCoordinates(UIButton* button, CGFloat xCoord, CGFloat yCoord)
+{
+    UIImage* image = button.imageView.image;
+    
+    if (!image)
+        image = [button backgroundImageForState:UIControlStateNormal];
+    
+    if (!image)
+        image = [button backgroundImageForState:UIControlStateHighlighted];
+    
+    if (!image)
+        image = [button backgroundImageForState:UIControlStateSelected];
+    
+    [button setFrame:(CGRect){{xCoord,yCoord},image.size}];
+}
+
+void setButtonSizeToImage(UIButton* button)
+{
+    setButtonSizeToImageAndCoordinates(button, button.frame.origin.x, button.frame.origin.y);
+}
+
+CGSize textSizeForButton(UIButton* button)
+{
+    return [[button titleForState:UIControlStateNormal] sizeWithFont:button.titleLabel.font];
+}
+
 #pragma mark - Static methods
 +(UIButton*)buttonCrossWithFrame:(CGRect)buttonFrame
 {

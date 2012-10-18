@@ -12,6 +12,16 @@
 #define PINE_ANIMATION_TRANSLATION_DEPTH 100.0f
 
 #pragma mark - frame modifiers
+
+#define CGRectSetX(x, rect) (CGRectMake(x, (rect).origin.y, (rect).size.width, (rect).size.height))
+#define CGRectSetY(y, rect) (CGRectMake((rect).origin.x, y, (rect).size.width, (rect).size.height))
+#define CGRectSetWidth(w, rect) (CGRectMake((rect).origin.x, (rect).origin.y, w, (rect).size.height))
+#define CGRectSetHeight(h, rect) (CGRectMake((rect).origin.x, (rect).origin.y, (rect).size.width, (h)))
+#define CGRectSetXY(x, y, rect) (CGRectMake(x, y, (rect).size.width, (rect).size.height))
+#define CGRectFlipY(rect) (CGRectMake((rect).origin.x, -((rect).origin.y), (rect).size.width, (rect).size.height))
+#define CGRectMultiply(m, rect) (CGRectMake((rect).origin.x*(m), (rect).origin.y*(m), (rect).size.width*(m), (rect).size.height*(m)))
+#define CGRectRotate(rect) (CGRectMake((rect).origin.x, (rect).origin.y, (rect).size.height, (rect).size.width))
+
 #pragma mark Set origin methods
 CG_INLINE void setCoords(UIView* view,CGFloat xCoord,CGFloat yCoord)
 {
@@ -47,19 +57,24 @@ CG_INLINE void increaseCoords(UIView* view,CGFloat xIncrement,CGFloat yIncrement
 }
 
 #pragma mark Set frame methods
-CG_INLINE void setSize(UIView* view,CGFloat width,CGFloat height)
+CG_INLINE void setSize(UIView* view,CGSize size)
 {
-    [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, width, height)];
+    [view setFrame:(CGRect){view.frame.origin,size}];
+}
+
+CG_INLINE void setWidthHeight(UIView* view,CGFloat width,CGFloat height)
+{
+    setSize(view, (CGSize){width,height});
 }
 
 CG_INLINE void setWidth(UIView* view,CGFloat width)
 {
-    setSize(view, width, CGRectGetHeight(view.frame));
+    setWidthHeight(view, width, CGRectGetHeight(view.frame));
 }
 
 CG_INLINE void setHeight(UIView* view,CGFloat height)
 {
-    setSize(view, CGRectGetWidth(view.frame), height);
+    setWidthHeight(view, CGRectGetWidth(view.frame), height);
 }
 
 CG_INLINE void ceilCoordinates(UIView* view)
@@ -69,14 +84,14 @@ CG_INLINE void ceilCoordinates(UIView* view)
 
 CG_INLINE void ceilSize(UIView* view)
 {
-    setSize(view, ceilf(CGRectGetWidth(view.frame)), ceilf(CGRectGetHeight(view.frame)));
+    setWidthHeight(view, ceilf(CGRectGetWidth(view.frame)), ceilf(CGRectGetHeight(view.frame)));
 }
 
 #pragma mark Increase frame methods
 
 CG_INLINE void increaseSize(UIView* view,CGFloat widthIncrease,CGFloat heightIncrease)
 {
-    setSize(view, CGRectGetWidth(view.frame) + widthIncrease, CGRectGetHeight(view.frame) + heightIncrease);
+    setWidthHeight(view, CGRectGetWidth(view.frame) + widthIncrease, CGRectGetHeight(view.frame) + heightIncrease);
 }
 
 CG_INLINE void increaseWidth(UIView* view,CGFloat widthIncrease)
