@@ -124,6 +124,7 @@ CG_INLINE void increaseHeight(UIView* view,CGFloat heightIncrease)
 -(UIView*)addDividerLineWithColorFloat:(float)colorFloat withWidth:(float)width atYCoord:(float)yCoord height:(float)height;
 
 -(void)setShadowSize:(CGSize)shadowSize radius:(float)radius opacity:(float)opacity;
+-(void)setShadowColor:(UIColor*)color;
 -(void)setShadowHeight:(float)shadowHeight radius:(float)radius opacity:(float)opacity;
 
 //Animations

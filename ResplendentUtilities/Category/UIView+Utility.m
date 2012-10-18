@@ -116,6 +116,11 @@
     self.layer.shadowOpacity = opacity;
 }
 
+-(void)setShadowColor:(UIColor*)color
+{
+    [self.layer setShadowColor:color.CGColor];
+}
+
 -(void)setShadowHeight:(float)shadowHeight radius:(float)radius opacity:(float)opacity
 {
     [self setShadowSize:CGSizeMake(0, shadowHeight) radius:radius opacity:opacity];
