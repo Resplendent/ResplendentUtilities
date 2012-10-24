@@ -3,7 +3,7 @@
 //  Memeni
 //
 //  Created by Benjamin Maer on 9/6/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 Resplendent G.P.. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

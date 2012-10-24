@@ -3,7 +3,7 @@
 //  Crapple
 //
 //  Created by Benjamin Maer on 5/3/12.
-//  Copyright (c) 2012 Syracuse University. All rights reserved.
+//  Copyright (c) 2012 Resplendent G.P.. All rights reserved.
 //
 
 #import "AsynchronousUIImageRequest.h"
