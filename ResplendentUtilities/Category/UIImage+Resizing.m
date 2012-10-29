@@ -8,7 +8,7 @@
 
 #import "UIImage+Resizing.h"
 
-#define DEBUG_TIMING 1;
+#define DEBUG_TIMING 1
 
 @implementation UIImage (Resizing)
 
@@ -119,5 +119,76 @@ UIImage* resizedImagePreservingAspectRatio(UIImage* sourceImage, CGSize targetSi
     
     return newImage;
 }
+
+/* Another possible solution:
+ + (UIImage *)maskForSize:(CGSize)size cornerRadius:(float)cornerRadius corners:(UIRectCorner)corners
+ {
+ NSString *(^imageName)(CGSize, float, BOOL, UIRectCorner) = ^(CGSize theSize, float theCornerRadius, BOOL retina, UIRectCorner corners){
+ return [NSString stringWithFormat:@"RoundedRectMask_%d_%dx%d_%d_%@.png",
+ (int)roundf(theCornerRadius),
+ (int)roundf(theSize.width), (int)roundf(theSize.height),
+ corners,
+ (retina)?@"@2x":@""];
+ };
+ 
+ BOOL isRetina = ([UIScreen mainScreen].scale == 2);
+ 
+ NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+ NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+ 
+ UIImage *image = [UIImage imageNamed:imageName(size, cornerRadius, NO, corners)];
+ 
+ if (image == nil)
+ {
+ NSString *path = [basePath stringByAppendingPathComponent:imageName(size, cornerRadius, NO, corners)];
+ image = [UIImage imageWithContentsOfFile:path];
+ }
+ 
+ if (image == nil)
+ {
+ // define our "generate" block
+ UIImage *(^generateImage)(CGSize, float, BOOL) = ^(CGSize theSize, float theCornerRadius, BOOL retina){
+ UIGraphicsBeginImageContextWithOptions(size, YES, (retina)?2:1);
+ CGContextRef context = UIGraphicsGetCurrentContext();
+ CGRect rect = (CGRect){0, 0, theSize};
+ 
+ // fill bg white
+ [[UIColor whiteColor] setFill];
+ CGContextFillRect(context, rect);
+ 
+ // fill rect black
+ [[UIColor blackColor] setFill];
+ UIBezierPath *path = [UIBezierPath
+ bezierPathWithRoundedRect:rect
+ byRoundingCorners:corners
+ cornerRadii:(CGSize){theCornerRadius, theCornerRadius}];
+ [path fill];
+ 
+ UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+ 
+ UIGraphicsEndImageContext();
+ 
+ return image;
+ };
+ 
+ // non retina image, and store
+ UIImage *imageNonRetina = generateImage(size, cornerRadius, NO);
+ NSString *path = [basePath stringByAppendingPathComponent:imageName(size, cornerRadius, NO, corners)];
+ [UIImagePNGRepresentation(imageNonRetina) writeToFile:path atomically:YES];
+ 
+ // retina image and store
+ UIImage *imageRetina = generateImage(size, cornerRadius, YES);
+ NSString *pathRetina = [basePath stringByAppendingPathComponent:imageName(size, cornerRadius, YES, corners)];
+ [UIImagePNGRepresentation(imageRetina) writeToFile:pathRetina atomically:YES];
+ 
+ if (isRetina)
+ image = imageRetina;
+ else
+ image = imageNonRetina;
+ }
+ 
+ return image;
+ }
+ */
 
 @end
