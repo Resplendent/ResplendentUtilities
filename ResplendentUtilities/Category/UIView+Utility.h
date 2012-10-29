@@ -108,7 +108,7 @@ CG_INLINE void increaseHeight(UIView* view,CGFloat heightIncrease)
 
 @interface UIView (Utility)
 
--(void)rounderCorners:(UIRectCorner)corners withRadius:(CGFloat)radius;
+//-(void)rounderCorners:(UIRectCorner)corners withRadius:(CGFloat)radius;
 
 -(UIView*)addUnderline;
 -(UIView*)addUnderlineWithColor:(UIColor*)color;

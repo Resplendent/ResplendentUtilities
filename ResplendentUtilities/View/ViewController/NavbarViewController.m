@@ -38,7 +38,7 @@
 	// Do any additional setup after loading the view.
     
     [self loadNavBar];
-    [self.view rounderCorners:0 withRadius:0];
+//    [self.view rounderCorners:0 withRadius:0];
     [self.view addSubview:self.navbar];
 }
 
