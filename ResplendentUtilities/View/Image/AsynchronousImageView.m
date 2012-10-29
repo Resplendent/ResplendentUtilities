@@ -3,7 +3,7 @@
 //  Crapple
 //
 //  Created by Ben on 5/21/12.
-//  Copyright (c) 2012 Syracuse University. All rights reserved.
+//  Copyright (c) 2012 Resplendent G.P.. All rights reserved.
 //
 
 #import "AsynchronousImageView.h"

@@ -8,13 +8,15 @@
 
 #import "UIImage+Resizing.h"
 
+#define DEBUG_TIMING 1;
+
 @implementation UIImage (Resizing)
 
 UIImage* resizedIfLargerImagePreservingAspectRatio(UIImage* sourceImage, CGSize targetSize)
 {
     if (sourceImage.size.width > targetSize.width || sourceImage.size.height > targetSize.height)
     {
-#if EC_DEBUG_TIMING
+#if DEBUG_TIMING
         NSDate* startDate = [NSDate date];
         NSLog(@"pre resized image %@",NSStringFromCGSize(sourceImage.size));
         UIImage* finalImage = resizedImagePreservingAspectRatio(sourceImage, targetSize);
