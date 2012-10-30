@@ -8,7 +8,7 @@
 
 #import "UIImage+Resizing.h"
 
-#define DEBUG_TIMING 1
+#define DEBUG_TIMING 0
 
 @implementation UIImage (Resizing)
 
