@@ -55,6 +55,7 @@
 {
     [super viewWillAppear:animated];
     [self.view bringSubviewToFront:self.navbar];
+    [self.view.superview bringSubviewToFront:self.view];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -100,6 +101,7 @@
         setXCoord(navbarViewController.view, 0);
     } completion:^(BOOL finished) {
         [self.view bringSubviewToFront:navbarViewController.view];
+        
         [self viewDidDisappear:YES];
 
         if (completion)
