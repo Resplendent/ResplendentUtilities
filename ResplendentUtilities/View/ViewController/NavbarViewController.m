@@ -13,6 +13,8 @@
 
 #define kNavbarViewControllerPushPopAnimationDuration 0.3f
 
+static NSTimeInterval popPushAnimationDuration;
+
 @interface NavbarViewController ()
 
 -(void)pushViewController:(NavbarViewController*)navbarViewController completion:(void (^)())completion;
@@ -26,6 +28,14 @@
 
 @synthesize navbar;
 @synthesize parentNBViewController = _parentNBViewController;
+
++(void)initialize
+{
+    if (self == [NavbarViewController class])
+    {
+        [self setPushPopTransitionDuration:kNavbarViewControllerPushPopAnimationDuration];
+    }
+}
 
 -(void)loadNavBar
 {
@@ -93,7 +103,7 @@
     [self.view bringSubviewToFront:self.navbar];
 
     [self viewWillDisappear:YES];
-    [UIView animateWithDuration:kNavbarViewControllerPushPopAnimationDuration animations:^{
+    [UIView animateWithDuration:popPushAnimationDuration animations:^{
         [self.navbar setAlphaForComponents:0.0f];
 
         [navbarViewController.navbar setAlphaForComponents:1.0f];
@@ -117,7 +127,7 @@
     [self.navbar removeFromSuperview];
     [_parentNBViewController.view addSubview:self.navbar];
 
-    [UIView animateWithDuration:kNavbarViewControllerPushPopAnimationDuration animations:^{
+    [UIView animateWithDuration:popPushAnimationDuration animations:^{
         [self.navbar setAlphaForComponents:0.0f];
 
         [_parentNBViewController.navbar setAlphaForComponents:1.0f];
@@ -137,5 +147,9 @@
     }];
 }
 
++(void)setPushPopTransitionDuration:(NSTimeInterval)duration
+{
+    popPushAnimationDuration = duration;
+}
 
 @end

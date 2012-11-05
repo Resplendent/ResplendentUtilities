@@ -25,4 +25,6 @@
 -(void)pushViewController:(NavbarViewController*)navbarViewController completion:(void (^)())completion;
 -(void)popViewControllerCompletion:(void (^)())completion;
 
++(void)setPushPopTransitionDuration:(NSTimeInterval)duration;
+
 @end
