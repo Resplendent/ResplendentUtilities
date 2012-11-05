@@ -11,7 +11,7 @@
 #import "RUConstants.h"
 #import "UIView+Utility.h"
 
-#define kNavbarViewControllerPushPopAnimationDuration 0.5f
+#define kNavbarViewControllerPushPopAnimationDuration 0.3f
 
 @interface NavbarViewController ()
 
