@@ -8,6 +8,8 @@
 
 #import "GridView.h"
 
+#define kGridViewUsesButtons 0
+
 @interface GridView ()
 
 @property (nonatomic, readonly) NSUInteger lowestVisibleRow;
@@ -34,7 +36,11 @@
 -(void)deleteCellAtIndexString:(NSString*)key;
 -(void)addCellAtIndex:(NSUInteger)index;
 
+#if kGridViewUsesButtons
 -(void)pressedGridViewButton:(UIButton*)button;
+#endif
+
+-(void)tappedScrollView:(UITapGestureRecognizer*)tap;
 
 @end
 
@@ -127,6 +133,7 @@
 }
 
 #pragma mark - Action methods
+#if kGridViewUsesButtons
 -(void)pressedGridViewButton:(UIButton*)button
 {
     if (_selectionDelegate)
@@ -137,6 +144,35 @@
         NSUInteger viewColumn = floor(CGRectGetMinX(view.frame) / (_cellWidth + _modifiedSpaceBetweenCells));
 
         [_selectionDelegate gridView:self didSelectViewAtIndex:viewRow * _numberOfColumns + viewColumn];
+    }
+}
+#endif
+
+-(void)tappedScrollView:(UITapGestureRecognizer*)tap
+{
+    CGPoint scrollViewTouch = [tap locationInView:_scrollView];
+
+    NSInteger touchColumn = floor(scrollViewTouch.x / (_cellWidth + _modifiedSpaceBetweenCells));
+    if (touchColumn < 0 || touchColumn >= _numberOfColumns)
+    {
+        NSLog(@"touch column %i out of bounds",touchColumn);
+        return;
+    }
+
+    NSInteger touchRow = floor(scrollViewTouch.y / (_cellWidth + _modifiedSpaceBetweenCells));
+    if (touchRow < 0 || touchRow >= _numberOfRows)
+    {
+        NSLog(@"touch row %i out of bounds",touchRow);
+        return;
+    }
+
+    NSUInteger index = touchRow * _numberOfColumns + touchColumn;
+
+    UIView* view = [self viewForIndex:index];
+
+    if (view && CGRectContainsPoint(view.bounds, [tap locationInView:view]))
+    {
+        [_selectionDelegate gridView:self didSelectViewAtIndex:index];
     }
 }
 
@@ -165,12 +201,16 @@
 
     [_cellsDictionary setObject:view forKey:[NSString stringWithFormat:@"%i",index]];
 
+#if kGridViewUsesButtons
     [view setUserInteractionEnabled:YES];
     UIButton* viewButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [viewButton setFrame:view.bounds];
     [viewButton setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
     [viewButton addTarget:self action:@selector(pressedGridViewButton:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:viewButton];
+#else
+    [view setUserInteractionEnabled:NO];
+#endif
 
     [_scrollView addSubview:view];
 }
@@ -395,6 +435,8 @@
         [_scrollView setBackgroundColor:[UIColor clearColor]];
         [_scrollView setDelegate:self];
         [self addSubview:_scrollView];
+
+        [_scrollView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedScrollView:)]];
     }
 
     [self loadSpaceBetweenCellsFromDelegate];

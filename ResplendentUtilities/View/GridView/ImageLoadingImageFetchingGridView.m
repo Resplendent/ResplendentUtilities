@@ -41,7 +41,7 @@
 #if EC_DEBUG
     NSUInteger delegateNumberOfLoadingCells = [_imageDelegate imageGridViewNumberOfLoadingCells:self];
     if (_numberOfLoadingCells != delegateNumberOfLoadingCells)
-        NSLog(@"finishedLoadingPhotoAtIndex _numberOfLoadingCells: '%i' must = delegate number of loading cells: '%i'",_numberOfLoadingCells,delegateNumberOfLoadingCells);
+        NSLog(@"addLoadingImageAtIndex _numberOfLoadingCells: '%i' must = delegate number of loading cells: '%i'",_numberOfLoadingCells,delegateNumberOfLoadingCells);
 #endif
     [self insertViewAtIndex:0];
     

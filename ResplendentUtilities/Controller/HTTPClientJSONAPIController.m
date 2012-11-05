@@ -31,7 +31,7 @@
 
 -(id)initWithBaseUrl:(NSString*)baseUrl
 {
-    if (self = [super init])
+    if (self = [self init])
     {
         [self setNetwork:[[AFHTTPClient alloc]initWithBaseURL:[NSURL URLWithString:baseUrl]]];
     }

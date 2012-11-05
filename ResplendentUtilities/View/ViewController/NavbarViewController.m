@@ -38,7 +38,7 @@
 	// Do any additional setup after loading the view.
     
     [self loadNavBar];
-    [self.view rounderCorners:0 withRadius:0];
+//    [self.view rounderCorners:0 withRadius:0];
     [self.view addSubview:self.navbar];
 }
 
@@ -49,6 +49,13 @@
 
     [self.navbar removeFromSuperview];
     [self setNavbar:nil];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.view bringSubviewToFront:self.navbar];
+    [self.view.superview bringSubviewToFront:self.view];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -94,6 +101,7 @@
         setXCoord(navbarViewController.view, 0);
     } completion:^(BOOL finished) {
         [self.view bringSubviewToFront:navbarViewController.view];
+        
         [self viewDidDisappear:YES];
 
         if (completion)
