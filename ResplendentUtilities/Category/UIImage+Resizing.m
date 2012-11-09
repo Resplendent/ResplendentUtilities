@@ -120,75 +120,111 @@ UIImage* resizedImagePreservingAspectRatio(UIImage* sourceImage, CGSize targetSi
     return newImage;
 }
 
-/* Another possible solution:
+- (UIImage*)imageByCropping:(UIImage *)imageToCrop toRect:(CGRect)rect
+{
+    //create a context to do our clipping in
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef currentContext = UIGraphicsGetCurrentContext();
+    
+    //create a rect with the size we want to crop the image to
+    //the X and Y here are zero so we start at the beginning of our
+    //newly created context
+    CGRect clippedRect = CGRectMake(0, 0, rect.size.width, rect.size.height);
+    CGContextClipToRect( currentContext, clippedRect);
+    
+    //create a rect equivalent to the full size of the image
+    //offset the rect by the X and Y we want to start the crop
+    //from in order to cut off anything before them
+    CGRect drawRect = CGRectMake(rect.origin.x * -1,
+                                 rect.origin.y * -1,
+                                 imageToCrop.size.width,
+                                 imageToCrop.size.height);
+    
+    //draw the image to our clipped context using our offset rect
+    CGContextDrawImage(currentContext, drawRect, imageToCrop.CGImage);
+    
+    //pull the image from our cropped context
+    UIImage *cropped = UIGraphicsGetImageFromCurrentImageContext();
+    
+    //pop the context to get back to the default
+    UIGraphicsEndImageContext();
+    
+    //Note: this is autoreleased
+    return cropped;
+}
+
+
+
+/* Another possible solution: */
  + (UIImage *)maskForSize:(CGSize)size cornerRadius:(float)cornerRadius corners:(UIRectCorner)corners
  {
- NSString *(^imageName)(CGSize, float, BOOL, UIRectCorner) = ^(CGSize theSize, float theCornerRadius, BOOL retina, UIRectCorner corners){
- return [NSString stringWithFormat:@"RoundedRectMask_%d_%dx%d_%d_%@.png",
- (int)roundf(theCornerRadius),
- (int)roundf(theSize.width), (int)roundf(theSize.height),
- corners,
- (retina)?@"@2x":@""];
- };
+     NSString *(^imageName)(CGSize, float, BOOL, UIRectCorner) = ^(CGSize theSize, float theCornerRadius, BOOL retina, UIRectCorner corners){
+         return [NSString stringWithFormat:@"RoundedRectMask_%d_%dx%d_%d_%@.png",
+                 (int)roundf(theCornerRadius),
+                 (int)roundf(theSize.width), (int)roundf(theSize.height),
+                 corners,
+                 (retina)?@"@2x":@""];
+     };
+     
+     BOOL isRetina = ([UIScreen mainScreen].scale == 2);
+
+     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+
+     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
  
- BOOL isRetina = ([UIScreen mainScreen].scale == 2);
+     UIImage *image = [UIImage imageNamed:imageName(size, cornerRadius, NO, corners)];
  
- NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
- NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+     if (image == nil)
+     {
+         NSString *path = [basePath stringByAppendingPathComponent:imageName(size, cornerRadius, NO, corners)];
+         image = [UIImage imageWithContentsOfFile:path];
+     }
  
- UIImage *image = [UIImage imageNamed:imageName(size, cornerRadius, NO, corners)];
- 
- if (image == nil)
- {
- NSString *path = [basePath stringByAppendingPathComponent:imageName(size, cornerRadius, NO, corners)];
- image = [UIImage imageWithContentsOfFile:path];
- }
- 
- if (image == nil)
- {
+     if (image == nil)
+     {
  // define our "generate" block
- UIImage *(^generateImage)(CGSize, float, BOOL) = ^(CGSize theSize, float theCornerRadius, BOOL retina){
- UIGraphicsBeginImageContextWithOptions(size, YES, (retina)?2:1);
- CGContextRef context = UIGraphicsGetCurrentContext();
- CGRect rect = (CGRect){0, 0, theSize};
- 
- // fill bg white
- [[UIColor whiteColor] setFill];
- CGContextFillRect(context, rect);
- 
- // fill rect black
- [[UIColor blackColor] setFill];
- UIBezierPath *path = [UIBezierPath
- bezierPathWithRoundedRect:rect
- byRoundingCorners:corners
- cornerRadii:(CGSize){theCornerRadius, theCornerRadius}];
- [path fill];
- 
- UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
- 
- UIGraphicsEndImageContext();
- 
- return image;
- };
+         UIImage *(^generateImage)(CGSize, float, BOOL) = ^(CGSize theSize, float theCornerRadius, BOOL retina){
+             UIGraphicsBeginImageContextWithOptions(size, YES, (retina)?2:1);
+             CGContextRef context = UIGraphicsGetCurrentContext();
+             CGRect rect = (CGRect){0, 0, theSize};
+         
+             // fill bg white
+             [[UIColor whiteColor] setFill];
+             CGContextFillRect(context, rect);
+         
+         // fill rect black
+             [[UIColor blackColor] setFill];
+             UIBezierPath *path = [UIBezierPath
+             bezierPathWithRoundedRect:rect
+             byRoundingCorners:corners
+             cornerRadii:(CGSize){theCornerRadius, theCornerRadius}];
+             [path fill];
+         
+             UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+         
+             UIGraphicsEndImageContext();
+         
+             return image;
+     };
  
  // non retina image, and store
- UIImage *imageNonRetina = generateImage(size, cornerRadius, NO);
- NSString *path = [basePath stringByAppendingPathComponent:imageName(size, cornerRadius, NO, corners)];
- [UIImagePNGRepresentation(imageNonRetina) writeToFile:path atomically:YES];
+     UIImage *imageNonRetina = generateImage(size, cornerRadius, NO);
+     NSString *path = [basePath stringByAppendingPathComponent:imageName(size, cornerRadius, NO, corners)];
+     [UIImagePNGRepresentation(imageNonRetina) writeToFile:path atomically:YES];
  
  // retina image and store
- UIImage *imageRetina = generateImage(size, cornerRadius, YES);
- NSString *pathRetina = [basePath stringByAppendingPathComponent:imageName(size, cornerRadius, YES, corners)];
- [UIImagePNGRepresentation(imageRetina) writeToFile:pathRetina atomically:YES];
+     UIImage *imageRetina = generateImage(size, cornerRadius, YES);
+     NSString *pathRetina = [basePath stringByAppendingPathComponent:imageName(size, cornerRadius, YES, corners)];
+     [UIImagePNGRepresentation(imageRetina) writeToFile:pathRetina atomically:YES];
  
- if (isRetina)
- image = imageRetina;
- else
- image = imageNonRetina;
- }
+     if (isRetina)
+         image = imageRetina;
+     else
+         image = imageNonRetina;
+     }
  
  return image;
  }
- */
+
 
 @end
