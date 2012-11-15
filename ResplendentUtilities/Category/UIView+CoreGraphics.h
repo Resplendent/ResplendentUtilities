@@ -17,4 +17,7 @@ void drawColorArrayLine(CGContextRef context, CGFloat lineWidth, CGFloat lineCol
 //Gradient Method
 void drawLinearGradient(CGContextRef context, CGRect rect, CGColorRef startColor, CGColorRef  endColor);
 
+//Rounded Rect
+//void drawRoundedRect(CGContextRef context, CGRect rect, CGFloat radius);
+
 @end

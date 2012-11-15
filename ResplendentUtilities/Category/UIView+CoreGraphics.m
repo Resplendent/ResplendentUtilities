@@ -56,4 +56,53 @@ void drawLinearGradient(CGContextRef context, CGRect rect, CGColorRef startColor
     CGColorSpaceRelease(colorSpace);
 }
 
+#pragma mark - Rounded Rect methods
+
+//Needs to be worked out
+void drawRoundedRect(CGContextRef context, CGRect rect, CGFloat radius)
+{
+    CGContextMoveToPoint(context, rect.origin.x, rect.origin.y + radius);
+    
+    CGContextAddLineToPoint(context,
+                            rect.origin.x,
+                            rect.origin.y + rect.size.height - radius);
+    
+    CGContextAddArc(context,
+                    rect.origin.x + radius,
+                    rect.origin.y + rect.size.height - radius,
+                    radius, M_PI, M_PI/2, 1);
+    
+    
+    // Only round bottom right corner for full width panels.
+//    if ((rect.origin.x + rect.size.width) < self.bounds.size.width) {
+//        CGContextAddLineToPoint(context,
+//                                rect.origin.x + rect.size.width,
+//                                rect.origin.y + rect.size.height);
+//    } else {
+//        CGContextAddLineToPoint(context,
+//                                self.bounds.size.width - radius,
+//                                self.bounds.size.height);
+//        
+//        CGContextAddArc(context,
+//                        self.bounds.size.width - radius,
+//                        self.bounds.size.height - radius,
+//                        radius, M_PI/2, 0.0f, 1);
+//    }
+    
+    CGContextAddLineToPoint(context,
+                            rect.origin.x + rect.size.width,
+                            rect.origin.y + radius);
+    
+    CGContextAddArc(context,
+                    rect.origin.x + rect.size.width - radius,
+                    rect.origin.y + radius,
+                    radius, 0.0f, -M_PI/2, 1);
+    
+    CGContextAddLineToPoint(context,
+                            rect.origin.x,
+                            rect.origin.y);
+    
+}
+
+
 @end
