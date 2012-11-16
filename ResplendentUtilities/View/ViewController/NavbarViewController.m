@@ -96,7 +96,17 @@ static NSTimeInterval popPushAnimationDuration;
     [navbarViewController setParentNBViewController:self];
     [self addChildViewController:navbarViewController];
 
-    setCoords(navbarViewController.view, CGRectGetWidth(self.view.frame), 0);
+    switch (self.transitionStyle)
+    {
+        case NavbarViewControllerTransitionStyleFromLeft:
+            setCoords(navbarViewController.view, -CGRectGetWidth(self.view.frame), 0);
+            break;
+
+        case NavbarViewControllerTransitionStyleFromRight:
+        default:
+            setCoords(navbarViewController.view, CGRectGetWidth(self.view.frame), 0);
+            break;
+    }
     [navbarViewController.navbar setAlphaForComponents:0.0f];
 
     [self.view addSubview:navbarViewController.view];
@@ -132,7 +142,18 @@ static NSTimeInterval popPushAnimationDuration;
 
         [_parentNBViewController.navbar setAlphaForComponents:1.0f];
 
-        setXCoord(self.view, CGRectGetWidth(_parentNBViewController.view.frame));
+        switch (self.parentNBViewController.transitionStyle)
+        {
+            case NavbarViewControllerTransitionStyleFromLeft:
+                setXCoord(self.view, -CGRectGetWidth(_parentNBViewController.view.frame));
+                break;
+
+            case NavbarViewControllerTransitionStyleFromRight:
+            default:
+                setXCoord(self.view, CGRectGetWidth(_parentNBViewController.view.frame));
+                break;
+        }
+
     } completion:^(BOOL finished) {
         [self.navbar removeFromSuperview];
         [self.view addSubview:self.navbar];

@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    NavbarViewControllerTransitionStyleFromRight = 0,
+    NavbarViewControllerTransitionStyleFromLeft
+}NavbarViewControllerTransitionStyle;
+
 @class Navbar;
 
 @interface NavbarViewController : UIViewController
@@ -16,6 +21,8 @@
 @property (nonatomic, readonly) CGRect contentFrame;
 
 @property (nonatomic, retain) NavbarViewController* parentNBViewController;
+
+@property (nonatomic, assign) NavbarViewControllerTransitionStyle transitionStyle;
 
 -(void)loadNavBar;
 
