@@ -249,7 +249,6 @@
         CGFloat xCoord = floor([self columnForIndex:index] * width);
 
         [view setFrame:CGRectMake(xCoord, yCoord, _cellWidth, _cellWidth)];
-//        NSLog(@"grid view cell: %@",view);
     }
 }
 
@@ -379,20 +378,19 @@
         [_cellsDictionary removeObjectForKey:key2];
 }
 
--(void)advanceCellAtIndex:(NSUInteger)index
+-(void)advanceCellAtIndex:(int)index
 {
-    NSString* key = indexStringForKey(index);
-
-    UIView* view = [_cellsDictionary objectForKey:key];
-    if (view)
+    for (int i = _numberOfCells - 1; i >= index; i--)
     {
-        NSString* nextKey = indexStringForKey(index+1);
-        if ([_cellsDictionary objectForKey:nextKey])
+        NSString* key = indexStringForKey(i);
+
+        UIView* view = [_cellsDictionary objectForKey:key];
+        if (view)
         {
-            [self advanceCellAtIndex:index+1];
+            NSString* nextKey = indexStringForKey(i + 1);
+            [_cellsDictionary setObject:view forKey:nextKey];
+            [_cellsDictionary removeObjectForKey:key];
         }
-        [_cellsDictionary setObject:view forKey:nextKey];
-        [_cellsDictionary removeObjectForKey:key];
     }
 }
 
