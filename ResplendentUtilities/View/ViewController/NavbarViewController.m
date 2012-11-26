@@ -93,6 +93,12 @@ static NSTimeInterval popPushAnimationDuration;
 
 -(void)pushViewController:(NavbarViewController*)navbarViewController completion:(void (^)())completion
 {
+    __block BOOL selfUserInteractionEnabled = self.view.userInteractionEnabled;
+    __block BOOL childUserInteractionEnabled = navbarViewController.view.userInteractionEnabled;
+
+    [self.view setUserInteractionEnabled:NO];
+    [navbarViewController.view setUserInteractionEnabled:NO];
+
     [navbarViewController setParentNBViewController:self];
     [self addChildViewController:navbarViewController];
 
@@ -120,6 +126,9 @@ static NSTimeInterval popPushAnimationDuration;
 
         setXCoord(navbarViewController.view, 0);
     } completion:^(BOOL finished) {
+        [self.view setUserInteractionEnabled:selfUserInteractionEnabled];
+        [navbarViewController.view setUserInteractionEnabled:childUserInteractionEnabled];
+
         [self.view bringSubviewToFront:navbarViewController.view];
         
         [self viewDidDisappear:YES];
@@ -131,6 +140,7 @@ static NSTimeInterval popPushAnimationDuration;
 
 -(void)popViewControllerCompletion:(void (^)())completion
 {
+    [self.view setUserInteractionEnabled:NO];
     [_parentNBViewController viewWillAppear:YES];
     [_parentNBViewController.navbar setAlphaForComponents:0.0f];
     
