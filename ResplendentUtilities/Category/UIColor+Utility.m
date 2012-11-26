@@ -10,12 +10,6 @@
 
 @implementation UIColor (Utility)
 
-//UIColor* colorWithFloats(CGFloat red, CGFloat green, CGFloat blue, CGFloat alpha)
-//{
-//    return ColorRGBA(red, green, blue, alpha);
-////    return [UIColor colorWithRed:red/255.0f green:green/255.0f blue:blue/255.0f alpha:alpha/255.0f];
-//}
-
 +(UIColor*)colorWithFloat:(CGFloat)colorFloat alpha:(CGFloat)alpha
 {
     return [UIColor colorWithWhite:colorFloat/255.0f alpha:alpha];
