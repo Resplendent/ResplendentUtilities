@@ -27,17 +27,32 @@
 static const CGFloat kVMargin = 5.0f;
 static const NSTimeInterval kLongPressTimeInterval = 0.5;
 static const CGFloat kLongPressGutter = 22;
+static NSString* const kLinkAttributedName = @"NIAttributedLabel:Link";
 
 // The touch gutter is the amount of space around a link that will still register as tapping
 // "within" the link.
 static const CGFloat kTouchGutter = 22;
+
+CGSize NISizeOfAttributedStringConstrainedToSize(NSAttributedString *attributedString, CGSize size) {
+  CFAttributedStringRef attributedStringRef = (__bridge CFAttributedStringRef)attributedString;
+  CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(attributedStringRef);
+  CFRange fitCFRange = CFRangeMake(0,0);
+  CGSize newSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, 0), NULL, size, &fitCFRange);
+
+  if (nil != framesetter) {
+    CFRelease(framesetter);
+    framesetter = nil;
+  }
+
+  return CGSizeMake(ceilf(newSize.width), ceilf(newSize.height));
+}
 
 @interface NIAttributedLabelImage : NSObject
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, strong) UIImage* image;
 @property (nonatomic, assign) UIEdgeInsets margins;
 @property (nonatomic, assign) NIVerticalTextAlignment verticalTextAlignment;
-@property (nonatomic, assign) NIAttributedLabel* label;
+@property (nonatomic, weak) NIAttributedLabel* label;
 @end
 
 @implementation NIAttributedLabelImage
@@ -109,6 +124,8 @@ static const CGFloat kTouchGutter = 22;
 @synthesize highlightedLinkBackgroundColor = _highlightedLinkBackgroundColor;
 @synthesize linksHaveUnderlines = _linksHaveUnderlines;
 @synthesize attributesForLinks = _attributesForLinks;
+@synthesize attributesForHighlightedLink = _attributesForHighlightedLink;
+@synthesize lineHeight = _lineHeight;
 @synthesize images;
 @synthesize delegate = _delegate;
 
@@ -192,17 +209,7 @@ static const CGFloat kTouchGutter = 22;
     return CGSizeZero;
   }
 
-  CFAttributedStringRef attributedStringRef = (__bridge CFAttributedStringRef)self.mutableAttributedString;
-  CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(attributedStringRef);
-  CFRange fitCFRange = CFRangeMake(0,0);
-  CGSize newSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, 0), NULL, size, &fitCFRange);
-
-  if (nil != framesetter) {
-    CFRelease(framesetter);
-    framesetter = nil;
-  }
-
-  return CGSizeMake(ceilf(newSize.width), ceilf(newSize.height));
+  return NISizeOfAttributedStringConstrainedToSize([self mutableAttributedStringWithAdditions], size);
 }
 
 
@@ -320,7 +327,7 @@ static const CGFloat kTouchGutter = 22;
   if (nil != self.mutableAttributedString) {
     CTTextAlignment alignment = [self.class alignmentFromUITextAlignment:textAlignment];
     CTLineBreakMode lineBreak = [self.class lineBreakModeFromUILineBreakMode:self.lineBreakMode];
-    [self.mutableAttributedString setTextAlignment:alignment lineBreakMode:lineBreak];
+    [self.mutableAttributedString setTextAlignment:alignment lineBreakMode:lineBreak lineHeight:self.lineHeight];
   }
 }
 #else
@@ -337,7 +344,7 @@ static const CGFloat kTouchGutter = 22;
   if (nil != self.mutableAttributedString) {
     CTTextAlignment alignment = [self.class alignmentFromUITextAlignment:textAlignment];
     CTLineBreakMode lineBreak = [self.class lineBreakModeFromUILineBreakMode:self.lineBreakMode];
-    [self.mutableAttributedString setTextAlignment:alignment lineBreakMode:lineBreak];
+    [self.mutableAttributedString setTextAlignment:alignment lineBreakMode:lineBreak lineHeight:self.lineHeight];
   }
 }
 #endif
@@ -351,7 +358,7 @@ static const CGFloat kTouchGutter = 22;
   if (nil != self.mutableAttributedString) {
     CTTextAlignment alignment = [self.class alignmentFromUITextAlignment:self.textAlignment];
     CTLineBreakMode lineBreak = [self.class lineBreakModeFromUILineBreakMode:lineBreakMode];
-    [self.mutableAttributedString setTextAlignment:alignment lineBreakMode:lineBreak];
+    [self.mutableAttributedString setTextAlignment:alignment lineBreakMode:lineBreak lineHeight:self.lineHeight];
   }
 }
 #else
@@ -361,7 +368,7 @@ static const CGFloat kTouchGutter = 22;
   if (nil != self.mutableAttributedString) {
     CTTextAlignment alignment = [self.class alignmentFromUITextAlignment:self.textAlignment];
     CTLineBreakMode lineBreak = [self.class lineBreakModeFromUILineBreakMode:lineBreakMode];
-    [self.mutableAttributedString setTextAlignment:alignment lineBreakMode:lineBreak];
+    [self.mutableAttributedString setTextAlignment:alignment lineBreakMode:lineBreak lineHeight:self.lineHeight];
   }
 }
 #endif
@@ -494,6 +501,19 @@ static const CGFloat kTouchGutter = 22;
   }
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+-(void)setLineHeight:(CGFloat)lineHeight {
+    if (_lineHeight != lineHeight ) {
+        _lineHeight = lineHeight;
+        
+        if (nil != self.mutableAttributedString) {
+            CTTextAlignment alignment = [self.class alignmentFromUITextAlignment:self.textAlignment];
+            CTLineBreakMode lineBreak = [self.class lineBreakModeFromUILineBreakMode:self.lineBreakMode];
+            [self.mutableAttributedString setTextAlignment:alignment lineBreakMode:lineBreak lineHeight:self.lineHeight];
+        }
+    }
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setHighlightedLinkBackgroundColor:(UIColor *)highlightedLinkBackgroundColor {
@@ -526,6 +546,16 @@ static const CGFloat kTouchGutter = 22;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setAttributesForHighlightedLink:(NSDictionary *)attributesForHighlightedLink {
+  if (_attributesForHighlightedLink != attributesForHighlightedLink) {
+    _attributesForHighlightedLink = attributesForHighlightedLink;
+
+    [self attributedTextDidChange];
+  }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setExplicitLinkLocations:(NSMutableArray *)explicitLinkLocations {
   if (_explicitLinkLocations != explicitLinkLocations) {
     _explicitLinkLocations = explicitLinkLocations;
@@ -539,6 +569,28 @@ static const CGFloat kTouchGutter = 22;
   if (_detectedlinkLocations != detectedlinkLocations) {
     _detectedlinkLocations = detectedlinkLocations;
     self.accessibleElements = nil;
+  }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setHighlighted:(BOOL)highlighted {
+  BOOL didChange = self.highlighted != highlighted;
+  [super setHighlighted:highlighted];
+
+  if (didChange) {
+    [self attributedTextDidChange];
+  }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setHighlightedTextColor:(UIColor *)highlightedTextColor {
+  BOOL didChange = self.highlightedTextColor != highlightedTextColor;
+  [super setHighlightedTextColor:highlightedTextColor];
+
+  if (didChange) {
+    [self attributedTextDidChange];
   }
 }
 
@@ -727,11 +779,13 @@ static const CGFloat kTouchGutter = 22;
     CGFloat ascent = 0.0f;
     CGFloat descent = 0.0f;
     CGFloat leading = 0.0f;
+    
+    // Use of 'leading' doesn't properly highlight Japanese-character link.
     CGFloat width = (CGFloat)CTRunGetTypographicBounds(run,
                                                        CFRangeMake(0, 0),
                                                        &ascent,
                                                        &descent,
-                                                       &leading);
+                                                       NULL); //&leading);
     CGFloat height = ascent + descent;
 
     CGFloat xOffset = CTLineGetOffsetForStringIndex(line, CTRunGetStringRange(run).location, nil);
@@ -818,6 +872,18 @@ static const CGFloat kTouchGutter = 22;
   }
 
   return [rects copy];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setTouchedLink:(NSTextCheckingResult *)touchedLink {
+  if (_touchedLink != touchedLink) {
+    _touchedLink = touchedLink;
+
+    if (self.attributesForHighlightedLink.count > 0) {
+      [self attributedTextDidChange];
+    }
+  }
 }
 
 
@@ -1007,6 +1073,14 @@ static const CGFloat kTouchGutter = 22;
 - (void)_applyLinkStyleWithResults:(NSArray *)results toAttributedString:(NSMutableAttributedString *)attributedString {
   for (NSTextCheckingResult* result in results) {
     [attributedString setTextColor:self.linkColor range:result.range];
+
+    // We add a no-op attribute in order to force a run to exist for each link. Otherwise the
+    // runCount will be one in this line, causing the entire line to be highlighted rather than
+    // just the link when when no special attributes are set.
+    [attributedString addAttribute:kLinkAttributedName
+                             value:[NSNumber numberWithBool:YES]
+                             range:result.range];
+
     if (self.linksHaveUnderlines) {
       [attributedString setUnderlineStyle:kCTUnderlineStyleSingle
                                  modifier:kCTUnderlinePatternSolid
@@ -1015,6 +1089,9 @@ static const CGFloat kTouchGutter = 22;
 
     if (self.attributesForLinks.count > 0) {
       [attributedString addAttributes:self.attributesForLinks range:result.range];
+    }
+    if (self.attributesForHighlightedLink.count > 0 && result == self.touchedLink) {
+      [attributedString addAttributes:self.attributesForHighlightedLink range:result.range];
     }
   }
 }
@@ -1062,6 +1139,10 @@ static const CGFloat kTouchGutter = 22;
       CFAttributedStringSetAttribute((__bridge CFMutableAttributedStringRef)space, CFRangeMake(0, 1), kCTRunDelegateAttributeName, delegate);
       [attributedString insertAttributedString:space atIndex:labelImage.index];
     }
+  }
+
+  if (self.isHighlighted) {
+    [attributedString setTextColor:self.highlightedTextColor];
   }
 
   return attributedString;
@@ -1180,6 +1261,7 @@ static const CGFloat kTouchGutter = 22;
         }
 
         CGRect highlightRect = [self _rectForRange:linkRange inLine:line lineOrigin:lineOrigins[i]];
+        highlightRect = CGRectOffset(highlightRect, 0, -rect.origin.y);
 
         if (!CGRectIsEmpty(highlightRect)) {
           CGFloat pi = (CGFloat)M_PI;
@@ -1486,7 +1568,7 @@ CGFloat ImageDelegateGetWidthCallback(void* refCon) {
     CTTextAlignment textAlignment = [self alignmentFromUITextAlignment:label.textAlignment];
     CTLineBreakMode lineBreak = [self lineBreakModeFromUILineBreakMode:label.lineBreakMode];
 
-    [attributedString setTextAlignment:textAlignment lineBreakMode:lineBreak]; 
+    [attributedString setTextAlignment:textAlignment lineBreakMode:lineBreak  lineHeight:0];
   }
 
   return attributedString;

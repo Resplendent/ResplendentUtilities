@@ -28,6 +28,17 @@
 // UITextAlignmentJustify is deprecated in iOS 6.0. Please use NSTextAlignmentJustified instead.
 #endif
 
+/**
+ * Calculates the ideal dimensions of an attributed string fitting a given size.
+ *
+ * This calculation is performed off the raw attributed string so this calculation may differ
+ * slightly from NIAttributedLabel's use of it due to lack of link and image attributes.
+ *
+ * This method is used in NIAttributedLabel to calculate its size after all additional
+ * styling attributes have been set.
+ */
+CGSize NISizeOfAttributedStringConstrainedToSize(NSAttributedString *attributedString, CGSize size);
+
 // Vertical alignments for NIAttributedLabel.
 typedef enum {
   NIVerticalTextAlignmentTop = 0,
@@ -76,7 +87,9 @@ typedef enum {
 @property (nonatomic, strong) UIColor* linkColor; // Default: [UIColor blueColor]
 @property (nonatomic, strong) UIColor* highlightedLinkBackgroundColor; // Default: [UIColor colorWithWhite:0.5 alpha:0.5
 @property (nonatomic, assign) BOOL linksHaveUnderlines; // Default: NO
-@property (nonatomic, strong) NSDictionary *attributesForLinks; // Default: nil
+@property (nonatomic, copy) NSDictionary *attributesForLinks; // Default: nil
+@property (nonatomic, copy) NSDictionary *attributesForHighlightedLink; // Default: nil
+@property (nonatomic, assign) CGFloat lineHeight;
 
 @property (nonatomic, assign) NIVerticalTextAlignment verticalTextAlignment; // Default: NIVerticalTextAlignmentTop
 @property (nonatomic, assign) CTUnderlineStyle underlineStyle;
@@ -257,9 +270,18 @@ typedef enum {
  * A dictionary of CoreText attributes to apply to links.
  *
  * This dictionary must contain CoreText attributes. These attributes are applied after the color
- * and link styles have been applied to the link.
+ * and underline styles have been applied to the link.
  *
  *      @fn NIAttributedLabel::attributesForLinks
+ */
+
+/**
+ * A dictionary of CoreText attributes to apply to the highlighted link.
+ *
+ * This dictionary must contain CoreText attributes. These attributes are applied after
+ * attributesForLinks have been applied to the highlighted link.
+ *
+ *      @fn NIAttributedLabel::attributesForHighlightedLink
  */
 
 /** @name Modifying Rich Text Styles for All Text */
@@ -321,6 +343,16 @@ typedef enum {
  * By default this is nil.
  *
  *      @fn NIAttributedLabel::strokeColor
+ */
+
+/**
+ * Sets the lineheight for the text.
+ *
+ * By default this is zero.
+ *
+ * Setting this value to zero will set the lineheight of to the default height. 
+ *
+ *      @fn NIAttributedLabel::lineHeight
  */
 
 /**
