@@ -12,7 +12,7 @@
 
 @interface UIColor (Utility)
 
-inline UIColor* colorWithFloats(CGFloat red, CGFloat green, CGFloat blue, CGFloat alpha);
+//inline UIColor* colorWithFloats(CGFloat red, CGFloat green, CGFloat blue, CGFloat alpha);
 
 +(UIColor*)colorWithFloat:(CGFloat)colorFloat alpha:(CGFloat)alpha;
 
