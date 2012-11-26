@@ -114,6 +114,11 @@
     [uploadRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
     AFHTTPRequestOperation* op = [[AFHTTPRequestOperation alloc]initWithRequest:uploadRequest];
+    
+    [op setShouldExecuteAsBackgroundTaskWithExpirationHandler:^{
+        
+    }];
+    
     [op setUploadProgressBlock:^(NSInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         if (progressBlock)
         {
