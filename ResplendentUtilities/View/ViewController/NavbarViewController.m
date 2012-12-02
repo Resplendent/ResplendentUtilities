@@ -93,6 +93,13 @@ static NSTimeInterval popPushAnimationDuration;
 
 -(void)pushViewController:(NavbarViewController*)navbarViewController completion:(void (^)())completion
 {
+    if (!navbarViewController)
+    {
+        if (completion)
+            completion();
+        return;
+    }
+
     __block BOOL selfUserInteractionEnabled = self.view.userInteractionEnabled;
     __block BOOL childUserInteractionEnabled = navbarViewController.view.userInteractionEnabled;
 
