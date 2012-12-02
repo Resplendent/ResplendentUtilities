@@ -14,6 +14,9 @@
 void drawLine(CGContextRef context, CGFloat lineWidth, CGColorRef lineColor, CGPoint startPoint, CGPoint endPoint);
 void drawColorArrayLine(CGContextRef context, CGFloat lineWidth, CGFloat lineColorArray[], CGPoint startPoint, CGPoint endPoint);
 
+//Rectangle Methods
+void drawColoredRect(CGContextRef context, CGRect rect, CGColorRef color, bool colorFill);
+
 //Gradient Method
 void drawLinearGradient(CGContextRef context, CGRect rect, CGColorRef startColor, CGColorRef  endColor);
 

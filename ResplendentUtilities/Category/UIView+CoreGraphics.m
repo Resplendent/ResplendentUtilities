@@ -32,6 +32,21 @@ void drawColorArrayLine(CGContextRef context, CGFloat lineWidth, CGFloat lineCol
     CGColorSpaceRelease(colorspace);
 }
 
+#pragma mark - Rectangle methods
+void drawColoredRect(CGContextRef context, CGRect rect, CGColorRef color, bool colorFill)
+{
+    if (colorFill)
+    {
+        CGContextSetFillColorWithColor(context, color);
+        CGContextFillRect(context, rect);
+    }
+    else
+    {
+        CGContextSetStrokeColorWithColor(context, color);
+        CGContextStrokeRect(context, rect);
+    }
+}
+
 #pragma mark - Gradient methods
 
 void drawLinearGradient(CGContextRef context, CGRect rect, CGColorRef startColor, CGColorRef  endColor)
