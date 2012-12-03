@@ -20,7 +20,7 @@ typedef enum {
 @property (nonatomic, strong) Navbar* navbar;
 @property (nonatomic, readonly) CGRect contentFrame;
 
-@property (nonatomic, retain) NavbarViewController* parentNBViewController;
+@property (nonatomic, assign) NavbarViewController* parentNBViewController;
 
 @property (nonatomic, assign) NavbarViewControllerTransitionStyle transitionStyle;
 
