@@ -30,6 +30,11 @@ static NSMutableDictionary* fetchedImages;
 
 -(id)initAndFetchWithURL:(NSString *)anUrl andCacheName:(NSString *)cacheName withBlock:(imageErrorBlock)block
 {
+    if (!anUrl)
+        NSLog(@"%s has nil url",__PRETTY_FUNCTION__);
+    else if (anUrl.length == 0)
+        NSLog(@"%s anUrl of length 0",__PRETTY_FUNCTION__);
+
     if (self = [self init])
     {
         _cacheName = (cacheName ? cacheName : anUrl);
