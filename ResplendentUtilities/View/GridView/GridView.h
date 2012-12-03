@@ -40,7 +40,6 @@
 @interface GridView : UIView <UIScrollViewDelegate>
 {
     NSMutableDictionary* _cellsDictionary;
-    UIScrollView* _scrollView;
 
     //Gotten from delegates
     CGFloat _spaceBetweenCells;
@@ -52,6 +51,8 @@
     CGFloat _cellWidth;
     NSUInteger _numberOfRows;
 }
+
+@property (nonatomic, readonly) UIScrollView* scrollView;
 
 @property (nonatomic, assign) id<GridViewDelegate> delegate;
 @property (nonatomic, assign) id<GridViewDataSource> dataSource;

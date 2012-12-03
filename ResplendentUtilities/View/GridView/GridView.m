@@ -52,6 +52,21 @@
 @synthesize dataSource = _dataSource;
 @synthesize needsCellLayout = _needsCellLayout;
 
+-(id)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame])
+    {
+        _scrollView = [[UIScrollView alloc] init];
+        [_scrollView setBackgroundColor:[UIColor clearColor]];
+        [_scrollView setDelegate:self];
+        [self addSubview:_scrollView];
+        
+        [_scrollView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedScrollView:)]];
+    }
+
+    return self;
+}
+
 -(void)layoutSubviews
 {
     [super layoutSubviews];
@@ -66,7 +81,6 @@
 -(void)dealloc
 {
     [self clearCurrentCells];
-    [_scrollView removeFromSuperview];
 }
 
 #pragma mark - Getter methods
@@ -423,19 +437,7 @@
 
 -(void)reloadData
 {
-    if (_scrollView)
-    {
-        [self clearCurrentCells];
-    }
-    else
-    {
-        _scrollView = [[UIScrollView alloc] init];
-        [_scrollView setBackgroundColor:[UIColor clearColor]];
-        [_scrollView setDelegate:self];
-        [self addSubview:_scrollView];
-
-        [_scrollView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedScrollView:)]];
-    }
+    [self clearCurrentCells];
 
     [self loadSpaceBetweenCellsFromDelegate];
     [self loadNumberOfCellsFromDelegate];
