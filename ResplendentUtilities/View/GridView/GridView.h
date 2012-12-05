@@ -67,4 +67,8 @@
 
 -(UIView*)viewForIndex:(NSUInteger)index;
 
+
+//Only to be overloaded
+-(BOOL)deleteCellAtIndex:(NSUInteger)index;
+
 @end

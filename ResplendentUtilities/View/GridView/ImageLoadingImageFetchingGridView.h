@@ -17,6 +17,7 @@
 -(NSString*)imageGridView:(ImageLoadingImageFetchingGridView*)imageGridView urlForIndex:(NSUInteger)index;
 
 -(NSUInteger)imageGridViewNumberOfLoadingCells:(ImageLoadingImageFetchingGridView*)imageGridView;
+-(NSUInteger)imageGridViewNumberOfLoadedCells:(ImageLoadingImageFetchingGridView*)imageGridView;
 -(NSUInteger)imageGridViewNumberOfFetchingCells:(ImageLoadingImageFetchingGridView*)imageGridView;
 
 -(NSUInteger)imageGridViewNumberOfColumns:(ImageLoadingImageFetchingGridView*)imageGridView;
@@ -31,6 +32,7 @@
 @interface ImageLoadingImageFetchingGridView : GridView <GridViewDelegate, GridViewDataSource>
 {
     NSUInteger _numberOfLoadingCells;
+    NSUInteger _numberOfLoadedCells;
     NSUInteger _numberOfFetchingCells;
 
     NSMutableArray* _downloadProgressBarBackgrounds;

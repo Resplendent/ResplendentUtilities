@@ -32,8 +32,7 @@
 -(void)loadNumberOfCellsFromDelegate;
 -(void)loadNumberOfColumnsFromDelegate;
 
--(void)deleteCellAtIndex:(NSUInteger)index;
--(void)deleteCellAtIndexString:(NSString*)key;
+-(BOOL)deleteCellAtIndexString:(NSString*)key;
 -(void)addCellAtIndex:(NSUInteger)index;
 
 #if kGridViewUsesButtons
@@ -191,12 +190,12 @@
 }
 
 #pragma mark - Private instance methods
--(void)deleteCellAtIndex:(NSUInteger)index
+-(BOOL)deleteCellAtIndex:(NSUInteger)index
 {
-    [self deleteCellAtIndexString:[NSString stringWithFormat:@"%i",index]];
+    return [self deleteCellAtIndexString:indexStringForKey(index)];
 }
 
--(void)deleteCellAtIndexString:(NSString*)key
+-(BOOL)deleteCellAtIndexString:(NSString*)key
 {
     UIView* view = [_cellsDictionary objectForKey:key];
     if (view)
@@ -206,7 +205,10 @@
 
         [view removeFromSuperview];
         [_cellsDictionary removeObjectForKey:key];
+        return YES;
     }
+
+    return NO;
 }
 
 -(void)addCellAtIndex:(NSUInteger)index
@@ -418,9 +420,8 @@
 
 -(void)removeViewAtIndex:(NSUInteger)index
 {
-    if ([_cellsDictionary objectForKey:indexStringForKey(index)])
+    if ([self deleteCellAtIndex:index])
     {
-        [self deleteCellAtIndex:index];
         _numberOfCells--;
         [self updateNumberOfRows];
         [self setNeedsLayout];

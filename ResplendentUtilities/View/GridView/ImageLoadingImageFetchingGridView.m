@@ -10,6 +10,15 @@
 #import "AsynchronousImageView.h"
 #import "UIView+Utility.h"
 
+@interface ImageLoadingImageFetchingGridView ()
+
+-(UIView*)addProgressBarAtIndex:(NSUInteger)index;
+-(BOOL)removeProgressBarAtIndex:(NSUInteger)index;
+
+@end
+
+
+
 @implementation ImageLoadingImageFetchingGridView
 
 @synthesize imageDelegate = _imageDelegate;
@@ -34,6 +43,18 @@
     }
 }
 
+#pragma mark - Overloaded methods
+-(BOOL)deleteCellAtIndex:(NSUInteger)index
+{
+    if ([super deleteCellAtIndex:index])
+    {
+        [self removeProgressBarAtIndex:index];
+        return YES;
+    }
+
+    return NO;
+}
+
 #pragma mark - Public methods
 -(void)addLoadingImageAtIndex:(NSUInteger)index
 {
@@ -52,14 +73,14 @@
     if (finishedIndex < _numberOfLoadingCells)
     {
         _numberOfLoadingCells--;
-        _numberOfFetchingCells++;
+        _numberOfLoadedCells++;
 #if EC_DEBUG
         NSUInteger delegateNumberOfLoadingCells = [_imageDelegate imageGridViewNumberOfLoadingCells:self];
         if (_numberOfLoadingCells != delegateNumberOfLoadingCells)
-            NSLog(@"finishedLoadingPhotoAtIndex _numberOfLoadingCells: '%i' must = delegate number of loading cells: '%i'",_numberOfLoadingCells,delegateNumberOfLoadingCells);
-        NSUInteger delegateNumberOfFetchingCells = [_imageDelegate imageGridViewNumberOfFetchingCells:self];
-        if (_numberOfFetchingCells != delegateNumberOfFetchingCells)
-            NSLog(@"finishedLoadingPhotoAtIndex _numberOfFetchingCells: '%i' must = delegate number of loading cells: '%i'",_numberOfFetchingCells,delegateNumberOfFetchingCells);
+            NSLog(@"%s _numberOfLoadingCells: '%i' must = delegate number of loading cells: '%i'",__PRETTY_FUNCTION__,_numberOfLoadingCells,delegateNumberOfLoadingCells);
+        NSUInteger delegateNumberOfLoadedCells = [_imageDelegate imageGridViewNumberOfLoadedCells:self];
+        if (_numberOfLoadedCells != delegateNumberOfLoadedCells)
+            NSLog(@"%s _numberOfLoadedCells: '%i' must = delegate number of loaded cells: '%i'",__PRETTY_FUNCTION__,_numberOfLoadedCells,delegateNumberOfLoadedCells);
 #endif
         [self reloadViewAtIndex:_numberOfLoadingCells];
     }
@@ -71,7 +92,7 @@
 
 -(void)setProgress:(CGFloat)progress forLoadingImageAtIndex:(NSUInteger)index
 {
-    if (_downloadProgressBarBackgrounds.count > index)
+    if (index < _downloadProgressBarBackgrounds.count)
     {
         UIView* progressBackgroundBar = [_downloadProgressBarBackgrounds objectAtIndex:index];
         UIView* progressBar = [_downloadProgressBars objectAtIndex:index];
@@ -93,10 +114,46 @@
     NSLog(@"ImageLoadingImageFetchingGridView setDelegate this shouldn't happen");
 }
 
+#pragma mark - Progress bar methods
+-(BOOL)removeProgressBarAtIndex:(NSUInteger)index
+{
+    if (index < _downloadProgressBarBackgrounds.count)
+    {
+        UIView* progressBackgroundBar = [_downloadProgressBarBackgrounds objectAtIndex:index];
+        UIView* progressBar = [_downloadProgressBars objectAtIndex:index];
+        
+        [progressBackgroundBar removeFromSuperview];
+        [progressBar removeFromSuperview];
+        
+        [_downloadProgressBarBackgrounds removeObjectAtIndex:index];
+        [_downloadProgressBars removeObjectAtIndex:index];
+
+        return YES;
+    }
+
+    return NO;
+}
+
+-(UIView*)addProgressBarAtIndex:(NSUInteger)index
+{
+    UIView* progressBackgroundBar = [UIView new];
+    [progressBackgroundBar setBackgroundColor:[UIColor grayColor]];
+    [progressBackgroundBar setAlpha:0.4f];
+    [_downloadProgressBarBackgrounds insertObject:progressBackgroundBar atIndex:index];
+    
+    UIView* progressBar = [UIView new];
+    [progressBar setBackgroundColor:[UIColor blueColor]];
+    [progressBackgroundBar addSubview:progressBar];
+    [_downloadProgressBars insertObject:progressBar atIndex:index];
+    
+    return progressBackgroundBar;
+}
+
 #pragma mark - GridViewDelegate methods
 -(UIView *)gridView:(GridView *)gridView newViewForIndex:(NSUInteger)index
 {
-    if (index < _numberOfLoadingCells)
+    NSInteger numberOfImageCells = _numberOfLoadingCells + _numberOfLoadedCells;
+    if (index < numberOfImageCells)
     {
         if (!_downloadProgressBarBackgrounds)
             _downloadProgressBarBackgrounds = [NSMutableArray array];
@@ -104,25 +161,18 @@
         if (!_downloadProgressBars)
             _downloadProgressBars = [NSMutableArray array];
 
-        UIView* progressBackgroundBar = [[UIView alloc] init];
-        [progressBackgroundBar setBackgroundColor:[UIColor grayColor]];
-        [progressBackgroundBar setAlpha:0.4f];
-        [_downloadProgressBarBackgrounds insertObject:progressBackgroundBar atIndex:index];
-
-        UIView* progressBar = [[UIView alloc] init];
-        [progressBar setBackgroundColor:[UIColor blueColor]];
-        [progressBackgroundBar addSubview:progressBar];
-        [_downloadProgressBars insertObject:progressBar atIndex:index];
-
-        UIImageView* imageView = [[UIImageView alloc] init];
+        UIImageView* imageView = [UIImageView new];
         [imageView setImage:[_imageDelegate imageGridView:self imageForIndex:index]];
-        [imageView addSubview:progressBackgroundBar];
+
+        if (index < _numberOfLoadingCells)
+            [imageView addSubview:[self addProgressBarAtIndex:index]];
+
         return imageView;
     }
     else
     {
-        AsynchronousImageView* aImageView = [[AsynchronousImageView alloc] init];
-        [aImageView fetchImageFromURL:[_imageDelegate imageGridView:self urlForIndex:index - _numberOfLoadingCells]];
+        AsynchronousImageView* aImageView = [AsynchronousImageView new];
+        [aImageView fetchImageFromURL:[_imageDelegate imageGridView:self urlForIndex:index - numberOfImageCells]];
         [aImageView setFadeInDuration:0.25f];
         [aImageView setViewToSetNeedsLayoutOnComplete:self];
         return aImageView;
@@ -142,6 +192,7 @@
 -(NSUInteger)gridViewNumberOfCells:(GridView *)gridView
 {
     _numberOfLoadingCells = [_imageDelegate imageGridViewNumberOfLoadingCells:self];
+    _numberOfLoadedCells = [_imageDelegate imageGridViewNumberOfLoadedCells:self];
     _numberOfFetchingCells = [_imageDelegate imageGridViewNumberOfFetchingCells:self];
 
     return _numberOfLoadingCells + _numberOfFetchingCells;
