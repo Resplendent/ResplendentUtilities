@@ -20,6 +20,8 @@ static NSTimeInterval popPushAnimationDuration;
 -(void)pushViewController:(NavbarViewController*)navbarViewController completion:(void (^)())completion;
 -(void)popViewControllerCompletion:(void (^)())completion;
 
+-(void)loadNavBar;
+
 @end
 
 
@@ -39,7 +41,7 @@ static NSTimeInterval popPushAnimationDuration;
 
 -(void)loadNavBar
 {
-    RU_MUST_OVERRIDE
+    [self setNavbar:[self.navbarClass new]];
 }
 
 - (void)viewDidLoad
@@ -76,6 +78,12 @@ static NSTimeInterval popPushAnimationDuration;
 -(CGRect)contentFrame
 {
     return CGRectMake(0, CGRectGetMaxY(self.navbar.frame), self.view.frame.size.width, self.view.frame.size.height - CGRectGetMaxY(self.navbar.frame));
+}
+
+#pragma mark - Navbar class
+-(Class)navbarClass
+{
+    @throw RU_MUST_OVERRIDE
 }
 
 #pragma mark - Public methods

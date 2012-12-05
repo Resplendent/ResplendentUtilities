@@ -24,7 +24,7 @@ typedef enum {
 
 @property (nonatomic, assign) NavbarViewControllerTransitionStyle transitionStyle;
 
--(void)loadNavBar;
+@property (nonatomic, readonly) Class navbarClass;
 
 -(void)pushViewController:(NavbarViewController*)navbarViewController;
 -(void)popViewController;
