@@ -70,5 +70,6 @@
 
 //Only to be overloaded
 -(BOOL)deleteCellAtIndex:(NSUInteger)index;
+-(void)addCellAtIndex:(NSUInteger)index;
 
 @end

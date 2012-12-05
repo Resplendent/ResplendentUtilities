@@ -12,7 +12,10 @@
 
 @interface ImageLoadingImageFetchingGridView ()
 
--(UIView*)addProgressBarAtIndex:(NSUInteger)index;
+-(void)layoutProgressBars;
+-(void)layoutProgressBarAtIndex:(NSUInteger)index;
+
+-(void)addProgressBarAtIndex:(NSUInteger)index;
 -(BOOL)removeProgressBarAtIndex:(NSUInteger)index;
 
 @end
@@ -23,27 +26,49 @@
 
 @synthesize imageDelegate = _imageDelegate;
 
+#pragma mark - Layout methods
 -(void)layoutSubviews
 {
     [super layoutSubviews];
+    
+    [self layoutProgressBars];
+}
 
+-(void)layoutProgressBars
+{
     for (int index = 0; index < _numberOfLoadingCells; index++)
     {
-        UIView* view = [self viewForIndex:index];
-
-        UIView* progressBackgroundBar = [_downloadProgressBarBackgrounds objectAtIndex:index];
-        UIView* progressBar = [_downloadProgressBars objectAtIndex:index];
-
-        CGFloat xCoord = floor(CGRectGetWidth(view.frame) * 0.1f);
-        [progressBackgroundBar setFrame:CGRectMake(xCoord, floorf(CGRectGetHeight(view.frame) * 0.6), CGRectGetWidth(view.frame) - 2.0f * xCoord, floorf(CGRectGetHeight(view.frame) * 0.3))];
-
-        CGRect frame = progressBackgroundBar.bounds;
-        frame.size.width = CGRectGetWidth(progressBar.frame);
-        [progressBar setFrame:frame];
+        [self layoutProgressBarAtIndex:index];
     }
 }
 
+-(void)layoutProgressBarAtIndex:(NSUInteger)index
+{
+    UIView* view = [self viewForIndex:index];
+    
+    UIView* progressBackgroundBar = [_downloadProgressBarBackgrounds objectAtIndex:index];
+    UIView* progressBar = [_downloadProgressBars objectAtIndex:index];
+
+    CGFloat xCoord = floor(CGRectGetWidth(view.frame) * 0.1f);
+    [progressBackgroundBar setFrame:CGRectMake(xCoord, floorf(CGRectGetHeight(view.frame) * 0.6), CGRectGetWidth(view.frame) - 2.0f * xCoord, floorf(CGRectGetHeight(view.frame) * 0.3))];
+    
+    CGRect frame = progressBackgroundBar.bounds;
+    frame.size.width = CGRectGetWidth(progressBar.frame);
+    [progressBar setFrame:frame];
+}
+
 #pragma mark - Overloaded methods
+-(void)addCellAtIndex:(NSUInteger)index
+{
+    [super addCellAtIndex:index];
+    
+    if (index < _numberOfLoadingCells)
+    {
+        [self addProgressBarAtIndex:index];
+    }
+    
+}
+
 -(BOOL)deleteCellAtIndex:(NSUInteger)index
 {
     if ([super deleteCellAtIndex:index])
@@ -72,6 +97,7 @@
 {
     if (finishedIndex < _numberOfLoadingCells)
     {
+        NSLog(@"%s %i",__PRETTY_FUNCTION__,finishedIndex);
         _numberOfLoadingCells--;
         _numberOfLoadedCells++;
 #if EC_DEBUG
@@ -81,6 +107,9 @@
         NSUInteger delegateNumberOfLoadedCells = [_imageDelegate imageGridViewNumberOfLoadedCells:self];
         if (_numberOfLoadedCells != delegateNumberOfLoadedCells)
             NSLog(@"%s _numberOfLoadedCells: '%i' must = delegate number of loaded cells: '%i'",__PRETTY_FUNCTION__,_numberOfLoadedCells,delegateNumberOfLoadedCells);
+
+        if (_numberOfLoadingCells >= finishedIndex)
+            NSLog(@"%s _numberOfLoadingCells %i should be < finishedIndex %i",__PRETTY_FUNCTION__,_numberOfLoadingCells,finishedIndex);
 #endif
         [self reloadViewAtIndex:_numberOfLoadingCells];
     }
@@ -119,6 +148,7 @@
 {
     if (index < _downloadProgressBarBackgrounds.count)
     {
+        NSLog(@"%s %i",__PRETTY_FUNCTION__,index);
         UIView* progressBackgroundBar = [_downloadProgressBarBackgrounds objectAtIndex:index];
         UIView* progressBar = [_downloadProgressBars objectAtIndex:index];
         
@@ -134,7 +164,7 @@
     return NO;
 }
 
--(UIView*)addProgressBarAtIndex:(NSUInteger)index
+-(void)addProgressBarAtIndex:(NSUInteger)index
 {
     UIView* progressBackgroundBar = [UIView new];
     [progressBackgroundBar setBackgroundColor:[UIColor grayColor]];
@@ -145,8 +175,9 @@
     [progressBar setBackgroundColor:[UIColor blueColor]];
     [progressBackgroundBar addSubview:progressBar];
     [_downloadProgressBars insertObject:progressBar atIndex:index];
-    
-    return progressBackgroundBar;
+
+    [[self viewForIndex:index] addSubview:progressBackgroundBar];
+    [self layoutProgressBarAtIndex:index];
 }
 
 #pragma mark - GridViewDelegate methods
@@ -163,9 +194,6 @@
 
         UIImageView* imageView = [UIImageView new];
         [imageView setImage:[_imageDelegate imageGridView:self imageForIndex:index]];
-
-        if (index < _numberOfLoadingCells)
-            [imageView addSubview:[self addProgressBarAtIndex:index]];
 
         return imageView;
     }
@@ -192,7 +220,8 @@
 -(NSUInteger)gridViewNumberOfCells:(GridView *)gridView
 {
     _numberOfLoadingCells = [_imageDelegate imageGridViewNumberOfLoadingCells:self];
-    _numberOfLoadedCells = [_imageDelegate imageGridViewNumberOfLoadedCells:self];
+    _numberOfLoadedCells = (_imageDelegate && [_imageDelegate respondsToSelector:@selector(imageGridViewNumberOfLoadedCells:)] ?
+                            [_imageDelegate imageGridViewNumberOfLoadedCells:self] : 0);
     _numberOfFetchingCells = [_imageDelegate imageGridViewNumberOfFetchingCells:self];
 
     return _numberOfLoadingCells + _numberOfFetchingCells;

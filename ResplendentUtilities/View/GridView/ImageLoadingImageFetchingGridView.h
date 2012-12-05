@@ -17,13 +17,14 @@
 -(NSString*)imageGridView:(ImageLoadingImageFetchingGridView*)imageGridView urlForIndex:(NSUInteger)index;
 
 -(NSUInteger)imageGridViewNumberOfLoadingCells:(ImageLoadingImageFetchingGridView*)imageGridView;
--(NSUInteger)imageGridViewNumberOfLoadedCells:(ImageLoadingImageFetchingGridView*)imageGridView;
 -(NSUInteger)imageGridViewNumberOfFetchingCells:(ImageLoadingImageFetchingGridView*)imageGridView;
 
 -(NSUInteger)imageGridViewNumberOfColumns:(ImageLoadingImageFetchingGridView*)imageGridView;
 
 @optional
 -(CGFloat)imageGridViewSpaceBetweenCells:(ImageLoadingImageFetchingGridView*)imageGridView;
+
+-(NSUInteger)imageGridViewNumberOfLoadedCells:(ImageLoadingImageFetchingGridView*)imageGridView;
 
 @end
 

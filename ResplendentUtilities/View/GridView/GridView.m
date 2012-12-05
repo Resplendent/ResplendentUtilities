@@ -33,11 +33,6 @@
 -(void)loadNumberOfColumnsFromDelegate;
 
 -(BOOL)deleteCellAtIndexString:(NSString*)key;
--(void)addCellAtIndex:(NSUInteger)index;
-
-#if kGridViewUsesButtons
--(void)pressedGridViewButton:(UIButton*)button;
-#endif
 
 -(void)tappedScrollView:(UITapGestureRecognizer*)tap;
 
@@ -94,7 +89,7 @@
     {
         for (int index = firstVisibleCell - _numberOfColumns; index < firstVisibleCell; index++)
         {
-            if ([_cellsDictionary objectForKey:[NSString stringWithFormat:@"%i",index]])
+            if ([_cellsDictionary objectForKey:indexStringForKey(index)])
                 return YES;
         }
     }
@@ -103,7 +98,7 @@
     {
         for (int index = lastVisibleCell + _numberOfColumns; index < lastVisibleCell; index++)
         {
-            if ([_cellsDictionary objectForKey:[NSString stringWithFormat:@"%i",index]])
+            if ([_cellsDictionary objectForKey:indexStringForKey(index)])
                 return YES;
         }
     }
@@ -113,7 +108,7 @@
         if (index < _numberOfCells)
         {
 
-            if (![_cellsDictionary objectForKey:[NSString stringWithFormat:@"%i",index]])
+            if (![_cellsDictionary objectForKey:indexStringForKey(index)])
             {
                 return YES;
             }
@@ -146,21 +141,6 @@
 }
 
 #pragma mark - Action methods
-#if kGridViewUsesButtons
--(void)pressedGridViewButton:(UIButton*)button
-{
-    if (_selectionDelegate)
-    {
-        UIView* view = button.superview;
-
-        NSUInteger viewRow = floor(CGRectGetMinY(view.frame) / (_cellWidth + _modifiedSpaceBetweenCells));
-        NSUInteger viewColumn = floor(CGRectGetMinX(view.frame) / (_cellWidth + _modifiedSpaceBetweenCells));
-
-        [_selectionDelegate gridView:self didSelectViewAtIndex:viewRow * _numberOfColumns + viewColumn];
-    }
-}
-#endif
-
 -(void)tappedScrollView:(UITapGestureRecognizer*)tap
 {
     CGPoint scrollViewTouch = [tap locationInView:_scrollView];
@@ -215,18 +195,9 @@
 {
     UIView* view = [_delegate gridView:self newViewForIndex:index];
 
-    [_cellsDictionary setObject:view forKey:[NSString stringWithFormat:@"%i",index]];
+    [_cellsDictionary setObject:view forKey:indexStringForKey(index)];
 
-#if kGridViewUsesButtons
-    [view setUserInteractionEnabled:YES];
-    UIButton* viewButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [viewButton setFrame:view.bounds];
-    [viewButton setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
-    [viewButton addTarget:self action:@selector(pressedGridViewButton:) forControlEvents:UIControlEventTouchUpInside];
-    [view addSubview:viewButton];
-#else
     [view setUserInteractionEnabled:NO];
-#endif
 
     [_scrollView addSubview:view];
 }
@@ -293,7 +264,7 @@
     {
         if (index < _numberOfCells)
         {
-            NSString* key = [NSString stringWithFormat:@"%i",index];
+            NSString* key = indexStringForKey(index);
             UIView* view = [_cellsDictionary objectForKey:key];
 
             if (!view)
