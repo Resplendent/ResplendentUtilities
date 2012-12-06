@@ -234,7 +234,7 @@
         {
             [UIView beginAnimations:nil context:nil];
             [UIView setAnimationDuration:0.25];
-            [UIView setAnimationDelay:delay];
+//            [UIView setAnimationDelay:delay];
             [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
 //            delay += 0.1f;
         }
