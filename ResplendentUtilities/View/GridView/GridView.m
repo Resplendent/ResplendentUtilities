@@ -14,17 +14,17 @@
 
 @property (nonatomic, readonly) CGSize tileSize;
 
-@property (nonatomic, readonly) NSUInteger lowestVisibleRow;
+@property (nonatomic, readonly) NSInteger lowestVisibleRow;
 @property (nonatomic, readonly) NSUInteger currentNumberOfVisibleRows;
 
-@property (nonatomic, readonly) BOOL needsToUpdateCells;
+//@property (nonatomic, readonly) BOOL needsToUpdateCells;
 
 //@property (nonatomic, assign) BOOL needsCellLayout;
 
 -(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex animated:(BOOL)animated withDelay:(NSTimeInterval)delay;
 -(void)layoutCellsAnimated:(BOOL)animated;
 
--(void)updateCells;//Animated:(BOOL)animated;
+-(BOOL)updateCells;//Animated:(BOOL)animated;
 -(void)clearCurrentCells;
 
 -(void)updateNumberOfRows;
@@ -71,6 +71,7 @@
     [_scrollView setFrame:self.bounds];
 
     [self updateCellWidth];
+    [self updateScrollViewContentSize];
     [self layoutCellsAnimated:YES];
 }
 
@@ -85,49 +86,48 @@
     return (CGSize){_cellWidth, _cellWidth};
 }
 
--(BOOL)needsToUpdateCells
-{
-    NSUInteger lowerVisibleRow = self.lowestVisibleRow;
-    NSUInteger firstVisibleCell = lowerVisibleRow * _numberOfColumns;
-    NSUInteger currentNumberOfVisibleRows = self.currentNumberOfVisibleRows;
-    NSUInteger lastVisibleCell = (lowerVisibleRow + currentNumberOfVisibleRows) * _numberOfColumns;
-    
-    if (firstVisibleCell)
-    {
-        for (int index = firstVisibleCell - _numberOfColumns; index < firstVisibleCell; index++)
-        {
-            if ([_cellsDictionary objectForKey:indexStringForKey(index)])
-                return YES;
-        }
-    }
-
-    if (lastVisibleCell < _numberOfCells)
-    {
-        for (int index = lastVisibleCell + _numberOfColumns; index < lastVisibleCell; index++)
-        {
-            if ([_cellsDictionary objectForKey:indexStringForKey(index)])
-                return YES;
-        }
-    }
-    
-    for (int index = firstVisibleCell; index < lastVisibleCell; index++)
-    {
-        if (index < _numberOfCells)
-        {
-
-            if (![_cellsDictionary objectForKey:indexStringForKey(index)])
-            {
-                return YES;
-            }
-        }
-        else
-        {
-            //Blank space instead of cell
-        }
-    }
-
-    return NO;
-}
+//-(BOOL)needsToUpdateCells
+//{
+//    NSUInteger lowerVisibleRow = self.lowestVisibleRow;
+//    NSUInteger firstVisibleCell = lowerVisibleRow * _numberOfColumns;
+//    NSUInteger currentNumberOfVisibleRows = self.currentNumberOfVisibleRows;
+//    NSUInteger lastVisibleCell = (lowerVisibleRow + currentNumberOfVisibleRows) * _numberOfColumns;
+//
+//    NSLog(@"lowerVisibleRow: %i",lowerVisibleRow);
+//    NSLog(@"_numberOfColumns: %i",_numberOfColumns);
+//    if (firstVisibleCell)
+//    {
+//        for (int index = firstVisibleCell - _numberOfColumns; index < firstVisibleCell; index++)
+//        {
+//            if ([_cellsDictionary objectForKey:indexStringForKey(index)])
+//                return YES;
+//        }
+//    }
+//
+//    if (lastVisibleCell < _numberOfCells)
+//    {
+//        for (int index = lastVisibleCell + _numberOfColumns; index < lastVisibleCell; index++)
+//        {
+//            if ([_cellsDictionary objectForKey:indexStringForKey(index)])
+//                return YES;
+//        }
+//    }
+//    
+//    for (int index = firstVisibleCell; index < lastVisibleCell; index++)
+//    {
+//        if (index < _numberOfCells)
+//        {
+//            if (![_cellsDictionary objectForKey:indexStringForKey(index)])
+//                return YES;
+//        }
+//        else
+//        {
+//            //Blank space instead of cell
+//        }
+//    }
+//
+//    return NO;
+//}
 
 -(NSUInteger)currentNumberOfVisibleRows
 {
@@ -142,9 +142,9 @@
     return numberOfVisibleRows;
 }
 
--(NSUInteger)lowestVisibleRow
+-(NSInteger)lowestVisibleRow
 {
-    return floor(_scrollView.contentOffset.y / (_cellWidth + _modifiedSpaceBetweenCells));
+    return MAX(floor(_scrollView.contentOffset.y / (_cellWidth + _modifiedSpaceBetweenCells)), 0);
 }
 
 #pragma mark - Action methods
@@ -198,16 +198,24 @@
     return NO;
 }
 
--(void)addCellAtIndex:(NSUInteger)index
+-(BOOL)addCellAtIndex:(NSUInteger)index
 {
-    UIView* tile = [_dataSource gridView:self newTileForIndex:index];
-
-    [_cellsDictionary setObject:tile forKey:indexStringForKey(index)];
-//    [self layoutTile:tile tileIndex:-1 animated:NO withDelay:0];
-
-    [tile setUserInteractionEnabled:NO];
-
-    [_scrollView addSubview:tile];
+    if ([_cellsDictionary objectForKey:indexStringForKey(index)])
+    {
+        return NO;
+    }
+    else
+    {
+        UIView* tile = [_dataSource gridView:self newTileForIndex:index];
+        
+        [_cellsDictionary setObject:tile forKey:indexStringForKey(index)];
+        [self layoutTile:tile tileIndex:-1 animated:NO withDelay:0];
+        
+        [tile setUserInteractionEnabled:NO];
+        
+        [_scrollView addSubview:tile];
+        return YES;
+    }
 }
 
 -(void)clearCurrentCells
@@ -234,7 +242,11 @@
 -(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex animated:(BOOL)animated withDelay:(NSTimeInterval)delay
 {
     CGFloat width = (_cellWidth + _modifiedSpaceBetweenCells);
-    CGRect newFrame = {floor([self columnForIndex:tileIndex] * width),floor(width * [self rowForIndex:tileIndex]),self.tileSize};
+//    CGRect newFrame = {floor([self columnForIndex:tileIndex] * width),floor(width * [self rowForIndex:tileIndex]),self.tileSize};
+    CGRect newFrame = {(tileIndex >= 0 ?
+                        (CGPoint){floor([self columnForIndex:tileIndex] * width),floor(width * [self rowForIndex:tileIndex])} :
+                        (CGPoint){-self.tileSize.width,-self.tileSize.height}
+                        ),self.tileSize};
 
     if (CGRectEqualToRect(newFrame, tile.frame))
     {
@@ -244,13 +256,13 @@
     {
         if (animated)
         {
-            [tile setFrame:(CGRect){-self.tileSize.width,-self.tileSize.height,self.tileSize}];
             [UIView beginAnimations:nil context:nil];
             [UIView setAnimationDuration:0.25];
             [UIView setAnimationDelay:delay];
             [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
         }
 
+//        NSLog(@"from %@ to %@",NSStringFromCGRect(tile.frame),NSStringFromCGRect(newFrame));
         [tile setFrame:newFrame];
         
         if (animated)
@@ -274,7 +286,7 @@
 }
 
 #pragma mark update methods
--(void)updateCells
+-(BOOL)updateCells
 {
     if (!_cellsDictionary)
     {
@@ -285,13 +297,22 @@
     NSUInteger firstVisibleCell = lowerVisibleRow * _numberOfColumns;
     NSUInteger currentNumberOfVisibleRows = self.currentNumberOfVisibleRows;
     NSUInteger lastVisibleCell = (lowerVisibleRow + currentNumberOfVisibleRows) * _numberOfColumns;
+    BOOL update = NO;
+
+//    NSLog(@"self.lowestVisibleRow: %i",self.lowestVisibleRow);
+//    NSLog(@"lowerVisibleRow: %i",lowerVisibleRow);
+//    NSLog(@"_numberOfColumns: %i",_numberOfColumns);
+//    NSLog(@"firstVisibleCell: %i",firstVisibleCell);
+//    NSLog(@"currentNumberOfVisibleRows: %i",currentNumberOfVisibleRows);
+//    NSLog(@"lastVisibleCell: %i",lastVisibleCell);
 
     if (firstVisibleCell)
     {
         //Check for old cells to throw out
         for (int index = firstVisibleCell - _numberOfColumns; index < firstVisibleCell; index++)
         {
-            [self deleteCellAtIndex:index];
+            if ([self deleteCellAtIndex:index])
+                update = YES;
         }
     }
 
@@ -299,29 +320,23 @@
     {
         if (index < _numberOfCells)
         {
-            NSString* key = indexStringForKey(index);
-            UIView* view = [_cellsDictionary objectForKey:key];
-
-            if (!view)
-            {
-//                _needsCellLayout = YES;
-                [self addCellAtIndex:index];
-            }
-        }
-        else
-        {
-            //Blank space instead of cell
+            if ([self addCellAtIndex:index])
+                update = YES;
         }
     }
 
+//    NSLog(@"_numberOfCells: %i",_numberOfCells);
     if (lastVisibleCell < _numberOfCells)
     {
         //Check for old cells to throw out
-        for (int index = lastVisibleCell + _numberOfColumns; index < lastVisibleCell; index++)
+        for (int index = lastVisibleCell; index < _numberOfCells; index++)
         {
-            [self deleteCellAtIndex:index];
+            if ([self deleteCellAtIndex:index])
+                update = YES;
         }
     }
+
+    return update;
 }
 
 -(void)updateNumberOfRows
@@ -336,8 +351,6 @@
     {
         _cellWidth = newCellWidth;
         [self updateModifiedSpaceInBetweenCells];
-
-        [self updateScrollViewContentSize];
     }
 }
 
@@ -447,12 +460,14 @@
 #pragma mark - UIScrollViewDelegate methods
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (self.needsToUpdateCells)
-    {
-        [self setNeedsLayout];
-        [self updateCells];
-    }
+    if ([self updateCells])
+        [self layoutCellsAnimated:YES];
 }
+
+//-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+//{
+//    [self layoutCellsAnimated:YES];
+//}
 
 #pragma mark - static c methods
 CG_INLINE NSString* indexStringForKey(NSUInteger index)

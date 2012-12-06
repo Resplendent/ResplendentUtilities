@@ -44,6 +44,6 @@
 
 //Only to be overloaded
 -(BOOL)deleteCellAtIndex:(NSUInteger)index;
--(void)addCellAtIndex:(NSUInteger)index;
+-(BOOL)addCellAtIndex:(NSUInteger)index;
 
 @end
