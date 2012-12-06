@@ -217,6 +217,7 @@
         [tile setUserInteractionEnabled:NO];
         
         [_scrollView addSubview:tile];
+        [self setNeedsLayout];
         return YES;
     }
 }
