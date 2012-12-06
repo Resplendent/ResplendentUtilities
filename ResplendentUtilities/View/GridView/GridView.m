@@ -19,12 +19,12 @@
 
 @property (nonatomic, readonly) BOOL needsToUpdateCells;
 
-@property (nonatomic, assign) BOOL needsCellLayout;
+//@property (nonatomic, assign) BOOL needsCellLayout;
 
 -(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex animated:(BOOL)animated withDelay:(NSTimeInterval)delay;
 -(void)layoutCellsAnimated:(BOOL)animated;
 
--(void)updateCellsAnimated:(BOOL)animated;
+-(void)updateCells;//Animated:(BOOL)animated;
 -(void)clearCurrentCells;
 
 -(void)updateNumberOfRows;
@@ -59,6 +59,11 @@
     return self;
 }
 
+-(void)setFrame:(CGRect)frame
+{
+    [super setFrame:frame];
+}
+
 -(void)layoutSubviews
 {
     [super layoutSubviews];
@@ -66,8 +71,7 @@
     [_scrollView setFrame:self.bounds];
 
     [self updateCellWidth];
-    [self updateScrollViewContentSize];
-    [self updateCellsAnimated:YES];
+    [self layoutCellsAnimated:YES];
 }
 
 -(void)dealloc
@@ -199,7 +203,7 @@
     UIView* tile = [_dataSource gridView:self newTileForIndex:index];
 
     [_cellsDictionary setObject:tile forKey:indexStringForKey(index)];
-    [self layoutTile:tile tileIndex:-1 animated:NO withDelay:0];
+//    [self layoutTile:tile tileIndex:-1 animated:NO withDelay:0];
 
     [tile setUserInteractionEnabled:NO];
 
@@ -230,7 +234,7 @@
 -(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex animated:(BOOL)animated withDelay:(NSTimeInterval)delay
 {
     CGFloat width = (_cellWidth + _modifiedSpaceBetweenCells);
-    CGRect newFrame = {(tileIndex >= 0 ? (CGPoint){floor([self columnForIndex:tileIndex] * width),floor(width * [self rowForIndex:tileIndex])} : (CGPoint){-self.tileSize.width,-self.tileSize.height}),self.tileSize};
+    CGRect newFrame = {floor([self columnForIndex:tileIndex] * width),floor(width * [self rowForIndex:tileIndex]),self.tileSize};
 
     if (CGRectEqualToRect(newFrame, tile.frame))
     {
@@ -240,10 +244,10 @@
     {
         if (animated)
         {
+            [tile setFrame:(CGRect){-self.tileSize.width,-self.tileSize.height,self.tileSize}];
             [UIView beginAnimations:nil context:nil];
             [UIView setAnimationDuration:0.25];
             [UIView setAnimationDelay:delay];
-            NSLog(@"delay: %f",delay);
             [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
         }
 
@@ -258,7 +262,6 @@
 
 -(void)layoutCellsAnimated:(BOOL)animated
 {
-    _needsCellLayout = NO;
     NSTimeInterval delay = 0.0f;
     for (NSString* key in _cellsDictionary)
     {
@@ -266,12 +269,12 @@
         NSUInteger index = key.integerValue;
 
         if ([self layoutTile:tile tileIndex:index animated:animated withDelay:delay])
-            delay += 0.1f;
+            delay += 0.01f;
     }
 }
 
 #pragma mark update methods
--(void)updateCellsAnimated:(BOOL)animated
+-(void)updateCells
 {
     if (!_cellsDictionary)
     {
@@ -301,7 +304,7 @@
 
             if (!view)
             {
-                _needsCellLayout = YES;
+//                _needsCellLayout = YES;
                 [self addCellAtIndex:index];
             }
         }
@@ -319,9 +322,6 @@
             [self deleteCellAtIndex:index];
         }
     }
-
-    if (_needsCellLayout)
-        [self layoutCellsAnimated:animated];
 }
 
 -(void)updateNumberOfRows
@@ -336,6 +336,8 @@
     {
         _cellWidth = newCellWidth;
         [self updateModifiedSpaceInBetweenCells];
+
+        [self updateScrollViewContentSize];
     }
 }
 
@@ -428,7 +430,7 @@
 {
     [self deleteCellAtIndex:index];
     [self addCellAtIndex:index];
-    _needsCellLayout = YES;
+//    _needsCellLayout = YES;
     [self setNeedsLayout];
 }
 
@@ -438,6 +440,7 @@
 
     [self loadNumberOfCellsFromDelegate];
     [self updateNumberOfRows];
+    [self updateCells];
     [self setNeedsLayout];
 }
 
@@ -446,7 +449,8 @@
 {
     if (self.needsToUpdateCells)
     {
-        [self updateCellsAnimated:YES];
+        [self setNeedsLayout];
+        [self updateCells];
     }
 }
 
