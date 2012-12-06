@@ -21,7 +21,7 @@
 
 //@property (nonatomic, assign) BOOL needsCellLayout;
 
--(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex animated:(BOOL)animated withDelay:(NSTimeInterval)delay;
+-(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex onScreen:(BOOL)onScreen animated:(BOOL)animated withDelay:(NSTimeInterval)delay completion:(void(^)(void))completion;
 -(void)layoutCellsAnimated:(BOOL)animated;
 
 -(BOOL)updateCells;//Animated:(BOOL)animated;
@@ -190,7 +190,10 @@
         if ([_dataSource respondsToSelector:@selector(gridView:prepareTileForRemoval:)])
             [_dataSource gridView:self prepareTileForRemoval:view];
 
-        [view removeFromSuperview];
+        [self layoutTile:view tileIndex:key.integerValue onScreen:NO animated:YES withDelay:0 completion:^{
+            [view removeFromSuperview];
+        }];
+
         [_cellsDictionary removeObjectForKey:key];
         return YES;
     }
@@ -209,7 +212,7 @@
         UIView* tile = [_dataSource gridView:self newTileForIndex:index];
         
         [_cellsDictionary setObject:tile forKey:indexStringForKey(index)];
-        [self layoutTile:tile tileIndex:-1 animated:NO withDelay:0];
+        [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
         
         [tile setUserInteractionEnabled:NO];
         
@@ -239,14 +242,16 @@
 }
 
 #pragma mark - Layout methods
--(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex animated:(BOOL)animated withDelay:(NSTimeInterval)delay
+-(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex onScreen:(BOOL)onScreen animated:(BOOL)animated withDelay:(NSTimeInterval)delay completion:(void(^)(void))completion
 {
     CGFloat width = (_cellWidth + _modifiedSpaceBetweenCells);
-//    CGRect newFrame = {floor([self columnForIndex:tileIndex] * width),floor(width * [self rowForIndex:tileIndex]),self.tileSize};
-    CGRect newFrame = {(tileIndex >= 0 ?
-                        (CGPoint){floor([self columnForIndex:tileIndex] * width),floor(width * [self rowForIndex:tileIndex])} :
-                        (CGPoint){-self.tileSize.width,-self.tileSize.height}
-                        ),self.tileSize};
+    CGRect newFrame = {floor([self columnForIndex:tileIndex] * width),floor(width * [self rowForIndex:tileIndex]),self.tileSize};
+
+    if (!onScreen)
+    {
+        CGFloat yCoord = (CGRectGetMinY(newFrame) < CGRectGetHeight(_scrollView.frame) / 2.0f ? -_cellWidth : CGRectGetHeight(_scrollView.frame) + _cellWidth);
+        newFrame.origin = (CGPoint){-_cellWidth,yCoord + _cellWidth};
+    }
 
     if (CGRectEqualToRect(newFrame, tile.frame))
     {
@@ -256,18 +261,19 @@
     {
         if (animated)
         {
-            [UIView beginAnimations:nil context:nil];
-            [UIView setAnimationDuration:0.25];
-            [UIView setAnimationDelay:delay];
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [UIView animateWithDuration:0.25f delay:delay options:UIViewAnimationOptionCurveEaseOut animations:^{
+                [tile setFrame:newFrame];
+            } completion:^(BOOL finished) {
+                if (completion)
+                    completion();
+            }];
+        }
+        else
+        {
+            [tile setFrame:newFrame];
         }
 
-//        NSLog(@"from %@ to %@",NSStringFromCGRect(tile.frame),NSStringFromCGRect(newFrame));
-        [tile setFrame:newFrame];
         
-        if (animated)
-            [UIView commitAnimations];
-
         return YES;
     }
 }
@@ -280,7 +286,7 @@
         UIView* tile = [_cellsDictionary objectForKey:key];
         NSUInteger index = key.integerValue;
 
-        if ([self layoutTile:tile tileIndex:index animated:animated withDelay:delay])
+        if ([self layoutTile:tile tileIndex:index onScreen:YES animated:animated withDelay:delay completion:nil])
             delay += 0.01f;
     }
 }
