@@ -432,7 +432,7 @@
     _numberOfCells++;
     [self updateNumberOfRows];
     [self advanceCellAtIndex:index];
-    [self setNeedsLayout];
+    [self addCellAtIndex:index];
 }
 
 -(void)removeViewAtIndex:(NSUInteger)index
