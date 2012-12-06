@@ -19,8 +19,8 @@
 
 @property (nonatomic, assign) BOOL needsCellLayout;
 
--(void)updateCells;
--(void)layoutCells;
+-(void)updateCellsAnimated:(BOOL)animated;
+-(void)layoutCellsAnimated:(BOOL)animated;
 -(void)clearCurrentCells;
 
 -(void)updateNumberOfRows;
@@ -63,7 +63,7 @@
 
     [self updateCellWidth];
     [self updateScrollViewContentSize];
-    [self updateCells];
+    [self updateCellsAnimated:YES];
 }
 
 -(void)dealloc
@@ -216,9 +216,10 @@
     return index % _numberOfColumns;
 }
 
--(void)layoutCells
+-(void)layoutCellsAnimated:(BOOL)animated
 {
     _needsCellLayout = NO;
+//    NSTimeInterval delay = 0.0f;
     for (NSString* key in _cellsDictionary)
     {
         UIView* view = [_cellsDictionary objectForKey:key];
@@ -229,11 +230,23 @@
 
         CGFloat xCoord = floor([self columnForIndex:index] * width);
 
+        if (animated)
+        {
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationDuration:0.25];
+            [UIView setAnimationDelay:delay];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+//            delay += 0.1f;
+        }
+
         [view setFrame:CGRectMake(xCoord, yCoord, _cellWidth, _cellWidth)];
+
+        if (animated)
+            [UIView beginAnimations:nil context:nil];
     }
 }
 
--(void)updateCells
+-(void)updateCellsAnimated:(BOOL)animated
 {
     if (!_cellsDictionary)
     {
@@ -284,7 +297,7 @@
 
     if (_needsCellLayout)
 //    if (_needsCellLayout)
-        [self layoutCells];
+        [self layoutCellsAnimated:animated];
 }
 
 #pragma mark update methods
@@ -295,8 +308,12 @@
 
 -(void)updateCellWidth
 {
-    _cellWidth = ceilf((CGRectGetWidth(_scrollView.frame) - (_numberOfColumns - 1) * _cellSpacing) / _numberOfColumns);
-    [self updateModifiedSpaceInBetweenCells];
+    CGFloat newCellWidth = ceilf((CGRectGetWidth(_scrollView.frame) - (_numberOfColumns - 1) * _cellSpacing) / _numberOfColumns);
+    if (_cellWidth != newCellWidth)
+    {
+        _cellWidth = newCellWidth;
+        [self updateModifiedSpaceInBetweenCells];
+    }
 }
 
 -(void)updateModifiedSpaceInBetweenCells
@@ -308,11 +325,14 @@
 {
     CGFloat height = _numberOfRows * _cellWidth + (_numberOfRows - 1) * _modifiedSpaceBetweenCells;
 
-    [_scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.frame), height)];
-
-    CGFloat maxContentOffset = MAX(_scrollView.contentSize.height - CGRectGetHeight(_scrollView.frame), 0);
-    if (_scrollView.contentOffset.y > maxContentOffset)
-        [_scrollView setContentOffset:CGPointMake(0, maxContentOffset)];
+    if (_scrollView.contentSize.height != height)
+    {
+        [_scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.frame), height)];
+        
+        CGFloat maxContentOffset = MAX(_scrollView.contentSize.height - CGRectGetHeight(_scrollView.frame), 0);
+        if (_scrollView.contentOffset.y > maxContentOffset)
+            [_scrollView setContentOffset:CGPointMake(0, maxContentOffset)];
+    }
 }
 
 #pragma mark delegate methods
@@ -403,7 +423,7 @@
 {
     if (self.needsToUpdateCells)
     {
-        [self updateCells];
+        [self updateCellsAnimated:NO];
     }
 }
 
