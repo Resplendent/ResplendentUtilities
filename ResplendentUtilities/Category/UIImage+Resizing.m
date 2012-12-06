@@ -10,6 +10,12 @@
 
 #define DEBUG_TIMING 0
 
+@interface UIImage (ResizingUtil)
+
+- (UIImage*)imageByCropping:(UIImage *)imageToCrop toRect:(CGRect)rect;
+
+@end
+
 @implementation UIImage (Resizing)
 
 UIImage* resizedIfLargerImagePreservingAspectRatio(UIImage* sourceImage, CGSize targetSize)
