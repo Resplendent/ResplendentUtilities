@@ -28,9 +28,7 @@
 -(void)updateModifiedSpaceInBetweenCells;
 -(void)updateScrollViewContentSize;
 
--(void)loadSpaceBetweenCellsFromDelegate;
 -(void)loadNumberOfCellsFromDelegate;
--(void)loadNumberOfColumnsFromDelegate;
 
 -(BOOL)deleteCellAtIndexString:(NSString*)key;
 
@@ -42,15 +40,11 @@
 
 @implementation GridView
 
-@synthesize delegate = _delegate;
-@synthesize dataSource = _dataSource;
-@synthesize needsCellLayout = _needsCellLayout;
-
 -(id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])
     {
-        _scrollView = [[UIScrollView alloc] init];
+        _scrollView = [UIScrollView new];
         [_scrollView setBackgroundColor:[UIColor clearColor]];
         [_scrollView setDelegate:self];
         [self addSubview:_scrollView];
@@ -180,8 +174,8 @@
     UIView* view = [_cellsDictionary objectForKey:key];
     if (view)
     {
-        if ([_delegate respondsToSelector:@selector(gridView:prepareViewForRemoval:)])
-            [_delegate gridView:self prepareViewForRemoval:view];
+        if ([_dataSource respondsToSelector:@selector(gridView:prepareViewForRemoval:)])
+            [_dataSource gridView:self prepareViewForRemoval:view];
 
         [view removeFromSuperview];
         [_cellsDictionary removeObjectForKey:key];
@@ -193,7 +187,7 @@
 
 -(void)addCellAtIndex:(NSUInteger)index
 {
-    UIView* view = [_delegate gridView:self newViewForIndex:index];
+    UIView* view = [_dataSource gridView:self newViewForIndex:index];
 
     [_cellsDictionary setObject:view forKey:indexStringForKey(index)];
 
@@ -301,7 +295,7 @@
 
 -(void)updateCellWidth
 {
-    _cellWidth = ceilf((CGRectGetWidth(_scrollView.frame) - (_numberOfColumns - 1) * _spaceBetweenCells) / _numberOfColumns);
+    _cellWidth = ceilf((CGRectGetWidth(_scrollView.frame) - (_numberOfColumns - 1) * _cellSpacing) / _numberOfColumns);
     [self updateModifiedSpaceInBetweenCells];
 }
 
@@ -322,22 +316,10 @@
 }
 
 #pragma mark delegate methods
--(void)loadSpaceBetweenCellsFromDelegate
-{
-    if ([_dataSource respondsToSelector:@selector(gridViewSpaceBetweenCells:)])
-        _spaceBetweenCells = [_dataSource gridViewSpaceBetweenCells:self];
-    else
-        _spaceBetweenCells = 0.0f;
-}
 
 -(void)loadNumberOfCellsFromDelegate
 {
     _numberOfCells = [_dataSource gridViewNumberOfCells:self];
-}
-
--(void)loadNumberOfColumnsFromDelegate
-{
-    _numberOfColumns = [_dataSource gridViewNumberOfColumns:self];
 }
 
 #pragma mark - Public instance methods
@@ -411,10 +393,7 @@
 {
     [self clearCurrentCells];
 
-    [self loadSpaceBetweenCellsFromDelegate];
     [self loadNumberOfCellsFromDelegate];
-    [self loadNumberOfColumnsFromDelegate];
-
     [self updateNumberOfRows];
     [self setNeedsLayout];
 }

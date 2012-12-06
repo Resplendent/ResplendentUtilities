@@ -7,44 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@class GridView;
-
-@protocol GridViewDelegate <NSObject>
-
--(UIView*)gridView:(GridView*)gridView newViewForIndex:(NSUInteger)index;
-
-@optional
--(void)gridView:(GridView*)gridView prepareViewForRemoval:(UIView*)view;
-
-@end
-
-@protocol GridViewDataSource <NSObject>
-
--(NSUInteger)gridViewNumberOfCells:(GridView*)gridView;
--(NSUInteger)gridViewNumberOfColumns:(GridView*)gridView;
-
-@optional
--(CGFloat)gridViewSpaceBetweenCells:(GridView*)gridView;
-
-@end
-
-@protocol GridViewDataSourceSelectionDelegate <NSObject>
-
--(void)gridView:(GridView*)gridView didSelectViewAtIndex:(NSUInteger)index;
-
-@end
-
-
+#import "GridViewProtocols.h"
 
 @interface GridView : UIView <UIScrollViewDelegate>
 {
     NSMutableDictionary* _cellsDictionary;
 
     //Gotten from delegates
-    CGFloat _spaceBetweenCells;
+//    CGFloat _spaceBetweenCells;
     NSUInteger _numberOfCells;
-    NSUInteger _numberOfColumns;
+//    NSUInteger _numberOfColumns;
 
     //Calculated after delegates
     CGFloat _modifiedSpaceBetweenCells;
@@ -54,9 +26,12 @@
 
 @property (nonatomic, readonly) UIScrollView* scrollView;
 
-@property (nonatomic, assign) id<GridViewDelegate> delegate;
+//@property (nonatomic, assign) id<GridViewDelegate> delegate;
 @property (nonatomic, assign) id<GridViewDataSource> dataSource;
 @property (nonatomic, assign) id<GridViewDataSourceSelectionDelegate> selectionDelegate;
+
+@property (nonatomic, assign) CGFloat cellSpacing;
+@property (nonatomic, assign) NSUInteger numberOfColumns;
 
 -(void)reloadData;
 
@@ -66,7 +41,6 @@
 -(void)switchViewsAtFirstIndex:(NSUInteger)firstIndex secondIndex:(NSUInteger)secondIndex;
 
 -(UIView*)viewForIndex:(NSUInteger)index;
-
 
 //Only to be overloaded
 -(BOOL)deleteCellAtIndex:(NSUInteger)index;
