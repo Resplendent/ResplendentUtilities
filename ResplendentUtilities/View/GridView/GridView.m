@@ -12,6 +12,8 @@
 
 @interface GridView ()
 
+@property (nonatomic, readonly) CGSize tileSize;
+
 @property (nonatomic, readonly) NSUInteger lowestVisibleRow;
 @property (nonatomic, readonly) NSUInteger currentNumberOfVisibleRows;
 
@@ -19,8 +21,10 @@
 
 @property (nonatomic, assign) BOOL needsCellLayout;
 
--(void)updateCellsAnimated:(BOOL)animated;
+-(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex animated:(BOOL)animated withDelay:(NSTimeInterval)delay;
 -(void)layoutCellsAnimated:(BOOL)animated;
+
+-(void)updateCellsAnimated:(BOOL)animated;
 -(void)clearCurrentCells;
 
 -(void)updateNumberOfRows;
@@ -72,6 +76,11 @@
 }
 
 #pragma mark - Getter methods
+-(CGSize)tileSize
+{
+    return (CGSize){_cellWidth, _cellWidth};
+}
+
 -(BOOL)needsToUpdateCells
 {
     NSUInteger lowerVisibleRow = self.lowestVisibleRow;
@@ -159,7 +168,7 @@
 
     if (view && CGRectContainsPoint(view.bounds, [tap locationInView:view]))
     {
-        [_selectionDelegate gridView:self didSelectViewAtIndex:index];
+        [_selectionDelegate gridView:self didSelectTileAtIndex:index];
     }
 }
 
@@ -174,8 +183,8 @@
     UIView* view = [_cellsDictionary objectForKey:key];
     if (view)
     {
-        if ([_dataSource respondsToSelector:@selector(gridView:prepareViewForRemoval:)])
-            [_dataSource gridView:self prepareViewForRemoval:view];
+        if ([_dataSource respondsToSelector:@selector(gridView:prepareTileForRemoval:)])
+            [_dataSource gridView:self prepareTileForRemoval:view];
 
         [view removeFromSuperview];
         [_cellsDictionary removeObjectForKey:key];
@@ -187,13 +196,14 @@
 
 -(void)addCellAtIndex:(NSUInteger)index
 {
-    UIView* view = [_dataSource gridView:self newViewForIndex:index];
+    UIView* tile = [_dataSource gridView:self newTileForIndex:index];
 
-    [_cellsDictionary setObject:view forKey:indexStringForKey(index)];
+    [_cellsDictionary setObject:tile forKey:indexStringForKey(index)];
+    [self layoutTile:tile tileIndex:-1 animated:NO withDelay:0];
 
-    [view setUserInteractionEnabled:NO];
+    [tile setUserInteractionEnabled:NO];
 
-    [_scrollView addSubview:view];
+    [_scrollView addSubview:tile];
 }
 
 -(void)clearCurrentCells
@@ -216,36 +226,51 @@
     return index % _numberOfColumns;
 }
 
--(void)layoutCellsAnimated:(BOOL)animated
+#pragma mark - Layout methods
+-(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex animated:(BOOL)animated withDelay:(NSTimeInterval)delay
 {
-    _needsCellLayout = NO;
-//    NSTimeInterval delay = 0.0f;
-    for (NSString* key in _cellsDictionary)
+    CGFloat width = (_cellWidth + _modifiedSpaceBetweenCells);
+    CGRect newFrame = {(tileIndex >= 0 ? (CGPoint){floor([self columnForIndex:tileIndex] * width),floor(width * [self rowForIndex:tileIndex])} : (CGPoint){-self.tileSize.width,-self.tileSize.height}),self.tileSize};
+
+    if (CGRectEqualToRect(newFrame, tile.frame))
     {
-        UIView* view = [_cellsDictionary objectForKey:key];
-
-        NSUInteger index = key.integerValue;
-        CGFloat width = (_cellWidth + _modifiedSpaceBetweenCells);
-        CGFloat yCoord = floor(width * [self rowForIndex:index]);
-
-        CGFloat xCoord = floor([self columnForIndex:index] * width);
-
+        return NO;
+    }
+    else
+    {
         if (animated)
         {
             [UIView beginAnimations:nil context:nil];
             [UIView setAnimationDuration:0.25];
-//            [UIView setAnimationDelay:delay];
+            [UIView setAnimationDelay:delay];
+            NSLog(@"delay: %f",delay);
             [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-//            delay += 0.1f;
         }
 
-        [view setFrame:CGRectMake(xCoord, yCoord, _cellWidth, _cellWidth)];
-
+        [tile setFrame:newFrame];
+        
         if (animated)
-            [UIView beginAnimations:nil context:nil];
+            [UIView commitAnimations];
+
+        return YES;
     }
 }
 
+-(void)layoutCellsAnimated:(BOOL)animated
+{
+    _needsCellLayout = NO;
+    NSTimeInterval delay = 0.0f;
+    for (NSString* key in _cellsDictionary)
+    {
+        UIView* tile = [_cellsDictionary objectForKey:key];
+        NSUInteger index = key.integerValue;
+
+        if ([self layoutTile:tile tileIndex:index animated:animated withDelay:delay])
+            delay += 0.1f;
+    }
+}
+
+#pragma mark update methods
 -(void)updateCellsAnimated:(BOOL)animated
 {
     if (!_cellsDictionary)
@@ -296,11 +321,9 @@
     }
 
     if (_needsCellLayout)
-//    if (_needsCellLayout)
         [self layoutCellsAnimated:animated];
 }
 
-#pragma mark update methods
 -(void)updateNumberOfRows
 {
     _numberOfRows = floor(_numberOfCells / _numberOfColumns) + 1;
@@ -339,7 +362,7 @@
 
 -(void)loadNumberOfCellsFromDelegate
 {
-    _numberOfCells = [_dataSource gridViewNumberOfCells:self];
+    _numberOfCells = [_dataSource gridViewNumberOfTiles:self];
 }
 
 #pragma mark - Public instance methods
@@ -423,7 +446,7 @@
 {
     if (self.needsToUpdateCells)
     {
-        [self updateCellsAnimated:NO];
+        [self updateCellsAnimated:YES];
     }
 }
 

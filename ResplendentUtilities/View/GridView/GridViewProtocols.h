@@ -13,12 +13,12 @@
 
 @protocol GridViewDataSource <NSObject>
 
--(NSUInteger)gridViewNumberOfCells:(GridView*)gridView;
+-(NSUInteger)gridViewNumberOfTiles:(GridView*)gridView;
 
--(UIView*)gridView:(GridView*)gridView newViewForIndex:(NSUInteger)index;
+-(UIView*)gridView:(GridView*)gridView newTileForIndex:(NSUInteger)index;
 
 @optional
--(void)gridView:(GridView*)gridView prepareViewForRemoval:(UIView*)view;
+-(void)gridView:(GridView*)gridView prepareTileForRemoval:(UIView*)view;
 
 @end
 
@@ -26,6 +26,6 @@
 
 @protocol GridViewDataSourceSelectionDelegate <NSObject>
 
--(void)gridView:(GridView*)gridView didSelectViewAtIndex:(NSUInteger)index;
+-(void)gridView:(GridView*)gridView didSelectTileAtIndex:(NSUInteger)index;
 
 @end
