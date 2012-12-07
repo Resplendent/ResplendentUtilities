@@ -215,6 +215,7 @@
         [tile setUserInteractionEnabled:NO];
         [_scrollView addSubview:tile];
         [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
+        [self setNeedsLayout];
 
         return YES;
     }
@@ -452,7 +453,6 @@
 {
     [self deleteCellAtIndex:index];
     [self addCellAtIndex:index];
-    [self setNeedsLayout];
 }
 
 -(void)reloadData
