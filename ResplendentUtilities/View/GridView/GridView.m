@@ -312,7 +312,7 @@
 
 -(void)updateNumberOfRows
 {
-    _numberOfRows = ceil(_numberOfCells / _numberOfColumns);
+    _numberOfRows = ceil((double)_numberOfCells / (double)_numberOfColumns);
 }
 
 -(void)updateTileWidth
