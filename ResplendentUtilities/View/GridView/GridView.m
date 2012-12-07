@@ -17,6 +17,8 @@
 @property (nonatomic, readonly) NSInteger lowestVisibleRow;
 @property (nonatomic, readonly) NSUInteger currentNumberOfVisibleRows;
 
+-(void)layoutScrollViewComponents;
+
 -(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex onScreen:(BOOL)onScreen animated:(BOOL)animated withDelay:(NSTimeInterval)delay completion:(void(^)(void))completion;
 -(void)layoutTilesAnimated:(BOOL)animated;
 
@@ -60,14 +62,19 @@
     [super setFrame:frame];
 }
 
--(void)layoutSubviews
+-(void)layoutScrollViewComponents
 {
-    [super layoutSubviews];
-    
     [_scrollView setFrame:self.bounds];
     
     [self updateTileWidth];
     [self updateScrollViewContentSize];
+}
+
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    [self layoutScrollViewComponents];
     [self layoutTilesAnimated:YES];
 }
 
@@ -427,6 +434,8 @@
     
     [self loadNumberOfTilesFromDelegate];
     [self updateNumberOfRows];
+    [self layoutScrollViewComponents];
+
     if ([self updateTiles])
         [self setNeedsLayout];
 }
