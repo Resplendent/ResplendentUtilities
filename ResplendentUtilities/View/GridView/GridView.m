@@ -153,8 +153,7 @@
         [self layoutTile:view tileIndex:key.integerValue onScreen:NO animated:YES withDelay:0 completion:^{
             [view removeFromSuperview];
         }];
-        
-        NSLog(@"remove tile at key %@",key);
+
         [_cellsDictionary removeObjectForKey:key];
         
         return YES;
@@ -177,8 +176,7 @@
         [tile setUserInteractionEnabled:NO];
         [_scrollView addSubview:tile];
         [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
-        
-        NSLog(@"add tile at index %i",index);
+
         return YES;
     }
 }
@@ -334,16 +332,7 @@
 
 -(void)updateScrollViewContentSize
 {
-    CGFloat height = _numberOfRows * _cellWidth + (_numberOfRows - 1) * _modifiedSpaceBetweenCells;
-    
-    if (_scrollView.contentSize.height != height)
-    {
-        [_scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.frame), height)];
-        
-        CGFloat maxContentOffset = MAX(_scrollView.contentSize.height - CGRectGetHeight(_scrollView.frame), 0);
-        if (_scrollView.contentOffset.y > maxContentOffset)
-            [_scrollView setContentOffset:CGPointMake(0, maxContentOffset)];
-    }
+    [_scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.frame), MAX(_numberOfRows * _cellWidth + (_numberOfRows - 1) * _modifiedSpaceBetweenCells, CGRectGetHeight(_scrollView.frame) + 1))];
 }
 
 #pragma mark delegate methods
