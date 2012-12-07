@@ -16,6 +16,7 @@
 -(NSUInteger)gridViewNumberOfTiles:(GridView*)gridView;
 
 -(UIView*)gridView:(GridView*)gridView newTileForIndex:(NSUInteger)index;
+-(void)gridView:(GridView*)gridView reloadTile:(UIView*)tile atIndex:(NSUInteger)index;
 
 @optional
 -(void)gridView:(GridView*)gridView prepareTileForRemoval:(UIView*)view;

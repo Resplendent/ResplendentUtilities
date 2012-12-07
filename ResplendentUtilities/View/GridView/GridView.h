@@ -12,19 +12,19 @@
 @interface GridView : UIView <UIScrollViewDelegate>
 {
     NSMutableDictionary* _cellsDictionary;
-
+    
     //Gotten from delegates
-//    CGFloat _spaceBetweenCells;
+    //    CGFloat _spaceBetweenCells;
     NSUInteger _numberOfCells;
-//    NSUInteger _numberOfColumns;
-
+    //    NSUInteger _numberOfColumns;
+    
     //Calculated after delegates
     CGFloat _modifiedSpaceBetweenCells;
-    CGFloat _cellWidth;
     NSUInteger _numberOfRows;
 }
 
 @property (nonatomic, readonly) UIScrollView* scrollView;
+@property (nonatomic, readonly) CGFloat cellWidth;
 
 //@property (nonatomic, assign) id<GridViewDelegate> delegate;
 @property (nonatomic, assign) id<GridViewDataSource> dataSource;
@@ -40,10 +40,12 @@
 -(void)reloadViewAtIndex:(NSUInteger)index;
 -(void)switchViewsAtFirstIndex:(NSUInteger)firstIndex secondIndex:(NSUInteger)secondIndex;
 
--(UIView*)viewForIndex:(NSUInteger)index;
+-(UIView*)tileForIndex:(NSUInteger)index;
 
 //Only to be overloaded
 -(BOOL)deleteCellAtIndex:(NSUInteger)index;
 -(BOOL)addCellAtIndex:(NSUInteger)index;
+
++(CGFloat)cellWidthForGridWidth:(CGFloat)gridWidth numberOfColumns:(NSUInteger)numberOfColumns cellSpacing:(CGFloat)cellSpacing;
 
 @end
