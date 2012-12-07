@@ -192,9 +192,9 @@
 
         [self layoutTile:view tileIndex:key.integerValue onScreen:NO animated:YES withDelay:0 completion:^{
             [view removeFromSuperview];
+            [_cellsDictionary removeObjectForKey:key];
         }];
 
-        [_cellsDictionary removeObjectForKey:key];
         return YES;
     }
 
@@ -210,14 +210,12 @@
     else
     {
         UIView* tile = [_dataSource gridView:self newTileForIndex:index];
-        
+
         [_cellsDictionary setObject:tile forKey:indexStringForKey(index)];
-        [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
-        
         [tile setUserInteractionEnabled:NO];
-        
         [_scrollView addSubview:tile];
-        [self setNeedsLayout];
+        [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
+
         return YES;
     }
 }
@@ -250,7 +248,10 @@
 
     if (!onScreen)
     {
-        CGFloat yCoord = (CGRectGetMinY(newFrame) < CGRectGetHeight(_scrollView.frame) / 2.0f ? -_cellWidth : CGRectGetHeight(_scrollView.frame) + _cellWidth);
+        CGFloat upperBound = _scrollView.contentOffset.y;
+        CGFloat lowerBound = upperBound + CGRectGetHeight(_scrollView.frame);
+        
+        CGFloat yCoord = (CGRectGetMinY(newFrame) < (upperBound + lowerBound) / 2.0f ? -(_cellWidth * 2.0f) : _scrollView.contentSize.height + (_cellWidth * 2.0f));
         newFrame.origin = (CGPoint){-_cellWidth,yCoord + _cellWidth};
     }
 
@@ -260,6 +261,7 @@
     }
     else
     {
+        NSLog(@"from %@ to %@",NSStringFromCGRect(tile.frame),NSStringFromCGRect(newFrame));
         if (animated)
         {
             [UIView animateWithDuration:0.25f delay:delay options:UIViewAnimationOptionCurveEaseOut animations:^{
@@ -348,7 +350,7 @@
 
 -(void)updateNumberOfRows
 {
-    _numberOfRows = floor(_numberOfCells / _numberOfColumns) + 1;
+    _numberOfRows = ceil(_numberOfCells / _numberOfColumns);
 }
 
 -(void)updateCellWidth
@@ -450,7 +452,6 @@
 {
     [self deleteCellAtIndex:index];
     [self addCellAtIndex:index];
-//    _needsCellLayout = YES;
     [self setNeedsLayout];
 }
 
