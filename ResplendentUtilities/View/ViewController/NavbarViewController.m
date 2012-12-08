@@ -17,19 +17,11 @@ static NSTimeInterval popPushAnimationDuration;
 
 @interface NavbarViewController ()
 
--(void)pushViewController:(NavbarViewController*)navbarViewController completion:(void (^)())completion;
--(void)popViewControllerCompletion:(void (^)())completion;
-
--(void)loadNavBar;
-
 @end
 
 
 
 @implementation NavbarViewController
-
-@synthesize navbar;
-@synthesize parentNBViewController = _parentNBViewController;
 
 +(void)initialize
 {
@@ -39,18 +31,12 @@ static NSTimeInterval popPushAnimationDuration;
     }
 }
 
--(void)loadNavBar
-{
-    [self setNavbar:[self.navbarClass new]];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    [self loadNavBar];
-//    [self.view rounderCorners:0 withRadius:0];
+    [self setNavbar:[self.navbarClass new]];
     [self.view addSubview:self.navbar];
 }
 
@@ -87,19 +73,22 @@ static NSTimeInterval popPushAnimationDuration;
 }
 
 #pragma mark - Public methods
--(void)pushViewController:(NavbarViewController*)navbarViewController
+//-(void)pushViewController:(NavbarViewController*)navbarViewController
+//{
+//    [self pushViewController:navbarViewController completion:nil];
+//}
+
+//-(void)popViewController
+//{
+//    [self popViewControllerCompletion:nil];
+//}
+
+-(void)popChildrenViewControllers:(BOOL)animated completion:(void (^)())completion
 {
-    [self pushViewController:navbarViewController completion:nil];
+    [self.childNBViewController popViewControllerAnimated:animated completion:completion];
 }
 
--(void)popViewController
-{
-    [self popViewControllerCompletion:nil];
-}
-
-#pragma mark - Private methods
-
--(void)pushViewController:(NavbarViewController*)navbarViewController completion:(void (^)())completion
+-(void)pushViewController:(NavbarViewController*)navbarViewController animated:(BOOL)animated completion:(void (^)())completion
 {
     if (!navbarViewController)
     {
@@ -108,89 +97,117 @@ static NSTimeInterval popPushAnimationDuration;
         return;
     }
 
-    __block BOOL selfUserInteractionEnabled = self.view.userInteractionEnabled;
-    __block BOOL childUserInteractionEnabled = navbarViewController.view.userInteractionEnabled;
-
-    [self.view setUserInteractionEnabled:NO];
-    [navbarViewController.view setUserInteractionEnabled:NO];
-
     [navbarViewController setParentNBViewController:self];
+    [self setChildNBViewController:navbarViewController];
     [self addChildViewController:navbarViewController];
 
-    switch (self.transitionStyle)
+    [self viewWillDisappear:animated];
+
+    if (animated)
     {
-        case NavbarViewControllerTransitionStyleFromLeft:
-            setCoords(navbarViewController.view, -CGRectGetWidth(self.view.frame), 0);
-            break;
-
-        case NavbarViewControllerTransitionStyleFromRight:
-        default:
-            setCoords(navbarViewController.view, CGRectGetWidth(self.view.frame), 0);
-            break;
-    }
-    [navbarViewController.navbar setAlphaForComponents:0.0f];
-
-    [self.view addSubview:navbarViewController.view];
-    [self.view bringSubviewToFront:self.navbar];
-
-    [self viewWillDisappear:YES];
-    [UIView animateWithDuration:popPushAnimationDuration animations:^{
-        [self.navbar setAlphaForComponents:0.0f];
-
-        [navbarViewController.navbar setAlphaForComponents:1.0f];
-
-        setXCoord(navbarViewController.view, 0);
-    } completion:^(BOOL finished) {
-        [self.view setUserInteractionEnabled:selfUserInteractionEnabled];
-        [navbarViewController.view setUserInteractionEnabled:childUserInteractionEnabled];
-
-        [self.view bringSubviewToFront:navbarViewController.view];
+        __block BOOL selfUserInteractionEnabled = self.view.userInteractionEnabled;
+        __block BOOL childUserInteractionEnabled = navbarViewController.view.userInteractionEnabled;
         
-        [self viewDidDisappear:YES];
+        [self.view setUserInteractionEnabled:NO];
+        [navbarViewController.view setUserInteractionEnabled:NO];
 
-        if (completion)
-            completion();
-    }];
-}
-
--(void)popViewControllerCompletion:(void (^)())completion
-{
-    [self.view setUserInteractionEnabled:NO];
-    [_parentNBViewController viewWillAppear:YES];
-    [_parentNBViewController.navbar setAlphaForComponents:0.0f];
-    
-    [self.navbar removeFromSuperview];
-    [_parentNBViewController.view addSubview:self.navbar];
-
-    [UIView animateWithDuration:popPushAnimationDuration animations:^{
-        [self.navbar setAlphaForComponents:0.0f];
-
-        [_parentNBViewController.navbar setAlphaForComponents:1.0f];
-
-        switch (self.parentNBViewController.transitionStyle)
+        switch (self.transitionStyle)
         {
             case NavbarViewControllerTransitionStyleFromLeft:
-                setXCoord(self.view, -CGRectGetWidth(_parentNBViewController.view.frame));
+                setCoords(navbarViewController.view, -CGRectGetWidth(self.view.frame), 0);
                 break;
-
+                
             case NavbarViewControllerTransitionStyleFromRight:
             default:
-                setXCoord(self.view, CGRectGetWidth(_parentNBViewController.view.frame));
+                setCoords(navbarViewController.view, CGRectGetWidth(self.view.frame), 0);
                 break;
         }
+        [navbarViewController.navbar setAlphaForComponents:0.0f];
+        
+        [self.view addSubview:navbarViewController.view];
+        [self.view bringSubviewToFront:self.navbar];
 
-    } completion:^(BOOL finished) {
-        [self.navbar removeFromSuperview];
-        [self.view addSubview:self.navbar];
-        [self.view removeFromSuperview];
-
-        [_parentNBViewController viewDidAppear:YES];
-        [self removeFromParentViewController];
-        [self setParentNBViewController:nil];
-
+        [UIView animateWithDuration:popPushAnimationDuration animations:^{
+            [self.navbar setAlphaForComponents:0.0f];
+            
+            [navbarViewController.navbar setAlphaForComponents:1.0f];
+            
+            setXCoord(navbarViewController.view, 0);
+        } completion:^(BOOL finished) {
+            [self.view setUserInteractionEnabled:selfUserInteractionEnabled];
+            [navbarViewController.view setUserInteractionEnabled:childUserInteractionEnabled];
+            
+            [self.view bringSubviewToFront:navbarViewController.view];
+            
+            [self viewDidDisappear:YES];
+            
+            if (completion)
+                completion();
+        }];
+    }
+    else
+    {
+        [self.view addSubview:navbarViewController.view];
+        setXCoord(navbarViewController.view, 0);
+        [self viewDidDisappear:NO];
         if (completion)
             completion();
-    }];
+    }
+}
+
+-(void)popViewControllerAnimated:(BOOL)animated completion:(void (^)())completion
+{
+    [_parentNBViewController viewWillAppear:animated];
+
+    if (animated)
+    {
+        [self.view setUserInteractionEnabled:NO];
+        [_parentNBViewController.navbar setAlphaForComponents:0.0f];
+
+        [self.navbar removeFromSuperview];
+        [_parentNBViewController.view addSubview:self.navbar];
+        
+        [UIView animateWithDuration:popPushAnimationDuration animations:^{
+            [self.navbar setAlphaForComponents:0.0f];
+            
+            [_parentNBViewController.navbar setAlphaForComponents:1.0f];
+            
+            switch (self.parentNBViewController.transitionStyle)
+            {
+                case NavbarViewControllerTransitionStyleFromLeft:
+                    setXCoord(self.view, -CGRectGetWidth(_parentNBViewController.view.frame));
+                    break;
+                    
+                case NavbarViewControllerTransitionStyleFromRight:
+                default:
+                    setXCoord(self.view, CGRectGetWidth(_parentNBViewController.view.frame));
+                    break;
+            }
+            
+        } completion:^(BOOL finished) {
+            [self.navbar removeFromSuperview];
+            [self.view addSubview:self.navbar];
+            [self.view removeFromSuperview];
+
+            [_parentNBViewController viewDidAppear:YES];
+            [self removeFromParentViewController];
+            [self setParentNBViewController:nil];
+            [self setChildNBViewController:nil];
+            
+            if (completion)
+                completion();
+        }];
+    }
+    else
+    {
+        [self.view removeFromSuperview];
+        [_parentNBViewController viewDidAppear:NO];
+        [self removeFromParentViewController];
+        [self setParentNBViewController:nil];
+        [self setChildNBViewController:nil];
+        if (completion)
+            completion();
+    }
 }
 
 +(void)setPushPopTransitionDuration:(NSTimeInterval)duration

@@ -30,3 +30,12 @@
 -(void)gridView:(GridView*)gridView didSelectTileAtIndex:(NSUInteger)index;
 
 @end
+
+
+
+@protocol GridViewPullToLoad <NSObject>
+
+-(void)gridViewPullToReload:(GridView*)gridView;
+-(void)gridViewPullToLoadMore:(GridView*)gridView;
+
+@end

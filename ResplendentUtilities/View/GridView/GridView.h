@@ -26,12 +26,15 @@
 @property (nonatomic, readonly) UIScrollView* scrollView;
 @property (nonatomic, readonly) CGFloat cellWidth;
 
-//@property (nonatomic, assign) id<GridViewDelegate> delegate;
 @property (nonatomic, assign) id<GridViewDataSource> dataSource;
 @property (nonatomic, assign) id<GridViewDataSourceSelectionDelegate> selectionDelegate;
+@property (nonatomic, assign) id<GridViewPullToLoad> pullToLoadDelegate;
 
 @property (nonatomic, assign) CGFloat cellSpacing;
 @property (nonatomic, assign) NSUInteger numberOfColumns;
+
+@property (nonatomic, assign) BOOL pullToRefresh;
+@property (nonatomic, assign) BOOL pullToLoadMore;
 
 -(void)reloadData;
 

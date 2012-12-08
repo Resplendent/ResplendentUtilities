@@ -7,6 +7,7 @@
 //
 
 #import "GridView.h"
+#import "SVPullToRefresh.h"
 
 #define kGridViewUsesButtons 0
 
@@ -83,7 +84,7 @@
     [self clearCurrentTiles];
 }
 
-#pragma mark - Getter methods
+#pragma mark - Setter/Getter methods
 -(CGSize)tileSize
 {
     return (CGSize){_cellWidth, _cellWidth};
@@ -105,6 +106,37 @@
 -(NSInteger)lowestVisibleRow
 {
     return MAX(floor(_scrollView.contentOffset.y / (_cellWidth + _modifiedSpaceBetweenCells)), 0);
+}
+
+#pragma mark Pull To Refresh
+-(BOOL)pullToRefresh
+{
+    return _scrollView.showsPullToRefresh;
+}
+
+-(void)setPullToRefresh:(BOOL)pullToRefresh
+{
+    if (_scrollView)
+    {
+        if (pullToRefresh && !self.pullToRefresh)
+        {
+            //To avoid capturing self strongly in block warning
+            __unsafe_unretained GridView* selfPointer = self;
+            [_scrollView addPullToRefreshWithActionHandler:^{
+                if (selfPointer.pullToLoadDelegate)
+                {
+                    [selfPointer.pullToLoadDelegate gridViewPullToReload:selfPointer];
+                }
+            }];
+        }
+        else if (!pullToRefresh && self.pullToRefresh)
+        {
+            [_scrollView addPullToRefreshWithActionHandler:nil];
+            [_scrollView.pullToRefreshView stopAnimating];
+            [_scrollView setShowsPullToRefresh:NO];
+            [_scrollView setPullToRefreshView:nil];
+        }
+    }
 }
 
 #pragma mark - Action methods

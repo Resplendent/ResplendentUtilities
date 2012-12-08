@@ -21,16 +21,19 @@ typedef enum {
 @property (nonatomic, readonly) CGRect contentFrame;
 
 @property (nonatomic, assign) NavbarViewController* parentNBViewController;
+@property (nonatomic, assign) NavbarViewController* childNBViewController;
 
 @property (nonatomic, assign) NavbarViewControllerTransitionStyle transitionStyle;
 
 @property (nonatomic, readonly) Class navbarClass;
 
--(void)pushViewController:(NavbarViewController*)navbarViewController;
--(void)popViewController;
+//-(void)pushViewController:(NavbarViewController*)navbarViewController;
+//-(void)popViewController;
 
--(void)pushViewController:(NavbarViewController*)navbarViewController completion:(void (^)())completion;
--(void)popViewControllerCompletion:(void (^)())completion;
+-(void)popChildrenViewControllers:(BOOL)animated completion:(void (^)())completion;
+
+-(void)pushViewController:(NavbarViewController*)navbarViewController animated:(BOOL)animated completion:(void (^)())completion;
+-(void)popViewControllerAnimated:(BOOL)animated completion:(void (^)())completion;
 
 +(void)setPushPopTransitionDuration:(NSTimeInterval)duration;
 
