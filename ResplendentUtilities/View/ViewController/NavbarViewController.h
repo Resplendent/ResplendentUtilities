@@ -27,9 +27,6 @@ typedef enum {
 
 @property (nonatomic, readonly) Class navbarClass;
 
-//-(void)pushViewController:(NavbarViewController*)navbarViewController;
-//-(void)popViewController;
-
 -(void)popChildrenViewControllers:(BOOL)animated completion:(void (^)())completion;
 
 -(void)pushViewController:(NavbarViewController*)navbarViewController animated:(BOOL)animated completion:(void (^)())completion;
