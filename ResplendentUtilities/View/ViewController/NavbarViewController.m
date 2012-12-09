@@ -126,7 +126,7 @@ static NSTimeInterval popPushAnimationDuration;
         } completion:^(BOOL finished) {
             [self.view setUserInteractionEnabled:selfUserInteractionEnabled];
             [navbarViewController.view setUserInteractionEnabled:childUserInteractionEnabled];
-            
+
             [self.view bringSubviewToFront:navbarViewController.view];
             
             [self viewDidDisappear:YES];
