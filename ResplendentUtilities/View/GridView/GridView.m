@@ -510,7 +510,6 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 20.0f;
         {
             [_pullToLoadMoreSpinner startAnimating];
             [_pullToLoadDelegate gridViewPullToLoadMore:self];
-            NSLog(@"Load MOre");
         }
     }
 }
