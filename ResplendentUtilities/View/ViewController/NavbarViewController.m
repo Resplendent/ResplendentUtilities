@@ -112,16 +112,16 @@ static NSTimeInterval popPushAnimationDuration;
                 setCoords(navbarViewController.view, CGRectGetWidth(self.view.frame), 0);
                 break;
         }
-        [navbarViewController.navbar setAlphaForComponents:0.0f];
+        [navbarViewController.navbar.animatableContentView setAlpha:0.0f];
         
         [self.view addSubview:navbarViewController.view];
         [self.view bringSubviewToFront:self.navbar];
 
         [UIView animateWithDuration:popPushAnimationDuration animations:^{
-            [self.navbar setAlphaForComponents:0.0f];
+            [self.navbar.animatableContentView setAlpha:0.0f];
             
-            [navbarViewController.navbar setAlphaForComponents:1.0f];
-            
+            [navbarViewController.navbar.animatableContentView setAlpha:1.0f];
+
             setXCoord(navbarViewController.view, 0);
         } completion:^(BOOL finished) {
             [self.view setUserInteractionEnabled:selfUserInteractionEnabled];
@@ -152,15 +152,15 @@ static NSTimeInterval popPushAnimationDuration;
     if (animated)
     {
         [self.view setUserInteractionEnabled:NO];
-        [_parentNBViewController.navbar setAlphaForComponents:0.0f];
+        [_parentNBViewController.navbar.animatableContentView setAlpha:0.0f];
 
         [self.navbar removeFromSuperview];
         [_parentNBViewController.view addSubview:self.navbar];
         
         [UIView animateWithDuration:popPushAnimationDuration animations:^{
-            [self.navbar setAlphaForComponents:0.0f];
+            [self.navbar.animatableContentView setAlpha:0.0f];
             
-            [_parentNBViewController.navbar setAlphaForComponents:1.0f];
+            [_parentNBViewController.navbar.animatableContentView setAlpha:1.0f];
             
             switch (self.parentNBViewController.transitionStyle)
             {

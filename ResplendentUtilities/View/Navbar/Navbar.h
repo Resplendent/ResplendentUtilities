@@ -11,6 +11,8 @@
 
 @interface Navbar : UIView
 
+@property (nonatomic, retain) UIView* animatableContentView;
+
 @property (nonatomic, retain) NIAttributedLabel* titleLabel;
 @property (nonatomic, assign) CGFloat titleLabelTopEdgeInset;
 
@@ -20,6 +22,6 @@
 
 -(id)initWithFrame:(CGRect)frame autoAdjustButtons:(BOOL)autoAdjustButtons;
 
--(void)setAlphaForComponents:(CGFloat)alpha;
+//-(void)setAlphaForComponents:(CGFloat)alpha;
 
 @end

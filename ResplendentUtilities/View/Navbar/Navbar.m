@@ -16,7 +16,6 @@
 @synthesize rightButton = _rightButton;
 
 @synthesize titleLabel = _titleLabel;
-@synthesize titleLabelTopEdgeInset = _titleLabelTopEdgeInset;
 
 -(id)init
 {
@@ -29,7 +28,9 @@
     if (self = [super initWithFrame:frame])
     {
         [self setUserInteractionEnabled:YES];
-        [self setTitleLabelTopEdgeInset:0.0f];
+
+        _animatableContentView = [UIView new];
+        [self addSubview:_animatableContentView];
     }
     
     return self;
@@ -38,7 +39,9 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
+    [_animatableContentView setFrame:self.bounds];
+
     if (_autoAdjustButtons)
     {
         CGFloat middle = self.frame.size.height / 2.0f;
@@ -60,7 +63,7 @@
     
     [_leftButton removeFromSuperview];
     _leftButton = leftButton;
-    [self addSubview:_leftButton];
+    [_animatableContentView addSubview:_leftButton];
 }
 
 -(void)setRightButton:(UIButton *)rightButton
@@ -71,15 +74,15 @@
     [_rightButton removeFromSuperview];
     _rightButton = rightButton;
     [_rightButton setShowsTouchWhenHighlighted:NO];
-    [self addSubview:_rightButton];
+    [_animatableContentView addSubview:_rightButton];
 }
 
 #pragma mark - Public methods
--(void)setAlphaForComponents:(CGFloat)alpha
-{
-    [_leftButton setAlpha:alpha];
-    [_rightButton setAlpha:alpha];
-}
+//-(void)setAlphaForComponents:(CGFloat)alpha
+//{
+//    [_leftButton setAlpha:alpha];
+//    [_rightButton setAlpha:alpha];
+//}
 
 #pragma mark - Getter methods
 -(NIAttributedLabel *)titleLabel
