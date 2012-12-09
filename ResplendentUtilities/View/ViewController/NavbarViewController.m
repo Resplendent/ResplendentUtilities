@@ -73,16 +73,6 @@ static NSTimeInterval popPushAnimationDuration;
 }
 
 #pragma mark - Public methods
-//-(void)pushViewController:(NavbarViewController*)navbarViewController
-//{
-//    [self pushViewController:navbarViewController completion:nil];
-//}
-
-//-(void)popViewController
-//{
-//    [self popViewControllerCompletion:nil];
-//}
-
 -(void)popChildrenViewControllers:(BOOL)animated completion:(void (^)())completion
 {
     [self.childNBViewController popViewControllerAnimated:animated completion:completion];
@@ -191,8 +181,8 @@ static NSTimeInterval popPushAnimationDuration;
 
             [_parentNBViewController viewDidAppear:YES];
             [self removeFromParentViewController];
+            [self.parentNBViewController setChildNBViewController:nil];
             [self setParentNBViewController:nil];
-            [self setChildNBViewController:nil];
             
             if (completion)
                 completion();
@@ -203,8 +193,8 @@ static NSTimeInterval popPushAnimationDuration;
         [self.view removeFromSuperview];
         [_parentNBViewController viewDidAppear:NO];
         [self removeFromParentViewController];
+        [self.parentNBViewController setChildNBViewController:nil];
         [self setParentNBViewController:nil];
-        [self setChildNBViewController:nil];
         if (completion)
             completion();
     }
