@@ -27,7 +27,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 20.0f;
 -(void)layoutTilesAnimated:(BOOL)animated;
 
 -(BOOL)updateTiles;//Animated:(BOOL)animated;
--(void)clearCurrentTiles;
+//-(void)clearCurrentTiles;
 
 -(void)updateNumberOfRows;
 -(void)updateTileWidth;
@@ -486,8 +486,6 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 20.0f;
 
 -(void)reloadData
 {
-    [self clearCurrentTiles];
-    
     [self loadNumberOfTilesFromDelegate];
     [self updateNumberOfRows];
     [self layoutScrollViewComponents];

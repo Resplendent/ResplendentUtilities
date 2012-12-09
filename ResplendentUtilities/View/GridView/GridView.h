@@ -38,6 +38,7 @@
 @property (nonatomic, readonly) UIActivityIndicatorView* pullToLoadMoreSpinner;
 
 -(void)reloadData;
+-(void)clearCurrentTiles;
 
 -(void)insertViewAtIndex:(NSUInteger)index;
 -(void)removeViewAtIndex:(NSUInteger)index;
