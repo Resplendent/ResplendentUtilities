@@ -35,6 +35,7 @@
 
 @property (nonatomic, assign) BOOL pullToRefresh;
 @property (nonatomic, assign) BOOL pullToLoadMore;
+@property (nonatomic, readonly) UIActivityIndicatorView* pullToLoadMoreSpinner;
 
 -(void)reloadData;
 

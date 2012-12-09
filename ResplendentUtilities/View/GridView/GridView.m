@@ -9,6 +9,9 @@
 #import "GridView.h"
 #import "SVPullToRefresh.h"
 
+CGFloat const kGridViewPullToLoadMoreDefaultHeight = 50.0f;
+CGFloat const kGridViewPullToLoadMorePullDistance = 20.0f;
+
 #define kGridViewUsesButtons 0
 
 @interface GridView ()
@@ -106,6 +109,30 @@
 -(NSInteger)lowestVisibleRow
 {
     return MAX(floor(_scrollView.contentOffset.y / (_cellWidth + _modifiedSpaceBetweenCells)), 0);
+}
+
+#pragma mark Pull to load more
+-(BOOL)pullToLoadMore
+{
+    return _pullToLoadMoreSpinner != nil;
+}
+
+-(void)setPullToLoadMore:(BOOL)pullToLoadMore
+{
+    if (self.pullToLoadMore == pullToLoadMore)
+        return;
+    
+    if (pullToLoadMore)
+    {
+        _pullToLoadMoreSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [_scrollView addSubview:_pullToLoadMoreSpinner];
+        [self updateScrollViewContentSize];
+    }
+    else
+    {
+        [_pullToLoadMoreSpinner removeFromSuperview];
+        _pullToLoadMoreSpinner = nil;
+    }
 }
 
 #pragma mark Pull To Refresh
@@ -364,7 +391,15 @@
 
 -(void)updateScrollViewContentSize
 {
-    [_scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.frame), MAX(_numberOfRows * _cellWidth + (_numberOfRows - 1) * _modifiedSpaceBetweenCells, CGRectGetHeight(_scrollView.frame) + 1))];
+    CGFloat contentHeight = MAX(_numberOfRows * _cellWidth + (_numberOfRows - 1) * _modifiedSpaceBetweenCells, CGRectGetHeight(_scrollView.frame) + 1);
+
+    if (self.pullToLoadMore)
+    {
+        [_pullToLoadMoreSpinner setCenter:(CGPoint){CGRectGetWidth(_scrollView.frame) / 2.0f,contentHeight + (kGridViewPullToLoadMoreDefaultHeight / 2.0f)}];
+        contentHeight += kGridViewPullToLoadMoreDefaultHeight;
+    }
+
+    [_scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.frame), contentHeight)];
 }
 
 #pragma mark delegate methods
@@ -459,6 +494,8 @@
 
     if ([self updateTiles])
         [self setNeedsLayout];
+
+    [_pullToLoadMoreSpinner stopAnimating];
 }
 
 #pragma mark - UIScrollViewDelegate methods
@@ -466,12 +503,17 @@
 {
     if ([self updateTiles])
         [self layoutTilesAnimated:YES];
-}
 
-//-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-//{
-//    [self layoutTilesAnimated:YES];
-//}
+    if (self.pullToLoadMore && _pullToLoadDelegate && !_pullToLoadMoreSpinner.isAnimating)
+    {
+        if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.frame) > scrollView.contentSize.height - kGridViewPullToLoadMoreDefaultHeight + kGridViewPullToLoadMorePullDistance)
+        {
+            [_pullToLoadMoreSpinner startAnimating];
+            [_pullToLoadDelegate gridViewPullToLoadMore:self];
+            NSLog(@"Load MOre");
+        }
+    }
+}
 
 #pragma mark - static c methods
 CG_INLINE NSString* indexStringForKey(NSUInteger index)
