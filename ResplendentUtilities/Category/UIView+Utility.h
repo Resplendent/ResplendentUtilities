@@ -15,9 +15,10 @@
 
 #define CGRectSetX(x, rect) (CGRectMake(x, (rect).origin.y, (rect).size.width, (rect).size.height))
 #define CGRectSetY(y, rect) (CGRectMake((rect).origin.x, y, (rect).size.width, (rect).size.height))
+#define CGRectSetXY(x, y, rect) (CGRectMake(x, y, (rect).size.width, (rect).size.height))
 #define CGRectSetWidth(w, rect) (CGRectMake((rect).origin.x, (rect).origin.y, w, (rect).size.height))
 #define CGRectSetHeight(h, rect) (CGRectMake((rect).origin.x, (rect).origin.y, (rect).size.width, (h)))
-#define CGRectSetXY(x, y, rect) (CGRectMake(x, y, (rect).size.width, (rect).size.height))
+#define CGRectSetSize(s, rect) ((CGRect){(rect).origin.x, (rect).origin.y, s})
 #define CGRectFlipY(rect) (CGRectMake((rect).origin.x, -((rect).origin.y), (rect).size.width, (rect).size.height))
 #define CGRectMultiply(m, rect) (CGRectMake((rect).origin.x*(m), (rect).origin.y*(m), (rect).size.width*(m), (rect).size.height*(m)))
 #define CGRectRotate(rect) (CGRectMake((rect).origin.x, (rect).origin.y, (rect).size.height, (rect).size.width))
