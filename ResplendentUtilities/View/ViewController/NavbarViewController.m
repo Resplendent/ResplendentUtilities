@@ -87,6 +87,14 @@ static NSTimeInterval popPushAnimationDuration;
         return;
     }
 
+    if (self.childNBViewController)
+    {
+        [self popChildrenViewControllers:YES completion:^{
+            [self pushViewController:navbarViewController animated:animated completion:completion];
+        }];
+        return;
+    }
+
     [navbarViewController setParentNBViewController:self];
     [self setChildNBViewController:navbarViewController];
     [self addChildViewController:navbarViewController];
