@@ -10,7 +10,7 @@
 #import "SVPullToRefresh.h"
 
 CGFloat const kGridViewPullToLoadMoreDefaultHeight = 50.0f;
-CGFloat const kGridViewPullToLoadMorePullDistance = 20.0f;
+CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 
 #define kGridViewUsesButtons 0
 
@@ -84,6 +84,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 20.0f;
 
 -(void)dealloc
 {
+    [self setPullToRefresh:NO];
     [self clearCurrentTiles];
 }
 
