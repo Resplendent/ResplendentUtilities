@@ -9,19 +9,25 @@
 #import <UIKit/UIKit.h>
 #import "GridViewProtocols.h"
 
+typedef enum {
+    GridViewTileAnimationStyleFade = 0,
+    GridViewTileAnimationStyleFromCorners,
+    GridViewTileAnimationStyleFromLeft
+}GridViewTileAnimationStyle;
+
 @interface GridView : UIView <UIScrollViewDelegate>
 {
     NSMutableDictionary* _cellsDictionary;
     
     //Gotten from delegates
-    //    CGFloat _spaceBetweenCells;
     NSUInteger _numberOfCells;
-    //    NSUInteger _numberOfColumns;
     
     //Calculated after delegates
     CGFloat _modifiedSpaceBetweenCells;
     NSUInteger _numberOfRows;
 }
+
+@property (nonatomic, assign) GridViewTileAnimationStyle tileAnimationStyle;
 
 @property (nonatomic, readonly) UIScrollView* scrollView;
 @property (nonatomic, readonly) CGFloat cellWidth;

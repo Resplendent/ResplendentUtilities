@@ -269,11 +269,19 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     
     if (!onScreen)
     {
-        CGFloat upperBound = _scrollView.contentOffset.y;
-        CGFloat lowerBound = upperBound + CGRectGetHeight(_scrollView.frame);
-        
-        CGFloat yCoord = (CGRectGetMinY(newFrame) < (upperBound + lowerBound) / 2.0f ? -(_cellWidth * 2.0f) : _scrollView.contentSize.height + (_cellWidth * 2.0f));
-        newFrame.origin = (CGPoint){-_cellWidth,yCoord + _cellWidth};
+        switch (_tileAnimationStyle)
+        {
+            case GridViewTileAnimationStyleFromCorners:
+                newFrame.origin = (CGPoint){-_cellWidth,(CGRectGetMinY(newFrame) < (_scrollView.contentOffset.y + (CGRectGetHeight(_scrollView.frame) / 2.0f)) ? -(_cellWidth * 2.0f) : _scrollView.contentSize.height + (_cellWidth * 2.0f)) + _cellWidth};
+                break;
+
+            case GridViewTileAnimationStyleFromLeft:
+                newFrame.origin.x = -_cellWidth;
+                break;
+
+            case GridViewTileAnimationStyleFade:
+                break;
+        }
     }
     
     if (CGRectEqualToRect(newFrame, tile.frame))
