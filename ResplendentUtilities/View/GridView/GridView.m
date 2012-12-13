@@ -26,8 +26,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 -(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex onScreen:(BOOL)onScreen animated:(BOOL)animated withDelay:(NSTimeInterval)delay completion:(void(^)(void))completion;
 -(void)layoutTilesAnimated:(BOOL)animated;
 
--(BOOL)updateTiles;//Animated:(BOOL)animated;
-//-(void)clearCurrentTiles;
+-(BOOL)updateTiles;
 
 -(void)updateNumberOfRows;
 -(void)updateTileWidth;
@@ -249,6 +248,8 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     {
         [self deleteTilesAtIndexString:key];
     }
+
+    _numberOfCells = 0;
 }
 
 -(NSUInteger)rowForIndex:(NSUInteger)index
