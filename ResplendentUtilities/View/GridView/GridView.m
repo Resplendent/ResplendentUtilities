@@ -79,7 +79,6 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-
     [self layoutScrollViewComponents];
     [self layoutTilesAnimated:YES];
 }
@@ -240,6 +239,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
         dispatch_async(dispatch_get_main_queue(), ^{
             [_scrollView addSubview:tile];
             [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
+            [self setNeedsLayout];
         });
 
         return YES;
