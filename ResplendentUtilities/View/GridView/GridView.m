@@ -260,7 +260,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 -(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex onScreen:(BOOL)onScreen animated:(BOOL)animated withDelay:(NSTimeInterval)delay completion:(void(^)(void))completion
 {
     CGFloat width = (_cellWidth + _modifiedSpaceBetweenCells);
-    CGRect newFrame = {floor([self columnForIndex:tileIndex] * width),_modifiedSpaceBetweenCells + floor(width * [self rowForIndex:tileIndex]),self.tileSize};
+    CGRect newFrame = {floor([self columnForIndex:tileIndex] * width),_upperPadding + floor(width * [self rowForIndex:tileIndex]),self.tileSize};
     
     if (!onScreen)
     {
@@ -388,7 +388,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 
 -(void)updateScrollViewContentSize
 {
-    CGFloat contentHeight = MAX(_numberOfRows * _cellWidth + (_numberOfRows + 1) * _modifiedSpaceBetweenCells, CGRectGetHeight(_scrollView.frame) + 1);
+    CGFloat contentHeight = MAX(_numberOfRows * _cellWidth + (_numberOfRows - 1) * _modifiedSpaceBetweenCells + _upperPadding + _lowerPadding, CGRectGetHeight(_scrollView.frame) + 1);
 
     if (self.pullToLoadMore)
     {

@@ -32,6 +32,9 @@ typedef enum {
 @property (nonatomic, readonly) UIScrollView* scrollView;
 @property (nonatomic, readonly) CGFloat cellWidth;
 
+@property (nonatomic, assign) CGFloat upperPadding;
+@property (nonatomic, assign) CGFloat lowerPadding;
+
 @property (nonatomic, assign) id<GridViewDataSource> dataSource;
 @property (nonatomic, assign) id<GridViewDataSourceSelectionDelegate> selectionDelegate;
 @property (nonatomic, assign) id<GridViewPullToLoad> pullToLoadDelegate;
