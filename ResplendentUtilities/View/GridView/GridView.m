@@ -99,8 +99,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 -(NSUInteger)currentNumberOfVisibleRows
 {
     NSUInteger numberOfVisibleRows =  ceilf(CGRectGetHeight(_scrollView.frame) / (_cellWidth + _modifiedSpaceBetweenCells));
-    NSLog(@"%s numberOfVisibleRows: %i",__PRETTY_FUNCTION__,numberOfVisibleRows);
-    
+
     NSUInteger lowerVisibleRow = self.lowestVisibleRow;
     CGFloat bottofOfMinNumberOfVisibleCells = (lowerVisibleRow + numberOfVisibleRows) * (_cellWidth + _modifiedSpaceBetweenCells);
     
