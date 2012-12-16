@@ -39,6 +39,9 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 
 -(void)tappedScrollView:(UITapGestureRecognizer*)tap;
 
+-(NSUInteger)rowForIndex:(NSUInteger)index;
+-(NSUInteger)columnForIndex:(NSUInteger)index;
+
 @end
 
 
@@ -96,6 +99,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 -(NSUInteger)currentNumberOfVisibleRows
 {
     NSUInteger numberOfVisibleRows =  ceilf(CGRectGetHeight(_scrollView.frame) / (_cellWidth + _modifiedSpaceBetweenCells));
+    NSLog(@"%s numberOfVisibleRows: %i",__PRETTY_FUNCTION__,numberOfVisibleRows);
     
     NSUInteger lowerVisibleRow = self.lowestVisibleRow;
     CGFloat bottofOfMinNumberOfVisibleCells = (lowerVisibleRow + numberOfVisibleRows) * (_cellWidth + _modifiedSpaceBetweenCells);
@@ -233,23 +237,14 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
         
         [_cellsDictionary setObject:tile forKey:indexStringForKey(index)];
         [tile setUserInteractionEnabled:NO];
-        [_scrollView addSubview:tile];
-        [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_scrollView addSubview:tile];
+            [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
+        });
 
         return YES;
     }
-}
-
--(void)clearCurrentTiles
-{
-    NSArray* keys = _cellsDictionary.allKeys;
-    
-    for (NSString* key in keys)
-    {
-        [self deleteTilesAtIndexString:key];
-    }
-
-    _numberOfCells = 0;
 }
 
 -(NSUInteger)rowForIndex:(NSUInteger)index
@@ -266,7 +261,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 -(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex onScreen:(BOOL)onScreen animated:(BOOL)animated withDelay:(NSTimeInterval)delay completion:(void(^)(void))completion
 {
     CGFloat width = (_cellWidth + _modifiedSpaceBetweenCells);
-    CGRect newFrame = {floor([self columnForIndex:tileIndex] * width),floor(width * [self rowForIndex:tileIndex]),self.tileSize};
+    CGRect newFrame = {floor([self columnForIndex:tileIndex] * width),_modifiedSpaceBetweenCells + floor(width * [self rowForIndex:tileIndex]),self.tileSize};
     
     if (!onScreen)
     {
@@ -338,14 +333,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     NSUInteger currentNumberOfVisibleRows = self.currentNumberOfVisibleRows;
     NSUInteger lastVisibleCell = (lowerVisibleRow + currentNumberOfVisibleRows) * _numberOfColumns;
     BOOL update = NO;
-    
-    //    NSLog(@"self.lowestVisibleRow: %i",self.lowestVisibleRow);
-    //    NSLog(@"lowerVisibleRow: %i",lowerVisibleRow);
-    //    NSLog(@"_numberOfColumns: %i",_numberOfColumns);
-    //    NSLog(@"firstVisibleCell: %i",firstVisibleCell);
-    //    NSLog(@"currentNumberOfVisibleRows: %i",currentNumberOfVisibleRows);
-    //    NSLog(@"lastVisibleCell: %i",lastVisibleCell);
-    
+
     if (firstVisibleCell)
     {
         //Check for old cells to throw out
@@ -401,7 +389,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 
 -(void)updateScrollViewContentSize
 {
-    CGFloat contentHeight = MAX(_numberOfRows * _cellWidth + (_numberOfRows - 1) * _modifiedSpaceBetweenCells, CGRectGetHeight(_scrollView.frame) + 1);
+    CGFloat contentHeight = MAX(_numberOfRows * _cellWidth + (_numberOfRows + 1) * _modifiedSpaceBetweenCells, CGRectGetHeight(_scrollView.frame) + 1);
 
     if (self.pullToLoadMore)
     {
@@ -420,6 +408,18 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 }
 
 #pragma mark - Public instance methods
+-(void)clearCurrentTiles
+{
+    NSArray* keys = _cellsDictionary.allKeys;
+    
+    for (NSString* key in keys)
+    {
+        [self deleteTilesAtIndexString:key];
+    }
+    
+    _numberOfCells = 0;
+}
+
 -(UIView*)tileForIndex:(NSUInteger)index
 {
     return [_cellsDictionary objectForKey:indexStringForKey(index)];
