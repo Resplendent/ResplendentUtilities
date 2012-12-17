@@ -102,7 +102,7 @@
 
 -(void)postMultipartDataNetworkRequestWithUrl:(NSString*)url params:(NSDictionary*)params data:(NSData*)data dataParamKey:(NSString*)dataParamKey noSuccessError:(NSError*)noSuccessError constructingBodyBlock:(void (^)(id <AFMultipartFormData>formData))constructingBodyBlock completionBlock:(void(^)(NSDictionary* responseDict))completionBlock progressBlock:(void(^)(float progress))progressBlock failBlock:(void(^)(AFHTTPRequestOperation *operation, NSError* error))failBlock
 {
-    if (params && [params objectForKey:dataParamKey] != data)
+    if (params && [params objectForKey:dataParamKey])
     {
         NSLog(@"%s has to manually remove data from param list",__PRETTY_FUNCTION__);
         NSMutableDictionary* mDict = [NSMutableDictionary dictionaryWithDictionary:params];
