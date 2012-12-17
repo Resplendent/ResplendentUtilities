@@ -104,6 +104,7 @@
 {
     if (params && [params objectForKey:dataParamKey] != data)
     {
+        NSLog(@"%s has to manually remove data from param list",__PRETTY_FUNCTION__);
         NSMutableDictionary* mDict = [NSMutableDictionary dictionaryWithDictionary:params];
         [mDict removeObjectForKey:dataParamKey];
         params = [NSDictionary dictionaryWithDictionary:mDict];
