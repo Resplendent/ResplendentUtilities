@@ -84,30 +84,28 @@
             _spinner = nil;
         }
 
+        [self setImage:image];
+        
         if (image)
         {
-            [self setImage:image];
-            
             if (self.frame.size.width == 0 || self.frame.size.height == 0)
                 self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.image.size.width, self.image.size.height);
-            
-            if (image)
+
+            CGFloat alpha = self.alpha;
+            if (self.fadeInDuration > 0)
             {
-                CGFloat alpha = self.alpha;
-                if (self.fadeInDuration > 0)
-                {
-                    [self setAlpha:0.0f];
-                    [UIView animateWithDuration:self.fadeInDuration animations:^{
-                        [self setAlpha:alpha];
-                    }];
-                }
+                [self setAlpha:0.0f];
+                [UIView animateWithDuration:self.fadeInDuration animations:^{
+                    [self setAlpha:alpha];
+                }];
             }
-            else if (_hideOnFail)
-            {
-                [self setHidden:YES];
-            }
-            
-            [_viewToSetNeedsLayoutOnComplete setNeedsLayout];        }
+        }
+        else if (_hideOnFail)
+        {
+            [self setHidden:YES];
+        }
+        
+        [_viewToSetNeedsLayoutOnComplete setNeedsLayout];
     }];
 }
 
