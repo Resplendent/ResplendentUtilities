@@ -84,7 +84,6 @@
             _spinner = nil;
         }
 
-        NSLog(@"image: %@",image);
         if (image)
         {
             [self setImage:image];
