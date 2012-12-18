@@ -76,7 +76,7 @@
 
     _imageRequest = [[AsynchronousUIImageRequest alloc] initAndFetchWithURL:anUrl andCacheName:cacheName withBlock:^(UIImage *image, NSError *error) {
         _imageRequest = nil;
-        
+
         if (_spinner)
         {
             [_spinner stopAnimating];
@@ -84,29 +84,31 @@
             _spinner = nil;
         }
 
-//        NSLog(@"image: %@ width %f height %f",image,image.size.width,image.size.height);
-        [self setImage:image];
-        
-        if (self.frame.size.width == 0 || self.frame.size.height == 0)
-            self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.image.size.width, self.image.size.height);
-
+        NSLog(@"image: %@",image);
         if (image)
         {
-            CGFloat alpha = self.alpha;
-            if (self.fadeInDuration > 0)
+            [self setImage:image];
+            
+            if (self.frame.size.width == 0 || self.frame.size.height == 0)
+                self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.image.size.width, self.image.size.height);
+            
+            if (image)
             {
-                [self setAlpha:0.0f];
-                [UIView animateWithDuration:self.fadeInDuration animations:^{
-                    [self setAlpha:alpha];
-                }];
+                CGFloat alpha = self.alpha;
+                if (self.fadeInDuration > 0)
+                {
+                    [self setAlpha:0.0f];
+                    [UIView animateWithDuration:self.fadeInDuration animations:^{
+                        [self setAlpha:alpha];
+                    }];
+                }
             }
-        }
-        else if (_hideOnFail)
-        {
-            [self setHidden:YES];
-        }
-
-        [_viewToSetNeedsLayoutOnComplete setNeedsLayout];
+            else if (_hideOnFail)
+            {
+                [self setHidden:YES];
+            }
+            
+            [_viewToSetNeedsLayoutOnComplete setNeedsLayout];        }
     }];
 }
 

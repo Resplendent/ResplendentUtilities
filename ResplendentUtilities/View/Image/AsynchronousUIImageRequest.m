@@ -30,10 +30,13 @@ static NSMutableDictionary* fetchedImages;
 
 -(id)initAndFetchWithURL:(NSString *)anUrl andCacheName:(NSString *)cacheName withBlock:(imageErrorBlock)block
 {
-    if (!anUrl)
+    if (!anUrl || anUrl.length == 0)
+    {
         NSLog(@"%s has nil url",__PRETTY_FUNCTION__);
-    else if (anUrl.length == 0)
-        NSLog(@"%s anUrl of length 0",__PRETTY_FUNCTION__);
+        if (block)
+            block(nil,[NSError errorWithDomain:@"Tried to fetch an image with a nil url" code:500 userInfo:nil]);
+        return nil;
+    }
 
     if (self = [self init])
     {
