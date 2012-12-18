@@ -15,6 +15,8 @@
 
 @property (nonatomic, strong) AFHTTPClient* network;
 
+-(void)didFireExpiration;
+
 -(id)initWithBaseUrl:(NSString*)baseUrl;
 
 //Delete

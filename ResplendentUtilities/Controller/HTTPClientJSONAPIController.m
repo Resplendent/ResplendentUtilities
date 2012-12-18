@@ -117,7 +117,8 @@
     AFHTTPRequestOperation* op = [[AFHTTPRequestOperation alloc]initWithRequest:uploadRequest];
     
     [op setShouldExecuteAsBackgroundTaskWithExpirationHandler:^{
-        
+        if ([self respondsToSelector:@selector(getUploader)])
+            [self didFireExpiration];
     }];
     
     [op setUploadProgressBlock:^(NSInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
@@ -135,6 +136,11 @@
     }];
     
     [op start];
+}
+
+-(void)didFireExpiration
+{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 }
 
 -(void)postMultipartDataNetworkRequestWithUrl:(NSString*)url params:(NSDictionary*)params data:(NSData*)data dataParamKey:(NSString*)dataParamKey noSuccessError:(NSError*)noSuccessError completionBlock:(void(^)(NSDictionary* responseDict))completionBlock progressBlock:(void(^)(float progress))progressBlock failBlock:(void(^)(AFHTTPRequestOperation *operation, NSError* error))failBlock
