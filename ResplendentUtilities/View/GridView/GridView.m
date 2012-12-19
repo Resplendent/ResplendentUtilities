@@ -24,7 +24,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 -(void)layoutScrollViewComponents;
 
 -(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex onScreen:(BOOL)onScreen animated:(BOOL)animated withDelay:(NSTimeInterval)delay completion:(void(^)(void))completion;
--(void)layoutTilesAnimated:(BOOL)animated;
+//-(void)layoutTilesAnimated:(BOOL)animated;
 
 -(BOOL)updateTiles;
 
@@ -42,8 +42,11 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 -(NSUInteger)rowForIndex:(NSUInteger)index;
 -(NSUInteger)columnForIndex:(NSUInteger)index;
 
+-(void)advanceAllTilesStartingAtIndex:(NSInteger)index;
+
 @end
 
+//#define kECGridViewLayoutTileQueueName "ECGridview.layoutTiles"
 
 
 @implementation GridView
@@ -52,6 +55,8 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 {
     if (self = [super initWithFrame:frame])
     {
+//        _layoutTileQueue = dispatch_queue_create(kECGridViewLayoutTileQueueName, NULL);
+
         _scrollView = [UIScrollView new];
         [_scrollView setBackgroundColor:[UIColor clearColor]];
         [_scrollView setDelegate:self];
@@ -61,11 +66,6 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     }
     
     return self;
-}
-
--(void)setFrame:(CGRect)frame
-{
-    [super setFrame:frame];
 }
 
 -(void)layoutScrollViewComponents
@@ -80,7 +80,6 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 {
     [super layoutSubviews];
     [self layoutScrollViewComponents];
-    [self layoutTilesAnimated:YES];
 }
 
 -(void)dealloc
@@ -198,6 +197,18 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 }
 
 #pragma mark - Private instance methods
+-(void)advanceAllTilesStartingAtIndex:(NSInteger)index
+{
+    UIView* tile = [self tileForIndex:index];
+    if (tile)
+    {
+        [self advanceAllTilesStartingAtIndex:index + 1];
+        [_cellsDictionary removeObjectForKey:[NSString stringWithFormat:@"%i",index]];
+        [_cellsDictionary setObject:tile forKey:[NSString stringWithFormat:@"%i",index + 1]];
+        [self layoutTile:tile tileIndex:index + 1 onScreen:YES animated:YES withDelay:0 completion:nil];
+    }
+}
+
 -(BOOL)deleteCellAtIndex:(NSUInteger)index
 {
     return [self deleteTilesAtIndexString:indexStringForKey(index)];
@@ -236,11 +247,10 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
         [_cellsDictionary setObject:tile forKey:indexStringForKey(index)];
         [tile setUserInteractionEnabled:NO];
 
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [_scrollView addSubview:tile];
-            [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
-            [self setNeedsLayout];
-        });
+        [_scrollView addSubview:tile];
+        [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
+        [self layoutTile:tile tileIndex:index onScreen:YES animated:YES withDelay:0 completion:nil];
+        [self setNeedsLayout];
 
         return YES;
     }
@@ -306,18 +316,20 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     }
 }
 
--(void)layoutTilesAnimated:(BOOL)animated
-{
-    NSTimeInterval delay = 0.0f;
-    for (NSString* key in _cellsDictionary)
-    {
-        UIView* tile = [_cellsDictionary objectForKey:key];
-        NSUInteger index = key.integerValue;
-        
-        if ([self layoutTile:tile tileIndex:index onScreen:YES animated:animated withDelay:delay completion:nil])
-            delay += 0.01f;
-    }
-}
+//-(void)layoutTilesAnimated:(BOOL)animated
+//{
+//    dispatch_async(_layoutTileQueue, ^{
+//        NSTimeInterval delay = 0.0f;
+//        for (NSString* key in _cellsDictionary)
+//        {
+//            UIView* tile = [_cellsDictionary objectForKey:key];
+//            NSUInteger index = key.integerValue;
+//            
+//            if ([self layoutTile:tile tileIndex:index onScreen:YES animated:animated withDelay:delay completion:nil])
+//                delay += 0.01f;
+//        }
+//    });
+//}
 
 #pragma mark update methods
 -(BOOL)updateTiles
@@ -443,29 +455,15 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
         [_cellsDictionary removeObjectForKey:key2];
 }
 
--(void)advanceCellAtIndex:(int)index
-{
-    for (int i = _numberOfCells - 1; i >= index; i--)
-    {
-        NSString* key = indexStringForKey(i);
-        
-        UIView* view = [_cellsDictionary objectForKey:key];
-        if (view)
-        {
-            NSString* nextKey = indexStringForKey(i + 1);
-            [_cellsDictionary setObject:view forKey:nextKey];
-            [_cellsDictionary removeObjectForKey:key];
-        }
-    }
-}
-
 -(void)insertViewAtIndex:(NSUInteger)index
 {
+//    NSLog(@"begin %s %i",__PRETTY_FUNCTION__,index);
     _numberOfCells++;
     [self updateNumberOfRows];
-    [self advanceCellAtIndex:index];
-    if ([self addCellAtIndex:index])
-        [self setNeedsLayout];
+//    NSLog(@"pre cell dictionary: %@",_cellsDictionary);
+    [self advanceAllTilesStartingAtIndex:index];
+//    NSLog(@"advanced cell dictionary: %@",_cellsDictionary);
+    [self addCellAtIndex:index];
 }
 
 -(void)removeViewAtIndex:(NSUInteger)index
@@ -474,7 +472,6 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     {
         _numberOfCells--;
         [self updateNumberOfRows];
-        [self setNeedsLayout];
     }
 }
 
@@ -488,8 +485,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     else
     {
         NSLog(@"%s didn't have a tile at index %i, creating one instead",__PRETTY_FUNCTION__,index);
-        if ([self addCellAtIndex:index])
-            [self setNeedsLayout];
+        [self addCellAtIndex:index];
     }
 }
 
@@ -499,8 +495,8 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     [self updateNumberOfRows];
     [self layoutScrollViewComponents];
 
-    if ([self updateTiles])
-        [self setNeedsLayout];
+    [self updateTiles];
+    [self layoutScrollViewComponents];
 
     [_pullToLoadMoreSpinner stopAnimating];
 }
@@ -508,8 +504,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 #pragma mark - UIScrollViewDelegate methods
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if ([self updateTiles])
-        [self layoutTilesAnimated:YES];
+    [self updateTiles];
 
     if (self.pullToLoadMore && _pullToLoadDelegate && !_pullToLoadMoreSpinner.isAnimating)
     {

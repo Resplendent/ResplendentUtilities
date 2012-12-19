@@ -25,6 +25,8 @@ typedef enum {
     //Calculated after delegates
     CGFloat _modifiedSpaceBetweenCells;
     NSUInteger _numberOfRows;
+
+//    dispatch_queue_t _layoutTileQueue;
 }
 
 @property (nonatomic, assign) GridViewTileAnimationStyle tileAnimationStyle;
