@@ -15,3 +15,5 @@
 
 #define METHOD_IMPLEMENTATION_NEEDED NSLog(@"@IMPLEMENT Need to implement method %@ in class %@",NSStringFromSelector(_cmd),NSStringFromClass([self class]))
 //lcl_log(RKLogComponent, lcl_vDebug, @"" __VA_ARGS__)
+
+#define RUStringWithFormat(...) [NSString stringWithFormat:__VA_ARGS__]
