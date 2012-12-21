@@ -21,7 +21,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 
 -(void)layoutScrollViewComponents;
 
--(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex onScreen:(BOOL)onScreen animated:(BOOL)animated withDelay:(NSTimeInterval)delay completion:(void(^)(void))completion;
+-(void)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex onScreen:(BOOL)onScreen animated:(BOOL)animated withDelay:(NSTimeInterval)delay completion:(void(^)(void))completion;
 //-(void)layoutTilesAnimated:(BOOL)animated;
 
 -(void)updateTiles;
@@ -60,14 +60,14 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
         [_scrollView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedScrollView:)]];
         [self addSubview:_scrollView];
     }
-    
+
     return self;
 }
 
 -(void)layoutScrollViewComponents
 {
     [_scrollView setFrame:self.bounds];
-    
+
     [self updateTileWidth];
     [self updateScrollViewContentSize];
 }
@@ -113,7 +113,8 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 {
     if (self.pullToLoadMore == pullToLoadMore)
         return;
-    
+
+    NSLog(@"%s %i",__PRETTY_FUNCTION__,pullToLoadMore);
     if (pullToLoadMore)
     {
         _pullToLoadMoreSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -252,7 +253,6 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
         [_scrollView addSubview:tile];
         [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
         [self layoutTile:tile tileIndex:index onScreen:YES animated:YES withDelay:0 completion:nil];
-        [self setNeedsLayout];
 
         return YES;
     }
@@ -269,7 +269,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 }
 
 #pragma mark - Layout methods
--(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex onScreen:(BOOL)onScreen animated:(BOOL)animated withDelay:(NSTimeInterval)delay completion:(void(^)(void))completion
+-(void)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex onScreen:(BOOL)onScreen animated:(BOOL)animated withDelay:(NSTimeInterval)delay completion:(void(^)(void))completion
 {
     CGFloat width = (_cellWidth + _modifiedSpaceBetweenCells);
     CGRect newFrame = {_contentInsets.left + floor([self columnForIndex:tileIndex] * width),_contentInsets.top + floor(width * [self rowForIndex:tileIndex]),_cellWidth,_cellWidth};
@@ -281,41 +281,37 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
             case GridViewTileAnimationStyleFromCorners:
                 newFrame.origin = (CGPoint){-_cellWidth,(CGRectGetMinY(newFrame) < (_scrollView.contentOffset.y + (CGRectGetHeight(_scrollView.frame) / 2.0f)) ? -(_cellWidth * 2.0f) : _scrollView.contentSize.height + (_cellWidth * 2.0f)) + _cellWidth};
                 break;
-
+                
             case GridViewTileAnimationStyleFromLeft:
                 newFrame.origin.x = -_cellWidth;
                 break;
-
+                
             case GridViewTileAnimationStyleFade:
                 break;
         }
     }
-    
-    if (CGRectEqualToRect(newFrame, tile.frame))
-    {
-        return NO;
-    }
-    else
-    {
-        if (animated)
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!CGRectEqualToRect(newFrame, tile.frame))
         {
-            [UIView animateWithDuration:0.25f delay:delay options:UIViewAnimationOptionCurveEaseOut animations:^{
+            if (animated)
+            {
+                [UIView animateWithDuration:0.25f delay:delay options:UIViewAnimationOptionCurveEaseOut animations:^{
+                    [tile setFrame:newFrame];
+                } completion:^(BOOL finished) {
+                    if (completion)
+                        completion();
+                }];
+            }
+            else
+            {
                 [tile setFrame:newFrame];
-            } completion:^(BOOL finished) {
                 if (completion)
                     completion();
-            }];
+            }
+            
         }
-        else
-        {
-            [tile setFrame:newFrame];
-            if (completion)
-                completion();
-        }
-        
-        
-        return YES;
-    }
+    });
 }
 
 //-(void)layoutTilesAnimated:(BOOL)animated
@@ -400,6 +396,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     if (self.pullToLoadMore)
     {
         [_pullToLoadMoreSpinner setCenter:(CGPoint){CGRectGetWidth(_scrollView.frame) / 2.0f,contentHeight + (kGridViewPullToLoadMoreDefaultHeight / 2.0f)}];
+//        NSLog(@"_pullToLoadMoreSpinner: %@",_pullToLoadMoreSpinner);
         contentHeight += kGridViewPullToLoadMoreDefaultHeight;
     }
 
@@ -417,13 +414,14 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 -(void)clearCurrentTiles
 {
     NSArray* keys = _cellsDictionary.allKeys;
-    
+
     for (NSString* key in keys)
     {
         [self deleteTileAtIndexString:key stepBack:NO];
     }
-    
+
     _numberOfCells = 0;
+    _numberOfRows = 0;
 }
 
 -(UIView*)tileForIndex:(NSUInteger)index
@@ -459,6 +457,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     [self advanceAllTilesStartingAtIndex:index];
 //    NSLog(@"advanced cell dictionary: %@",_cellsDictionary);
     [self addCellAtIndex:index];
+    [self updateScrollViewContentSize];
 }
 
 -(void)removeViewAtIndex:(NSUInteger)index
@@ -466,6 +465,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     [self deleteCellAtIndex:index stepBack:YES];
     _numberOfCells--;
     [self updateNumberOfRows];
+    [self updateScrollViewContentSize];
 }
 
 -(void)reloadViewAtIndex:(NSUInteger)index
