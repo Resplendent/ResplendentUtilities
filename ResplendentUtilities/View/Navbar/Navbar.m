@@ -64,6 +64,7 @@
     [_leftButton removeFromSuperview];
     _leftButton = leftButton;
     [_animatableContentView addSubview:_leftButton];
+    [self setNeedsLayout];
 }
 
 -(void)setRightButton:(UIButton *)rightButton
@@ -75,6 +76,7 @@
     _rightButton = rightButton;
     [_rightButton setShowsTouchWhenHighlighted:NO];
     [_animatableContentView addSubview:_rightButton];
+    [self setNeedsLayout];
 }
 
 #pragma mark - Public methods
