@@ -8,6 +8,7 @@
 
 #import "GridView.h"
 #import "SVPullToRefresh.h"
+#import "RUConstants.h"
 
 CGFloat const kGridViewPullToLoadMoreDefaultHeight = 50.0f;
 CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
