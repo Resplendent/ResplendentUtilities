@@ -52,14 +52,13 @@ typedef enum {
 -(void)clearCurrentTiles;
 
 -(void)insertViewAtIndex:(NSUInteger)index;
--(void)removeViewAtIndex:(NSUInteger)index;
+-(void)removeViewAtIndex:(NSUInteger)index; //Can only be called Cannot be called repeatedly
 -(void)reloadViewAtIndex:(NSUInteger)index;
 -(void)switchViewsAtFirstIndex:(NSUInteger)firstIndex secondIndex:(NSUInteger)secondIndex;
 
 -(UIView*)tileForIndex:(NSUInteger)index;
 
 //Only to be overloaded
--(BOOL)deleteCellAtIndex:(NSUInteger)index;
 -(BOOL)addCellAtIndex:(NSUInteger)index;
 
 +(CGFloat)cellWidthForGridWidth:(CGFloat)gridWidth numberOfColumns:(NSUInteger)numberOfColumns cellSpacing:(CGFloat)cellSpacing;

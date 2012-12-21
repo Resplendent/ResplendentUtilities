@@ -26,7 +26,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 -(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex onScreen:(BOOL)onScreen animated:(BOOL)animated withDelay:(NSTimeInterval)delay completion:(void(^)(void))completion;
 //-(void)layoutTilesAnimated:(BOOL)animated;
 
--(BOOL)updateTiles;
+-(void)updateTiles;
 
 -(void)updateNumberOfRows;
 -(void)updateTileWidth;
@@ -35,7 +35,8 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 
 -(void)loadNumberOfTilesFromDelegate;
 
--(BOOL)deleteTilesAtIndexString:(NSString*)key;
+-(void)deleteCellAtIndex:(NSUInteger)index stepBack:(BOOL)stepBack;
+-(void)deleteTileAtIndexString:(NSString*)key stepBack:(BOOL)stepBack;
 
 -(void)tappedScrollView:(UITapGestureRecognizer*)tap;
 
@@ -209,12 +210,24 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     }
 }
 
--(BOOL)deleteCellAtIndex:(NSUInteger)index
+-(void)stepBackAllTilesStartingAtIndex:(NSInteger)index
 {
-    return [self deleteTilesAtIndexString:indexStringForKey(index)];
+    UIView* tile = [self tileForIndex:index];
+    if (tile)
+    {
+        [_cellsDictionary removeObjectForKey:[NSString stringWithFormat:@"%i",index]];
+        [_cellsDictionary setObject:tile forKey:[NSString stringWithFormat:@"%i",index - 1]];
+        [self layoutTile:tile tileIndex:index - 1 onScreen:YES animated:YES withDelay:0 completion:nil];
+        [self stepBackAllTilesStartingAtIndex:index + 1];
+    }
 }
 
--(BOOL)deleteTilesAtIndexString:(NSString*)key
+-(void)deleteCellAtIndex:(NSUInteger)index stepBack:(BOOL)stepBack
+{
+    [self deleteTileAtIndexString:indexStringForKey(index) stepBack:stepBack];
+}
+
+-(void)deleteTileAtIndexString:(NSString*)key stepBack:(BOOL)stepBack
 {
     UIView* view = [_cellsDictionary objectForKey:key];
     if (view)
@@ -227,11 +240,10 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
         }];
 
         [_cellsDictionary removeObjectForKey:key];
-        
-        return YES;
+
+        if (stepBack)
+            [self stepBackAllTilesStartingAtIndex:key.integerValue + 1];
     }
-    
-    return NO;
 }
 
 -(BOOL)addCellAtIndex:(NSUInteger)index
@@ -332,7 +344,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 //}
 
 #pragma mark update methods
--(BOOL)updateTiles
+-(void)updateTiles
 {
     if (!_cellsDictionary)
     {
@@ -343,15 +355,13 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     NSUInteger firstVisibleCell = lowerVisibleRow * _numberOfColumns;
     NSUInteger currentNumberOfVisibleRows = self.currentNumberOfVisibleRows;
     NSUInteger lastVisibleCell = (lowerVisibleRow + currentNumberOfVisibleRows) * _numberOfColumns;
-    BOOL update = NO;
 
     if (firstVisibleCell)
     {
         //Check for old cells to throw out
         for (int index = firstVisibleCell - _numberOfColumns; index < firstVisibleCell; index++)
         {
-            if ([self deleteCellAtIndex:index])
-                update = YES;
+            [self deleteCellAtIndex:index stepBack:NO];
         }
     }
     
@@ -359,23 +369,18 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     {
         if (index < _numberOfCells)
         {
-            if ([self addCellAtIndex:index])
-                update = YES;
+            [self addCellAtIndex:index];
         }
     }
     
-    //    NSLog(@"_numberOfCells: %i",_numberOfCells);
     if (lastVisibleCell < _numberOfCells)
     {
         //Check for old cells to throw out
         for (int index = lastVisibleCell; index < _numberOfCells; index++)
         {
-            if ([self deleteCellAtIndex:index])
-                update = YES;
+            [self deleteCellAtIndex:index stepBack:NO];
         }
     }
-    
-    return update;
 }
 
 -(void)updateNumberOfRows
@@ -425,7 +430,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     
     for (NSString* key in keys)
     {
-        [self deleteTilesAtIndexString:key];
+        [self deleteTileAtIndexString:key stepBack:NO];
     }
     
     _numberOfCells = 0;
@@ -468,11 +473,9 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 
 -(void)removeViewAtIndex:(NSUInteger)index
 {
-    if ([self deleteCellAtIndex:index])
-    {
-        _numberOfCells--;
-        [self updateNumberOfRows];
-    }
+    [self deleteCellAtIndex:index stepBack:YES];
+    _numberOfCells--;
+    [self updateNumberOfRows];
 }
 
 -(void)reloadViewAtIndex:(NSUInteger)index
