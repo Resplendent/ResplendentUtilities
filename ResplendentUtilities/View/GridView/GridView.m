@@ -517,12 +517,23 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
             [_pullToLoadDelegate gridViewPullToLoadMore:self];
         }
     }
+
+    if (_lastScrollOffset != scrollView.contentOffset.y)
+    {
+        if (_scrollDelegate)
+        {
+            [_scrollDelegate gridView:self didScrollWithDirection:(_lastScrollOffset > scrollView.contentOffset.y ? GridViewScrollDelegateDirectionUp : GridViewScrollDelegateDirectionDown)];
+        }
+        
+        if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.frame) < scrollView.contentSize.height)
+            _lastScrollOffset = scrollView.contentOffset.y;
+    }
 }
 
 #pragma mark - static c methods
 CG_INLINE NSString* indexStringForKey(NSUInteger index)
 {
-    return [NSString stringWithFormat:@"%i",index];
+    return RUStringWithFormat(@"%i",index);
 }
 
 #pragma mark - Static methods

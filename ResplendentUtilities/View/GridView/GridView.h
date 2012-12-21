@@ -26,6 +26,7 @@ typedef enum {
     CGFloat _modifiedSpaceBetweenCells;
     NSUInteger _numberOfRows;
 
+    CGFloat _lastScrollOffset;
 //    dispatch_queue_t _layoutTileQueue;
 }
 
@@ -40,6 +41,7 @@ typedef enum {
 @property (nonatomic, assign) id<GridViewDataSource> dataSource;
 @property (nonatomic, assign) id<GridViewDataSourceSelectionDelegate> selectionDelegate;
 @property (nonatomic, assign) id<GridViewPullToLoad> pullToLoadDelegate;
+@property (nonatomic, assign) id<GridViewScrollDelegate> scrollDelegate;
 
 @property (nonatomic, assign) CGFloat cellSpacing;
 @property (nonatomic, assign) NSUInteger numberOfColumns;
