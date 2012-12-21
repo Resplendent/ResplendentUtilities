@@ -16,8 +16,6 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 
 @interface GridView ()
 
-@property (nonatomic, readonly) CGSize tileSize;
-
 @property (nonatomic, readonly) NSInteger lowestVisibleRow;
 @property (nonatomic, readonly) NSUInteger currentNumberOfVisibleRows;
 
@@ -47,7 +45,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 
 @end
 
-//#define kECGridViewLayoutTileQueueName "ECGridview.layoutTiles"
+
 
 
 @implementation GridView
@@ -56,14 +54,11 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 {
     if (self = [super initWithFrame:frame])
     {
-//        _layoutTileQueue = dispatch_queue_create(kECGridViewLayoutTileQueueName, NULL);
-
         _scrollView = [UIScrollView new];
         [_scrollView setBackgroundColor:[UIColor clearColor]];
         [_scrollView setDelegate:self];
-        [self addSubview:_scrollView];
-        
         [_scrollView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedScrollView:)]];
+        [self addSubview:_scrollView];
     }
     
     return self;
@@ -90,11 +85,6 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 }
 
 #pragma mark - Setter/Getter methods
--(CGSize)tileSize
-{
-    return (CGSize){_cellWidth, _cellWidth};
-}
-
 -(NSUInteger)currentNumberOfVisibleRows
 {
     NSUInteger numberOfVisibleRows =  ceilf(CGRectGetHeight(_scrollView.frame) / (_cellWidth + _modifiedSpaceBetweenCells));
@@ -282,7 +272,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 -(BOOL)layoutTile:(UIView*)tile tileIndex:(NSInteger)tileIndex onScreen:(BOOL)onScreen animated:(BOOL)animated withDelay:(NSTimeInterval)delay completion:(void(^)(void))completion
 {
     CGFloat width = (_cellWidth + _modifiedSpaceBetweenCells);
-    CGRect newFrame = {floor([self columnForIndex:tileIndex] * width),_upperPadding + floor(width * [self rowForIndex:tileIndex]),self.tileSize};
+    CGRect newFrame = {_contentInsets.left + floor([self columnForIndex:tileIndex] * width),_contentInsets.top + floor(width * [self rowForIndex:tileIndex]),_cellWidth,_cellWidth};
     
     if (!onScreen)
     {
@@ -390,7 +380,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 
 -(void)updateTileWidth
 {
-    CGFloat newCellWidth = [GridView cellWidthForGridWidth:CGRectGetWidth(_scrollView.frame) numberOfColumns:_numberOfColumns cellSpacing:_cellSpacing];
+    CGFloat newCellWidth = [GridView cellWidthForGridWidth:CGRectGetWidth(_scrollView.frame) numberOfColumns:_numberOfColumns cellSpacing:_cellSpacing leftPadding:_contentInsets.left rightPadding:_contentInsets.right];
     if (_cellWidth != newCellWidth)
     {
         _cellWidth = newCellWidth;
@@ -400,12 +390,12 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 
 -(void)updateModifiedSpaceInBetweenTiles
 {
-    _modifiedSpaceBetweenCells = (CGRectGetWidth(_scrollView.frame) - (_numberOfColumns * _cellWidth)) / (_numberOfColumns - 1);
+    _modifiedSpaceBetweenCells = ((CGRectGetWidth(_scrollView.frame) - _contentInsets.left - _contentInsets.right) - (_numberOfColumns * _cellWidth)) / (_numberOfColumns - 1);
 }
 
 -(void)updateScrollViewContentSize
 {
-    CGFloat contentHeight = MAX(_numberOfRows * _cellWidth + (_numberOfRows - 1) * _modifiedSpaceBetweenCells + _upperPadding + _lowerPadding, CGRectGetHeight(_scrollView.frame) + 1);
+    CGFloat contentHeight = MAX(_numberOfRows * _cellWidth + (_numberOfRows - 1) * _modifiedSpaceBetweenCells + _contentInsets.top + _contentInsets.bottom, CGRectGetHeight(_scrollView.frame) + 1);
 
     if (self.pullToLoadMore)
     {
@@ -537,9 +527,9 @@ CG_INLINE NSString* indexStringForKey(NSUInteger index)
 }
 
 #pragma mark - Static methods
-+(CGFloat)cellWidthForGridWidth:(CGFloat)gridWidth numberOfColumns:(NSUInteger)numberOfColumns cellSpacing:(CGFloat)cellSpacing
++(CGFloat)cellWidthForGridWidth:(CGFloat)gridWidth numberOfColumns:(NSUInteger)numberOfColumns cellSpacing:(CGFloat)cellSpacing leftPadding:(CGFloat)leftPadding rightPadding:(CGFloat)rightPadding
 {
-    return ceilf((gridWidth - (numberOfColumns - 1) * cellSpacing) / numberOfColumns);
+    return ceilf(((gridWidth - leftPadding - rightPadding) - (numberOfColumns - 1) * cellSpacing) / numberOfColumns);
 }
 
 @end

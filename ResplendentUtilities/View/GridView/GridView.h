@@ -35,8 +35,7 @@ typedef enum {
 @property (nonatomic, readonly) UIScrollView* scrollView;
 @property (nonatomic, readonly) CGFloat cellWidth;
 
-@property (nonatomic, assign) CGFloat upperPadding;
-@property (nonatomic, assign) CGFloat lowerPadding;
+@property (nonatomic, assign) UIEdgeInsets contentInsets;
 
 @property (nonatomic, assign) id<GridViewDataSource> dataSource;
 @property (nonatomic, assign) id<GridViewDataSourceSelectionDelegate> selectionDelegate;
@@ -63,6 +62,6 @@ typedef enum {
 //Only to be overloaded
 -(BOOL)addCellAtIndex:(NSUInteger)index;
 
-+(CGFloat)cellWidthForGridWidth:(CGFloat)gridWidth numberOfColumns:(NSUInteger)numberOfColumns cellSpacing:(CGFloat)cellSpacing;
++(CGFloat)cellWidthForGridWidth:(CGFloat)gridWidth numberOfColumns:(NSUInteger)numberOfColumns cellSpacing:(CGFloat)cellSpacing leftPadding:(CGFloat)leftPadding rightPadding:(CGFloat)rightPadding;
 
 @end
