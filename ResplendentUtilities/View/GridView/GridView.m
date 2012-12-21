@@ -525,7 +525,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
             [_scrollDelegate gridView:self didScrollWithDirection:(_lastScrollOffset > scrollView.contentOffset.y ? GridViewScrollDelegateDirectionUp : GridViewScrollDelegateDirectionDown)];
         }
         
-        if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.frame) < scrollView.contentSize.height)
+        if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.frame) < scrollView.contentSize.height && scrollView.contentOffset.y >= 0)
             _lastScrollOffset = scrollView.contentOffset.y;
     }
 }
