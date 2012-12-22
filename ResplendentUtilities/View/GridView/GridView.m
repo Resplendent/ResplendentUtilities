@@ -115,7 +115,6 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     if (self.pullToLoadMore == pullToLoadMore)
         return;
 
-    NSLog(@"%s %i",__PRETTY_FUNCTION__,pullToLoadMore);
     if (pullToLoadMore)
     {
         _pullToLoadMoreSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
