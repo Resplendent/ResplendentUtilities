@@ -16,7 +16,8 @@
 
 -(void)postSuccessLogicWithReponseObject:(id)responseObject noSuccessError:(NSError*)noSuccessError completionBlock:(void(^)(NSDictionary* responseDict))completionBlock failBlock:(void(^)(AFHTTPRequestOperation *operation, NSError* error))failBlock;
 
--(BOOL)responseDictionaryHasValidSuccessValue:(NSDictionary*)responseDict;
+BOOL responseDictionaryHasValidSuccessValue(NSDictionary* responseDict);
+//-(BOOL)responseDictionaryHasValidSuccessValue:(NSDictionary*)responseDict;
 
 @end
 
@@ -43,7 +44,7 @@
     id responseJSONParsedObject = [response objectFromJSONString];
     if (noSuccessError)
     {
-        if (![responseJSONParsedObject isKindOfClass:[NSDictionary class]] || [self responseDictionaryHasValidSuccessValue:responseJSONParsedObject])
+        if (![responseJSONParsedObject isKindOfClass:[NSDictionary class]] || responseDictionaryHasValidSuccessValue(responseJSONParsedObject))
         {
             if (completionBlock)
                 completionBlock(responseJSONParsedObject);
@@ -61,7 +62,7 @@
     }
 }
 
--(BOOL)responseDictionaryHasValidSuccessValue:(NSDictionary*)responseDict
+BOOL responseDictionaryHasValidSuccessValue(NSDictionary* responseDict)
 {
     NSNumber* successValue = [responseDict objectForKey:@"success"];
     return successValue && [successValue isKindOfClass:[NSNumber class]] && successValue.boolValue;
