@@ -33,4 +33,9 @@ typedef void (^imageErrorBlock)(UIImage* image, NSError* error);
 +(void)removeCacheImageByCacheName:(NSString*)cacheName;
 +(void)clearCache;
 
+//DEBUGGING
+
++(void)showLastImageOnView:(UIView*)view atFrame:(CGRect)showFrame withContentMode:(UIViewContentMode)contentMode;
++(void)hideLastImage;
+
 @end

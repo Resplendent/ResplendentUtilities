@@ -7,6 +7,7 @@
 //
 
 #import "AsynchronousUIImageRequest.h"
+#import "RUConstants.h"
 
 @implementation AsynchronousUIImageRequest
 
@@ -32,7 +33,7 @@ static NSMutableDictionary* fetchedImages;
 {
     if (!anUrl || anUrl.length == 0)
     {
-        NSLog(@"%s has nil url",__PRETTY_FUNCTION__);
+        RUDLog(@"has nil url");
         if (block)
             block(nil,[NSError errorWithDomain:@"Tried to fetch an image with a nil url" code:500 userInfo:nil]);
         return nil;
@@ -56,6 +57,9 @@ static NSMutableDictionary* fetchedImages;
     
     if (cachedImage)
     {
+        if (showLastImageView)
+            [showLastImageView setImage:cachedImage];
+
         if (block)
             block(cachedImage,nil);
     }
@@ -100,6 +104,9 @@ static NSMutableDictionary* fetchedImages;
     _data = nil;
     _connection = nil;
 
+    if (showLastImageView)
+        [showLastImageView setImage:image];
+
     if (_block)
         _block(image,nil);
 }
@@ -113,6 +120,24 @@ static NSMutableDictionary* fetchedImages;
 +(void)clearCache
 {
     [fetchedImages removeAllObjects];
+}
+
+static UIImageView* showLastImageView;
+#pragma mark Debug methods
++(void)showLastImageOnView:(UIView*)view atFrame:(CGRect)showFrame withContentMode:(UIViewContentMode)contentMode
+{
+    [self hideLastImage];
+
+    showLastImageView = [UIImageView new];
+    [showLastImageView setFrame:showFrame];
+    [showLastImageView setContentMode:contentMode];
+    [view addSubview:showLastImageView];
+}
+
++(void)hideLastImage
+{
+    [showLastImageView removeFromSuperview];
+    showLastImageView = nil;
 }
 
 @end

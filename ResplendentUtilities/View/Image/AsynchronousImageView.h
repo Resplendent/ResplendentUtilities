@@ -19,7 +19,7 @@
 @property (nonatomic, assign)   BOOL loadsUsingSpinner;
 @property (nonatomic, readonly) BOOL isLoading;
 @property (nonatomic, assign)   NSTimeInterval fadeInDuration;
-@property (nonatomic, assign)   BOOL hideOnFail;
+@property (nonatomic, assign)   BOOL clearOnFail;
 
 #if EC_DEBUG
 @property (nonatomic, assign)   UIView* viewToSetNeedsLayoutOnComplete;

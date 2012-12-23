@@ -8,12 +8,13 @@
 
 #import "AsynchronousImageView.h"
 #import "AsynchronousUIImageRequest.h"
+#import "RUConstants.h"
 
 @implementation AsynchronousImageView
 
 @synthesize loadsUsingSpinner;
 @synthesize fadeInDuration;
-@synthesize hideOnFail = _hideOnFail;
+@synthesize clearOnFail = _hideOnFail;
 @synthesize viewToSetNeedsLayoutOnComplete = _viewToSetNeedsLayoutOnComplete;
 
 -(id)init
@@ -21,7 +22,7 @@
     if (self = [super init])
     {
         [self setLoadsUsingSpinner:NO];
-        [self setHideOnFail:YES];
+        [self setClearOnFail:YES];
     }
 
     return self;
@@ -102,9 +103,9 @@
         }
         else if (_hideOnFail)
         {
-            [self setHidden:YES];
+            [self setImage:nil];
         }
-        
+
         [_viewToSetNeedsLayoutOnComplete setNeedsLayout];
     }];
 }
