@@ -25,12 +25,14 @@ UIImage* resizedIfLargerImagePreservingAspectRatio(UIImage* sourceImage, CGSize 
 #if DEBUG_TIMING
         NSDate* startDate = [NSDate date];
         NSLog(@"pre resized image %@",NSStringFromCGSize(sourceImage.size));
-        UIImage* finalImage = resizedImagePreservingAspectRatio(sourceImage, targetSize);
+//        UIImage* finalImage = resizedImagePreservingAspectRatio(sourceImage, targetSize);
+        UIImage* finalImage = [sourceImage resizedImage:targetSize interpolationQuality:kCGInterpolationHigh];
         NSLog(@"resizedImage size %@ in time %f",NSStringFromCGSize(finalImage.size),[[NSDate date] timeIntervalSinceDate:startDate]);
         return finalImage;
 #else
-        return resizedImagePreservingAspectRatio(sourceImage, targetSize);
-#endif
+//        return resizedImagePreservingAspectRatio(sourceImage, targetSize);
+        return [sourceImage resizedImage:targetSize interpolationQuality:kCGInterpolationHigh];
+    #endif
     }
     else
         return sourceImage;
