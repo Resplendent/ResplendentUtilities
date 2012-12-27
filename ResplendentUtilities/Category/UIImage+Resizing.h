@@ -10,13 +10,9 @@
 
 static inline double radians (double degrees) {return degrees * M_PI/180;}
 
+extern UIImage* resizedImagePreservingAspectRatioWithOrientation(UIImage* sourceImage, CGSize targetSize, UIImageOrientation orientation);
 extern UIImage* resizedIfLargerImagePreservingAspectRatio(UIImage* sourceImage, CGSize targetSize);
 extern UIImage* resizedImagePreservingAspectRatio(UIImage* sourceImage, CGSize targetSize);
-
-
-
-//extern UIImage* resizedIfLargerImage(UIImage* sourceImage, CGSize targetSize);
-//extern UIImage* resizedImage(UIImage* sourceImage, CGSize targetSize);
 
 @interface UIImage (Resizing)
 - (UIImage *)resizedImage:(CGSize)newSize interpolationQuality:(CGInterpolationQuality)quality;
