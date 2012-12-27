@@ -36,7 +36,7 @@ UIImage* resizedIfLargerImagePreservingAspectRatio(UIImage* sourceImage, CGSize 
         return sourceImage;
 }
 
-UIImage* resizedImagePreservingAspectRatio(UIImage* sourceImage, CGSize targetSize)
+UIImage* resizedImagePreservingAspectRatioWithOrientation(UIImage* sourceImage, CGSize targetSize, UIImageOrientation orientation)
 {
     CGSize imageSize = sourceImage.size;
     CGFloat width = imageSize.width;
@@ -81,12 +81,13 @@ UIImage* resizedImagePreservingAspectRatio(UIImage* sourceImage, CGSize targetSi
     
     CGContextRef bitmap;
     
-    if (sourceImage.imageOrientation == UIImageOrientationUp || sourceImage.imageOrientation == UIImageOrientationDown) {
+    if (orientation == UIImageOrientationUp || orientation == UIImageOrientationDown)
+    {
         bitmap = CGBitmapContextCreate(NULL, targetWidth, targetHeight, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
-        
-    } else {
+    }
+    else
+    {
         bitmap = CGBitmapContextCreate(NULL, targetHeight, targetWidth, CGImageGetBitsPerComponent(imageRef), CGImageGetBytesPerRow(imageRef), colorSpaceInfo, bitmapInfo);
-        
     }
     
     // In the right or left cases, we need to switch scaledWidth and scaledHeight,
@@ -124,6 +125,11 @@ UIImage* resizedImagePreservingAspectRatio(UIImage* sourceImage, CGSize targetSi
     CGImageRelease(ref);
     
     return newImage;
+}
+
+UIImage* resizedImagePreservingAspectRatio(UIImage* sourceImage, CGSize targetSize)
+{
+    return resizedImagePreservingAspectRatioWithOrientation(sourceImage, targetSize, sourceImage.imageOrientation);
 }
 
 - (UIImage*)imageByCropping:(UIImage *)imageToCrop toRect:(CGRect)rect
