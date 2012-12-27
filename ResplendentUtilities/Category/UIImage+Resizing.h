@@ -15,5 +15,5 @@ extern UIImage* resizedIfLargerImagePreservingAspectRatio(UIImage* sourceImage, 
 extern UIImage* resizedImagePreservingAspectRatio(UIImage* sourceImage, CGSize targetSize);
 
 @interface UIImage (Resizing)
-
+- (UIImage *)resizedImage:(CGSize)newSize interpolationQuality:(CGInterpolationQuality)quality;
 @end
