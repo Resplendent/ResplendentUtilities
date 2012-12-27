@@ -195,8 +195,8 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     if (tile)
     {
         [self advanceAllTilesStartingAtIndex:index + 1];
-        [_cellsDictionary removeObjectForKey:[NSString stringWithFormat:@"%i",index]];
-        [_cellsDictionary setObject:tile forKey:[NSString stringWithFormat:@"%i",index + 1]];
+        [_cellsDictionary removeObjectForKey:RUStringWithFormat(@"%i",index)];
+        [_cellsDictionary setObject:tile forKey:RUStringWithFormat(@"%i",index + 1)];
         [self layoutTile:tile tileIndex:index + 1 onScreen:YES animated:YES withDelay:0 completion:nil];
     }
 }
@@ -206,8 +206,8 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     UIView* tile = [self tileForIndex:index];
     if (tile)
     {
-        [_cellsDictionary removeObjectForKey:[NSString stringWithFormat:@"%i",index]];
-        [_cellsDictionary setObject:tile forKey:[NSString stringWithFormat:@"%i",index - 1]];
+        [_cellsDictionary removeObjectForKey:RUStringWithFormat(@"%i",index)];
+        [_cellsDictionary setObject:tile forKey:RUStringWithFormat(@"%i",index - 1)];
         [self layoutTile:tile tileIndex:index - 1 onScreen:YES animated:YES withDelay:0 completion:nil];
         [self stepBackAllTilesStartingAtIndex:index + 1];
     }
