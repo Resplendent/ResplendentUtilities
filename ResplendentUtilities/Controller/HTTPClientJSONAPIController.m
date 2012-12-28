@@ -69,6 +69,28 @@ BOOL responseDictionaryHasValidSuccessValue(NSDictionary* responseDict)
 }
 
 #pragma mark - Public methods
+- (void)cancelAllHTTPOperationsWithMethod:(NSString *)method
+{
+    for (NSOperation *operation in [_network.operationQueue operations])
+    {
+        if (![operation isKindOfClass:[AFHTTPRequestOperation class]])
+        {
+            continue;
+        }
+
+        if ((!method || [method isEqualToString:[[(AFHTTPRequestOperation *)operation request] HTTPMethod]]))
+        {
+            if ([self operationCanBeCancelled:(AFHTTPRequestOperation *)operation])
+                [operation cancel];
+        }
+    }
+}
+
+-(BOOL)operationCanBeCancelled:(AFHTTPRequestOperation*)operation
+{
+    return TRUE;
+}
+
 #pragma mark Get network requests
 -(void)getNetworkRequestWithUrl:(NSString*)url params:(NSDictionary*)params noSuccessError:(NSError *)noSuccessError completionBlock:(void (^)(id))completionBlock failBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *))failBlock
 {

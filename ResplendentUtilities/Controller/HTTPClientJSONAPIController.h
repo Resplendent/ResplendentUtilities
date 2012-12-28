@@ -15,6 +15,10 @@
 
 @property (nonatomic, strong) AFHTTPClient* network;
 
+- (void)cancelAllHTTPOperationsWithMethod:(NSString *)method;
+//Can be overloaded by subclass
+-(BOOL)operationCanBeCancelled:(AFHTTPRequestOperation*)operation;
+
 -(void)didFireExpiration;
 
 -(id)initWithBaseUrl:(NSString*)baseUrl;
