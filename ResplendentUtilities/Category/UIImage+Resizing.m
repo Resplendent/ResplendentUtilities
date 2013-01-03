@@ -31,7 +31,8 @@ UIImage* resizedIfLargerImagePreservingAspectRatio(UIImage* sourceImage, CGSize 
         return finalImage;
 #else
 //        return resizedImagePreservingAspectRatio(sourceImage, targetSize);
-        return [sourceImage resizedImage:targetSize interpolationQuality:kCGInterpolationHigh];
+        return resizedImagePreservingAspectRatio(sourceImage, targetSize);
+//        return [sourceImage resizedImage:targetSize interpolationQuality:kCGInterpolationHigh];
     #endif
     }
     else
