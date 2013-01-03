@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 Resplendent G.P. All rights reserved.
 //
 
+//@TODO should be split off to RUDebug, for putting into prefix file
+
 #import <Foundation/Foundation.h>
 
 #define RU_OVERRIDE_LOG NSLog(@"<%@:%d> You must override %@ in a subclass", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, NSStringFromSelector(_cmd));
