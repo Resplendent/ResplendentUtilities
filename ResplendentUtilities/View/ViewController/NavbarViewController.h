@@ -10,7 +10,8 @@
 
 typedef enum {
     NavbarViewControllerTransitionStyleFromRight = 0,
-    NavbarViewControllerTransitionStyleFromLeft
+    NavbarViewControllerTransitionStyleFromLeft,
+    NavbarViewControllerTransitionStyleNone
 }NavbarViewControllerTransitionStyle;
 
 @class Navbar;

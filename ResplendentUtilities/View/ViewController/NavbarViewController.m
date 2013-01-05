@@ -116,10 +116,14 @@ static NSTimeInterval popPushAnimationDuration;
                 break;
                 
             case NavbarViewControllerTransitionStyleFromRight:
-            default:
                 setCoords(navbarViewController.view, CGRectGetWidth(self.view.frame), 0);
                 break;
+
+            case NavbarViewControllerTransitionStyleNone:
+                setCoords(navbarViewController.view, 0, 0);
+                break;
         }
+
         [navbarViewController.navbar.animatableContentView setAlpha:0.0f];
         
         [self.view addSubview:navbarViewController.view];
