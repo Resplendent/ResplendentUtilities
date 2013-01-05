@@ -137,7 +137,7 @@ BOOL responseDictionaryHasValidSuccessValue(NSDictionary* responseDict)
     AFHTTPRequestOperation* op = [[AFHTTPRequestOperation alloc]initWithRequest:uploadRequest];
     
     [op setShouldExecuteAsBackgroundTaskWithExpirationHandler:^{
-        if ([self respondsToSelector:@selector(getUploader)])
+        if ([self respondsToSelector:@selector(didFireExpiration)])
             [self didFireExpiration];
     }];
     
