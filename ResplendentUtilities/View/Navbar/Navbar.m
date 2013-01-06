@@ -22,18 +22,22 @@
     return ([self initWithFrame:CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds), 44.0f) autoAdjustButtons:YES]);
 }
 
+-(id)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame])
+    {
+        _animatableContentView = [UIView new];
+        [self addSubview:_animatableContentView];
+        [self setUserInteractionEnabled:YES];
+    }
+
+    return self;
+}
+
 -(id)initWithFrame:(CGRect)frame autoAdjustButtons:(BOOL)autoAdjustButtons
 {
     _autoAdjustButtons = autoAdjustButtons;
-    if (self = [super initWithFrame:frame])
-    {
-        [self setUserInteractionEnabled:YES];
-
-        _animatableContentView = [UIView new];
-        [self addSubview:_animatableContentView];
-    }
-    
-    return self;
+    return [self initWithFrame:frame];
 }
 
 -(void)layoutSubviews
@@ -79,13 +83,6 @@
     [self setNeedsLayout];
 }
 
-#pragma mark - Public methods
-//-(void)setAlphaForComponents:(CGFloat)alpha
-//{
-//    [_leftButton setAlpha:alpha];
-//    [_rightButton setAlpha:alpha];
-//}
-
 #pragma mark - Getter methods
 -(NIAttributedLabel *)titleLabel
 {
@@ -95,7 +92,7 @@
         [_titleLabel setBackgroundColor:[UIColor clearColor]];
         [_titleLabel setTextAlignment:NSTextAlignmentCenter];
         [_titleLabel setVerticalTextAlignment:NIVerticalTextAlignmentMiddle];
-        [self addSubview:_titleLabel];
+        [_animatableContentView addSubview:_titleLabel];
         [self setNeedsLayout];
     }
 
