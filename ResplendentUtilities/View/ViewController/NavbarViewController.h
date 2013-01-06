@@ -23,10 +23,13 @@ typedef enum {
 
 @property (nonatomic, assign) NavbarViewController* parentNBViewController;
 @property (nonatomic, assign) NavbarViewController* childNBViewController;
+//@property (nonatomic, readonly) NavbarViewController* lastChildNBViewController;
 
 @property (nonatomic, assign) NavbarViewControllerTransitionStyle transitionStyle;
 
 @property (nonatomic, readonly) Class navbarClass;
+
+-(void)setTransitionStyleIncludeChildren:(NavbarViewControllerTransitionStyle)transitionStyle;
 
 -(void)popChildrenViewControllers:(BOOL)animated completion:(void (^)())completion;
 

@@ -73,6 +73,13 @@ static NSTimeInterval popPushAnimationDuration;
 }
 
 #pragma mark - Public methods
+-(void)setTransitionStyleIncludeChildren:(NavbarViewControllerTransitionStyle)transitionStyle
+{
+    [self setTransitionStyle:transitionStyle];
+    if (_childNBViewController)
+        [_childNBViewController setTransitionStyleIncludeChildren:transitionStyle];
+}
+
 -(void)popChildrenViewControllers:(BOOL)animated completion:(void (^)())completion
 {
     [self.childNBViewController popViewControllerAnimated:animated completion:completion];
@@ -87,11 +94,9 @@ static NSTimeInterval popPushAnimationDuration;
         return;
     }
 
-    if (self.childNBViewController)
+    if (_childNBViewController)
     {
-        [self popChildrenViewControllers:YES completion:^{
-            [self pushViewController:navbarViewController animated:animated completion:completion];
-        }];
+        [_childNBViewController pushViewController:navbarViewController animated:animated completion:completion];
         return;
     }
 
@@ -105,7 +110,7 @@ static NSTimeInterval popPushAnimationDuration;
     {
         __block BOOL selfUserInteractionEnabled = self.view.userInteractionEnabled;
         __block BOOL childUserInteractionEnabled = navbarViewController.view.userInteractionEnabled;
-        
+
         [self.view setUserInteractionEnabled:NO];
         [navbarViewController.view setUserInteractionEnabled:NO];
 
@@ -125,13 +130,13 @@ static NSTimeInterval popPushAnimationDuration;
         }
 
         [navbarViewController.navbar.animatableContentView setAlpha:0.0f];
-        
+
         [self.view addSubview:navbarViewController.view];
         [self.view bringSubviewToFront:self.navbar];
 
         [UIView animateWithDuration:popPushAnimationDuration animations:^{
             [self.navbar.animatableContentView setAlpha:0.0f];
-            
+
             [navbarViewController.navbar.animatableContentView setAlpha:1.0f];
 
             setXCoord(navbarViewController.view, 0);
@@ -140,9 +145,9 @@ static NSTimeInterval popPushAnimationDuration;
             [navbarViewController.view setUserInteractionEnabled:childUserInteractionEnabled];
 
             [self.view bringSubviewToFront:navbarViewController.view];
-            
+
             [self viewDidDisappear:YES];
-            
+
             if (completion)
                 completion();
         }];
@@ -185,7 +190,6 @@ static NSTimeInterval popPushAnimationDuration;
                     setXCoord(self.view, CGRectGetWidth(_parentNBViewController.view.frame));
                     break;
             }
-            
         } completion:^(BOOL finished) {
             [self.navbar removeFromSuperview];
             [self.view addSubview:self.navbar];
