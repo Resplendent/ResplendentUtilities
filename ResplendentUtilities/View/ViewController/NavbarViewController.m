@@ -151,6 +151,7 @@ static NSTimeInterval popPushAnimationDuration;
 
             setXCoord(navbarViewController.view, 0);
         } completion:^(BOOL finished) {
+            [self.navbar.animatableContentView setAlpha:1.0f];
             [self.view setUserInteractionEnabled:selfUserInteractionEnabled];
             [navbarViewController.view setUserInteractionEnabled:childUserInteractionEnabled];
 
