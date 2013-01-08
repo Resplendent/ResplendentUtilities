@@ -9,6 +9,7 @@
 #import "HTTPClientJSONAPIController.h"
 #import "JSONKit.h"
 #import "AFHTTPRequestOperation.h"
+#import "AFHTTPClient.h"
 
 #define kHTTPClientJSONAPIControllerPostMultipartDataNoDataError kNSErrorMake(@"postMultipartDataNetworkRequestWithUrl:params:data:dataParamKey:noSuccessError:completionBlock:failBlock: must have a non-nil data param.",420)
 
@@ -26,6 +27,11 @@ BOOL responseDictionaryHasValidSuccessValue(NSDictionary* responseDict);
 @implementation HTTPClientJSONAPIController
 
 @synthesize network = _network;
+
+-(void)checkToUploadNextImage
+{
+    RUDLog(@"");
+}
 
 -(id)initWithBaseUrl:(NSString*)baseUrl
 {
