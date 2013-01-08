@@ -136,10 +136,10 @@ BOOL responseDictionaryHasValidSuccessValue(NSDictionary* responseDict)
     
     AFHTTPRequestOperation* op = [[AFHTTPRequestOperation alloc]initWithRequest:uploadRequest];
     
-    __weak AFHTTPRequestOperation* opWeak = op;
+//    __weak AFHTTPRequestOperation* opWeak = op;
     
     [op setShouldExecuteAsBackgroundTaskWithExpirationHandler:^{
-        if (!opWeak.isFinished && !opWeak.isCancelled && [self respondsToSelector:@selector(didFireExpiration)])
+        if ([self respondsToSelector:@selector(didFireExpiration)])
             [self didFireExpiration];
     }];
     
