@@ -108,7 +108,17 @@ static NSTimeInterval popPushAnimationDuration;
 
     if (animated)
     {
+        __block NSMutableArray* userInteractionEnabledArray = [NSMutableArray array];
+        UIView* superView = self.view.superview;
+        while (superView)
+        {
+            [userInteractionEnabledArray addObject:@(superView.userInteractionEnabled)];
+            [superView setUserInteractionEnabled:NO];
+            superView = superView.superview;
+        }
+
         __block BOOL selfUserInteractionEnabled = self.view.userInteractionEnabled;
+        
         __block BOOL childUserInteractionEnabled = navbarViewController.view.userInteractionEnabled;
 
         [self.view setUserInteractionEnabled:NO];
@@ -143,6 +153,16 @@ static NSTimeInterval popPushAnimationDuration;
         } completion:^(BOOL finished) {
             [self.view setUserInteractionEnabled:selfUserInteractionEnabled];
             [navbarViewController.view setUserInteractionEnabled:childUserInteractionEnabled];
+
+            UIView* superView = self.view.superview;
+            while (superView)
+            {
+                NSNumber* userInteractionEnabledNumber = [userInteractionEnabledArray objectAtIndex:0];
+                [userInteractionEnabledArray removeObjectAtIndex:0];
+                [superView setUserInteractionEnabled:userInteractionEnabledNumber.boolValue];
+                superView = superView.superview;
+            }
+
 
             [self.view bringSubviewToFront:navbarViewController.view];
 
