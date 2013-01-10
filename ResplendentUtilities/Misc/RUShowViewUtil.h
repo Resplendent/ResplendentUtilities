@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+#define RUSynthesizeShowFunctionDeclarationForView(methodName) \
+-(void)show##methodName:(BOOL)show animated:(BOOL)animated
+
 #define RUSynthesizeShowFunctionForView(methodName, view) \
 -(void)show##methodName:(BOOL)show animated:(BOOL)animated \
 { \
