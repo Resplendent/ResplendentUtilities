@@ -154,6 +154,8 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 //            [_scrollView addPullToRefreshWithActionHandler:nil];
 //            [_scrollView.pullToRefreshView stopAnimating];
             [_scrollView setShowsPullToRefresh:NO];
+            [_scrollView.pullToRefreshView stopObservingScrollView];
+            [_scrollView.pullToRefreshView clearScrollView];
 //            [_scrollView setPullToRefreshView:nil];
         }
     }
