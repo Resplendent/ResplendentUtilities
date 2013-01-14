@@ -158,12 +158,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
         }
         else if (!pullToRefresh && self.pullToRefresh)
         {
-//            [_scrollView addPullToRefreshWithActionHandler:nil];
-//            [_scrollView.pullToRefreshView stopAnimating];
             [_scrollView setShowsPullToRefresh:NO];
-//            [_scrollView.pullToRefreshView stopObservingScrollView];
-//            [_scrollView.pullToRefreshView clearScrollView];
-//            [_scrollView setPullToRefreshView:nil];
         }
     }
 }
@@ -420,6 +415,12 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 }
 
 #pragma mark - Public instance methods
+-(void)stopAnimatingPullToRefresh
+{
+    if (_scrollView.pullToRefreshView.state == SVPullToRefreshStateLoading)
+        [_scrollView.pullToRefreshView stopAnimating];
+}
+
 -(void)clearCurrentTiles
 {
     NSArray* keys = _cellsDictionary.allKeys;

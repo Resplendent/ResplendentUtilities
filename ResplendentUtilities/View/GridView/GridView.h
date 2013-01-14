@@ -59,6 +59,8 @@ typedef enum {
 
 -(UIView*)tileForIndex:(NSUInteger)index;
 
+-(void)stopAnimatingPullToRefresh;
+
 //Only to be overloaded
 -(BOOL)addCellAtIndex:(NSUInteger)index;
 
