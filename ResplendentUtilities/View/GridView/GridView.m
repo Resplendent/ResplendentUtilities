@@ -131,7 +131,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 #pragma mark Pull To Refresh
 -(BOOL)pullToRefresh
 {
-    return _scrollView.showsPullToRefresh;
+    return _scrollView.pullToRefreshView && _scrollView.showsPullToRefresh;
 }
 
 -(void)setPullToRefresh:(BOOL)pullToRefresh
@@ -141,21 +141,28 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
         if (pullToRefresh && !self.pullToRefresh)
         {
             //To avoid capturing self strongly in block warning
-            __unsafe_unretained GridView* selfPointer = self;
-            [_scrollView addPullToRefreshWithActionHandler:^{
-                if (selfPointer.pullToLoadDelegate)
-                {
-                    [selfPointer.pullToLoadDelegate gridViewPullToReload:selfPointer];
-                }
-            }];
+            if (_scrollView.pullToRefreshView)
+            {
+                [_scrollView setShowsPullToRefresh:YES];
+            }
+            else
+            {
+                __unsafe_unretained GridView* selfPointer = self;
+                [_scrollView addPullToRefreshWithActionHandler:^{
+                    if (selfPointer.pullToLoadDelegate)
+                    {
+                        [selfPointer.pullToLoadDelegate gridViewPullToReload:selfPointer];
+                    }
+                }];
+            }
         }
         else if (!pullToRefresh && self.pullToRefresh)
         {
 //            [_scrollView addPullToRefreshWithActionHandler:nil];
 //            [_scrollView.pullToRefreshView stopAnimating];
             [_scrollView setShowsPullToRefresh:NO];
-            [_scrollView.pullToRefreshView stopObservingScrollView];
-            [_scrollView.pullToRefreshView clearScrollView];
+//            [_scrollView.pullToRefreshView stopObservingScrollView];
+//            [_scrollView.pullToRefreshView clearScrollView];
 //            [_scrollView setPullToRefreshView:nil];
         }
     }
