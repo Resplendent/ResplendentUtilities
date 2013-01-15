@@ -33,6 +33,7 @@ typedef enum {
 @property (nonatomic, assign) GridViewTileAnimationStyle tileAnimationStyle;
 
 @property (nonatomic, readonly) UIScrollView* scrollView;
+@property (nonatomic, readonly) UIView* tileContentView;
 @property (nonatomic, readonly) CGFloat cellWidth;
 
 @property (nonatomic, assign) UIEdgeInsets contentInsets;
