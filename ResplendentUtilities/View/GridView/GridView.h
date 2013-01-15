@@ -35,6 +35,7 @@ typedef enum {
 @property (nonatomic, readonly) UIScrollView* scrollView;
 @property (nonatomic, readonly) UIView* tileContentView;
 @property (nonatomic, readonly) CGFloat cellWidth;
+@property (nonatomic, readonly) CGSize scrollViewContentSize;
 
 @property (nonatomic, assign) UIEdgeInsets contentInsets;
 

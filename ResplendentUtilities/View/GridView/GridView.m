@@ -91,6 +91,19 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 }
 
 #pragma mark - Setter/Getter methods
+-(CGSize)scrollViewContentSize
+{
+    CGFloat contentHeight = MAX(_numberOfRows * _cellWidth + (_numberOfRows - 1) * _modifiedSpaceBetweenCells + _contentInsets.top + _contentInsets.bottom, CGRectGetHeight(_scrollView.frame) + 1);
+    
+    if (self.pullToLoadMore)
+    {
+        [_pullToLoadMoreSpinner setCenter:(CGPoint){CGRectGetWidth(_scrollView.frame) / 2.0f,contentHeight + (kGridViewPullToLoadMoreDefaultHeight / 2.0f)}];
+        contentHeight += kGridViewPullToLoadMoreDefaultHeight;
+    }
+
+    return (CGSize){CGRectGetWidth(self.frame), contentHeight};
+}
+
 -(NSUInteger)currentNumberOfVisibleRows
 {
     NSUInteger numberOfVisibleRows =  ceilf(CGRectGetHeight(_scrollView.frame) / (_cellWidth + _modifiedSpaceBetweenCells));
@@ -400,16 +413,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 
 -(void)updateScrollViewContentSize
 {
-    CGFloat contentHeight = MAX(_numberOfRows * _cellWidth + (_numberOfRows - 1) * _modifiedSpaceBetweenCells + _contentInsets.top + _contentInsets.bottom, CGRectGetHeight(_scrollView.frame) + 1);
-    
-    if (self.pullToLoadMore)
-    {
-        [_pullToLoadMoreSpinner setCenter:(CGPoint){CGRectGetWidth(_scrollView.frame) / 2.0f,contentHeight + (kGridViewPullToLoadMoreDefaultHeight / 2.0f)}];
-        //        NSLog(@"_pullToLoadMoreSpinner: %@",_pullToLoadMoreSpinner);
-        contentHeight += kGridViewPullToLoadMoreDefaultHeight;
-    }
-    
-    [_scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.frame), contentHeight)];
+    [_scrollView setContentSize:self.scrollViewContentSize];
     [_tileContentView setFrame:(CGRect){0,0,_scrollView.contentSize}];
 }
 
