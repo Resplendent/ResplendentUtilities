@@ -9,6 +9,8 @@
 #import "Navbar.h"
 #import "UIView+Utility.h"
 
+#define kNavbarDefaultButtonHorizontalEdgeInset 4.0f
+
 @implementation Navbar
 
 @synthesize autoAdjustButtons = _autoAdjustButtons;
@@ -26,6 +28,7 @@
 {
     if (self = [super initWithFrame:frame])
     {
+        _buttonHorizontalEdgeInset = kNavbarDefaultButtonHorizontalEdgeInset;
         _animatableContentView = [UIView new];
         [self addSubview:_animatableContentView];
         [self setUserInteractionEnabled:YES];

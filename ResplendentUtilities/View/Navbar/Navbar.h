@@ -13,6 +13,8 @@
 
 @property (nonatomic, retain) UIView* animatableContentView;
 
+@property (nonatomic, assign) CGFloat buttonHorizontalEdgeInset;
+
 @property (nonatomic, retain) NIAttributedLabel* titleLabel;
 @property (nonatomic, assign) CGFloat titleLabelTopEdgeInset;
 
