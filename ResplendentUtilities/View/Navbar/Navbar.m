@@ -53,10 +53,10 @@
     {
         CGFloat middle = self.frame.size.height / 2.0f;
 
-        [_leftButton setCenter:CGPointMake(MAX(middle, CGRectGetWidth(_leftButton.frame) / 2.0f) + 4.0f, middle)];
+        [_leftButton setCenter:CGPointMake(MAX(middle, CGRectGetWidth(_leftButton.frame) / 2.0f) + _buttonHorizontalEdgeInset, middle)];
         ceilCoordinates(_leftButton);
 
-        [_rightButton setCenter:CGPointMake(self.frame.size.width - MAX(middle, CGRectGetWidth(_rightButton.frame) / 2.0f) - 4.0f, middle)];
+        [_rightButton setCenter:CGPointMake(self.frame.size.width - MAX(middle, CGRectGetWidth(_rightButton.frame) / 2.0f) - _buttonHorizontalEdgeInset, middle)];
         ceilCoordinates(_rightButton);
     }
 
