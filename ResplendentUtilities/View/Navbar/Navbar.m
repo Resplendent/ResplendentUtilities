@@ -78,7 +78,7 @@
 {
     if (rightButton == _rightButton)
         return;
-    
+
     [_rightButton removeFromSuperview];
     _rightButton = rightButton;
     [_rightButton setShowsTouchWhenHighlighted:NO];
