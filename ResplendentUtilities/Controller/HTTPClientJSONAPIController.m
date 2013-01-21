@@ -10,6 +10,7 @@
 #import "JSONKit.h"
 #import "AFHTTPRequestOperation.h"
 #import "AFHTTPClient.h"
+#import "RUConstants.h"
 
 #define kHTTPClientJSONAPIControllerPostMultipartDataNoDataError kNSErrorMake(@"postMultipartDataNetworkRequestWithUrl:params:data:dataParamKey:noSuccessError:completionBlock:failBlock: must have a non-nil data param.",420)
 
