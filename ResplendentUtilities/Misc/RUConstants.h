@@ -16,7 +16,7 @@
 #define RULog(...) NSLog(__VA_ARGS__)
 #define RUDLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
-#define METHOD_IMPLEMENTATION_NEEDED NSLog(@"@IMPLEMENT Need to implement method %@ in class %@",NSStringFromSelector(_cmd),NSStringFromClass([self class]))
+#define RU_METHOD_IMPLEMENTATION_NEEDED NSLog(@"@IMPLEMENT Need to implement method %@ in class %@",NSStringFromSelector(_cmd),NSStringFromClass([self class]))
 //lcl_log(RKLogComponent, lcl_vDebug, @"" __VA_ARGS__)
 
 #define RUStringWithFormat(...) [NSString stringWithFormat:__VA_ARGS__]
