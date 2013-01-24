@@ -28,7 +28,7 @@
         return 60.0f * 60.0f * 24.0f;
 }
 
-+(NSString*)daysOrHoursOrMinutesOrSecondsStringWithTimeIntervalSince1970:(NSTimeInterval)timeInterval
++(NSString*)daysOrHoursOrMinutesOrSecondsStringWithTimeIntervalNow:(NSTimeInterval)timeInterval
 {
     double timeSince = abs(timeInterval);
     NSString* timeLabel = nil;
