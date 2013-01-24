@@ -12,7 +12,7 @@
 
 -(NSString*)daysOrHoursOrMinutesOrSecondsString
 {
-    return [NSDate daysOrHoursOrMinutesOrSecondsStringWithTimeIntervalSince1970:self.timeIntervalSinceNow];
+    return [NSDate daysOrHoursOrMinutesOrSecondsStringWithTimeIntervalNow:self.timeIntervalSinceNow];
 }
 
 -(NSTimeInterval)daysOrHoursOrMinutesOrSecondsTypeTimeInterval
