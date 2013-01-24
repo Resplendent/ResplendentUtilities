@@ -14,4 +14,6 @@
 
 -(NSTimeInterval)daysOrHoursOrMinutesOrSecondsTypeTimeInterval;
 
++(NSString*)daysOrHoursOrMinutesOrSecondsStringWithTimeIntervalSince1970:(NSTimeInterval)timeInterval;
+
 @end
