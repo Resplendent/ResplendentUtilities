@@ -16,4 +16,6 @@
 
 +(NSString*)daysOrHoursOrMinutesOrSecondsStringWithTimeIntervalNow:(NSTimeInterval)timeInterval;
 
+-(NSString*)timeAgoString;
+
 @end

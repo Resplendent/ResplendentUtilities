@@ -8,6 +8,9 @@
 
 #import "NSDate+Utility.h"
 
+static NSCalendar *gregorian;
+NSInteger const gregorianComponents = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+
 @implementation NSDate (Utility)
 
 -(NSString*)daysOrHoursOrMinutesOrSecondsString
@@ -42,6 +45,44 @@
         timeLabel = [NSString stringWithFormat:@"%.fd",floor(timeSince / 60.0f / 60.0f / 24.0f)];
     
     return timeLabel;
+}
+
+-(NSString*)timeAgoString
+{
+    if (!gregorian)
+    {
+        gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    }
+//    int unitFlags = ;
+    NSDateComponents *comps = [gregorian components:gregorianComponents fromDate:self toDate:[NSDate date] options:0];
+
+    NSString *timeAgoString = nil;
+    if ([comps year] > 0)
+    {
+        timeAgoString = [NSString stringWithFormat:@"%iy", [comps year]];
+    }
+    else if ([comps month] > 0)
+    {
+        timeAgoString = [NSString stringWithFormat:@"%imo", [comps month]];
+    }
+    else if ([comps day] > 0)
+    {
+        timeAgoString = [NSString stringWithFormat:@"%id", [comps day]];
+    }
+    else if ([comps hour] > 0)
+    {
+        timeAgoString = [NSString stringWithFormat:@"%ih", [comps hour]];
+    }
+    else if ([comps minute] > 0)
+    {
+        timeAgoString = [NSString stringWithFormat:@"%im", [comps minute]];
+    }
+    else if ([comps second] > 0)
+    {
+        timeAgoString = [NSString stringWithFormat:@"%is", [comps second]];
+    }
+
+    return [timeAgoString stringByAppendingString:@" ago"];;
 }
 
 @end
