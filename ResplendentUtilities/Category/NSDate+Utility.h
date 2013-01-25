@@ -10,11 +10,11 @@
 
 @interface NSDate (Utility)
 
--(NSString*)daysOrHoursOrMinutesOrSecondsString;
-
--(NSTimeInterval)daysOrHoursOrMinutesOrSecondsTypeTimeInterval;
-
-+(NSString*)daysOrHoursOrMinutesOrSecondsStringWithTimeIntervalNow:(NSTimeInterval)timeInterval;
+//-(NSString*)daysOrHoursOrMinutesOrSecondsString;
+//
+//-(NSTimeInterval)daysOrHoursOrMinutesOrSecondsTypeTimeInterval;
+//
+//+(NSString*)daysOrHoursOrMinutesOrSecondsStringWithTimeIntervalNow:(NSTimeInterval)timeInterval;
 
 -(NSString*)timeAgoString;
 
