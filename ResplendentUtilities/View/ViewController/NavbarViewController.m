@@ -172,6 +172,7 @@ static NSTimeInterval popPushAnimationDuration;
 
             [self viewDidDisappear:YES];
 
+            [[NSNotificationCenter defaultCenter] postNotificationName:kNavbarViewControllerNotificationCenterDidPush object:navbarViewController];
             if (completion)
                 completion();
         }];
@@ -181,6 +182,7 @@ static NSTimeInterval popPushAnimationDuration;
         [self.view addSubview:navbarViewController.view];
         setXCoord(navbarViewController.view, 0);
         [self viewDidDisappear:NO];
+
         [[NSNotificationCenter defaultCenter] postNotificationName:kNavbarViewControllerNotificationCenterDidPush object:navbarViewController];
         if (completion)
             completion();
