@@ -13,6 +13,9 @@
 
 #define kNavbarViewControllerPushPopAnimationDuration 0.3f
 
+NSString* const kNavbarViewControllerNotificationCenterDidPop = @"kNavbarViewControllerNotificationCenterDidPop";
+NSString* const kNavbarViewControllerNotificationCenterDidPush = @"kNavbarViewControllerNotificationCenterDidPush";
+
 static NSTimeInterval popPushAnimationDuration;
 
 @interface NavbarViewController ()
@@ -178,6 +181,7 @@ static NSTimeInterval popPushAnimationDuration;
         [self.view addSubview:navbarViewController.view];
         setXCoord(navbarViewController.view, 0);
         [self viewDidDisappear:NO];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNavbarViewControllerNotificationCenterDidPush object:navbarViewController];
         if (completion)
             completion();
     }
@@ -214,27 +218,37 @@ static NSTimeInterval popPushAnimationDuration;
         } completion:^(BOOL finished) {
             [self.navbar removeFromSuperview];
             [self.view addSubview:self.navbar];
-            [self.view removeFromSuperview];
 
-            [_parentNBViewController viewDidAppear:YES];
-            [self removeFromParentViewController];
-            [self.parentNBViewController setChildNBViewController:nil];
-            [self setParentNBViewController:nil];
-            
-            if (completion)
-                completion();
+            [self postPopLogicAnimated:YES completion:completion];
+
+//            [self.view removeFromSuperview];
+//            [_parentNBViewController viewDidAppear:YES];
+//            [self removeFromParentViewController];
+//            [self.parentNBViewController setChildNBViewController:nil];
+//            [self setParentNBViewController:nil];
+//
+//            if (completion)
+//                completion();
         }];
     }
     else
     {
-        [self.view removeFromSuperview];
-        [_parentNBViewController viewDidAppear:NO];
-        [self removeFromParentViewController];
-        [self.parentNBViewController setChildNBViewController:nil];
-        [self setParentNBViewController:nil];
-        if (completion)
-            completion();
+        [self postPopLogicAnimated:NO completion:completion];
     }
+}
+
+-(void)postPopLogicAnimated:(BOOL)animated completion:(void (^)())completion
+{
+    [self.view removeFromSuperview];
+    [_parentNBViewController viewDidAppear:animated];
+    [self removeFromParentViewController];
+    [self.parentNBViewController setChildNBViewController:nil];
+    [self setParentNBViewController:nil];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNavbarViewControllerNotificationCenterDidPop object:self];
+    
+    if (completion)
+        completion();
 }
 
 +(void)setPushPopTransitionDuration:(NSTimeInterval)duration

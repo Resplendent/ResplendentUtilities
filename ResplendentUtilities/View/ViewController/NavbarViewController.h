@@ -14,6 +14,9 @@ typedef enum {
     NavbarViewControllerTransitionStyleNone
 }NavbarViewControllerTransitionStyle;
 
+extern NSString* const kNavbarViewControllerNotificationCenterDidPop;
+extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
+
 @class Navbar;
 
 @interface NavbarViewController : UIViewController
@@ -22,7 +25,7 @@ typedef enum {
 @property (nonatomic, readonly) CGRect contentFrame;
 
 @property (nonatomic, assign) NavbarViewController* parentNBViewController;
-@property (nonatomic, assign) NavbarViewController* childNBViewController;
+@property (nonatomic, strong) NavbarViewController* childNBViewController;
 //@property (nonatomic, readonly) NavbarViewController* lastChildNBViewController;
 
 @property (nonatomic, assign) NavbarViewControllerTransitionStyle transitionStyle;
