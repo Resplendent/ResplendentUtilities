@@ -21,3 +21,5 @@
 
 #define RUStringWithFormat(...) [NSString stringWithFormat:__VA_ARGS__]
 
+#define RUiOSSystemVersionIsAtLeast(version) ([UIDevice currentDevice].systemVersion.floatValue >= version)
+
