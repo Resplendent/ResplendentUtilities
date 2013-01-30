@@ -56,7 +56,7 @@ static NSTimeInterval popPushAnimationDuration;
 {
     [super viewWillAppear:animated];
     [self.view bringSubviewToFront:self.navbar];
-    [self.view.superview bringSubviewToFront:self.view];
+//    [self.view.superview bringSubviewToFront:self.view];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
