@@ -43,15 +43,6 @@ static NSTimeInterval popPushAnimationDuration;
     [self.view addSubview:self.navbar];
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-
-    [self.navbar removeFromSuperview];
-    [self setNavbar:nil];
-}
-
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
