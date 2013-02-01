@@ -59,6 +59,11 @@
     [self fetchImageFromURL:anUrl withCacheName:anUrl];
 }
 
+-(NSString *)url
+{
+    return [_imageRequest url];
+}
+
 -(void)fetchImageFromURL:(NSString *)anUrl withCacheName:(NSString *)cacheName
 {
     [self cancelFetch];
