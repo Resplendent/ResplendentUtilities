@@ -23,16 +23,9 @@
 {
     if (self = [super initWithFrame:frame])
     {
-        [self setBackgroundColor:[UIColor greenColor]];
-        // Initialization code
         _inputTextField = [UITextField new];
-//        [_inputTextField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
         [_inputTextField setAutocorrectionType:UITextAutocorrectionTypeNo];
-//        [_inputTextField setFont:inputLabelFont];
-//        [_inputTextField setTextColor:inputLabelColor];
         [_inputTextField setReturnKeyType:UIReturnKeyNext];
-//        [_inputTextField setTextColor:[UIColor darkMemeniTextColor]];
-//        [_inputTextField setSecureTextEntry:inputTextSecure];
         [_inputTextField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
         [self addSubview:_inputTextField];
     }
