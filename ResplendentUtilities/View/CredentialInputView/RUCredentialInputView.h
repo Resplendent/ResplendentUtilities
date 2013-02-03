@@ -9,10 +9,19 @@
 #import <UIKit/UIKit.h>
 
 @interface RUCredentialInputView : UIView
+{
+    UIBezierPath* _path;
+}
 
 @property (nonatomic, readonly) UITextField* inputTextField;
 @property (nonatomic, readonly) CGRect inputTextFieldFrame;
 
 @property (nonatomic, assign) CGFloat textFieldHorizontalPadding;
+
+@property (nonatomic, assign) UIRectCorner cornerMasks;
+@property (nonatomic, assign) CGFloat cornerRadius;
+
+@property (nonatomic, assign) CGFloat borderWidth;
+@property (nonatomic, assign) UIColor* borderColor;
 
 @end
