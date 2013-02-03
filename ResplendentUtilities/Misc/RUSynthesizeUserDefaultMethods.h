@@ -17,3 +17,10 @@
     [userDefaults synchronize]; \
 }
 
+
+#define RUSynthesizeGetUserDefaultsMethod(varName,key) \
+-(id)varName \
+{ \
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
+    return [userDefaults objectForKey:key]; \
+}
