@@ -54,10 +54,10 @@
     [super layoutSubviews];
     [_inputTextField setFrame:self.inputTextFieldFrame];
 
-    if (_cornerRadius && _cornerRadius)
+    if (_cornerMasks && _cornerRadius)
     {
         _path = [self.layer applyMaskWithRoundedCorners:_cornerMasks radius:_cornerRadius];
-        [_path setLineWidth:_borderWidth];
+        [_path setLineWidth:_borderWidth * 2.0f];
         [self setNeedsDisplay];
     }
     else
