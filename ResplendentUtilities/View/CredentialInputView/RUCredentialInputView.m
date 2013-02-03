@@ -159,7 +159,7 @@
 #pragma mark - Getter methods
 -(CGRect)inputTextFieldFrame
 {
-    return (CGRect){_textFieldHorizontalPadding,0,CGRectGetWidth(self.bounds) - _textFieldHorizontalPadding,CGRectGetHeight(self.bounds)};
+    return (CGRect){_textFieldHorizontalPadding,0,CGRectGetWidth(self.bounds) - (_textFieldHorizontalPadding * 2.0f),CGRectGetHeight(self.bounds)};
 }
 
 @end
