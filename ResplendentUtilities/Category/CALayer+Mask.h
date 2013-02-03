@@ -10,6 +10,6 @@
 
 @interface CALayer (Mask)
 
-- (void)applyMaskWithRoundedCorners:(UIRectCorner)corners radius:(CGFloat)radius;
+- (UIBezierPath*)applyMaskWithRoundedCorners:(UIRectCorner)corners radius:(CGFloat)radius;
 
 @end

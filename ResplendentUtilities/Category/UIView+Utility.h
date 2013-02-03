@@ -109,8 +109,6 @@ CG_INLINE void increaseHeight(UIView* view,CGFloat heightIncrease)
 
 @interface UIView (Utility)
 
-//-(void)rounderCorners:(UIRectCorner)corners withRadius:(CGFloat)radius;
-
 -(UIView*)addUnderline;
 -(UIView*)addUnderlineWithColor:(UIColor*)color;
 -(UIView*)addUnderlineWithColorFloat:(float)colorFloat;
@@ -121,7 +119,6 @@ CG_INLINE void increaseHeight(UIView* view,CGFloat heightIncrease)
 -(UIView*)addOverlineWithColorFloat:(float)colorFloat;
 -(UIView*)addOverlineWithColorFloat:(float)colorFloat withWidth:(float)width;
 
-//-(UIView*)addDividerLineWithColorFloat:(float)colorFloat withWidth:(float)width atYCoord:(float)yCoord;
 -(UIView*)addDividerLineWithColorFloat:(float)colorFloat withWidth:(float)width atYCoord:(float)yCoord height:(float)height;
 
 -(void)setShadowSize:(CGSize)shadowSize radius:(float)radius opacity:(float)opacity;
@@ -134,10 +131,6 @@ CG_INLINE void increaseHeight(UIView* view,CGFloat heightIncrease)
 
 -(void)animateMoveBackStart:(void (^)())start completion:(void (^)(BOOL finished))completion;
 -(void)animateMoveFrontStart:(void (^)())start completion:(void (^)(BOOL finished))completion;
-
-
-//-(void)transitionFromView:(UIView*)view toView:(UIView*)view withType:(PineappleTransitionType)type from:(PineappleTransitionDirection)direction completion:(void (^)(BOOL finished))completion;
-//-(void)transitionToView:(UIView*)view withType:(PineappleTransitionType)type from:(PineappleTransitionDirection)direction withDelegate:(id)delegate;
 
 -(void)increaseWidth:(CGFloat)width;
 -(void)increaseHeight:(CGFloat)height;

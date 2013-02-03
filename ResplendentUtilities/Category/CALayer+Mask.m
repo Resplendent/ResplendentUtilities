@@ -11,12 +11,12 @@
 
 @implementation CALayer (Mask)
 
-- (void)applyMaskWithRoundedCorners:(UIRectCorner)corners radius:(CGFloat)radius
+- (UIBezierPath*)applyMaskWithRoundedCorners:(UIRectCorner)corners radius:(CGFloat)radius
 {
-    applyCALayerMaskWithRoundedCorners(self,corners,radius);
+    return applyCALayerMaskWithRoundedCorners(self,corners,radius);
 }
 
-void applyCALayerMaskWithRoundedCorners(CALayer* sourceLayer, UIRectCorner corners,CGFloat radius)
+UIBezierPath* applyCALayerMaskWithRoundedCorners(CALayer* sourceLayer, UIRectCorner corners,CGFloat radius)
 {
     UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:sourceLayer.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(radius, radius)];
     
@@ -27,6 +27,8 @@ void applyCALayerMaskWithRoundedCorners(CALayer* sourceLayer, UIRectCorner corne
     
     // Set the newly created shape layer as the mask for the image view's layer
     sourceLayer.mask = maskLayer;
+
+    return maskPath;
 }
 
 @end

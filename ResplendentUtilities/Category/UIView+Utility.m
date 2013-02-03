@@ -22,20 +22,6 @@
 
 @implementation UIView (Utility)
 
-
-//-(void)rounderCorners:(UIRectCorner)corners withRadius:(CGFloat)radius
-//{
-//    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(radius, radius)];
-//    
-//    // Create the shape layer and set its path
-//    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-//    maskLayer.frame = self.bounds;
-//    maskLayer.path = maskPath.CGPath;
-//    
-//    // Set the newly created shape layer as the mask for the image view's layer
-//    self.layer.mask = maskLayer;
-//}
-
 #pragma mark - Underline methods
 +(UIView*)makeDividerWithColorFloat:(float)colorFloat atXCoord:(float)xCoord atYCoord:(float)yCoord withWidth:(float)width height:(float)height
 {
