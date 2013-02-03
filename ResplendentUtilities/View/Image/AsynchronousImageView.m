@@ -64,11 +64,13 @@
     return [_imageRequest url];
 }
 
--(void)fetchImageFromURL:(NSString *)anUrl withCacheName:(NSString *)cacheName
+-(void)fetchImageFromURL:(NSString*)anUrl withCacheName:(NSString*)cacheName
 {
     [self cancelFetch];
-    [self setImage:nil];
-    
+
+    if (!_ignoreFetchImageClear)
+        [self setImage:nil];
+
     if (self.loadsUsingSpinner)
     {
         if (!_spinner)
@@ -76,7 +78,7 @@
             _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             [self addSubview:_spinner];
         }
-        
+
         [_spinner startAnimating];
     }
 

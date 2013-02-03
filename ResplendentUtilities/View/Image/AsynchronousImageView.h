@@ -17,6 +17,7 @@
 }
 
 @property (nonatomic, assign)   BOOL loadsUsingSpinner;
+@property (nonatomic, assign)   BOOL ignoreFetchImageClear;
 @property (nonatomic, readonly) BOOL isLoading;
 @property (nonatomic, assign)   NSTimeInterval fadeInDuration;
 @property (nonatomic, assign)   BOOL clearOnFail;
