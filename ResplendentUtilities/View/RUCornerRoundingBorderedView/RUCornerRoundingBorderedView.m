@@ -7,7 +7,9 @@
 //
 
 #import "RUCornerRoundingBorderedView.h"
+#import "UIView+Utility.h"
 #import "CALayer+Mask.h"
+#import "RUConstants.h"
 
 @interface RUCornerRoundingBorderedView ()
 
@@ -16,15 +18,6 @@
 @end
 
 @implementation RUCornerRoundingBorderedView
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
 
 -(void)layoutSubviews
 {
@@ -40,6 +33,8 @@
         _path = nil;
         [self setNeedsDisplay];
     }
+
+    [self layoutInputTextField];
 }
 
 -(void)drawRect:(CGRect)rect
@@ -120,3 +115,76 @@
 }
 
 @end
+
+
+
+#import <objc/runtime.h>
+NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCornerRoundingBorderedViewTextFieldObservingKey";
+
+@implementation RUCornerRoundingBorderedView (TextField)
+
+-(void)layoutInputTextField
+{
+    if (self.inputTextField)
+        [self.inputTextField setFrame:self.inputTextFieldFrame];
+}
+
+#pragma mark - Public methods
+-(void)addInputTextField
+{
+    if (self.inputTextField)
+    {
+        RUDLog(@"already have one");
+    }
+    else
+    {
+        UITextField* inputTextField = [UITextField new];
+        [inputTextField setAutocorrectionType:UITextAutocorrectionTypeNo];
+        [inputTextField setReturnKeyType:UIReturnKeyNext];
+        [inputTextField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
+        [self addSubview:inputTextField];
+        [self setInputTextField:inputTextField];
+    }
+}
+
+#pragma mark - Getter methods
+-(CGRect)inputTextFieldFrame
+{
+    UITextField* currentTextField = self.inputTextField;
+    CGSize size = (CGSize){CGRectGetWidth(self.bounds) - (CGRectGetMinX(currentTextField.frame) * 2.0f),CGRectGetHeight(self.bounds)};
+    return CGRectSetSize(size, currentTextField.frame);
+}
+
+-(UITextField *)inputTextField
+{
+    return objc_getAssociatedObject(self, &kRUCornerRoundingBorderedViewTextFieldObservingKey);
+}
+
+#pragma mark - Setter methods
+-(void)setTextFieldHorizontalPadding:(CGFloat)textFieldHorizontalPadding
+{
+    UITextField* currentTextField = self.inputTextField;
+    if (currentTextField)
+    {
+        [currentTextField setFrame:CGRectSetX(textFieldHorizontalPadding, currentTextField.frame)];
+    }
+    else
+    {
+        RUDLog(@"need to add the input text field first");
+    }
+}
+
+-(void)setInputTextField:(UITextField *)inputTextField
+{
+    [self willChangeValueForKey:kRUCornerRoundingBorderedViewTextFieldObservingKey];
+    objc_setAssociatedObject(self, &kRUCornerRoundingBorderedViewTextFieldObservingKey,
+                             inputTextField,
+                             OBJC_ASSOCIATION_ASSIGN);
+    [self didChangeValueForKey:kRUCornerRoundingBorderedViewTextFieldObservingKey];
+}
+
+@end
+
+
+
+
