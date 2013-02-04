@@ -147,7 +147,7 @@ NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCorner
     }
 }
 
--(CGRect)inputTextFieldFrame
+-(CGRect)textFieldFrame
 {
     CGRect frame = (CGRect){_textFieldLeftPadding,0,CGRectGetWidth(self.bounds) - CGRectGetWidth(_textField.frame),CGRectGetHeight(self.bounds)};
     if (_icon)
