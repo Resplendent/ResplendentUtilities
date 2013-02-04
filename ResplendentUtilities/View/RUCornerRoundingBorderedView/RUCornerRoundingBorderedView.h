@@ -23,10 +23,15 @@
 @property (nonatomic, readonly) UISwitch* switcher;
 @property (nonatomic, readonly) CGRect switcherFrame;
 @property (nonatomic, assign) CGFloat switcherRightPadding;
-@property (nonatomic, assign) CGFloat switcherWidth;
-@property (nonatomic, assign) CGFloat switcherVerticalPadding;
 
 -(void)addSwitcher;
+
+//Label
+@property (nonatomic, readonly) UILabel* label;
+@property (nonatomic, readonly) CGRect labelFrame;
+@property (nonatomic, assign) CGFloat labelLeftPadding;
+
+-(void)addLabel;
 
 
 @end

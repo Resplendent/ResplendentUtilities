@@ -39,10 +39,15 @@ NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCorner
 
     [self layoutInputTextField];
 
-//    if (self.switcher)
-//    {
-//        [self.switcher setFrame:self.switcherFrame];
-//    }
+    if (_switcher)
+    {
+        [_switcher setFrame:self.switcherFrame];
+    }
+
+    if (_label)
+    {
+        [_label setFrame:self.labelFrame];
+    }
 }
 
 -(void)drawRect:(CGRect)rect
@@ -81,15 +86,36 @@ NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCorner
     [self setNeedsLayout];
 }
 
+#pragma mark - Label methods
+-(CGRect)labelFrame
+{
+    return (CGRect){_labelLeftPadding,0,CGRectGetWidth(self.bounds) - _labelLeftPadding,CGRectGetHeight(self.frame)};
+}
+
+-(void)addLabel
+{
+    if (_label)
+    {
+        RUDLog(@"already have label");
+    }
+    else
+    {
+        _label = [UILabel new];
+        [_label setBackgroundColor:[UIColor clearColor]];
+        [self addSubview:_label];
+    }
+}
+
 #pragma mark - Switcher methods
 -(CGRect)switcherFrame
 {
-    return (CGRect){CGRectGetWidth(self.bounds) - _switcherRightPadding,_switcherVerticalPadding,-_switcherWidth,CGRectGetHeight(self.bounds) - (_switcherVerticalPadding * 2.0f)};
+    CGSize size = [_switcher sizeThatFits:CGSizeZero];
+    return (CGRect){CGRectGetWidth(self.bounds) - _switcherRightPadding - size.width,floorf((CGRectGetHeight(self.bounds) - size.height) / 2.0f),size};
 }
 
 -(void)addSwitcher
 {
-    if (self.switcher)
+    if (_switcher)
     {
         RUDLog(@"already have switcher");
     }
@@ -99,20 +125,6 @@ NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCorner
         [self addSubview:_switcher];
     }
 }
-
-//-(UISwitch *)switcher
-//{
-//    return objc_getAssociatedObject(self, &kRUCornerRoundingBorderedViewTextFieldObservingKey);
-//}
-//
-//-(void)setSwitcher:(UISwitch *)switcher
-//{
-//    [self willChangeValueForKey:kRUCornerRoundingBorderedViewTextFieldObservingKey];
-//    objc_setAssociatedObject(self, &kRUCornerRoundingBorderedViewTextFieldObservingKey,
-//                             switcher,
-//                             OBJC_ASSOCIATION_ASSIGN);
-//    [self didChangeValueForKey:kRUCornerRoundingBorderedViewTextFieldObservingKey];
-//}
 
 #pragma mark - Setter methods
 -(void)setCornerMasks:(UIRectCorner)cornerMasks
