@@ -11,6 +11,7 @@
 @interface RUCornerRoundingBorderedView : UIView
 {
     UIBezierPath* _path;
+    UIImageView* _icon;
 }
 
 @property (nonatomic, assign) UIRectCorner cornerMasks;
@@ -33,26 +34,41 @@
 
 -(void)addLabel;
 
+//Icon
+//@property (nonatomic, readonly) UIImageView* icon;
+@property (nonatomic, assign) UIImage* iconImage;
+@property (nonatomic, readonly) CGRect iconFrame;
+@property (nonatomic, assign) CGFloat iconLeftPadding;
+
+-(void)addIcon;
+
+//TextField
+@property (nonatomic, readonly) UITextField* textField;
+@property (nonatomic, readonly) CGRect textFieldFrame;
+@property (nonatomic, assign) CGFloat textFieldLeftPadding;
+
+//-(void)setTextFieldHorizontalPadding:(CGFloat)textFieldHorizontalPadding;
+
+-(void)addTextField;
 
 @end
 
 
 
 
-@interface RUCornerRoundingBorderedView (TextField)
-
-extern NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey;
-
-@property (nonatomic, readonly) UITextField* inputTextField;
-@property (nonatomic, readonly) CGRect inputTextFieldFrame;
-
-//@property (nonatomic, assign) CGFloat textFieldHorizontalPadding;
--(void)setTextFieldHorizontalPadding:(CGFloat)textFieldHorizontalPadding;
-
--(void)addInputTextField;
--(void)layoutInputTextField;
-
-@end
+//@interface RUCornerRoundingBorderedView (TextField)
+//
+//extern NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey;
+//
+//@property (nonatomic, readonly) UITextField* inputTextField;
+//@property (nonatomic, readonly) CGRect inputTextFieldFrame;
+//
+//-(void)setTextFieldHorizontalPadding:(CGFloat)textFieldHorizontalPadding;
+//
+//-(void)addInputTextField;
+//-(void)layoutInputTextField;
+//
+//@end
 
 
 
