@@ -42,8 +42,6 @@ NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCorner
         [_textField setFrame:self.textFieldFrame];
     }
 
-    RUDLog(@"_textField: %@",_textField);
-
     if (_switcher)
     {
         [_switcher setFrame:self.switcherFrame];
