@@ -42,6 +42,8 @@ NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCorner
         [_textField setFrame:self.textFieldFrame];
     }
 
+    RUDLog(@"_textField: %@",_textField);
+
     if (_switcher)
     {
         [_switcher setFrame:self.switcherFrame];
@@ -149,7 +151,7 @@ NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCorner
 
 -(CGRect)textFieldFrame
 {
-    CGRect frame = (CGRect){_textFieldLeftPadding,0,CGRectGetWidth(self.bounds) - CGRectGetWidth(_textField.frame) - (_textFieldLeftPadding * 2.0f),CGRectGetHeight(self.bounds)};
+    CGRect frame = (CGRect){_textFieldLeftPadding,0,CGRectGetWidth(self.bounds) - (_textFieldLeftPadding * 2.0f),CGRectGetHeight(self.bounds)};
 
     if (_icon)
     {
