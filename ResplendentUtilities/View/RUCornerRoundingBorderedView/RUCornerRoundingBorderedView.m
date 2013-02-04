@@ -126,7 +126,6 @@ NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCorner
     else
     {
         _icon = [UIImageView new];
-        [_icon setBackgroundColor:[UIColor redColor]];
         [self addSubview:_icon];
     }
 }
