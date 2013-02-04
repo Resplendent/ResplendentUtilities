@@ -7,15 +7,7 @@
 //
 
 #import "RUCredentialInputView.h"
-#import "CALayer+Mask.h"
-
-
-@interface RUCredentialInputView ()
-
--(void)updateBorderConsideringCorners;
-
-@end
-
+//#import "CALayer+Mask.h"
 
 @implementation RUCredentialInputView
 
@@ -47,35 +39,35 @@
     [super layoutSubviews];
     [_inputTextField setFrame:self.inputTextFieldFrame];
 
-    if (_cornerMasks && _cornerRadius)
-    {
-        _path = [self.layer applyMaskWithRoundedCorners:_cornerMasks radius:_cornerRadius];
-        [_path setLineWidth:_borderWidth * 2.0f];
-        [self setNeedsDisplay];
-    }
-    else
-    {
-        _path = nil;
-        [self setNeedsDisplay];
-    }
+//    if (_cornerMasks && _cornerRadius)
+//    {
+//        _path = [self.layer applyMaskWithRoundedCorners:_cornerMasks radius:_cornerRadius];
+//        [_path setLineWidth:_borderWidth * 2.0f];
+//        [self setNeedsDisplay];
+//    }
+//    else
+//    {
+//        _path = nil;
+//        [self setNeedsDisplay];
+//    }
 }
 
--(void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextClearRect(context, self.bounds);
-
-    CGContextSetFillColorWithColor(context, self.backgroundColor.CGColor);
-    CGContextFillRect(context, self.bounds);
-
-    if (_path)
-    {
-        [_borderColor setStroke];
-        [_path stroke];
-    }
-}
+//-(void)drawRect:(CGRect)rect
+//{
+//    [super drawRect:rect];
+//
+//    CGContextRef context = UIGraphicsGetCurrentContext();
+//    CGContextClearRect(context, self.bounds);
+//
+//    CGContextSetFillColorWithColor(context, self.backgroundColor.CGColor);
+//    CGContextFillRect(context, self.bounds);
+//
+//    if (_path)
+//    {
+//        [_borderColor setStroke];
+//        [_path stroke];
+//    }
+//}
 
 -(BOOL)becomeFirstResponder
 {
@@ -85,68 +77,6 @@
 -(BOOL)resignFirstResponder
 {
     return [_inputTextField resignFirstResponder];
-}
-
-#pragma mark - Private methods
--(void)updateBorderConsideringCorners
-{
-    if (_cornerMasks && _cornerRadius)
-    {
-        [self.layer setBorderColor:nil];
-        [self.layer setBorderWidth:0];
-    }
-    else
-    {
-        _path = nil;
-        if (_borderColor)
-            [self.layer setBorderColor:_borderColor.CGColor];
-
-        if (_borderWidth)
-            [self.layer setBorderWidth:_borderWidth];
-    }
-
-    [self setNeedsLayout];
-}
-
-#pragma mark - Setter methods
--(void)setCornerMasks:(UIRectCorner)cornerMasks
-{
-    if (_cornerMasks == cornerMasks)
-        return;
-
-    _cornerMasks = cornerMasks;
-
-    [self updateBorderConsideringCorners];
-}
-
--(void)setBorderColor:(UIColor *)borderColor
-{
-    if (_borderColor == borderColor)
-        return;
-
-    _borderColor = borderColor;
-
-    [self updateBorderConsideringCorners];
-}
-
--(void)setBorderWidth:(CGFloat)borderWidth
-{
-    if (_borderWidth == borderWidth)
-        return;
-
-    _borderWidth = borderWidth;
-
-    [self updateBorderConsideringCorners];
-}
-
--(void)setCornerRadius:(CGFloat)cornerRadius
-{
-    if (_cornerRadius == cornerRadius)
-        return;
-
-    _cornerRadius = cornerRadius;
-
-    [self updateBorderConsideringCorners];
 }
 
 #pragma mark - Getter methods

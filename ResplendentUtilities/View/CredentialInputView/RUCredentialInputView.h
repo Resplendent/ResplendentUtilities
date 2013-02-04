@@ -6,22 +6,14 @@
 //  Copyright (c) 2013 Resplendent G.P. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "RUCornerRoundingBorderedView.h"
 
-@interface RUCredentialInputView : UIView
-{
-    UIBezierPath* _path;
-}
+@interface RUCredentialInputView : RUCornerRoundingBorderedView
 
 @property (nonatomic, readonly) UITextField* inputTextField;
 @property (nonatomic, readonly) CGRect inputTextFieldFrame;
 
 @property (nonatomic, assign) CGFloat textFieldHorizontalPadding;
 
-@property (nonatomic, assign) UIRectCorner cornerMasks;
-@property (nonatomic, assign) CGFloat cornerRadius;
-
-@property (nonatomic, assign) CGFloat borderWidth;
-@property (nonatomic, assign) UIColor* borderColor;
-
 @end
+
