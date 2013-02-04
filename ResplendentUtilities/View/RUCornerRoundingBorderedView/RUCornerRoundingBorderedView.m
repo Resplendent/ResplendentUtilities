@@ -126,6 +126,7 @@ NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCorner
     else
     {
         _icon = [UIImageView new];
+        [_icon setBackgroundColor:[UIColor redColor]];
         [self addSubview:_icon];
     }
 }
@@ -149,7 +150,8 @@ NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCorner
 
 -(CGRect)textFieldFrame
 {
-    CGRect frame = (CGRect){_textFieldLeftPadding,0,CGRectGetWidth(self.bounds) - CGRectGetWidth(_textField.frame),CGRectGetHeight(self.bounds)};
+    CGRect frame = (CGRect){_textFieldLeftPadding,0,CGRectGetWidth(self.bounds) - CGRectGetWidth(_textField.frame) - (_textFieldLeftPadding * 2.0f),CGRectGetHeight(self.bounds)};
+
     if (_icon)
     {
         CGFloat addedXCoord = CGRectGetMaxX(self.iconFrame);
@@ -158,8 +160,16 @@ NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCorner
     }
 
     return frame;
-//    CGSize size = (CGSize){CGRectGetWidth(self.bounds) - (CGRectGetMinX(_textField.frame) * 2.0f),CGRectGetHeight(self.bounds)};
-//    return CGRectSetSize(size, _textField.frame);
+}
+
+-(void)setTextFieldLeftPadding:(CGFloat)textFieldLeftPadding
+{
+    if (_textFieldLeftPadding == textFieldLeftPadding)
+        return;
+
+    _textFieldLeftPadding = textFieldLeftPadding;
+
+    [self setNeedsLayout];
 }
 
 #pragma mark - Label methods
