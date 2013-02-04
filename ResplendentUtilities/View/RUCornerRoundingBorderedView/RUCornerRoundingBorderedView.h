@@ -19,8 +19,17 @@
 @property (nonatomic, assign) CGFloat borderWidth;
 @property (nonatomic, assign) UIColor* borderColor;
 
-@end
+//Switcher
+@property (nonatomic, readonly) UISwitch* switcher;
+@property (nonatomic, readonly) CGRect switcherFrame;
+@property (nonatomic, assign) CGFloat switcherRightPadding;
+@property (nonatomic, assign) CGFloat switcherWidth;
+@property (nonatomic, assign) CGFloat switcherVerticalPadding;
 
+-(void)addSwitcher;
+
+
+@end
 
 
 
@@ -28,7 +37,6 @@
 @interface RUCornerRoundingBorderedView (TextField)
 
 extern NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey;
-extern NSString* const kRUCornerRoundingBorderedViewTextFieldHorizontalPaddingObservingKey;
 
 @property (nonatomic, readonly) UITextField* inputTextField;
 @property (nonatomic, readonly) CGRect inputTextFieldFrame;
@@ -40,4 +48,21 @@ extern NSString* const kRUCornerRoundingBorderedViewTextFieldHorizontalPaddingOb
 -(void)layoutInputTextField;
 
 @end
+
+
+
+//@interface RUCornerRoundingBorderedView (Switcher)
+//
+//extern NSString* const kRUCornerRoundingBorderedViewSwitcherObservingKey;
+//
+//@property (nonatomic, readonly) UISwitch* switcher;
+//@property (nonatomic, readonly) CGRect switcherFrame;
+//
+//-(void)setSwitcherHorizontalPadding:(CGFloat)textFieldHorizontalPadding;
+//
+//-(void)addSwitcher;
+//-(void)layoutSwitcher;
+//
+//@end
+
 

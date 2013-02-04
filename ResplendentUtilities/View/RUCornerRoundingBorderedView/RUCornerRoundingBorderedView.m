@@ -10,6 +10,9 @@
 #import "UIView+Utility.h"
 #import "CALayer+Mask.h"
 #import "RUConstants.h"
+#import <objc/runtime.h>
+
+NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCornerRoundingBorderedViewTextFieldObservingKey";
 
 @interface RUCornerRoundingBorderedView ()
 
@@ -28,13 +31,18 @@
         [_path setLineWidth:_borderWidth * 2.0f];
         [self setNeedsDisplay];
     }
-    else
+    else if (_path)
     {
         _path = nil;
         [self setNeedsDisplay];
     }
 
     [self layoutInputTextField];
+
+//    if (self.switcher)
+//    {
+//        [self.switcher setFrame:self.switcherFrame];
+//    }
 }
 
 -(void)drawRect:(CGRect)rect
@@ -72,6 +80,39 @@
     
     [self setNeedsLayout];
 }
+
+#pragma mark - Switcher methods
+-(CGRect)switcherFrame
+{
+    return (CGRect){CGRectGetWidth(self.bounds) - _switcherRightPadding,_switcherVerticalPadding,-_switcherWidth,CGRectGetHeight(self.bounds) - (_switcherVerticalPadding * 2.0f)};
+}
+
+-(void)addSwitcher
+{
+    if (self.switcher)
+    {
+        RUDLog(@"already have switcher");
+    }
+    else
+    {
+        _switcher = [UISwitch new];
+        [self addSubview:_switcher];
+    }
+}
+
+//-(UISwitch *)switcher
+//{
+//    return objc_getAssociatedObject(self, &kRUCornerRoundingBorderedViewTextFieldObservingKey);
+//}
+//
+//-(void)setSwitcher:(UISwitch *)switcher
+//{
+//    [self willChangeValueForKey:kRUCornerRoundingBorderedViewTextFieldObservingKey];
+//    objc_setAssociatedObject(self, &kRUCornerRoundingBorderedViewTextFieldObservingKey,
+//                             switcher,
+//                             OBJC_ASSOCIATION_ASSIGN);
+//    [self didChangeValueForKey:kRUCornerRoundingBorderedViewTextFieldObservingKey];
+//}
 
 #pragma mark - Setter methods
 -(void)setCornerMasks:(UIRectCorner)cornerMasks
@@ -118,8 +159,6 @@
 
 
 
-#import <objc/runtime.h>
-NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCornerRoundingBorderedViewTextFieldObservingKey";
 
 @implementation RUCornerRoundingBorderedView (TextField)
 
