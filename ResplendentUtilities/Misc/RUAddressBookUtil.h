@@ -17,6 +17,8 @@ typedef enum
 
 @interface RUAddressBookUtil : NSObject
 
++(void)askUserForPermissionWithCompletion:(void(^)(BOOL alreadyAsked, BOOL granted))completion;
+
 +(NSDictionary*)getArraysFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties;
 +(NSArray*)getContactsPhoneNumbersArray;
 

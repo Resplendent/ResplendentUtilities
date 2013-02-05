@@ -28,20 +28,64 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddr
     [NSException raise:NSInvalidArgumentException format:@"unhandled property type %i",propertyType];
 }
 
++(void)askUserForPermissionWithCompletion:(void (^)(BOOL, BOOL))completion
+{
+    ABAddressBookRef addressbook = ABAddressBookCreate();
+
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
+    {
+        ABAddressBookRequestAccessWithCompletion(addressbook, ^(bool granted, CFErrorRef error) {
+            // First time access has been granted, add the contact
+            if (granted)
+                RUDLog(@"got permission");
+            else
+                RUDLog(@"rejected");
+
+            if (completion)
+                completion(NO,granted);
+        });
+    }
+    else
+    {
+        if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+        {
+            if (completion)
+                completion(YES,YES);
+        }
+        else
+        {
+            if (completion)
+                completion(YES,NO);
+        }
+    }
+}
+
 //phoneProperties must be an array of ABPropertyID types
 +(NSDictionary*)getArraysFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties
 {
-    NSMutableDictionary* arrayDictionary = [NSMutableDictionary dictionaryWithCapacity:phoneProperties.count];
-
-    //Add the arrays to the dictionary
-    for (NSNumber* phoneProperty in phoneProperties)
-    {
-        [arrayDictionary setObject:[NSMutableArray array] forKey:phoneProperty.stringValue];
-    }
-
     ABAddressBookRef addressbook = ABAddressBookCreate();
-    if( addressbook )
+
+    if(addressbook)
     {
+        if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+        {
+            // The user has previously given access, add the contact
+            RUDLog(@"has permission");
+        }
+        else
+        {
+            RUDLog(@"previously rejected permission");
+            return nil;
+        }
+
+        NSMutableDictionary* arrayDictionary = [NSMutableDictionary dictionaryWithCapacity:phoneProperties.count];
+        
+        //Add the arrays to the dictionary
+        for (NSNumber* phoneProperty in phoneProperties)
+        {
+            [arrayDictionary setObject:[NSMutableArray array] forKey:phoneProperty.stringValue];
+        }
+
         ABRecordRef source = ABAddressBookCopyDefaultSource(addressbook);
         CFArrayRef people = ABAddressBookCopyArrayOfAllPeopleInSource(addressbook, source);
         
@@ -72,9 +116,14 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddr
                 }
             }
         }
-    }
 
-    return arrayDictionary;
+        return arrayDictionary;
+    }
+    else
+    {
+        RUDLog(@"no address book");
+        return nil;
+    }
 }
 
 +(NSArray*)getContactsPhoneNumbersArray
