@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 #define kRUNumberOrNil(num) ([num isKindOfClass:[NSNumber class]] ? num : nil)
-#define kRUStringOrNil(num) ([num isKindOfClass:[NSString class]] ? num : nil)
+#define kRUStringOrNil(str) ([str isKindOfClass:[NSString class]] ? str : nil)
 
