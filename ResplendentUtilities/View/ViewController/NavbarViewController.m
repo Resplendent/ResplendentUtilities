@@ -46,8 +46,19 @@ static NSTimeInterval popPushAnimationDuration;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.view bringSubviewToFront:self.navbar];
-//    [self.view.superview bringSubviewToFront:self.view];
+
+    if (_childNBViewController)
+    {
+        if (_childNBViewController.view.superview != self.view)
+            RUDLog(@"child view's superview should be self's view");
+
+        [self.navbar removeFromSuperview];
+        [self.view insertSubview:self.navbar belowSubview:_childNBViewController.view];
+    }
+    else
+    {
+        [self.view bringSubviewToFront:self.navbar];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
