@@ -16,8 +16,6 @@
 
 @interface HTTPClientJSONAPIController ()
 
--(void)postSuccessLogicWithReponseObject:(id)responseObject noSuccessError:(NSError*)noSuccessError completionBlock:(void(^)(NSDictionary* responseDict))completionBlock failBlock:(void(^)(AFHTTPRequestOperation *operation, NSError* error))failBlock;
-
 BOOL responseDictionaryHasValidSuccessValue(NSDictionary* responseDict);
 //-(BOOL)responseDictionaryHasValidSuccessValue:(NSDictionary*)responseDict;
 
