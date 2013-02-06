@@ -86,4 +86,14 @@
     [op start];
 }
 
+-(void)putSecureNetworkRequestWithUrl:(NSString*)url params:(NSDictionary*)params noSuccessError:(NSError*)noSuccessError completionBlock:(void(^)(NSDictionary* responseDict))completionBlock failBlock:(void(^)(AFHTTPRequestOperation *operation, NSError* error))failBlock
+{
+    [_secureNetwork putPath:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self postSuccessLogicWithReponseObject:responseObject noSuccessError:noSuccessError completionBlock:completionBlock failBlock:failBlock];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failBlock)
+            failBlock(operation,error);
+    }];
+}
+
 @end
