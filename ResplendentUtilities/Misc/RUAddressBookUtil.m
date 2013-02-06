@@ -86,8 +86,11 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddr
             [arrayDictionary setObject:[NSMutableArray array] forKey:phoneProperty.stringValue];
         }
 
-        ABRecordRef source = ABAddressBookCopyDefaultSource(addressbook);
-        CFArrayRef people = ABAddressBookCopyArrayOfAllPeopleInSource(addressbook, source);
+//        ABRecordRef source = ABAddressBookCopyDefaultSource(addressbook);
+        
+        CFArrayRef people =  ABAddressBookCopyArrayOfAllPeople(addressbook);
+        
+//        CFArrayRef people = ABAddressBookCopyArrayOfAllPeopleInSource(addressbook, source);
         
         if( people )
         {
