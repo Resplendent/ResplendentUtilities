@@ -10,8 +10,43 @@
 #import <AddressBook/AddressBook.h>
 #import "RUConstants.h"
 
+static NSMutableArray* sharedInstances;
+
+@interface RUAddressBookUtil () <UIAlertViewDelegate>
+
+@property (nonatomic, strong) RUAddressBookUtilAskForPermissionsCompletionBlock alertViewCompletion;
+
++(BOOL)usesNativePermissions;
+
+@end
+
+
+
+@interface RUAddressBookUtil (UserDefaults)
+
++(NSNumber*)cachedHasAskedUserForContacts;
++(void)setCachedHasAskedUserForContacts:(NSNumber*)number;
+
+@end
+
+
+
+
 @implementation RUAddressBookUtil
 
+#pragma mark - UIAlertViewDelegate methods
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    BOOL allowedPermission = (buttonIndex != alertView.cancelButtonIndex);
+
+    [RUAddressBookUtil setCachedHasAskedUserForContacts:@(allowedPermission)];
+    _alertViewCompletion(NO,allowedPermission);
+    _alertViewCompletion = nil;
+
+    [sharedInstances removeObject:self];
+}
+
+#pragma mark - C methods
 ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddressBookUtilPhonePropertyType propertyType)
 {
     switch (propertyType)
@@ -28,34 +63,64 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddr
     [NSException raise:NSInvalidArgumentException format:@"unhandled property type %i",propertyType];
 }
 
-+(void)askUserForPermissionWithCompletion:(void (^)(BOOL, BOOL))completion
+#pragma mark - Static methods
++(BOOL)usesNativePermissions
+{
+    return (ABAddressBookRequestAccessWithCompletion != nil);
+}
+
++(void)askUserForPermissionWithCompletion:(RUAddressBookUtilAskForPermissionsCompletionBlock)completion
 {
     ABAddressBookRef addressbook = ABAddressBookCreate();
 
-    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
+    if ([self usesNativePermissions])
     {
-        ABAddressBookRequestAccessWithCompletion(addressbook, ^(bool granted, CFErrorRef error) {
-            // First time access has been granted, add the contact
-            if (granted)
-                RUDLog(@"got permission");
-            else
-                RUDLog(@"rejected");
-
-            if (completion)
-                completion(NO,granted);
-        });
-    }
-    else
-    {
-        if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+        if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
         {
-            if (completion)
-                completion(YES,YES);
+            ABAddressBookRequestAccessWithCompletion(addressbook, ^(bool granted, CFErrorRef error) {
+                // First time access has been granted, add the contact
+                if (granted)
+                    RUDLog(@"got permission");
+                else
+                    RUDLog(@"rejected");
+                
+                if (completion)
+                    completion(NO,granted);
+            });
         }
         else
         {
-            if (completion)
-                completion(YES,NO);
+            if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+            {
+                if (completion)
+                    completion(YES,YES);
+            }
+            else
+            {
+                if (completion)
+                    completion(YES,NO);
+            }
+        }
+    }
+    else
+    {
+        NSNumber* hasAskedForPermission = [self cachedHasAskedUserForContacts];
+        if (hasAskedForPermission)
+        {
+            completion(YES,hasAskedForPermission.boolValue);
+        }
+        else
+        {
+            RUAddressBookUtil* addressBookUtilInstance = [RUAddressBookUtil new];
+            [addressBookUtilInstance setAlertViewCompletion:completion];
+            
+            if (!sharedInstances)
+                sharedInstances = [NSMutableArray array];
+            
+            [sharedInstances addObject:addressBookUtilInstance];
+            
+            [[[UIAlertView alloc] initWithTitle:@"Albumatic Would Like to Access Your Contacts" message:nil delegate:addressBookUtilInstance cancelButtonTitle:@"Don't Allow" otherButtonTitles:@"OK", nil]show];
+            RUDLog(@"don't need to ask");
         }
     }
 }
@@ -67,15 +132,25 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddr
 
     if(addressbook)
     {
-        if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+        if ([self usesNativePermissions])
         {
-            // The user has previously given access, add the contact
-            RUDLog(@"has permission");
+            if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+            {
+                // The user has previously given access, add the contact
+                RUDLog(@"has permission");
+            }
+            else
+            {
+                RUDLog(@"previously rejected permission");
+                return nil;
+            }
         }
         else
         {
-            RUDLog(@"previously rejected permission");
-            return nil;
+            NSNumber* askedPermission = [self cachedHasAskedUserForContacts];
+
+            if (!(askedPermission && askedPermission.boolValue))
+                return nil;
         }
 
         NSMutableDictionary* arrayDictionary = [NSMutableDictionary dictionaryWithCapacity:phoneProperties.count];
@@ -175,3 +250,27 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddr
 }
 
 @end
+
+
+
+NSString* const kRUAddressBookUtilHasAskedUserForContacts = @"kRUAddressBookUtilHasAskedUserForContacts";
+@implementation RUAddressBookUtil (UserDefaults)
+
++(NSNumber*)cachedHasAskedUserForContacts
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:kRUAddressBookUtilHasAskedUserForContacts];
+}
+
++(void)setCachedHasAskedUserForContacts:(NSNumber*)number
+{
+    if (!number)
+        [NSException raise:NSInvalidArgumentException format:@"Can't send nil number"];
+
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:number forKey:kRUAddressBookUtilHasAskedUserForContacts];
+    [userDefaults synchronize];
+}
+
+@end
+
+

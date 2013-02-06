@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^RUAddressBookUtilAskForPermissionsCompletionBlock)(BOOL alreadyAsked, BOOL granted);
+
 typedef enum
 {
     kRUAddressBookUtilPhonePropertyTypePhone = 100,
@@ -17,7 +19,7 @@ typedef enum
 
 @interface RUAddressBookUtil : NSObject
 
-+(void)askUserForPermissionWithCompletion:(void(^)(BOOL alreadyAsked, BOOL granted))completion;
++(void)askUserForPermissionWithCompletion:(RUAddressBookUtilAskForPermissionsCompletionBlock)completion;
 
 +(NSDictionary*)getArraysFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties;
 +(NSArray*)getContactsPhoneNumbersArray;
