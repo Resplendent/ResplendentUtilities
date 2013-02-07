@@ -223,36 +223,37 @@ static NSTimeInterval popPushAnimationDuration;
             [self.navbar removeFromSuperview];
             [self.view addSubview:self.navbar];
 
-            [self postPopLogicAnimated:YES completion:completion];
-
-//            [self.view removeFromSuperview];
-//            [_parentNBViewController viewDidAppear:YES];
-//            [self removeFromParentViewController];
-//            [self.parentNBViewController setChildNBViewController:nil];
-//            [self setParentNBViewController:nil];
-//
-//            if (completion)
-//                completion();
+            [_parentNBViewController viewDidAppear:YES];
+            [self postPopLogicCompletion:completion];
         }];
     }
     else
     {
-        [self postPopLogicAnimated:NO completion:completion];
+        [_parentNBViewController viewDidAppear:NO];
+        [self postPopLogicCompletion:completion];
     }
 }
 
--(void)postPopLogicAnimated:(BOOL)animated completion:(void (^)())completion
+-(void)postPopLogicCompletion:(void (^)())completion
 {
-    [self.view removeFromSuperview];
-    [_parentNBViewController viewDidAppear:animated];
-    [self removeFromParentViewController];
-    [self.parentNBViewController setChildNBViewController:nil];
-    [self setParentNBViewController:nil];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNavbarViewControllerNotificationCenterDidPop object:self];
-    
-    if (completion)
-        completion();
+    if (_childNBViewController)
+    {
+        [_childNBViewController postPopLogicCompletion:^{
+            [self postPopLogicCompletion:completion];
+        }];
+    }
+    else
+    {
+        [self.view removeFromSuperview];
+        [self removeFromParentViewController];
+        [self.parentNBViewController setChildNBViewController:nil];
+        [self setParentNBViewController:nil];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNavbarViewControllerNotificationCenterDidPop object:self];
+        
+        if (completion)
+            completion();
+    }
 }
 
 +(void)setPushPopTransitionDuration:(NSTimeInterval)duration
