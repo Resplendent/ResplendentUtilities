@@ -47,43 +47,6 @@
 @property (nonatomic, readonly) CGRect textFieldFrame;
 @property (nonatomic, assign) CGFloat textFieldLeftPadding;
 
-//-(void)setTextFieldHorizontalPadding:(CGFloat)textFieldHorizontalPadding;
-
 -(void)addTextField;
 
 @end
-
-
-
-
-//@interface RUCornerRoundingBorderedView (TextField)
-//
-//extern NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey;
-//
-//@property (nonatomic, readonly) UITextField* inputTextField;
-//@property (nonatomic, readonly) CGRect inputTextFieldFrame;
-//
-//-(void)setTextFieldHorizontalPadding:(CGFloat)textFieldHorizontalPadding;
-//
-//-(void)addInputTextField;
-//-(void)layoutInputTextField;
-//
-//@end
-
-
-
-//@interface RUCornerRoundingBorderedView (Switcher)
-//
-//extern NSString* const kRUCornerRoundingBorderedViewSwitcherObservingKey;
-//
-//@property (nonatomic, readonly) UISwitch* switcher;
-//@property (nonatomic, readonly) CGRect switcherFrame;
-//
-//-(void)setSwitcherHorizontalPadding:(CGFloat)textFieldHorizontalPadding;
-//
-//-(void)addSwitcher;
-//-(void)layoutSwitcher;
-//
-//@end
-
-
