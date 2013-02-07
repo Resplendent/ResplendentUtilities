@@ -11,6 +11,8 @@
 
 #define kNSErrorMake(_text,_code) [NSError errorWithDomain:_text code:_code userInfo:nil]
 
+BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictionary* responseDict);
+
 @interface HTTPClientJSONAPIController : NSObject
 
 @property (nonatomic, strong) AFHTTPClient* network;

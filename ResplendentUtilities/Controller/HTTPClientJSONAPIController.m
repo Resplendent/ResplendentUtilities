@@ -14,14 +14,6 @@
 
 #define kHTTPClientJSONAPIControllerPostMultipartDataNoDataError kNSErrorMake(@"postMultipartDataNetworkRequestWithUrl:params:data:dataParamKey:noSuccessError:completionBlock:failBlock: must have a non-nil data param.",420)
 
-@interface HTTPClientJSONAPIController ()
-
-BOOL responseDictionaryHasValidSuccessValue(NSDictionary* responseDict);
-//-(BOOL)responseDictionaryHasValidSuccessValue:(NSDictionary*)responseDict;
-
-@end
-
-
 
 @implementation HTTPClientJSONAPIController
 
@@ -49,7 +41,7 @@ BOOL responseDictionaryHasValidSuccessValue(NSDictionary* responseDict);
     id responseJSONParsedObject = [response objectFromJSONString];
     if (noSuccessError)
     {
-        if (![responseJSONParsedObject isKindOfClass:[NSDictionary class]] || responseDictionaryHasValidSuccessValue(responseJSONParsedObject))
+        if (![responseJSONParsedObject isKindOfClass:[NSDictionary class]] || kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(responseJSONParsedObject))
         {
             if (completionBlock)
                 completionBlock(responseJSONParsedObject);
@@ -67,7 +59,7 @@ BOOL responseDictionaryHasValidSuccessValue(NSDictionary* responseDict);
     }
 }
 
-BOOL responseDictionaryHasValidSuccessValue(NSDictionary* responseDict)
+BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictionary* responseDict)
 {
     NSNumber* successValue = [responseDict objectForKey:@"success"];
     return successValue && [successValue isKindOfClass:[NSNumber class]] && successValue.boolValue;
