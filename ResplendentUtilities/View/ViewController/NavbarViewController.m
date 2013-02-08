@@ -78,12 +78,12 @@ static NSTimeInterval popPushAnimationDuration;
 }
 
 #pragma mark - Public methods
--(void)setTransitionStyleIncludeChildren:(NavbarViewControllerTransitionStyle)transitionStyle
-{
-    [self setTransitionStyle:transitionStyle];
-    if (_childNBViewController)
-        [_childNBViewController setTransitionStyleIncludeChildren:transitionStyle];
-}
+//-(void)setTransitionStyleIncludeChildren:(NavbarViewControllerChildTransitionStyle)transitionStyle
+//{
+//    [self setTransitionStyle:transitionStyle];
+//    if (_childNBViewController)
+//        [_childNBViewController setTransitionStyleIncludeChildren:transitionStyle];
+//}
 
 -(void)popChildrenViewControllers:(BOOL)animated completion:(void (^)())completion
 {
@@ -129,18 +129,34 @@ static NSTimeInterval popPushAnimationDuration;
         [self.view setUserInteractionEnabled:NO];
         [navbarViewController.view setUserInteractionEnabled:NO];
 
-        switch (self.transitionStyle)
+        CGFloat originalParentXCoord = CGRectGetMinX(self.view.frame);
+        CGFloat finalChildXCoord = 0.0f;
+        CGFloat finalParentXCoord = originalParentXCoord;
+
+        switch (self.childTransitionStyle)
         {
-            case NavbarViewControllerTransitionStyleFromLeft:
+            case NavbarViewControllerChildTransitionStyleFromLeft:
                 setCoords(navbarViewController.view, -CGRectGetWidth(self.view.frame), 0);
                 break;
                 
-            case NavbarViewControllerTransitionStyleFromRight:
+            case NavbarViewControllerChildTransitionStyleFromRight:
                 setCoords(navbarViewController.view, CGRectGetWidth(self.view.frame), 0);
                 break;
 
-            case NavbarViewControllerTransitionStyleNone:
+            case NavbarViewControllerChildTransitionStyleNone:
                 setCoords(navbarViewController.view, 0, 0);
+                break;
+        }
+
+        switch (self.parentTransitionStyle)
+        {
+            case NavbarViewControllerParentTransitionStyleToLeft:
+                finalParentXCoord -= CGRectGetWidth(self.view.frame);
+                finalChildXCoord += CGRectGetWidth(self.view.frame);
+                break;
+
+            default:
+                RU_METHOD_IMPLEMENTATION_NEEDED;
                 break;
         }
 
@@ -154,8 +170,12 @@ static NSTimeInterval popPushAnimationDuration;
 
             [navbarViewController.navbar.animatableContentView setAlpha:1.0f];
 
-            setXCoord(navbarViewController.view, 0);
+            [navbarViewController.view setFrame:CGRectSetX(finalChildXCoord, navbarViewController.view.frame)];
+            [self.view setFrame:CGRectSetX(finalParentXCoord, self.view.frame)];
         } completion:^(BOOL finished) {
+            [navbarViewController.view setFrame:CGRectSetX(0, navbarViewController.view.frame)];
+            [self.view setFrame:CGRectSetX(originalParentXCoord, self.view.frame)];
+
             [self.navbar.animatableContentView setAlpha:1.0f];
             [self.view setUserInteractionEnabled:selfUserInteractionEnabled];
             [navbarViewController.view setUserInteractionEnabled:childUserInteractionEnabled];
@@ -205,16 +225,16 @@ static NSTimeInterval popPushAnimationDuration;
         
         [UIView animateWithDuration:popPushAnimationDuration animations:^{
             [self.navbar.animatableContentView setAlpha:0.0f];
-            
+
             [_parentNBViewController.navbar.animatableContentView setAlpha:1.0f];
-            
-            switch (self.parentNBViewController.transitionStyle)
+
+            switch (self.parentNBViewController.childTransitionStyle)
             {
-                case NavbarViewControllerTransitionStyleFromLeft:
+                case NavbarViewControllerChildTransitionStyleFromLeft:
                     setXCoord(self.view, -CGRectGetWidth(_parentNBViewController.view.frame));
                     break;
                     
-                case NavbarViewControllerTransitionStyleFromRight:
+                case NavbarViewControllerChildTransitionStyleFromRight:
                 default:
                     setXCoord(self.view, CGRectGetWidth(_parentNBViewController.view.frame));
                     break;

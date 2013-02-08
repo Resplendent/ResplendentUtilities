@@ -9,10 +9,16 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    NavbarViewControllerTransitionStyleFromRight = 0,
-    NavbarViewControllerTransitionStyleFromLeft,
-    NavbarViewControllerTransitionStyleNone
-}NavbarViewControllerTransitionStyle;
+    NavbarViewControllerChildTransitionStyleNone,
+    NavbarViewControllerChildTransitionStyleFromRight,
+    NavbarViewControllerChildTransitionStyleFromLeft,
+}NavbarViewControllerChildTransitionStyle;
+
+typedef enum {
+    NavbarViewControllerParentTransitionStyleNone,
+    NavbarViewControllerParentTransitionStyleToRight,
+    NavbarViewControllerParentTransitionStyleToLeft
+}NavbarViewControllerParentTransitionStyle;
 
 extern NSString* const kNavbarViewControllerNotificationCenterDidPop;
 extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
@@ -28,11 +34,12 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 @property (nonatomic, strong) NavbarViewController* childNBViewController;
 //@property (nonatomic, readonly) NavbarViewController* lastChildNBViewController;
 
-@property (nonatomic, assign) NavbarViewControllerTransitionStyle transitionStyle;
+@property (nonatomic, assign) NavbarViewControllerChildTransitionStyle childTransitionStyle;
+@property (nonatomic, assign) NavbarViewControllerParentTransitionStyle parentTransitionStyle;
 
 @property (nonatomic, readonly) Class navbarClass;
 
--(void)setTransitionStyleIncludeChildren:(NavbarViewControllerTransitionStyle)transitionStyle;
+//-(void)setTransitionStyleIncludeChildren:(NavbarViewControllerChildTransitionStyle)transitionStyle;
 
 -(void)popChildrenViewControllers:(BOOL)animated completion:(void (^)())completion;
 
