@@ -130,6 +130,7 @@ static NSTimeInterval popPushAnimationDuration;
         [navbarViewController.view setUserInteractionEnabled:NO];
 
         CGFloat originalParentXCoord = CGRectGetMinX(self.view.frame);
+        CGFloat originalParentYCoord = CGRectGetMinY(self.view.frame);
         CGFloat finalChildXCoord = 0.0f;
         CGFloat finalParentXCoord = originalParentXCoord;
 
@@ -162,8 +163,12 @@ static NSTimeInterval popPushAnimationDuration;
 
         [navbarViewController.navbar.animatableContentView setAlpha:0.0f];
 
+        //Move navbar to superview
         [self.view addSubview:navbarViewController.view];
-        [self.view bringSubviewToFront:self.navbar];
+        [self.navbar removeFromSuperview];
+        [self.view.superview addSubview:self.navbar];
+        [self.navbar setFrame:CGRectSetXY(originalParentXCoord, originalParentYCoord, self.navbar.frame)];
+//        [self.view bringSubviewToFront:self.navbar];
 
         [UIView animateWithDuration:popPushAnimationDuration animations:^{
             [self.navbar.animatableContentView setAlpha:0.0f];
@@ -173,6 +178,11 @@ static NSTimeInterval popPushAnimationDuration;
             [navbarViewController.view setFrame:CGRectSetX(finalChildXCoord, navbarViewController.view.frame)];
             [self.view setFrame:CGRectSetX(finalParentXCoord, self.view.frame)];
         } completion:^(BOOL finished) {
+            //Move navbar back
+            [self.navbar removeFromSuperview];
+            [self.navbar setFrame:CGRectSetXY(0, 0, self.navbar.frame)];
+            [self.view addSubview:self.navbar];
+
             [navbarViewController.view setFrame:CGRectSetX(0, navbarViewController.view.frame)];
             [self.view setFrame:CGRectSetX(originalParentXCoord, self.view.frame)];
 
