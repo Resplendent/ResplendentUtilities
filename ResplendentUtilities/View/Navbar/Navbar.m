@@ -47,7 +47,7 @@
 {
     [super layoutSubviews];
 
-    [_animatableContentView setFrame:self.bounds];
+    [_animatableContentView setFrame:CGRectSetSize(self.bounds.size, _animatableContentView.frame)];
 
     if (_autoAdjustButtons)
     {

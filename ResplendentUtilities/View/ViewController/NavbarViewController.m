@@ -13,6 +13,8 @@
 
 #define kNavbarViewControllerPushPopAnimationDuration 0.3f
 
+#define kNavbarViewControllerPushPopNavbarMovementScale 8.0f
+
 NSString* const kNavbarViewControllerNotificationCenterDidPop = @"kNavbarViewControllerNotificationCenterDidPop";
 NSString* const kNavbarViewControllerNotificationCenterDidPush = @"kNavbarViewControllerNotificationCenterDidPush";
 
@@ -105,6 +107,12 @@ static NSTimeInterval popPushAnimationDuration;
         return;
     }
 
+//    dispatch_async(dispatch_get_main_queue(), ^{
+    if (navbarViewController.view)
+    {
+        [navbarViewController.navbar layoutSubviews];
+    }
+
     [navbarViewController setParentNBViewController:self];
     [self setChildNBViewController:navbarViewController];
     [self addChildViewController:navbarViewController];
@@ -179,7 +187,7 @@ static NSTimeInterval popPushAnimationDuration;
 //        [self.view bringSubviewToFront:self.navbar];
         [navbarViewController.navbar.animatableContentView removeFromSuperview];
         [navbarViewController.navbar.animatableContentView setAlpha:0.0f];
-        [navbarViewController.navbar.animatableContentView setFrame:CGRectSetX(CGRectGetMinX(self.view.frame) * 0.25f, self.navbar.frame)];
+        [navbarViewController.navbar.animatableContentView setFrame:CGRectSetX(CGRectGetWidth(self.view.frame) / kNavbarViewControllerPushPopNavbarMovementScale, navbarViewController.navbar.animatableContentView.frame)];
         [self.navbar addSubview:navbarViewController.navbar.animatableContentView];
 
         [UIView animateWithDuration:popPushAnimationDuration animations:^{
@@ -191,8 +199,10 @@ static NSTimeInterval popPushAnimationDuration;
             [navbarViewController.navbar.animatableContentView setAlpha:1.0f];
 
 //            [navbarViewController.navbar setFrame:CGRectSetX(0.0f, self.navbar.frame)];
-            [navbarViewController.navbar.animatableContentView setFrame:CGRectSetX(0.0f, self.navbar.frame)];
-            [self.navbar setFrame:CGRectSetX(0.0f, self.navbar.frame)];
+//            [navbarViewController.navbar.animatableContentView setFrame:CGRectSetX(0.0f, self.navbar.frame)];
+//            [navbarViewController.navbar.animatableContentView setFrame:CGRectSetX(CGRectGetWidth(self.view.frame) / (kNavbarViewControllerPushPopNavbarMovementScale / 2.0f), navbarViewController.navbar.animatableContentView.frame)];
+            [self.navbar setFrame:CGRectSetX(-CGRectGetWidth(self.view.frame) / kNavbarViewControllerPushPopNavbarMovementScale, self.navbar.frame)];
+//            [self.navbar.animatableContentView setFrame:CGRectSetX(-CGRectGetWidth(self.view.frame) / kNavbarViewControllerPushPopNavbarMovementScale, self.navbar.animatableContentView.frame)];
 //            [self.navbar setFrame:CGRectSetX(CGRectGetWidth(self.view.frame), self.navbar.frame)];
         } completion:^(BOOL finished) {
             //Move navbar back
@@ -202,10 +212,12 @@ static NSTimeInterval popPushAnimationDuration;
             [self.view addSubview:self.navbar];
 
             [navbarViewController.navbar.animatableContentView removeFromSuperview];
+            [navbarViewController.navbar.animatableContentView setFrame:CGRectSetX(0, navbarViewController.navbar.animatableContentView.frame)];
             [navbarViewController.navbar addSubview:navbarViewController.navbar.animatableContentView];
 
 //            [navbarViewController.navbar.rightButton setAlpha:1.0f];
             [navbarViewController.navbar setAlpha:1.0f];
+            [navbarViewController.navbar.animatableContentView setAlpha:1.0f];
 //            [navbarViewController.navbar.animatableContentView setAlpha:1.0f];
 //            [self.navbar setAlpha:1.0f];
             [self.navbar.animatableContentView setAlpha:1.0f];
@@ -245,6 +257,7 @@ static NSTimeInterval popPushAnimationDuration;
         if (completion)
             completion();
     }
+//    });
 }
 
 -(void)popViewControllerAnimated:(BOOL)animated completion:(void (^)())completion
@@ -315,7 +328,7 @@ static NSTimeInterval popPushAnimationDuration;
             [_parentNBViewController.view setFrame:CGRectSetX(animateToParentXCoord, _parentNBViewController.view.frame)];
 
             [_parentNBViewController.navbar setFrame:CGRectSetX(-CGRectGetWidth(_parentNBViewController.view.frame),_parentNBViewController.navbar.frame)];
-            [self.navbar setFrame:CGRectSetX(CGRectGetWidth(_parentNBViewController.view.frame) / 8.0f, self.navbar.frame)];
+            [self.navbar setFrame:CGRectSetX(CGRectGetWidth(_parentNBViewController.view.frame) / kNavbarViewControllerPushPopNavbarMovementScale, self.navbar.frame)];
         } completion:^(BOOL finished) {
             [_parentNBViewController.navbar removeFromSuperview];
             [_parentNBViewController.navbar setFrame:CGRectSetX(0,_parentNBViewController.navbar.frame)];
