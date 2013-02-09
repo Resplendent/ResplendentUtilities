@@ -130,7 +130,7 @@ static NSTimeInterval popPushAnimationDuration;
         [navbarViewController.view setUserInteractionEnabled:NO];
 
         CGFloat originalParentXCoord = CGRectGetMinX(self.view.frame);
-        CGFloat originalParentYCoord = CGRectGetMinY(self.view.frame);
+//        CGFloat originalParentYCoord = CGRectGetMinY(self.view.frame);
         CGFloat animateToChildXCoord = 0.0f;
         CGFloat animateToParentXCoord = originalParentXCoord;
 
@@ -161,32 +161,58 @@ static NSTimeInterval popPushAnimationDuration;
                 break;
         }
 
-        [navbarViewController.navbar.animatableContentView setAlpha:0.0f];
+        [navbarViewController.navbar setAlpha:0.0f];
+        [navbarViewController.navbar.rightButton setAlpha:0.0f];
+//        [navbarViewController.navbar.animatableContentView setAlpha:0.0f];
 
         //Move navbar to superview
         [self.view addSubview:navbarViewController.view];
+
         [self.navbar removeFromSuperview];
-        [self.view.superview addSubview:self.navbar];
-        [self.navbar setFrame:CGRectSetXY(originalParentXCoord, originalParentYCoord, self.navbar.frame)];
+//        [self.view.superview addSubview:self.navbar];
+//        [self.navbar setFrame:CGRectSetXY(originalParentXCoord, originalParentYCoord, self.navbar.frame)];
+        [self.navbar setFrame:CGRectSetX(-CGRectGetWidth(self.view.frame), self.navbar.frame)];
+        [navbarViewController.view insertSubview:self.navbar belowSubview:navbarViewController.navbar];
+
+//        [navbarViewController.navbar setFrame:CGRectSetX(CGRectGetMinX(self.navbar.frame) * 0.25f, self.navbar.frame)];
+//        [navbarViewController.view addSubview:self.navbar];
 //        [self.view bringSubviewToFront:self.navbar];
+        [navbarViewController.navbar.animatableContentView removeFromSuperview];
+        [navbarViewController.navbar.animatableContentView setAlpha:0.0f];
+        [navbarViewController.navbar.animatableContentView setFrame:CGRectSetX(CGRectGetMinX(self.view.frame) * 0.25f, self.navbar.frame)];
+        [self.navbar addSubview:navbarViewController.navbar.animatableContentView];
 
         [UIView animateWithDuration:popPushAnimationDuration animations:^{
-            [self.navbar.animatableContentView setAlpha:0.0f];
-
-            [navbarViewController.navbar.animatableContentView setAlpha:1.0f];
-
             [navbarViewController.view setFrame:CGRectSetX(animateToChildXCoord, navbarViewController.view.frame)];
             [self.view setFrame:CGRectSetX(animateToParentXCoord, self.view.frame)];
+
+            [self.navbar.animatableContentView setAlpha:0.0f];
+//            [self.navbar setAlpha:0.0f];
+            [navbarViewController.navbar.animatableContentView setAlpha:1.0f];
+
+//            [navbarViewController.navbar setFrame:CGRectSetX(0.0f, self.navbar.frame)];
+            [navbarViewController.navbar.animatableContentView setFrame:CGRectSetX(0.0f, self.navbar.frame)];
+            [self.navbar setFrame:CGRectSetX(0.0f, self.navbar.frame)];
+//            [self.navbar setFrame:CGRectSetX(CGRectGetWidth(self.view.frame), self.navbar.frame)];
         } completion:^(BOOL finished) {
             //Move navbar back
             [self.navbar removeFromSuperview];
+//            [self.navbar.animatableContentView setAlpha:1.0f];
             [self.navbar setFrame:CGRectSetXY(0, 0, self.navbar.frame)];
             [self.view addSubview:self.navbar];
+
+            [navbarViewController.navbar.animatableContentView removeFromSuperview];
+            [navbarViewController.navbar addSubview:navbarViewController.navbar.animatableContentView];
+
+//            [navbarViewController.navbar.rightButton setAlpha:1.0f];
+            [navbarViewController.navbar setAlpha:1.0f];
+//            [navbarViewController.navbar.animatableContentView setAlpha:1.0f];
+//            [self.navbar setAlpha:1.0f];
+            [self.navbar.animatableContentView setAlpha:1.0f];
 
             [navbarViewController.view setFrame:CGRectSetX(0, navbarViewController.view.frame)];
             [self.view setFrame:CGRectSetX(originalParentXCoord, self.view.frame)];
 
-            [self.navbar.animatableContentView setAlpha:1.0f];
             [self.view setUserInteractionEnabled:selfUserInteractionEnabled];
             [navbarViewController.view setUserInteractionEnabled:childUserInteractionEnabled];
 
