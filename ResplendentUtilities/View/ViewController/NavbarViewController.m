@@ -264,8 +264,6 @@ static NSTimeInterval popPushAnimationDuration;
             case NavbarViewControllerParentTransitionStyleToLeft:
                 startParentXCoord -= CGRectGetWidth(_parentNBViewController.view.frame);
                 startChildXCoord += CGRectGetWidth(_parentNBViewController.view.frame);
-//                animateToChildXCoord -= CGRectGetWidth(_parentNBViewController.view.frame);
-//                animateToChildXCoord -= CGRectGetWidth(_parentNBViewController.view.frame);
                 break;
                 
             default:
@@ -276,26 +274,19 @@ static NSTimeInterval popPushAnimationDuration;
         [_parentNBViewController.view setFrame:CGRectSetX(startParentXCoord, _parentNBViewController.view.frame)];
 
         [_parentNBViewController.navbar removeFromSuperview];
-//        [_parentNBViewController.navbar setFrame:CGRectSetX(startChildXCoord,_parentNBViewController.navbar.frame)];
-//        [_parentNBViewController.view.superview insertSubview:_parentNBViewController.navbar aboveSubview:_parentNBViewController.view];
         [_parentNBViewController.navbar setFrame:CGRectSetX(0,_parentNBViewController.navbar.frame)];
         [self.view addSubview:_parentNBViewController.navbar];
 
         [self.navbar removeFromSuperview];
-//        [_parentNBViewController.view addSubview:self.navbar];
         [_parentNBViewController.navbar addSubview:self.navbar];
 
         [self.navbar.rightButton setAlpha:0.0f];
 
         [UIView animateWithDuration:popPushAnimationDuration animations:^{
-//            [self.navbar.animatableContentView setAlpha:0.0f];
             [self.navbar setAlpha:0.0f];
-
-//            [_parentNBViewController.navbar.animatableContentView setAlpha:1.0f];
 
             [self.view setFrame:CGRectSetX(animateToChildXCoord, self.view.frame)];
             [_parentNBViewController.view setFrame:CGRectSetX(animateToParentXCoord, _parentNBViewController.view.frame)];
-//            [_parentNBViewController.navbar setFrame:CGRectSetX(0.0f,_parentNBViewController.navbar.frame)];
 
             [_parentNBViewController.navbar setFrame:CGRectSetX(-CGRectGetWidth(_parentNBViewController.view.frame),_parentNBViewController.navbar.frame)];
             [self.navbar setFrame:CGRectSetX(CGRectGetWidth(_parentNBViewController.view.frame) / 4.0f, self.navbar.frame)];
