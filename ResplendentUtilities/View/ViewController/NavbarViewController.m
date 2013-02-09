@@ -295,6 +295,8 @@ static NSTimeInterval popPushAnimationDuration;
 
         [self.navbar.rightButton setAlpha:0.0f];
 
+        [_parentNBViewController.navbar.animatableContentView setFrame:CGRectSetX(-CGRectGetWidth(_parentNBViewController.view.frame) / kNavbarViewControllerPushPopNavbarMovementScale, _parentNBViewController.navbar.animatableContentView.frame)];
+
         [UIView animateWithDuration:popPushAnimationDuration animations:^{
             [self.navbar setAlpha:0.0f];
 
@@ -302,6 +304,7 @@ static NSTimeInterval popPushAnimationDuration;
             [_parentNBViewController.view setFrame:CGRectSetX(animateToParentXCoord, _parentNBViewController.view.frame)];
 
             [_parentNBViewController.navbar setFrame:CGRectSetX(-CGRectGetWidth(_parentNBViewController.view.frame),_parentNBViewController.navbar.frame)];
+            [_parentNBViewController.navbar.animatableContentView setFrame:CGRectSetX(0, _parentNBViewController.navbar.animatableContentView.frame)];
             [self.navbar setFrame:CGRectSetX(CGRectGetWidth(_parentNBViewController.view.frame) / kNavbarViewControllerPushPopNavbarMovementScale, self.navbar.frame)];
         } completion:^(BOOL finished) {
             [_parentNBViewController.navbar removeFromSuperview];
