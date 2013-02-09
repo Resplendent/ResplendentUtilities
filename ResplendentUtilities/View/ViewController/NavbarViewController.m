@@ -131,8 +131,8 @@ static NSTimeInterval popPushAnimationDuration;
 
         CGFloat originalParentXCoord = CGRectGetMinX(self.view.frame);
         CGFloat originalParentYCoord = CGRectGetMinY(self.view.frame);
-        CGFloat finalChildXCoord = 0.0f;
-        CGFloat finalParentXCoord = originalParentXCoord;
+        CGFloat animateToChildXCoord = 0.0f;
+        CGFloat animateToParentXCoord = originalParentXCoord;
 
         switch (self.childTransitionStyle)
         {
@@ -152,8 +152,8 @@ static NSTimeInterval popPushAnimationDuration;
         switch (self.parentTransitionStyle)
         {
             case NavbarViewControllerParentTransitionStyleToLeft:
-                finalParentXCoord -= CGRectGetWidth(self.view.frame);
-                finalChildXCoord += CGRectGetWidth(self.view.frame);
+                animateToParentXCoord -= CGRectGetWidth(self.view.frame);
+                animateToChildXCoord += CGRectGetWidth(self.view.frame);
                 break;
 
             default:
@@ -175,8 +175,8 @@ static NSTimeInterval popPushAnimationDuration;
 
             [navbarViewController.navbar.animatableContentView setAlpha:1.0f];
 
-            [navbarViewController.view setFrame:CGRectSetX(finalChildXCoord, navbarViewController.view.frame)];
-            [self.view setFrame:CGRectSetX(finalParentXCoord, self.view.frame)];
+            [navbarViewController.view setFrame:CGRectSetX(animateToChildXCoord, navbarViewController.view.frame)];
+            [self.view setFrame:CGRectSetX(animateToParentXCoord, self.view.frame)];
         } completion:^(BOOL finished) {
             //Move navbar back
             [self.navbar removeFromSuperview];
@@ -232,23 +232,52 @@ static NSTimeInterval popPushAnimationDuration;
 
         [self.navbar removeFromSuperview];
         [_parentNBViewController.view addSubview:self.navbar];
-        
+
+        CGFloat originalParentXCoord = CGRectGetMinX(_parentNBViewController.view.frame);
+        CGFloat originalChildXCoord = CGRectGetMinX(self.view.frame);
+
+        CGFloat startParentXCoord = originalParentXCoord;
+        CGFloat startChildXCoord = originalChildXCoord;
+        CGFloat animateToParentXCoord = originalParentXCoord;
+        CGFloat animateToChildXCoord = originalChildXCoord;
+
+        switch (self.parentNBViewController.childTransitionStyle)
+        {
+            case NavbarViewControllerChildTransitionStyleFromLeft:
+                animateToChildXCoord -= CGRectGetWidth(_parentNBViewController.view.frame);
+                break;
+                
+            case NavbarViewControllerChildTransitionStyleFromRight:
+                animateToChildXCoord += CGRectGetWidth(_parentNBViewController.view.frame);
+                break;
+
+            case NavbarViewControllerChildTransitionStyleNone:
+                break;
+        }
+
+        switch (self.parentNBViewController.parentTransitionStyle)
+        {
+            case NavbarViewControllerParentTransitionStyleToLeft:
+                startParentXCoord -= CGRectGetWidth(_parentNBViewController.view.frame);
+                startChildXCoord += CGRectGetWidth(_parentNBViewController.view.frame);
+                animateToChildXCoord -= CGRectGetWidth(_parentNBViewController.view.frame);
+//                animateToChildXCoord -= CGRectGetWidth(_parentNBViewController.view.frame);
+                break;
+                
+            default:
+                break;
+        }
+
+        [self.view setFrame:CGRectSetX(startChildXCoord, self.view.frame)];
+        [_parentNBViewController.view setFrame:CGRectSetX(startParentXCoord, _parentNBViewController.view.frame)];
+
         [UIView animateWithDuration:popPushAnimationDuration animations:^{
             [self.navbar.animatableContentView setAlpha:0.0f];
 
             [_parentNBViewController.navbar.animatableContentView setAlpha:1.0f];
 
-            switch (self.parentNBViewController.childTransitionStyle)
-            {
-                case NavbarViewControllerChildTransitionStyleFromLeft:
-                    setXCoord(self.view, -CGRectGetWidth(_parentNBViewController.view.frame));
-                    break;
-                    
-                case NavbarViewControllerChildTransitionStyleFromRight:
-                default:
-                    setXCoord(self.view, CGRectGetWidth(_parentNBViewController.view.frame));
-                    break;
-            }
+            [self.view setFrame:CGRectSetX(animateToChildXCoord, self.view.frame)];
+            [_parentNBViewController.view setFrame:CGRectSetX(animateToParentXCoord, _parentNBViewController.view.frame)];
         } completion:^(BOOL finished) {
             [self.navbar removeFromSuperview];
             [self.view addSubview:self.navbar];
