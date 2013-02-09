@@ -160,7 +160,6 @@ static NSTimeInterval popPushAnimationDuration;
                 break;
         }
 
-//        [navbarViewController.navbar setAlpha:0.0f];
         [navbarViewController.navbar.rightButton setAlpha:0.0f];
 
         //Move navbar to superview
@@ -244,13 +243,8 @@ static NSTimeInterval popPushAnimationDuration;
     if (animated)
     {
         [self.view setUserInteractionEnabled:NO];
-//        [_parentNBViewController.navbar.animatableContentView setAlpha:0.0f];
-
-//        [self.navbar removeFromSuperview];
-//        [_parentNBViewController.view addSubview:self.navbar];
 
         CGFloat originalParentXCoord = CGRectGetMinX(_parentNBViewController.view.frame);
-        CGFloat originalParentYCoord = CGRectGetMinY(_parentNBViewController.view.frame);
         CGFloat originalChildXCoord = CGRectGetMinX(self.view.frame);
 
         CGFloat startParentXCoord = originalParentXCoord;
