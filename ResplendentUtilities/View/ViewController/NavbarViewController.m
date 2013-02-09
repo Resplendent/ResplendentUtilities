@@ -315,7 +315,7 @@ static NSTimeInterval popPushAnimationDuration;
             [_parentNBViewController.view setFrame:CGRectSetX(animateToParentXCoord, _parentNBViewController.view.frame)];
 
             [_parentNBViewController.navbar setFrame:CGRectSetX(-CGRectGetWidth(_parentNBViewController.view.frame),_parentNBViewController.navbar.frame)];
-            [self.navbar setFrame:CGRectSetX(CGRectGetWidth(_parentNBViewController.view.frame) / 4.0f, self.navbar.frame)];
+            [self.navbar setFrame:CGRectSetX(CGRectGetWidth(_parentNBViewController.view.frame) / 8.0f, self.navbar.frame)];
         } completion:^(BOOL finished) {
             [_parentNBViewController.navbar removeFromSuperview];
             [_parentNBViewController.navbar setFrame:CGRectSetX(0,_parentNBViewController.navbar.frame)];
