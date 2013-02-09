@@ -223,6 +223,9 @@ static NSTimeInterval popPushAnimationDuration;
 
 -(void)popViewControllerAnimated:(BOOL)animated completion:(void (^)())completion
 {
+    if (!_parentNBViewController)
+        [NSException raise:NSInternalInconsistencyException format:@"can't pop with a nil parent navbar viewcontroller"];
+
     [_parentNBViewController viewWillAppear:animated];
 
     if (animated)
@@ -230,10 +233,11 @@ static NSTimeInterval popPushAnimationDuration;
         [self.view setUserInteractionEnabled:NO];
         [_parentNBViewController.navbar.animatableContentView setAlpha:0.0f];
 
-        [self.navbar removeFromSuperview];
-        [_parentNBViewController.view addSubview:self.navbar];
+//        [self.navbar removeFromSuperview];
+//        [_parentNBViewController.view addSubview:self.navbar];
 
         CGFloat originalParentXCoord = CGRectGetMinX(_parentNBViewController.view.frame);
+        CGFloat originalParentYCoord = CGRectGetMinY(_parentNBViewController.view.frame);
         CGFloat originalChildXCoord = CGRectGetMinX(self.view.frame);
 
         CGFloat startParentXCoord = originalParentXCoord;
@@ -260,7 +264,7 @@ static NSTimeInterval popPushAnimationDuration;
             case NavbarViewControllerParentTransitionStyleToLeft:
                 startParentXCoord -= CGRectGetWidth(_parentNBViewController.view.frame);
                 startChildXCoord += CGRectGetWidth(_parentNBViewController.view.frame);
-                animateToChildXCoord -= CGRectGetWidth(_parentNBViewController.view.frame);
+//                animateToChildXCoord -= CGRectGetWidth(_parentNBViewController.view.frame);
 //                animateToChildXCoord -= CGRectGetWidth(_parentNBViewController.view.frame);
                 break;
                 
@@ -270,6 +274,10 @@ static NSTimeInterval popPushAnimationDuration;
 
         [self.view setFrame:CGRectSetX(startChildXCoord, self.view.frame)];
         [_parentNBViewController.view setFrame:CGRectSetX(startParentXCoord, _parentNBViewController.view.frame)];
+
+//        [_parentNBViewController.navbar removeFromSuperview];
+//        [_parentNBViewController.navbar setFrame:CGRectSetXY(originalParentXCoord, originalParentYCoord, _parentNBViewController.navbar.frame)];
+//        [_parentNBViewController.view.superview insertSubview:_parentNBViewController.navbar aboveSubview:_parentNBViewController.view];
 
         [UIView animateWithDuration:popPushAnimationDuration animations:^{
             [self.navbar.animatableContentView setAlpha:0.0f];
