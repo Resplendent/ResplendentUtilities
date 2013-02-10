@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-//#define __AsynchronousUIImageRequest_DEBUG 1
+#define kAsynchronousUIImageRequestEnableShowLastImage 0
 
 typedef void (^imageErrorBlock)(UIImage* image, NSError* error);
 
@@ -34,8 +34,9 @@ typedef void (^imageErrorBlock)(UIImage* image, NSError* error);
 +(void)clearCache;
 
 //DEBUGGING
-
+#if kAsynchronousUIImageRequestEnableShowLastImage
 +(void)showLastImageOnView:(UIView*)view atFrame:(CGRect)showFrame withContentMode:(UIViewContentMode)contentMode;
 +(void)hideLastImage;
+#endif
 
 @end

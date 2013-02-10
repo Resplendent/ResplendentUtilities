@@ -9,10 +9,18 @@
 #import "AsynchronousUIImageRequest.h"
 #import "RUConstants.h"
 
+#if kAsynchronousUIImageRequestEnableShowLastImage
+static UIImageView* showLastImageView;
+#endif
+
+static dispatch_queue_t kAsynchronousUIImageRequestQueueNSURLRequest;
+//static dispatch_queue_t kAsynchronousUIImageRequestQueueFinishedRequest;
+
+
+
 @implementation AsynchronousUIImageRequest
 
 @synthesize url = _url;
-//@synthesize cacheName = _cacheName;
 
 static NSMutableDictionary* fetchedImages;
 
@@ -21,6 +29,8 @@ static NSMutableDictionary* fetchedImages;
     if (self == [AsynchronousUIImageRequest class])
     {
         fetchedImages = [NSMutableDictionary dictionary];
+        kAsynchronousUIImageRequestQueueNSURLRequest = dispatch_queue_create("com.respledentUtilities.asynchronousUIImageRequest.nsurlrequests", 0);
+//        kAsynchronousUIImageRequestQueueFinishedRequest = dispatch_queue_create("com.respledentUtilities.asynchronousUIImageRequest.finishedrequest", 0);
     }
 }
 
@@ -57,8 +67,10 @@ static NSMutableDictionary* fetchedImages;
     
     if (cachedImage)
     {
+#if kAsynchronousUIImageRequestEnableShowLastImage
         if (showLastImageView)
             [showLastImageView setImage:cachedImage];
+#endif
 
         if (block)
             block(cachedImage,nil);
@@ -66,8 +78,12 @@ static NSMutableDictionary* fetchedImages;
     else
     {
         _block = block;
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_url] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:30.0];
-        _connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        _connection = [[NSURLConnection alloc]
+                       initWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_url] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:30.0]
+                       delegate:self
+                       startImmediately:NO];
+        [_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+        [_connection start];
     }
 }
 
@@ -94,21 +110,27 @@ static NSMutableDictionary* fetchedImages;
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)theConnection
 {
-    UIImage* image = [[UIImage alloc] initWithData:_data];
-
-    if (image)
-        [fetchedImages setObject:image forKey:_cacheName];
-    else
-        [fetchedImages removeObjectForKey:_cacheName];
-
-    _data = nil;
-    _connection = nil;
-
-    if (showLastImageView)
-        [showLastImageView setImage:image];
-
-    if (_block)
-        _block(image,nil);
+//    dispatch_async(kAsynchronousUIImageRequestQueueFinishedRequest, ^{
+        UIImage* image = [[UIImage alloc] initWithData:_data];
+        
+        if (image)
+            [fetchedImages setObject:image forKey:_cacheName];
+        else
+            [fetchedImages removeObjectForKey:_cacheName];
+        
+        _data = nil;
+        _connection = nil;
+        
+#if kAsynchronousUIImageRequestEnableShowLastImage
+        if (showLastImageView)
+            [showLastImageView setImage:image];
+#endif
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (_block)
+                _block(image,nil);
+        });
+//    });
 }
 
 #pragma mark - Static methods
@@ -122,7 +144,7 @@ static NSMutableDictionary* fetchedImages;
     [fetchedImages removeAllObjects];
 }
 
-static UIImageView* showLastImageView;
+#if kAsynchronousUIImageRequestEnableShowLastImage
 #pragma mark Debug methods
 +(void)showLastImageOnView:(UIView*)view atFrame:(CGRect)showFrame withContentMode:(UIViewContentMode)contentMode
 {
@@ -139,5 +161,6 @@ static UIImageView* showLastImageView;
     [showLastImageView removeFromSuperview];
     showLastImageView = nil;
 }
+#endif
 
 @end
