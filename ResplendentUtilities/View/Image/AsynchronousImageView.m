@@ -14,15 +14,15 @@
 
 @synthesize loadsUsingSpinner;
 @synthesize fadeInDuration;
-@synthesize clearOnFail = _hideOnFail;
-@synthesize viewToSetNeedsLayoutOnComplete = _viewToSetNeedsLayoutOnComplete;
+//@synthesize clearOnFail = _hideOnFail;
+//@synthesize viewToSetNeedsLayoutOnComplete = _viewToSetNeedsLayoutOnComplete;
 
 -(id)init
 {
     if (self = [super init])
     {
         [self setLoadsUsingSpinner:NO];
-        [self setClearOnFail:YES];
+//        [self setClearOnFail:YES];
     }
 
     return self;
@@ -36,7 +36,7 @@
 
 -(void)removeFromSuperview
 {
-    [self setViewToSetNeedsLayoutOnComplete:nil];
+//    [self setViewToSetNeedsLayoutOnComplete:nil];
     [self cancelFetch];
     [super removeFromSuperview];
 }
@@ -68,7 +68,7 @@
 {
     [self cancelFetch];
 
-    if (!_ignoreFetchImageClear)
+//    if (!_ignoreFetchImageClear)
         [self setImage:nil];
 
     if (self.loadsUsingSpinner)
@@ -83,37 +83,42 @@
     }
 
     _imageRequest = [[AsynchronousUIImageRequest alloc] initAndFetchWithURL:anUrl andCacheName:cacheName withBlock:^(UIImage *image, NSError *error) {
-        _imageRequest = nil;
-
-        if (_spinner)
-        {
-            [_spinner stopAnimating];
-            [_spinner removeFromSuperview];;
-            _spinner = nil;
-        }
-
-        [self setImage:image];
-        
-        if (image)
-        {
-            if (self.frame.size.width == 0 || self.frame.size.height == 0)
-                self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.image.size.width, self.image.size.height);
-
-            CGFloat alpha = self.alpha;
-            if (self.fadeInDuration > 0)
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _imageRequest = nil;
+            
+            if (_spinner)
             {
-                [self setAlpha:0.0f];
-                [UIView animateWithDuration:self.fadeInDuration animations:^{
-                    [self setAlpha:alpha];
-                }];
+                [_spinner stopAnimating];
+                [_spinner removeFromSuperview];;
+                _spinner = nil;
             }
-        }
-        else if (_hideOnFail)
-        {
-            [self setImage:nil];
-        }
+            
+            [self setImage:image];
+            //            [self drawRect:self.bounds];
+            
+            if (image)
+            {
+                //                if (self.frame.size.width == 0 || self.frame.size.height == 0)
+                //                    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.image.size.width, self.image.size.height);
 
-        [_viewToSetNeedsLayoutOnComplete setNeedsLayout];
+                [self setAlpha:1.0f];
+
+                CGFloat alpha = self.alpha;
+                if (self.fadeInDuration > 0)
+                {
+                    [self setAlpha:0.0f];
+                    [UIView animateWithDuration:self.fadeInDuration animations:^{
+                        [self setAlpha:alpha];
+                    }];
+                }
+            }
+            //            else if (_hideOnFail)
+            //            {
+            //                [self setImage:nil];
+            //            }
+            
+            //            [_viewToSetNeedsLayoutOnComplete setNeedsLayout];
+        });
     }];
 }
 
