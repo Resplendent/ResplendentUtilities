@@ -55,7 +55,7 @@ RU_SYNTHESIZE_SINGLETON_DECLARATION_FOR_CLASS_WITH_ACCESSOR(ScrollToTopManager, 
 {
     if (!scrollView)
     {
-        RUDLog(@"can't send non nil scroll view");
+        RUDLog(@"**can't send non nil scroll view");
         return;
     }
 
@@ -63,7 +63,7 @@ RU_SYNTHESIZE_SINGLETON_DECLARATION_FOR_CLASS_WITH_ACCESSOR(ScrollToTopManager, 
 
     if (index == NSNotFound)
     {
-        RUDLog(@"scroll view %@ isn't in the stack %@",scrollView,_scrollToTopViewStack);
+        RUDLog(@"**scroll view %@ isn't in the stack %@",scrollView,_scrollToTopViewStack);
     }
     else
     {
@@ -74,18 +74,27 @@ RU_SYNTHESIZE_SINGLETON_DECLARATION_FOR_CLASS_WITH_ACCESSOR(ScrollToTopManager, 
             if (scrollView.scrollsToTop)
             {
                 [scrollView setScrollsToTop:NO];
-                [_scrollToTopViewStack removeLastObject];
+                [_scrollToTopViewStack removeObjectAtIndex:index];
                 [self setScrollsToTopForLastItem:YES];
+            }
+            else
+            {
+                RUDLog(@"**last item didn't have scroll to tops on");
+                [_scrollToTopViewStack removeObjectAtIndex:index];
             }
         }
         else
         {
-            RUDLog(@"remove scroll view %@ which isn't at end of stack %@",scrollView,_scrollToTopViewStack);
             if (scrollView.scrollsToTop)
             {
-                RUDLog(@"and was scrolls to top was on");
+                RUDLog(@"**remove scroll view %@ which isn't at end of stack %@ but has scrolls to top on",scrollView,_scrollToTopViewStack);
                 [scrollView setScrollsToTop:NO];
+                [_scrollToTopViewStack removeObjectAtIndex:index];
                 [self setScrollsToTopForLastItem:YES];
+            }
+            else
+            {
+                [_scrollToTopViewStack removeObjectAtIndex:index];
             }
         }
     }
@@ -101,7 +110,7 @@ RU_SYNTHESIZE_SINGLETON_DECLARATION_FOR_CLASS_WITH_ACCESSOR(ScrollToTopManager, 
     }
     else
     {
-        RUDLog(@"already in the stack");
+        RUDLog(@"**already in the stack");
     }
 }
 

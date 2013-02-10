@@ -324,9 +324,12 @@ static NSTimeInterval popPushAnimationDuration;
 {
     if (_childNBViewController)
     {
-        [_childNBViewController postPopLogicCompletion:^{
+        [_childNBViewController popViewControllerAnimated:NO completion:^{
             [self postPopLogicCompletion:completion];
         }];
+//        [_childNBViewController postPopLogicCompletion:^{
+//            [self postPopLogicCompletion:completion];
+//        }];
     }
     else
     {
