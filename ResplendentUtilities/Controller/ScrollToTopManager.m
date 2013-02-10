@@ -7,6 +7,7 @@
 //
 
 #import "ScrollToTopManager.h"
+#import "RUConstants.h"
 
 @interface ScrollToTopManager ()
 {
@@ -14,7 +15,7 @@
 }
 
 -(BOOL)setScrollsToTopForLastItem:(BOOL)scrollsToTop;
--(void)pushOffStack;
+-(void)pushOffStack:(UIScrollView *)scrollView;
 -(void)addToStack:(UIScrollView*)scrollView;
 -(NSUInteger)indexInStack:(UIScrollView*)scrollView;
 
@@ -50,20 +51,58 @@ RU_SYNTHESIZE_SINGLETON_DECLARATION_FOR_CLASS_WITH_ACCESSOR(ScrollToTopManager, 
     return NO;
 }
 
--(void)pushOffStack
+-(void)pushOffStack:(UIScrollView *)scrollView
 {
-    if ([self setScrollsToTopForLastItem:NO])
+    if (!scrollView)
     {
-        [_scrollToTopViewStack removeLastObject];
-        [self setScrollsToTopForLastItem:YES];
+        RUDLog(@"can't send non nil scroll view");
+        return;
+    }
+
+    NSInteger index = [self indexInStack:scrollView];
+
+    if (index == NSNotFound)
+    {
+        RUDLog(@"scroll view %@ isn't in the stack %@",scrollView,_scrollToTopViewStack);
+    }
+    else
+    {
+        BOOL isLast = (index + 1 == _scrollToTopViewStack.count);
+
+        if (isLast)
+        {
+            if (scrollView.scrollsToTop)
+            {
+                [scrollView setScrollsToTop:NO];
+                [_scrollToTopViewStack removeLastObject];
+                [self setScrollsToTopForLastItem:YES];
+            }
+        }
+        else
+        {
+            RUDLog(@"remove scroll view %@ which isn't at end of stack %@",scrollView,_scrollToTopViewStack);
+            if (scrollView.scrollsToTop)
+            {
+                RUDLog(@"and was scrolls to top was on");
+                [scrollView setScrollsToTop:NO];
+                [self setScrollsToTopForLastItem:YES];
+            }
+        }
     }
 }
 
 -(void)addToStack:(UIScrollView *)scrollView
 {
-    [self setScrollsToTopForLastItem:NO];
-    [_scrollToTopViewStack addObject:scrollView];
-    [self setScrollsToTopForLastItem:YES];
+    if ([self indexInStack:scrollView] == NSNotFound)
+    {
+        [self setScrollsToTopForLastItem:NO];
+        [_scrollToTopViewStack addObject:scrollView];
+        [self setScrollsToTopForLastItem:YES];
+    }
+    else
+    {
+        RUDLog(@"already in the stack");
+    }
 }
 
 -(NSUInteger)indexInStack:(UIScrollView*)scrollView
@@ -72,9 +111,9 @@ RU_SYNTHESIZE_SINGLETON_DECLARATION_FOR_CLASS_WITH_ACCESSOR(ScrollToTopManager, 
 }
 
 #pragma mark - Staitc methods
-+(void)popOffStack
++(void)popOffStack:(UIScrollView *)scrollView
 {
-    [[ScrollToTopManager sharedInstance] pushOffStack];
+    [[ScrollToTopManager sharedInstance] pushOffStack:scrollView];
 }
 
 +(void)addToStack:(UIScrollView*)scrollView

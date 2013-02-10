@@ -11,7 +11,7 @@
 
 @interface ScrollToTopManager : NSObject
 
-+(void)popOffStack;
++(void)popOffStack:(UIScrollView*)scrollView;
 +(void)addToStack:(UIScrollView*)scrollView;
 +(NSUInteger)indexInStack:(UIScrollView*)scrollView;
 
