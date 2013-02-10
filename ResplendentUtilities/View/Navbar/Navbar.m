@@ -9,7 +9,7 @@
 #import "Navbar.h"
 #import "UIView+Utility.h"
 
-#define kNavbarDefaultButtonHorizontalEdgeInset 0.0f
+#define kNavbarDefaultButtonHorizontalEdgeInset 4.0f
 
 @implementation Navbar
 
