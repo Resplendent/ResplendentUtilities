@@ -333,13 +333,14 @@ static NSTimeInterval popPushAnimationDuration;
         [self.view removeFromSuperview];
         [self removeFromParentViewController];
         
+        NavbarViewController* parent = self.parentNBViewController;
+        [self setParentNBViewController:nil];
+
         [[NSNotificationCenter defaultCenter] postNotificationName:kNavbarViewControllerNotificationCenterDidPop object:self];
         
         if (completion)
             completion();
 
-        NavbarViewController* parent = self.parentNBViewController;
-        [self setParentNBViewController:nil];
         [parent setChildNBViewController:nil];
     }
 }
