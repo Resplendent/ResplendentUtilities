@@ -26,3 +26,26 @@
     } \
 }
 
+#define RUSynthesizeShowFunctionDeclarationForViewWithCompletion(methodName) \
+-(void)show##methodName:(BOOL)show animated:(BOOL)animated completion:(void(^)())completion
+
+#define RUSynthesizeShowFunctionForViewWithCompletion(methodName, view) \
+-(void)show##methodName:(BOOL)show animated:(BOOL)animated completion:(void(^)())completion \
+{ \
+if (animated) \
+{ \
+[UIView animateWithDuration:0.25f animations:^{ \
+[self show##methodName:show animated:NO]; \
+} completion:^(BOOL finished) { \
+if (completion) \
+completion(); \
+}]; \
+} \
+else \
+{ \
+[view setAlpha:(show ? 1.0f : 0.0f)]; \
+if (completion) \
+    completion(); \
+} \
+}
+
