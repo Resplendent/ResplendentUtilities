@@ -120,7 +120,6 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddr
             [sharedInstances addObject:addressBookUtilInstance];
             
             [[[UIAlertView alloc] initWithTitle:@"Albumatic Would Like to Access Your Contacts" message:nil delegate:addressBookUtilInstance cancelButtonTitle:@"Don't Allow" otherButtonTitles:@"OK", nil]show];
-            RUDLog(@"don't need to ask");
         }
     }
 }
