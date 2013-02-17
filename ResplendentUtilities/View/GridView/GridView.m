@@ -314,7 +314,12 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (!CGRectEqualToRect(newFrame, tile.frame))
+        if (CGRectEqualToRect(newFrame, tile.frame))
+        {
+            if (completion)
+                completion();
+        }
+        else
         {
             if (animated)
             {
