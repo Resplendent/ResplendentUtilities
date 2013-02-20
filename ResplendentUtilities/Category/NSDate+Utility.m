@@ -208,7 +208,7 @@ kRUNSDateCalendarUnit NSDateTimeAgoMinCalendarUnitWithDateCompontents(NSDateComp
     {
         return kRUNSDateCalendarUnitMinute;
     }
-    else if ([comps second] > 0)
+    else if ([comps second] >= 0)
     {
         return kRUNSDateCalendarUnitSecond;
     }
