@@ -12,9 +12,6 @@
 
 @interface RUFacebookController ()
 
-@property (nonatomic, readonly) NSArray* readPermissions;
-@property (nonatomic, readonly) NSArray* publishPermissions;
-
 - (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error;
 
 - (void)clearFacebookSession;
@@ -111,13 +108,12 @@
 #pragma mark - Getter methods
 -(NSArray *)readPermissions
 {
-    @throw RU_MUST_OVERRIDE;
+    return nil;
 }
 
 -(NSArray *)publishPermissions
 {
-    @throw RU_MUST_OVERRIDE;
-//    return @[@"publish_stream", @"publish_actions"];
+    return nil;
 }
 
 -(NSString *)accessToken

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RUFacebookControllerProtocols.h"
 
 /*
  To compile, the following is required:
@@ -14,25 +15,16 @@
  2) Add Social, AdSupport, and Accounts, making them all optional if supporting pre 6.0
 
  For proper implementation, the following must be done:
- 1) Add to AppDelegate's applicationDidBecomeActive:
- [FBSession.activeSession handleDidBecomeActive];
+ 1) Add all the methods listed under "Application Delegate Methods" to their respective AppDelegate's methods
  */
-
-@class RUFacebookController;
-
-@protocol RUFacebookControllerDelegate <NSObject>
-
-- (void)facebookController:(RUFacebookController*)facebookController didLogInWithToken:(NSString*)token;
-- (void)facebookController:(RUFacebookController*)facebookController didFailWithError:(NSError*)error;
-- (void)facebookControllerClearedToken:(RUFacebookController*)facebookController;
-
-@end
-
 
 @interface RUFacebookController : NSObject
 
 @property (nonatomic, assign) id<RUFacebookControllerDelegate> delegate;
 @property (nonatomic, readonly) NSString* accessToken;
+
+@property (nonatomic, readonly) NSArray* readPermissions;
+@property (nonatomic, readonly) NSArray* publishPermissions;
 
 //Performs clear and calls delegate
 - (void)logout;
@@ -42,7 +34,7 @@
 //Method used to login.
 - (BOOL)openSessionWithAllowLoginUI:(BOOL)allowLoginUI;
 
-//Methods that should be called by application delegate
+//Application Delegate Methods
 - (BOOL)applicationOpenedURL:(NSURL *)url;
 - (void)applicationWillTerminate;
 - (void)applicationDidBecomeActive;
