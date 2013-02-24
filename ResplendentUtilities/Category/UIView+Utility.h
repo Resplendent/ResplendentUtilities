@@ -23,6 +23,13 @@
 #define CGRectMultiply(m, rect) (CGRectMake((rect).origin.x*(m), (rect).origin.y*(m), (rect).size.width*(m), (rect).size.height*(m)))
 #define CGRectRotate(rect) (CGRectMake((rect).origin.x, (rect).origin.y, (rect).size.height, (rect).size.width))
 
+#define CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(width,onWidth) floor((onWidth - width) / 2.0f)
+#define CGRectGetHorizontallyAlignedXCoordForRectOnRect(rect,onRect) CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(CGRectGetMinX(rect),CGRectGetMinX(onRect))
+#define CGRectGetHorizontallyAlignedXCoordForViewonView(view,onView) CGRectGetHorizontallyAlignedXCoordForRectOnRect(view.frame,onView.frame)
+#define CGRectSetFrameWithHorizontallyAlignedXCoordOnWidth(y,width,height,onWidth) CGRectMake(CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(width,onWidth),y,width,height)
+#define CGRectSetFrameWithHorizontallyAlignedXCoordOnRect(y,width,height,onRect) CGRectSetFrameWithHorizontallyAlignedXCoordOnWidth(y,width,height,CGRectGetWidth(onRect))
+#define CGRectSetFrameWithHorizontallyAlignedXCoordOnView(y,width,height,onView) CGRectSetFrameWithHorizontallyAlignedXCoordOnRect(y,width,height,onView.frame)
+
 #pragma mark Set origin methods
 CG_INLINE void setCoords(UIView* view,CGFloat xCoord,CGFloat yCoord)
 {
