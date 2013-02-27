@@ -195,7 +195,7 @@ NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCorner
 -(CGRect)switcherFrame
 {
     CGSize size = [_switcher sizeThatFits:CGSizeZero];
-    return (CGRect){CGRectGetWidth(self.bounds) - _switcherRightPadding - size.width,floorf((CGRectGetHeight(self.bounds) - size.height) / 2.0f),size};
+    return (CGRect){CGRectGetWidth(self.bounds) - self.switcherRightPadding - size.width,floorf((CGRectGetHeight(self.bounds) - size.height) / 2.0f),size};
 }
 
 -(void)addSwitcher
