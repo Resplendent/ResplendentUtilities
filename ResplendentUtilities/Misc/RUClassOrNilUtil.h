@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#define kRUNumberOrNil(num) ([num isKindOfClass:[NSNumber class]] ? num : nil)
-#define kRUStringOrNil(str) ([str isKindOfClass:[NSString class]] ? str : nil)
+#define kRUClassOrNil(val,valClass) (val && [val isKindOfClass:[valClass class]] ? val : nil)
+#define kRUNumberOrNil(num) kRUClassOrNil(num,NSNumber)
+#define kRUStringOrNil(str) kRUClassOrNil(str,NSString)
+#define kRUDictionaryOrNil(dict) kRUClassOrNil(dict,NSDictionary)
 
