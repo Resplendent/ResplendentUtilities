@@ -10,6 +10,8 @@
 #import <AddressBook/AddressBook.h>
 #import "RUConstants.h"
 
+NSString* const kRUAddressBookUtilHasAskedUserForContacts = @"kRUAddressBookUtilHasAskedUserForContacts";
+
 static NSMutableArray* sharedInstances;
 
 @interface RUAddressBookUtil () <UIAlertViewDelegate>
@@ -57,6 +59,14 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddr
 
         case kRUAddressBookUtilPhonePropertyTypePhone:
             return kABPersonPhoneProperty;
+            break;
+
+        case kRUAddressBookUtilPhonePropertyTypeFirstName:
+            return kABPersonFirstNameProperty;
+            break;
+
+        case kRUAddressBookUtilPhonePropertyTypeLastName:
+            return kABPersonLastNameProperty;
             break;
     }
 
@@ -160,12 +170,8 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddr
             [arrayDictionary setObject:[NSMutableArray array] forKey:phoneProperty.stringValue];
         }
 
-//        ABRecordRef source = ABAddressBookCopyDefaultSource(addressbook);
-        
         CFArrayRef people =  ABAddressBookCopyArrayOfAllPeople(addressbook);
-        
-//        CFArrayRef people = ABAddressBookCopyArrayOfAllPeopleInSource(addressbook, source);
-        
+
         if( people )
         {
             CFIndex contactCount = CFArrayGetCount(people);
@@ -195,6 +201,79 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddr
         }
 
         return arrayDictionary;
+    }
+    else
+    {
+        RUDLog(@"no address book");
+        return nil;
+    }
+}
+
++(NSArray*)getDictionariesFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties
+{
+    ABAddressBookRef addressbook = ABAddressBookCreate();
+    
+    if(addressbook)
+    {
+        if ([self usesNativePermissions])
+        {
+            if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+            {
+                // The user has previously given access, add the contact
+                RUDLog(@"has permission");
+            }
+            else
+            {
+                RUDLog(@"previously rejected permission");
+                return nil;
+            }
+        }
+        else
+        {
+            NSNumber* askedPermission = [self cachedHasAskedUserForContacts];
+            
+            if (!(askedPermission && askedPermission.boolValue))
+                return nil;
+        }
+        
+        NSMutableArray* dictionaryArray = [NSMutableArray array];
+
+        CFArrayRef people =  ABAddressBookCopyArrayOfAllPeople(addressbook);
+
+        if( people )
+        {
+            CFIndex contactCount = CFArrayGetCount(people);
+
+            for (int contantIndex = 0; contantIndex < contactCount; contantIndex++)
+            {
+                ABRecordRef person = CFArrayGetValueAtIndex(people, contantIndex);
+
+                NSMutableDictionary* personPropertyDictionary = [NSMutableDictionary dictionary];
+                for (NSNumber* phoneProperty in phoneProperties)
+                {
+                    ABMultiValueRef personProperties = (ABMultiValueRef)ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType(person, phoneProperty.integerValue));
+
+                    NSString* personProperty = nil;
+
+                    CFIndex personPropertiesCount = ABMultiValueGetCount(personProperties);
+
+                    for (int phoneIndex = 0; phoneIndex < personPropertiesCount; phoneIndex++)
+                    {
+                        personProperty = (__bridge NSString*)ABMultiValueCopyValueAtIndex(personProperties, phoneIndex);
+                        
+                        if (personProperty)
+                            [personPropertyDictionary setObject:personProperty forKey:phoneProperty];
+                    }
+                }
+
+                if (personPropertyDictionary.count)
+                {
+                    [dictionaryArray addObject:personPropertyDictionary];
+                }
+            }
+        }
+
+        return dictionaryArray;
     }
     else
     {
@@ -252,7 +331,6 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddr
 
 
 
-NSString* const kRUAddressBookUtilHasAskedUserForContacts = @"kRUAddressBookUtilHasAskedUserForContacts";
 @implementation RUAddressBookUtil (UserDefaults)
 
 +(NSNumber*)cachedHasAskedUserForContacts

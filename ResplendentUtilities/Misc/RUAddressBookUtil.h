@@ -13,7 +13,9 @@ typedef void (^RUAddressBookUtilAskForPermissionsCompletionBlock)(BOOL alreadyAs
 typedef enum
 {
     kRUAddressBookUtilPhonePropertyTypePhone = 100,
-    kRUAddressBookUtilPhonePropertyTypeEmail
+    kRUAddressBookUtilPhonePropertyTypeEmail,
+    kRUAddressBookUtilPhonePropertyTypeFirstName,
+    kRUAddressBookUtilPhonePropertyTypeLastName
 }kRUAddressBookUtilPhonePropertyType;
 //    NSArray* properties = @[[NSNumber numberWithInt:kABPersonPhoneProperty],[NSNumber numberWithInt:kABPersonEmailProperty]];
 
@@ -23,5 +25,7 @@ typedef enum
 
 +(NSDictionary*)getArraysFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties;
 +(NSArray*)getContactsPhoneNumbersArray;
+
++(NSArray*)getDictionariesFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties;
 
 @end
