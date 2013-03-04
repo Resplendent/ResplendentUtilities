@@ -229,7 +229,6 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddr
             if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
             {
                 // The user has previously given access, add the contact
-                RUDLog(@"has permission");
             }
             else
             {
