@@ -12,6 +12,8 @@
 
 NSString* const kRUAddressBookUtilHasAskedUserForContacts = @"kRUAddressBookUtilHasAskedUserForContacts";
 
+ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddressBookUtilPhonePropertyType propertyType);
+
 static NSMutableArray* sharedInstances;
 
 @interface RUAddressBookUtil () <UIAlertViewDelegate>
@@ -209,8 +211,15 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddr
     }
 }
 
-+(NSArray*)getDictionariesFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties
+//+(NSArray*)getDictionariesFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties
++(NSArray*)getObjectsFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties objectCreationBlock:(RUAddressBookUtilCreateObjectWithDictBlcok)objectCreationBlock
 {
+    if (!objectCreationBlock)
+    {
+        RUDLog(@"need to pass non nil objectCreationBlock");
+        return nil;
+    }
+
     ABAddressBookRef addressbook = ABAddressBookCreate();
     
     if(addressbook)
@@ -235,8 +244,8 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddr
             if (!(askedPermission && askedPermission.boolValue))
                 return nil;
         }
-        
-        NSMutableArray* dictionaryArray = [NSMutableArray array];
+
+        NSMutableArray* objectsArray = [NSMutableArray array];
 
         CFArrayRef people =  ABAddressBookCopyArrayOfAllPeople(addressbook);
 
@@ -251,29 +260,41 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(ABRecordRef person,kRUAddr
                 NSMutableDictionary* personPropertyDictionary = [NSMutableDictionary dictionary];
                 for (NSNumber* phoneProperty in phoneProperties)
                 {
-                    ABMultiValueRef personProperties = (ABMultiValueRef)ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType(person, phoneProperty.integerValue));
+                    CFTypeRef personPropertiesRecord = ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType(person, phoneProperty.integerValue));
 
-                    NSString* personProperty = nil;
+                    NSString* personProperty = (__bridge NSString*)personPropertiesRecord;
 
-                    CFIndex personPropertiesCount = ABMultiValueGetCount(personProperties);
-
-                    for (int phoneIndex = 0; phoneIndex < personPropertiesCount; phoneIndex++)
+                    if ([personProperty isKindOfClass:[NSString class]])
                     {
-                        personProperty = (__bridge NSString*)ABMultiValueCopyValueAtIndex(personProperties, phoneIndex);
+                        [personPropertyDictionary setObject:personProperty forKey:phoneProperty];
+                    }
+                    else
+                    {
+                        CFIndex personPropertiesCount = ABMultiValueGetCount(personPropertiesRecord);
+
+                        NSMutableArray* personPropertiesArray = [NSMutableArray array];
                         
-                        if (personProperty)
-                            [personPropertyDictionary setObject:personProperty forKey:phoneProperty];
+                        for (int phoneIndex = 0; phoneIndex < personPropertiesCount; phoneIndex++)
+                        {
+                            personProperty = (__bridge NSString*)ABMultiValueCopyValueAtIndex(personPropertiesRecord, phoneIndex);
+
+                            [personPropertiesArray addObject:personProperty];
+                        }
+
+                        if (personPropertiesArray.count)
+                            [personPropertyDictionary setObject:personPropertiesArray forKey:phoneProperty];
                     }
                 }
 
-                if (personPropertyDictionary.count)
+                id object = objectCreationBlock(personPropertyDictionary);
+                if (object)
                 {
-                    [dictionaryArray addObject:personPropertyDictionary];
+                    [objectsArray addObject:object];
                 }
             }
         }
 
-        return dictionaryArray;
+        return objectsArray;
     }
     else
     {
