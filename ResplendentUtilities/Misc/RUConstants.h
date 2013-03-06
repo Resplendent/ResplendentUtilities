@@ -6,8 +6,6 @@
 //  Copyright (c) 2012 Resplendent G.P. All rights reserved.
 //
 
-//@TODO should be split off to RUDebug, for putting into prefix file
-
 #import <Foundation/Foundation.h>
 #import "RUDebug.h"
 
