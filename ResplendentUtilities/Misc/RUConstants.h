@@ -9,11 +9,10 @@
 //@TODO should be split off to RUDebug, for putting into prefix file
 
 #import <Foundation/Foundation.h>
+#import "RUDebug.h"
 
 #define RU_OVERRIDE_LOG NSLog(@"<%@:%d> You must override %@ in a subclass", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, NSStringFromSelector(_cmd));
 #define RU_MUST_OVERRIDE [NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"%s must override %@ in a class %@",__PRETTY_FUNCTION__,NSStringFromSelector(_cmd),NSStringFromClass(self.class)] userInfo:nil];
-
-#define kRUDebugSilenceRUDLog 0
 
 #if kRUDebugSilenceRUDLog
 #define RUDLog(fmt, ...)
