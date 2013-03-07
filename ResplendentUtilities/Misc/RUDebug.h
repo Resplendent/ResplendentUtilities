@@ -8,4 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
+#ifndef kRUDebugSilenceRUDLog
 #define kRUDebugSilenceRUDLog 0
+#endif
