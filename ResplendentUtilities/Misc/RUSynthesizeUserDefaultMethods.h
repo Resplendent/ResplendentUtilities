@@ -8,15 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
-#define RUSynthesizeSetUserDefaultsMethod(varName,key) \
+#define RUSynthesizeSetUserDefaultsMethodCompletion(varName,key,completion) \
 -(void)set##varName:(id)varName \
 { \
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
     if (varName) [userDefaults setObject:varName forKey:key]; \
     else [userDefaults removeObjectForKey:key]; \
     [userDefaults synchronize]; \
+    if (completion) \
+    { \
+        void (^completionBlock)() = completion; \
+        completionBlock(varName); \
+    } \
 }
 
+#define RUSynthesizeSetUserDefaultsMethod(varName,key) \
+RUSynthesizeSetUserDefaultsMethodCompletion(varName,key,nil)
 
 #define RUSynthesizeGetUserDefaultsMethod(varName,key) \
 -(id)varName \
