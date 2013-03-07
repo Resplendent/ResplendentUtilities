@@ -11,6 +11,7 @@
 #import "AFHTTPRequestOperation.h"
 #import "AFHTTPClient.h"
 #import "RUConstants.h"
+#import "RUClassOrNilUtil.h"
 
 #define kHTTPClientJSONAPIControllerPostMultipartDataNoDataError kNSErrorMake(@"postMultipartDataNetworkRequestWithUrl:params:data:dataParamKey:noSuccessError:completionBlock:failBlock: must have a non-nil data param.",420)
 
@@ -62,7 +63,7 @@
 BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictionary* responseDict)
 {
     NSNumber* successValue = [responseDict objectForKey:@"success"];
-    return successValue && [successValue isKindOfClass:[NSNumber class]] && successValue.boolValue;
+    return kRUNumberOrNil(successValue) && successValue.boolValue;
 }
 
 #pragma mark - Public methods
