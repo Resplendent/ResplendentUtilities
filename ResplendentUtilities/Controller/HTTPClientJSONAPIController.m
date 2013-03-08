@@ -67,7 +67,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
 }
 
 #pragma mark - Public methods
-- (void)cancelAllHTTPOperationsWithMethod:(NSString *)method
+- (void)cancelAllHTTPOperationsWithMethod:(NSString *)method respectingCancellableRequests:(BOOL)respectingCancellableRequests
 {
     for (NSOperation *operation in [_network.operationQueue operations])
     {
@@ -78,7 +78,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
 
         if ((!method || [method isEqualToString:[[(AFHTTPRequestOperation *)operation request] HTTPMethod]]))
         {
-            if ([self operationCanBeCancelled:(AFHTTPRequestOperation *)operation])
+            if (!respectingCancellableRequests || [self operationCanBeCancelled:(AFHTTPRequestOperation *)operation])
                 [operation cancel];
         }
     }
