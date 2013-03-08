@@ -40,30 +40,38 @@
 {
     NSString* response = [[NSString alloc]initWithData:(NSData*)responseObject encoding:NSUTF8StringEncoding];
     id responseJSONParsedObject = [response objectFromJSONString];
-    if (noSuccessError)
+    if (!responseJSONParsedObject) // router returned non-compliant json
     {
-        if (![responseJSONParsedObject isKindOfClass:[NSDictionary class]] || kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(responseJSONParsedObject))
+        if (failBlock)
+            failBlock(nil, noSuccessError);
+    }
+    else
+    {
+        if (noSuccessError)
+        {
+            if (![responseJSONParsedObject isKindOfClass:[NSDictionary class]] || kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(responseJSONParsedObject))
+            {
+                if (completionBlock)
+                    completionBlock(responseJSONParsedObject);
+            }
+            else
+            {
+                if (failBlock)
+                    failBlock(nil,noSuccessError);
+            }
+        }
+        else
         {
             if (completionBlock)
                 completionBlock(responseJSONParsedObject);
         }
-        else
-        {
-            if (failBlock)
-                failBlock(nil,noSuccessError);
-        }
-    }
-    else
-    {
-        if (completionBlock)
-            completionBlock(responseJSONParsedObject);
     }
 }
 
 BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictionary* responseDict)
 {
-    NSNumber* successValue = [responseDict objectForKey:@"success"];
-    return kRUNumberOrNil(successValue) && successValue.boolValue;
+        NSNumber* successValue = [responseDict objectForKey:@"success"];
+        return kRUNumberOrNil(successValue) && successValue.boolValue;
 }
 
 #pragma mark - Public methods
