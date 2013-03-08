@@ -133,9 +133,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
     [uploadRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
     AFHTTPRequestOperation* op = [[AFHTTPRequestOperation alloc]initWithRequest:uploadRequest];
-    
-//    __weak AFHTTPRequestOperation* opWeak = op;
-    
+
     [op setShouldExecuteAsBackgroundTaskWithExpirationHandler:^{
         if ([self respondsToSelector:@selector(didFireExpiration)])
             [self didFireExpiration];
@@ -154,7 +152,9 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
         if (failBlock)
             failBlock(operation,error);
     }];
-    
+
+    [_network enqueueHTTPRequestOperation:op];
+
     [op start];
 }
 
