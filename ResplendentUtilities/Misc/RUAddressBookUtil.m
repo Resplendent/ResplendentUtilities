@@ -69,8 +69,9 @@ void kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(CFTy
     for (int phoneIndex = 0; phoneIndex < personPropertiesCount; phoneIndex++)
     {
         NSString* personProperty = (__bridge NSString*)ABMultiValueCopyValueAtIndex(personPropertiesRecord, phoneIndex);
-        
-        [personPropertiesArray addObject:personProperty];
+
+        if (personProperty)
+            [personPropertiesArray addObject:personProperty];
     }
     
     if (personPropertiesArray.count)
