@@ -75,7 +75,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
 }
 
 #pragma mark - Public methods
-- (void)cancelAllHTTPOperationsWithMethod:(NSString *)method
+- (void)cancelAllHTTPOperationsWithMethod:(NSString *)method respectingCancellableRequests:(BOOL)respectingCancellableRequests
 {
     for (NSOperation *operation in [_network.operationQueue operations])
     {
@@ -86,7 +86,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
 
         if ((!method || [method isEqualToString:[[(AFHTTPRequestOperation *)operation request] HTTPMethod]]))
         {
-            if ([self operationCanBeCancelled:(AFHTTPRequestOperation *)operation])
+            if (!respectingCancellableRequests || [self operationCanBeCancelled:(AFHTTPRequestOperation *)operation])
                 [operation cancel];
         }
     }
@@ -141,9 +141,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
     [uploadRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
     AFHTTPRequestOperation* op = [[AFHTTPRequestOperation alloc]initWithRequest:uploadRequest];
-    
-//    __weak AFHTTPRequestOperation* opWeak = op;
-    
+
     [op setShouldExecuteAsBackgroundTaskWithExpirationHandler:^{
         if ([self respondsToSelector:@selector(didFireExpiration)])
             [self didFireExpiration];
@@ -162,7 +160,9 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
         if (failBlock)
             failBlock(operation,error);
     }];
-    
+
+    [_network enqueueHTTPRequestOperation:op];
+
     [op start];
 }
 
