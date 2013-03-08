@@ -304,22 +304,25 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
                 {
                     CFTypeRef personPropertiesRecord = ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType(phoneProperty.integerValue));
 
-                    RUAddressBookUtilABMultiValueRefType propType = abMultiValueRefTypeForPersonWithPropertyType(phoneProperty.integerValue);
-
-                    switch (propType)
+                    if (personPropertiesRecord)
                     {
-                        case RUAddressBookUtilABMultiValueRefTypeNSString:
-                            [personPropertyDictionary setObject:(__bridge NSString*)personPropertiesRecord forKey:phoneProperty.stringValue];
-                            break;
-
-                        case RUAddressBookUtilABMultiValueRefTypeArray:
-                            kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(personPropertiesRecord, personPropertyDictionary,phoneProperty.stringValue);
-                            break;
-
-                        case RUAddressBookUtilABMultiValueRefTypeUnknown:
-                        default:
-                            RUDLog(@"unknown type for phone property %@",phoneProperty);
-                            break;
+                        RUAddressBookUtilABMultiValueRefType propType = abMultiValueRefTypeForPersonWithPropertyType(phoneProperty.integerValue);
+                        
+                        switch (propType)
+                        {
+                            case RUAddressBookUtilABMultiValueRefTypeNSString:
+                                [personPropertyDictionary setObject:(__bridge NSString*)personPropertiesRecord forKey:phoneProperty.stringValue];
+                                break;
+                                
+                            case RUAddressBookUtilABMultiValueRefTypeArray:
+                                kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(personPropertiesRecord, personPropertyDictionary,phoneProperty.stringValue);
+                                break;
+                                
+                            case RUAddressBookUtilABMultiValueRefTypeUnknown:
+                            default:
+                                RUDLog(@"unknown type for phone property %@",phoneProperty);
+                                break;
+                        }
                     }
 //                    NSString* personProperty = (__bridge NSString*)personPropertiesRecord;
 //
