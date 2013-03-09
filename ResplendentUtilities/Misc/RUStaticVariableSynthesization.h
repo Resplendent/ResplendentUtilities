@@ -11,6 +11,9 @@
 #define RUStaticVariableSynthesization(varType,varName) \
 static varType * varName##StaticVariable;
 
+#define RUStaticVariableSynthesizationGetterDeclaration(varType,varName) \
++(varType *)varName;
+
 #define RUStaticVariableSynthesizationWithGetter(varType,varName,allocStatment) \
 RUStaticVariableSynthesization(varType,varName); \
  \
@@ -21,6 +24,11 @@ RUStaticVariableSynthesization(varType,varName); \
     return varName##StaticVariable; \
 }
 
+//++++ UIImage helpers
+#define RUStaticVariableSynthesizationGetterImageDeclaration(varName) \
+RUStaticVariableSynthesizationGetterDeclaration(UIImage, varName);
 
 #define RUStaticVariableSynthesizationWithGetterImage(varName,imageNameString) \
 RUStaticVariableSynthesizationWithGetter(UIImage,varName,[UIImage imageNamed:imageNameString]) \
+//----
+
