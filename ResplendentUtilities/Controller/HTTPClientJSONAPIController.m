@@ -11,6 +11,7 @@
 #import "AFHTTPRequestOperation.h"
 #import "AFHTTPClient.h"
 #import "RUConstants.h"
+#import "RUClassOrNilUtil.h"
 
 #define kHTTPClientJSONAPIControllerPostMultipartDataNoDataError kNSErrorMake(@"postMultipartDataNetworkRequestWithUrl:params:data:dataParamKey:noSuccessError:completionBlock:failBlock: must have a non-nil data param.",420)
 
@@ -39,34 +40,42 @@
 {
     NSString* response = [[NSString alloc]initWithData:(NSData*)responseObject encoding:NSUTF8StringEncoding];
     id responseJSONParsedObject = [response objectFromJSONString];
-    if (noSuccessError)
+    if (!responseJSONParsedObject) // router returned non-compliant json
     {
-        if (![responseJSONParsedObject isKindOfClass:[NSDictionary class]] || kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(responseJSONParsedObject))
+        if (failBlock)
+            failBlock(nil, noSuccessError);
+    }
+    else
+    {
+        if (noSuccessError)
+        {
+            if (![responseJSONParsedObject isKindOfClass:[NSDictionary class]] || kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(responseJSONParsedObject))
+            {
+                if (completionBlock)
+                    completionBlock(responseJSONParsedObject);
+            }
+            else
+            {
+                if (failBlock)
+                    failBlock(nil,noSuccessError);
+            }
+        }
+        else
         {
             if (completionBlock)
                 completionBlock(responseJSONParsedObject);
         }
-        else
-        {
-            if (failBlock)
-                failBlock(nil,noSuccessError);
-        }
-    }
-    else
-    {
-        if (completionBlock)
-            completionBlock(responseJSONParsedObject);
     }
 }
 
 BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictionary* responseDict)
 {
-    NSNumber* successValue = [responseDict objectForKey:@"success"];
-    return successValue && [successValue isKindOfClass:[NSNumber class]] && successValue.boolValue;
+        NSNumber* successValue = [responseDict objectForKey:@"success"];
+        return kRUNumberOrNil(successValue) && successValue.boolValue;
 }
 
 #pragma mark - Public methods
-- (void)cancelAllHTTPOperationsWithMethod:(NSString *)method
+- (void)cancelAllHTTPOperationsWithMethod:(NSString *)method respectingCancellableRequests:(BOOL)respectingCancellableRequests
 {
     for (NSOperation *operation in [_network.operationQueue operations])
     {
@@ -77,7 +86,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
 
         if ((!method || [method isEqualToString:[[(AFHTTPRequestOperation *)operation request] HTTPMethod]]))
         {
-            if ([self operationCanBeCancelled:(AFHTTPRequestOperation *)operation])
+            if (!respectingCancellableRequests || [self operationCanBeCancelled:(AFHTTPRequestOperation *)operation])
                 [operation cancel];
         }
     }
@@ -89,7 +98,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
 }
 
 #pragma mark Get network requests
--(void)getNetworkRequestWithUrl:(NSString*)url params:(NSDictionary*)params noSuccessError:(NSError *)noSuccessError completionBlock:(void (^)(id))completionBlock failBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *))failBlock
+-(void)getNetworkRequestWithUrl:(NSString*)url params:(NSDictionary*)params noSuccessError:(NSError *)noSuccessError completionBlock:(void (^)(NSDictionary* responseDict))completionBlock failBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failBlock
 {
     [_network getPath:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self postSuccessLogicWithReponseObject:responseObject noSuccessError:noSuccessError completionBlock:completionBlock failBlock:failBlock];
@@ -132,9 +141,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
     [uploadRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
     AFHTTPRequestOperation* op = [[AFHTTPRequestOperation alloc]initWithRequest:uploadRequest];
-    
-//    __weak AFHTTPRequestOperation* opWeak = op;
-    
+
     [op setShouldExecuteAsBackgroundTaskWithExpirationHandler:^{
         if ([self respondsToSelector:@selector(didFireExpiration)])
             [self didFireExpiration];
@@ -153,7 +160,9 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
         if (failBlock)
             failBlock(operation,error);
     }];
-    
+
+    [_network enqueueHTTPRequestOperation:op];
+
     [op start];
 }
 

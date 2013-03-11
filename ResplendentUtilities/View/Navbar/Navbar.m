@@ -60,7 +60,7 @@
         ceilCoordinates(_rightButton);
     }
 
-    [_titleLabel setFrame:CGRectMake(0, _titleLabelTopEdgeInset, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame) - _titleLabelTopEdgeInset)];
+    [_titleLabel setFrame:CGRectMake(_rightButton.frame.size.width, _titleLabelTopEdgeInset, CGRectGetWidth(self.frame) - (_rightButton.frame.size.width * 2), CGRectGetHeight(self.frame) - _titleLabelTopEdgeInset)];
 }
 
 -(void)setLeftButton:(UIButton *)leftButton

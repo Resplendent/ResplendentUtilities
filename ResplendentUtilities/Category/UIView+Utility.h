@@ -30,6 +30,13 @@
 #define CGRectSetFrameWithHorizontallyAlignedXCoordOnRect(y,width,height,onRect) CGRectSetFrameWithHorizontallyAlignedXCoordOnWidth(y,width,height,CGRectGetWidth(onRect))
 #define CGRectSetFrameWithHorizontallyAlignedXCoordOnView(y,width,height,onView) CGRectSetFrameWithHorizontallyAlignedXCoordOnRect(y,width,height,onView.frame)
 
+#define CGRectGetVerticallyAlignedYCoordForHeightOnHeight(height,onHeight) floor((onHeight - height) / 2.0f)
+#define CGRectGetVerticallyAlignedYCoordForRectOnRect(rect,onRect) CGRectGetVerticallyAlignedYCoordForHeightOnHeight(CGRectGetMinY(rect),CGRectGetMinY(onRect))
+#define CGRectGetVerticallyAlignedYCoordForViewonView(view,onView) CGRectGetVerticallyAlignedYCoordForRectOnRect(view.frame,onView.frame)
+#define CGRectSetFrameWithVerticallyAlignedYCoordOnHeight(x,width,height,onHeight) CGRectMake(x,CGRectGetVerticallyAlignedYCoordForHeightOnHeight(height,onHeight),width,height)
+#define CGRectSetFrameWithVerticallyAlignedYCoordOnRect(x,width,height,onRect) CGRectSetFrameWithVerticallyAlignedYCoordOnHeight(x,width,height,CGRectGetHeight(onRect))
+#define CGRectSetFrameWithVerticallyAlignedYCoordOnView(x,width,height,onView) CGRectSetFrameWithVerticallyAlignedYCoordOnRect(x,width,height,onView.frame)
+
 #pragma mark Set origin methods
 CG_INLINE void setCoords(UIView* view,CGFloat xCoord,CGFloat yCoord)
 {

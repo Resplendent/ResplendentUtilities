@@ -7,11 +7,28 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UIView+Utility.h"
 
 #define RUSynthesizeShowFunctionDeclarationForView(methodName) \
 -(void)show##methodName:(BOOL)show animated:(BOOL)animated
 
-#define RUSynthesizeShowFunctionForView(methodName, view) \
+#define RUSynthesizeMovingShowFunctionForView(methodName, view, showYCoord, hideYCoord) \
+-(void)show##methodName:(BOOL)show animated:(BOOL)animated \
+{ \
+    if (animated) \
+    { \
+        [UIView animateWithDuration:0.25f animations:^{ \
+            [self show##methodName:show animated:NO]; \
+        }]; \
+    } \
+    else \
+    { \
+        [view setFrame:CGRectSetY((show ? showYCoord : hideYCoord), view.frame)]; \
+    } \
+}
+
+
+#define RUSynthesizeFadingShowFunctionForView(methodName, view) \
 -(void)show##methodName:(BOOL)show animated:(BOOL)animated \
 { \
     if (animated) \
@@ -29,7 +46,7 @@
 #define RUSynthesizeShowFunctionDeclarationForViewWithCompletion(methodName) \
 -(void)show##methodName:(BOOL)show animated:(BOOL)animated completion:(void(^)())completion
 
-#define RUSynthesizeShowFunctionForViewWithCompletion(methodName, view) \
+#define RUSynthesizeFadingShowFunctionForViewWithCompletion(methodName, view) \
 -(void)show##methodName:(BOOL)show animated:(BOOL)animated completion:(void(^)())completion \
 { \
 if (animated) \

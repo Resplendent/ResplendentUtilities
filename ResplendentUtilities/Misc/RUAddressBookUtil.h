@@ -9,11 +9,14 @@
 #import <Foundation/Foundation.h>
 
 typedef void (^RUAddressBookUtilAskForPermissionsCompletionBlock)(BOOL alreadyAsked, BOOL granted);
+typedef id (^RUAddressBookUtilCreateObjectWithDictBlcok)(NSDictionary* properites);
 
 typedef enum
 {
     kRUAddressBookUtilPhonePropertyTypePhone = 100,
-    kRUAddressBookUtilPhonePropertyTypeEmail
+    kRUAddressBookUtilPhonePropertyTypeEmail,
+    kRUAddressBookUtilPhonePropertyTypeFirstName,
+    kRUAddressBookUtilPhonePropertyTypeLastName
 }kRUAddressBookUtilPhonePropertyType;
 //    NSArray* properties = @[[NSNumber numberWithInt:kABPersonPhoneProperty],[NSNumber numberWithInt:kABPersonEmailProperty]];
 
@@ -23,5 +26,8 @@ typedef enum
 
 +(NSDictionary*)getArraysFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties;
 +(NSArray*)getContactsPhoneNumbersArray;
+
+//+(NSArray*)getDictionariesFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties;
++(NSArray*)getObjectsFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties objectCreationBlock:(RUAddressBookUtilCreateObjectWithDictBlcok)objectCreationBlock;
 
 @end

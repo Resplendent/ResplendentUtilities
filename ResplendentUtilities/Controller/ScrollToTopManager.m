@@ -9,6 +9,8 @@
 #import "ScrollToTopManager.h"
 #import "RUConstants.h"
 
+#define kScrollToTopManagerEnableWhining 0
+
 @interface ScrollToTopManager ()
 {
     NSMutableArray* _scrollToTopViewStack;
@@ -63,7 +65,9 @@ RU_SYNTHESIZE_SINGLETON_DECLARATION_FOR_CLASS_WITH_ACCESSOR(ScrollToTopManager, 
 
     if (index == NSNotFound)
     {
+#if kScrollToTopManagerEnableWhining
         RUDLog(@"**scroll view %@ isn't in the stack %@",scrollView,_scrollToTopViewStack);
+#endif
     }
     else
     {
@@ -108,10 +112,12 @@ RU_SYNTHESIZE_SINGLETON_DECLARATION_FOR_CLASS_WITH_ACCESSOR(ScrollToTopManager, 
         [_scrollToTopViewStack addObject:scrollView];
         [self setScrollsToTopForLastItem:YES];
     }
+#if kScrollToTopManagerEnableWhining
     else
     {
         RUDLog(@"**already in the stack");
     }
+#endif
 }
 
 -(NSUInteger)indexInStack:(UIScrollView*)scrollView
