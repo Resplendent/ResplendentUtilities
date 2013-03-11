@@ -98,7 +98,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
 }
 
 #pragma mark Get network requests
--(void)getNetworkRequestWithUrl:(NSString*)url params:(NSDictionary*)params noSuccessError:(NSError *)noSuccessError completionBlock:(void (^)(id))completionBlock failBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *))failBlock
+-(void)getNetworkRequestWithUrl:(NSString*)url params:(NSDictionary*)params noSuccessError:(NSError *)noSuccessError completionBlock:(void (^)(NSDictionary* responseDict))completionBlock failBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failBlock
 {
     [_network getPath:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self postSuccessLogicWithReponseObject:responseObject noSuccessError:noSuccessError completionBlock:completionBlock failBlock:failBlock];
