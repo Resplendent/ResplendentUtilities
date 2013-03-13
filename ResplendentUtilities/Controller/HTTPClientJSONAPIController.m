@@ -68,6 +68,7 @@
     }
 }
 
+#pragma mark - C methods
 BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictionary* responseDict)
 {
         NSNumber* successValue = [responseDict objectForKey:@"success"];
