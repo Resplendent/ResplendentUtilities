@@ -169,8 +169,6 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
     }];
 
     [_network enqueueHTTPRequestOperation:op];
-
-//    [op start];
 }
 
 -(void)didFireExpiration
