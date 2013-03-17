@@ -11,6 +11,8 @@
 
 @interface Navbar : UIView
 
+@property (nonatomic, readonly) CGFloat height;
+
 @property (nonatomic, retain) UIView* animatableContentView;
 
 @property (nonatomic, assign) CGFloat buttonHorizontalEdgeInset;

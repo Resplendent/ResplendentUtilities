@@ -70,7 +70,7 @@ static NSTimeInterval popPushAnimationDuration;
 
 -(CGRect)contentFrame
 {
-    return CGRectMake(0, CGRectGetMaxY(self.navbar.frame), self.view.frame.size.width, self.view.frame.size.height - CGRectGetMaxY(self.navbar.frame));
+    return CGRectMake(0, CGRectGetMaxY(self.navbar.frame), CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame) - CGRectGetMaxY(self.navbar.frame));
 }
 
 #pragma mark - Navbar class

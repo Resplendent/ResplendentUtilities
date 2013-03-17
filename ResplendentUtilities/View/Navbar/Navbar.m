@@ -21,7 +21,7 @@
 
 -(id)init
 {
-    return ([self initWithFrame:CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds), 44.0f) autoAdjustButtons:YES]);
+    return ([self initWithFrame:CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds), self.height) autoAdjustButtons:YES]);
 }
 
 -(id)initWithFrame:(CGRect)frame
@@ -87,6 +87,11 @@
 }
 
 #pragma mark - Getter methods
+-(CGFloat)height
+{
+    return 44.0f;
+}
+
 -(NIAttributedLabel *)titleLabel
 {
     if (!_titleLabel)
