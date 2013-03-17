@@ -68,6 +68,7 @@
     }
 }
 
+#pragma mark - C methods
 BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictionary* responseDict)
 {
         NSNumber* successValue = [responseDict objectForKey:@"success"];
@@ -75,6 +76,12 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
 }
 
 #pragma mark - Public methods
+//@TODO remove this after master is updated on albumatic
+- (void)cancelAllHTTPOperationsWithMethod:(NSString *)method
+{
+    [self cancelAllHTTPOperationsWithMethod:method respectingCancellableRequests:YES];
+}
+
 - (void)cancelAllHTTPOperationsWithMethod:(NSString *)method respectingCancellableRequests:(BOOL)respectingCancellableRequests
 {
     for (NSOperation *operation in [_network.operationQueue operations])
@@ -162,8 +169,6 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
     }];
 
     [_network enqueueHTTPRequestOperation:op];
-
-    [op start];
 }
 
 -(void)didFireExpiration

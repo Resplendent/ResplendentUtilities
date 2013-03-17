@@ -17,6 +17,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
 
 @property (nonatomic, strong) AFHTTPClient* network;
 
+- (void)cancelAllHTTPOperationsWithMethod:(NSString *)method;
 - (void)cancelAllHTTPOperationsWithMethod:(NSString *)method respectingCancellableRequests:(BOOL)respectingCancellableRequests;
 //Can be overloaded by subclass
 -(BOOL)operationCanBeCancelled:(AFHTTPRequestOperation*)operation;
