@@ -26,3 +26,9 @@
 
 #define RUiOSSystemVersionIsAtLeast(version) ([UIDevice currentDevice].systemVersion.floatValue >= version)
 
+//Enums
+typedef enum{
+    RUScrollDirectionNone = 0,
+    RUScrollDirectionDown = 100,
+    RUScrollDirectionUp
+}RUScrollDirection;
