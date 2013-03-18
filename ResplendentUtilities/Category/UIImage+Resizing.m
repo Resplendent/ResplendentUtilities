@@ -7,6 +7,8 @@
 //
 
 #import "UIImage+Resizing.h"
+#import "UIImage+RUDebug.h"
+#import "RUConstants.h"
 
 #define DEBUG_TIMING 0
 
@@ -266,8 +268,12 @@ UIImage* resizedImagePreservingAspectRatio(UIImage* sourceImage, CGSize targetSi
                 transform:(CGAffineTransform)transform
            drawTransposed:(BOOL)transpose
      interpolationQuality:(CGInterpolationQuality)quality {
+
+    RUDLog(@"image info: %@",self.imageDebugDescription);
     CGRect newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height));
+    RUDLog(@"newRect: %@",NSStringFromCGRect(newRect));
     CGRect transposedRect = CGRectMake(0, 0, newRect.size.height, newRect.size.width);
+    RUDLog(@"transposedRect: %@",NSStringFromCGRect(transposedRect));
     CGImageRef imageRef = self.CGImage;
     
     // Build a context that's the same dimensions as the new size
@@ -296,6 +302,7 @@ UIImage* resizedImagePreservingAspectRatio(UIImage* sourceImage, CGSize targetSi
     CGContextRelease(bitmap);
     CGImageRelease(newImageRef);
     
+    RUDLog(@"new image info: %@",newImage.imageDebugDescription);
     return newImage;
 }
 
