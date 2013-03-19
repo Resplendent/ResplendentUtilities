@@ -17,7 +17,7 @@ typedef enum
     kRUAddressBookUtilPhonePropertyTypeEmail,
     kRUAddressBookUtilPhonePropertyTypeFirstName,
     kRUAddressBookUtilPhonePropertyTypeLastName,
-    kRUAddressBookUtilPhonePropertyTypeImage
+    kRUAddressBookUtilPhonePropertyTypeData
 }kRUAddressBookUtilPhonePropertyType;
 //    NSArray* properties = @[[NSNumber numberWithInt:kABPersonPhoneProperty],[NSNumber numberWithInt:kABPersonEmailProperty]];
 
