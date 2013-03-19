@@ -13,12 +13,13 @@
 typedef enum {
     RUAddressBookUtilABMultiValueRefTypeUnknown,
     RUAddressBookUtilABMultiValueRefTypeNSString,
-    RUAddressBookUtilABMultiValueRefTypeArray
+    RUAddressBookUtilABMultiValueRefTypeArray,
+    RUAddressBookUtilABMultiValueRefTypeImage
 }RUAddressBookUtilABMultiValueRefType;
 
 NSString* const kRUAddressBookUtilHasAskedUserForContacts = @"kRUAddressBookUtilHasAskedUserForContacts";
 
-void kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(CFTypeRef personPropertiesRecord, NSMutableDictionary* personPropertyDictionary,NSString* phoneProperty);
+//void kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(CFTypeRef personPropertiesRecord, NSMutableDictionary* personPropertyDictionary,NSString* phoneProperty);
 
 ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePropertyType propertyType);
 RUAddressBookUtilABMultiValueRefType abMultiValueRefTypeForPersonWithPropertyType(kRUAddressBookUtilPhonePropertyType propertyType);
@@ -60,7 +61,7 @@ static NSMutableArray* sharedInstances;
 }
 
 #pragma mark - C methods
-void kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(CFTypeRef personPropertiesRecord, NSMutableDictionary* personPropertyDictionary,NSString* phoneProperty)
+NSMutableArray* kRUAddressBookUtilPersonPropertiesArray(CFTypeRef personPropertiesRecord, NSString* phoneProperty)
 {
     CFIndex personPropertiesCount = ABMultiValueGetCount(personPropertiesRecord);
     
@@ -69,14 +70,31 @@ void kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(CFTy
     for (int phoneIndex = 0; phoneIndex < personPropertiesCount; phoneIndex++)
     {
         NSString* personProperty = (__bridge NSString*)ABMultiValueCopyValueAtIndex(personPropertiesRecord, phoneIndex);
-
+        
         if (personProperty)
             [personPropertiesArray addObject:personProperty];
     }
     
-    if (personPropertiesArray.count)
-        [personPropertyDictionary setObject:personPropertiesArray forKey:phoneProperty];
+    return personPropertiesArray;
 }
+
+//void kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(CFTypeRef personPropertiesRecord, NSMutableDictionary* personPropertyDictionary,NSString* phoneProperty)
+//{
+//    CFIndex personPropertiesCount = ABMultiValueGetCount(personPropertiesRecord);
+//    
+//    NSMutableArray* personPropertiesArray = [NSMutableArray array];
+//    
+//    for (int phoneIndex = 0; phoneIndex < personPropertiesCount; phoneIndex++)
+//    {
+//        NSString* personProperty = (__bridge NSString*)ABMultiValueCopyValueAtIndex(personPropertiesRecord, phoneIndex);
+//
+//        if (personProperty)
+//            [personPropertiesArray addObject:personProperty];
+//    }
+//    
+//    if (personPropertiesArray.count)
+//        [personPropertyDictionary setObject:personPropertiesArray forKey:phoneProperty];
+//}
 
 RUAddressBookUtilABMultiValueRefType abMultiValueRefTypeForPersonWithPropertyType(kRUAddressBookUtilPhonePropertyType propertyType)
 {
@@ -95,6 +113,7 @@ RUAddressBookUtilABMultiValueRefType abMultiValueRefTypeForPersonWithPropertyTyp
     RUDLog(@"unknown property type %i",propertyType);
     return RUAddressBookUtilABMultiValueRefTypeUnknown;
 }
+
 ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePropertyType propertyType)
 {
     switch (propertyType)
@@ -113,6 +132,9 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
 
         case kRUAddressBookUtilPhonePropertyTypeLastName:
             return kABPersonLastNameProperty;
+            break;
+
+        case kRUAddressBookUtilPhonePropertyTypeLastImage:
             break;
     }
 
@@ -255,6 +277,24 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
     }
 }
 
+id kRUAddressBookUtilPersonPropertyForPhonePropertyType(ABRecordRef person,kRUAddressBookUtilPhonePropertyType type)
+{
+    switch (type)
+    {
+        case kRUAddressBookUtilPhonePropertyTypeImage:
+            return ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+            break;
+
+        case kRUAddressBookUtilPhonePropertyTypeEmail:
+        case kRUAddressBookUtilPhonePropertyTypeFirstName:
+        case kRUAddressBookUtilPhonePropertyTypeLastName:
+        case kRUAddressBookUtilPhonePropertyTypePhone:
+            return ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType(type));
+            break;
+    }
+}
+
+
 //+(NSArray*)getDictionariesFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties
 +(NSArray*)getObjectsFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties objectCreationBlock:(RUAddressBookUtilCreateObjectWithDictBlcok)objectCreationBlock
 {
@@ -303,7 +343,8 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
                 NSMutableDictionary* personPropertyDictionary = [NSMutableDictionary dictionary];
                 for (NSNumber* phoneProperty in phoneProperties)
                 {
-                    CFTypeRef personPropertiesRecord = ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType(phoneProperty.integerValue));
+                    CFTypeRef personPropertiesRecord = kRUAddressBookUtilPersonPropertyRecordForPhonePropertyType(person, phoneProperty.integerValue);
+//                    CFTypeRef personPropertiesRecord = ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType(phoneProperty.integerValue));
 
                     if (personPropertiesRecord)
                     {
@@ -318,9 +359,12 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
                             case RUAddressBookUtilABMultiValueRefTypeArray:
                                 kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(personPropertiesRecord, personPropertyDictionary,phoneProperty.stringValue);
                                 break;
-                                
+
+                            case RUAddressBookUtilABMultiValueRefTypeImage:
+                                [personPropertyDictionary setObject:(__bridge NSString*)personPropertiesRecord forKey:phoneProperty.stringValue];
+                                break;
+
                             case RUAddressBookUtilABMultiValueRefTypeUnknown:
-                            default:
                                 RUDLog(@"unknown type for phone property %@",phoneProperty);
                                 break;
                         }
