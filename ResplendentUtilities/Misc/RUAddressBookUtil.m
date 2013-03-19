@@ -342,26 +342,27 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
 
                     if (personPropertiesRecord)
                     {
-                        RUAddressBookUtilABMultiValueRefType propType = abMultiValueRefTypeForPersonWithPropertyType(phoneProperty.integerValue);
-                        
-                        switch (propType)
-                        {
-                            case RUAddressBookUtilABMultiValueRefTypeNSString:
-                                [personPropertyDictionary setObject:(__bridge NSString*)personPropertiesRecord forKey:phoneProperty.stringValue];
-                                break;
-                                
-                            case RUAddressBookUtilABMultiValueRefTypeArray:
-                                kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(personPropertiesRecord, personPropertyDictionary,phoneProperty.stringValue);
-                                break;
-
-                            case RUAddressBookUtilABMultiValueRefTypeImage:
-                                [personPropertyDictionary setObject:(__bridge NSString*)personPropertiesRecord forKey:phoneProperty.stringValue];
-                                break;
-
-                            case RUAddressBookUtilABMultiValueRefTypeUnknown:
-                                RUDLog(@"unknown type for phone property %@",phoneProperty);
-                                break;
-                        }
+                        [personPropertyDictionary setObject:personPropertiesRecord forKey:phoneProperty.stringValue];
+//                        RUAddressBookUtilABMultiValueRefType propType = abMultiValueRefTypeForPersonWithPropertyType(phoneProperty.integerValue);
+//                        
+//                        switch (propType)
+//                        {
+//                            case RUAddressBookUtilABMultiValueRefTypeNSString:
+//                                [personPropertyDictionary setObject:(__bridge NSString*)personPropertiesRecord forKey:phoneProperty.stringValue];
+//                                break;
+//                                
+//                            case RUAddressBookUtilABMultiValueRefTypeArray:
+//                                kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(personPropertiesRecord, personPropertyDictionary,phoneProperty.stringValue);
+//                                break;
+//
+//                            case RUAddressBookUtilABMultiValueRefTypeImage:
+//                                [personPropertyDictionary setObject:(__bridge NSString*)personPropertiesRecord forKey:phoneProperty.stringValue];
+//                                break;
+//
+//                            case RUAddressBookUtilABMultiValueRefTypeUnknown:
+//                                RUDLog(@"unknown type for phone property %@",phoneProperty);
+//                                break;
+//                        }
                     }
 //                    NSString* personProperty = (__bridge NSString*)personPropertiesRecord;
 //
