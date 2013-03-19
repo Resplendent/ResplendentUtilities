@@ -116,7 +116,7 @@ RUAddressBookUtilABMultiValueRefType abMultiValueRefTypeForPersonWithPropertyTyp
             return RUAddressBookUtilABMultiValueRefTypeNSString;
             break;
 
-        case kRUAddressBookUtilPhonePropertyTypeData:
+        case kRUAddressBookUtilPhonePropertyTypeImage:
             return RUAddressBookUtilABMultiValueRefTypeData;
             break;
     }
@@ -145,7 +145,7 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
             return kABPersonLastNameProperty;
             break;
 
-        case kRUAddressBookUtilPhonePropertyTypeData:
+        case kRUAddressBookUtilPhonePropertyTypeImage:
             break;
     }
 
