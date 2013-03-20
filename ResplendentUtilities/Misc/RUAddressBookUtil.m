@@ -289,7 +289,7 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
 }
 
 //+(NSArray*)getDictionariesFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties
-+(NSArray*)getObjectsFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties objectCreationBlock:(RUAddressBookUtilCreateObjectWithDictBlcok)objectCreationBlock
++(NSArray*)getObjectsFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties objectCreationBlock:(RUAddressBookUtilCreateObjectWithDictBlock)objectCreationBlock
 {
     if (!objectCreationBlock)
     {
@@ -337,58 +337,14 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
                 for (NSNumber* phoneProperty in phoneProperties)
                 {
                     id personPropertiesRecord = kRUAddressBookUtilPersonPropertyForPhonePropertyType(person, phoneProperty.integerValue);
-//                    CFTypeRef personPropertiesRecord = kRUAddressBookUtilPersonPropertyRecordForPhonePropertyType(person, phoneProperty.integerValue);
-//                    CFTypeRef personPropertiesRecord = ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType(phoneProperty.integerValue));
 
                     if (personPropertiesRecord)
                     {
                         [personPropertyDictionary setObject:personPropertiesRecord forKey:phoneProperty.stringValue];
-//                        RUAddressBookUtilABMultiValueRefType propType = abMultiValueRefTypeForPersonWithPropertyType(phoneProperty.integerValue);
-//                        
-//                        switch (propType)
-//                        {
-//                            case RUAddressBookUtilABMultiValueRefTypeNSString:
-//                                [personPropertyDictionary setObject:(__bridge NSString*)personPropertiesRecord forKey:phoneProperty.stringValue];
-//                                break;
-//                                
-//                            case RUAddressBookUtilABMultiValueRefTypeArray:
-//                                kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(personPropertiesRecord, personPropertyDictionary,phoneProperty.stringValue);
-//                                break;
-//
-//                            case RUAddressBookUtilABMultiValueRefTypeImage:
-//                                [personPropertyDictionary setObject:(__bridge NSString*)personPropertiesRecord forKey:phoneProperty.stringValue];
-//                                break;
-//
-//                            case RUAddressBookUtilABMultiValueRefTypeUnknown:
-//                                RUDLog(@"unknown type for phone property %@",phoneProperty);
-//                                break;
-//                        }
                     }
-//                    NSString* personProperty = (__bridge NSString*)personPropertiesRecord;
-//
-//                    if ([personProperty isKindOfClass:[NSString class]])
-//                    {
-//                        [personPropertyDictionary setObject:personProperty forKey:phoneProperty];
-//                    }
-//                    else
-//                    {
-//                        CFIndex personPropertiesCount = ABMultiValueGetCount(personPropertiesRecord);
-//
-//                        NSMutableArray* personPropertiesArray = [NSMutableArray array];
-//                        
-//                        for (int phoneIndex = 0; phoneIndex < personPropertiesCount; phoneIndex++)
-//                        {
-//                            personProperty = (__bridge NSString*)ABMultiValueCopyValueAtIndex(personPropertiesRecord, phoneIndex);
-//
-//                            [personPropertiesArray addObject:personProperty];
-//                        }
-//
-//                        if (personPropertiesArray.count)
-//                            [personPropertyDictionary setObject:personPropertiesArray forKey:phoneProperty];
-//                    }
                 }
 
-                id object = objectCreationBlock(personPropertyDictionary);
+                id object = objectCreationBlock(personPropertyDictionary,contantIndex);
                 if (object)
                 {
                     [objectsArray addObject:object];
