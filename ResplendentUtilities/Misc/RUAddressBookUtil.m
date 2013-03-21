@@ -19,6 +19,10 @@ typedef enum {
 
 NSString* const kRUAddressBookUtilHasAskedUserForContacts = @"kRUAddressBookUtilHasAskedUserForContacts";
 
+const char * getImageDataQueueLabel = "RUAddressBookUtil.getImageDataQueueLabel";
+static dispatch_queue_t getImageDataQueue;
+static NSMutableArray* getImageDataRequestQueue;
+
 //void kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(CFTypeRef personPropertiesRecord, NSMutableDictionary* personPropertyDictionary,NSString* phoneProperty);
 
 id kRUAddressBookUtilPersonPropertyForPhonePropertyType(ABRecordRef person,kRUAddressBookUtilPhonePropertyType type);
@@ -33,6 +37,9 @@ static NSMutableArray* sharedInstances;
 @property (nonatomic, strong) RUAddressBookUtilAskForPermissionsCompletionBlock alertViewCompletion;
 
 +(BOOL)usesNativePermissions;
+
++(void)removeRequestFromQueue:(RUAddressBookUtilImageRequest*)request;
++(NSData*)imageDataFromAddressBookForContactIndex:(CFIndex)contactIndex;
 
 @end
 
@@ -49,6 +56,15 @@ static NSMutableArray* sharedInstances;
 
 
 @implementation RUAddressBookUtil
+
++(void)initialize
+{
+    if (self == [RUAddressBookUtil class])
+    {
+        getImageDataQueue = dispatch_queue_create(getImageDataQueueLabel, 0);
+        getImageDataRequestQueue = [NSMutableArray array];
+    }
+}
 
 #pragma mark - UIAlertViewDelegate methods
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -150,6 +166,108 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
     }
 
     @throw [NSException exceptionWithName:NSInvalidArgumentException reason:RUStringWithFormat(@"unhandled property type %i",propertyType) userInfo:nil];
+}
+
+#pragma mark - Image methods
++(NSData*)imageDataFromAddressBookForContactIndex:(CFIndex)contactIndex
+{
+    ABAddressBookRef addressbook = ABAddressBookCreate();
+    
+    if(addressbook)
+    {
+        if ([self usesNativePermissions])
+        {
+            if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+            {
+                // The user has previously given access, add the contact
+            }
+            else
+            {
+                RUDLog(@"previously rejected permission");
+                return nil;
+            }
+        }
+        else
+        {
+            NSNumber* askedPermission = [self cachedHasAskedUserForContacts];
+            
+            if (!(askedPermission && askedPermission.boolValue))
+                return nil;
+        }
+        
+        CFArrayRef people =  ABAddressBookCopyArrayOfAllPeople(addressbook);
+        
+        if (people)
+        {
+            ABRecordRef person = CFArrayGetValueAtIndex(people, contactIndex);
+            
+            if (person)
+            {
+                NSData* imageData = kRUAddressBookUtilPersonPropertyForPhonePropertyType(person, kRUAddressBookUtilPhonePropertyTypeImage);
+                
+                return imageData;
+            }
+            else
+            {
+                RUDLog(@"no person");
+                return nil;
+            }
+        }
+        else
+        {
+            RUDLog(@"no people");
+            return nil;
+        }
+    }
+    else
+    {
+        RUDLog(@"no address book");
+        return nil;
+    }
+}
+
++(void)removeRequestFromQueue:(RUAddressBookUtilImageRequest*)request
+{
+    [getImageDataRequestQueue removeObject:request];
+}
+
++(RUAddressBookUtilImageRequest*)getImageDataFromAddressBookForContactIndex:(CFIndex)contactIndex completion:(RUAddressBookUtilGetImageBlock)completion
+{
+    if (completion)
+    {
+        __block RUAddressBookUtilImageRequest* request = [[RUAddressBookUtilImageRequest alloc] initWithContactIndex:contactIndex completionBlock:completion];
+        if (request)
+        {
+            [getImageDataRequestQueue addObject:request];
+            dispatch_async(getImageDataQueue, ^{
+                if (request.canceled)
+                {
+                    [self removeRequestFromQueue:request];
+                }
+                else
+                {
+                    NSData* imageData = [self imageDataFromAddressBookForContactIndex:request.contactIndex];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (!request.canceled)
+                            request.completionBlock(imageData,request.contactIndex);
+
+                        [self removeRequestFromQueue:request];
+                    });
+                }
+            });
+            return request;
+        }
+        else
+        {
+            RUDLog(@"nil request");
+            return nil;
+        }
+    }
+    else
+    {
+        RUDLog(@"must pass completion block");
+        return nil;
+    }
 }
 
 #pragma mark - Static methods
@@ -425,6 +543,28 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:number forKey:kRUAddressBookUtilHasAskedUserForContacts];
     [userDefaults synchronize];
+}
+
+@end
+
+
+
+@implementation RUAddressBookUtilImageRequest
+
+-(id)initWithContactIndex:(CFIndex)contactIndex completionBlock:(RUAddressBookUtilGetImageBlock)completionBlock
+{
+    if (self = [self init])
+    {
+        _contactIndex = contactIndex;
+        _completionBlock = completionBlock;
+    }
+
+    return self;
+}
+
+-(void)cancel
+{
+    _canceled = TRUE;
 }
 
 @end
