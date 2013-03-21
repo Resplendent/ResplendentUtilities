@@ -12,16 +12,7 @@ typedef void (^RUAddressBookUtilAskForPermissionsCompletionBlock)(BOOL alreadyAs
 typedef id (^RUAddressBookUtilCreateObjectWithDictBlock)(NSDictionary* properites,NSUInteger contactIndex);
 typedef void (^RUAddressBookUtilGetImageBlock)(NSData* imageData,CFIndex contactIndex);
 
-typedef enum
-{
-    kRUAddressBookUtilPhonePropertyTypePhone = 100,
-    kRUAddressBookUtilPhonePropertyTypeEmail,
-    kRUAddressBookUtilPhonePropertyTypeFirstName,
-    kRUAddressBookUtilPhonePropertyTypeLastName,
-    kRUAddressBookUtilPhonePropertyTypeImage
-}kRUAddressBookUtilPhonePropertyType;
-//    NSArray* properties = @[[NSNumber numberWithInt:kABPersonPhoneProperty],[NSNumber numberWithInt:kABPersonEmailProperty]];
-
+//++++Image load request interface
 @interface RUAddressBookUtilImageRequest : NSObject
 
 @property (nonatomic, readonly) BOOL canceled;
@@ -33,6 +24,19 @@ typedef enum
 -(void)cancel;
 
 @end
+//----
+
+
+
+
+typedef enum
+{
+    kRUAddressBookUtilPhonePropertyTypePhone = 100,
+    kRUAddressBookUtilPhonePropertyTypeEmail,
+    kRUAddressBookUtilPhonePropertyTypeFirstName,
+    kRUAddressBookUtilPhonePropertyTypeLastName,
+    kRUAddressBookUtilPhonePropertyTypeImage
+}kRUAddressBookUtilPhonePropertyType;
 
 @interface RUAddressBookUtil : NSObject
 

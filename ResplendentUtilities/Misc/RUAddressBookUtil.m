@@ -21,7 +21,7 @@ NSString* const kRUAddressBookUtilHasAskedUserForContacts = @"kRUAddressBookUtil
 
 const char * getImageDataQueueLabel = "RUAddressBookUtil.getImageDataQueueLabel";
 static dispatch_queue_t getImageDataQueue;
-static NSMutableArray* getImageDataRequestQueue;
+//static NSMutableArray* getImageDataRequestQueue;
 
 //void kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(CFTypeRef personPropertiesRecord, NSMutableDictionary* personPropertyDictionary,NSString* phoneProperty);
 
@@ -38,7 +38,7 @@ static NSMutableArray* sharedInstances;
 
 +(BOOL)usesNativePermissions;
 
-+(void)removeRequestFromQueue:(RUAddressBookUtilImageRequest*)request;
+//+(void)removeRequestFromQueue:(RUAddressBookUtilImageRequest*)request;  
 +(NSData*)imageDataFromAddressBookForContactIndex:(CFIndex)contactIndex;
 
 @end
@@ -62,7 +62,7 @@ static NSMutableArray* sharedInstances;
     if (self == [RUAddressBookUtil class])
     {
         getImageDataQueue = dispatch_queue_create(getImageDataQueueLabel, 0);
-        getImageDataRequestQueue = [NSMutableArray array];
+//        getImageDataRequestQueue = [NSMutableArray array];
     }
 }
 
@@ -226,10 +226,12 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
     }
 }
 
-+(void)removeRequestFromQueue:(RUAddressBookUtilImageRequest*)request
-{
-    [getImageDataRequestQueue removeObject:request];
-}
+//+(void)removeRequestFromQueue:(RUAddressBookUtilImageRequest*)request
+//{
+//    RUDLog(@"will remove %@ from getImageDataRequestQueue: %@",request,getImageDataRequestQueue);
+//    [getImageDataRequestQueue removeObject:request];
+//    RUDLog(@"removed %@ from getImageDataRequestQueue: %@",request,getImageDataRequestQueue);
+//}
 
 +(RUAddressBookUtilImageRequest*)getImageDataFromAddressBookForContactIndex:(CFIndex)contactIndex completion:(RUAddressBookUtilGetImageBlock)completion
 {
@@ -238,11 +240,13 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
         __block RUAddressBookUtilImageRequest* request = [[RUAddressBookUtilImageRequest alloc] initWithContactIndex:contactIndex completionBlock:completion];
         if (request)
         {
-            [getImageDataRequestQueue addObject:request];
+//            RUDLog(@"will add to getImageDataRequestQueue: %@",getImageDataRequestQueue);
+//            [getImageDataRequestQueue addObject:request];
+//            RUDLog(@"added to getImageDataRequestQueue: %@",getImageDataRequestQueue);
             dispatch_async(getImageDataQueue, ^{
                 if (request.canceled)
                 {
-                    [self removeRequestFromQueue:request];
+//                    [self removeRequestFromQueue:request];
                 }
                 else
                 {
@@ -251,7 +255,7 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
                         if (!request.canceled)
                             request.completionBlock(imageData,request.contactIndex);
 
-                        [self removeRequestFromQueue:request];
+//                        [self removeRequestFromQueue:request];
                     });
                 }
             });
@@ -562,6 +566,7 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
     return self;
 }
 
+#pragma mark - Public methods
 -(void)cancel
 {
     _canceled = TRUE;
