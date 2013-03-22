@@ -19,9 +19,41 @@ typedef enum {
 
 NSString* const kRUAddressBookUtilHasAskedUserForContacts = @"kRUAddressBookUtilHasAskedUserForContacts";
 
-const char * getImageDataQueueLabel = "RUAddressBookUtil.getImageDataQueueLabel";
-static dispatch_queue_t getImageDataQueue;
-//static NSMutableArray* getImageDataRequestQueue;
+//++++ RUAddressBookUtilImageRequestQueue
+const char * kRUAddressBookUtilGetImageDataQueueLabel = "RUAddressBookUtil.RUAddressBookUtilImageRequestQueue.getImageDataQueueLabel";
+const char * kRUAddressBookUtilManageQueueArrayLabel = "RUAddressBookUtil.RUAddressBookUtilImageRequestQueue.manageQueueArrayLabel";
+//static dispatch_queue_t getImageDataQueue;
+
+@interface RUAddressBookUtilImageRequestQueue : NSObject
+{
+    dispatch_queue_t _getImageDataQueue;
+    dispatch_queue_t _manageQueueArrayQueue;
+
+    NSMutableArray* _queueArray;
+    RUAddressBookUtilImageRequest* _currentImageRequest;
+}
+
+-(void)addRequestToQueue:(RUAddressBookUtilImageRequest*)request;
+-(void)removeRequestFromQueue:(RUAddressBookUtilImageRequest*)request;
+-(void)clearCurrentRequestAndCheckForNextRequest;
+-(void)checkForNextRequest;
+-(void)runCurrentRequest;
+
+@end
+//-----
+
+@interface RUAddressBookUtilImageRequest ()
+
+@property (nonatomic, assign) RUAddressBookUtilImageRequestQueue* queue;
+
+-(id)initWithContactIndex:(CFIndex)contactIndex queue:(RUAddressBookUtilImageRequestQueue*)queue completionBlock:(RUAddressBookUtilGetImageDataBlock)completionBlock;
+
+//Synchronously loads image data, so should be done with thread competency. Will throw exception if request is already fetching
+-(NSData*)fetchImageData;
+
+@end
+
+static RUAddressBookUtilImageRequestQueue* getImageDataRequestQueue;
 
 //void kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(CFTypeRef personPropertiesRecord, NSMutableDictionary* personPropertyDictionary,NSString* phoneProperty);
 
@@ -38,10 +70,14 @@ static NSMutableArray* sharedInstances;
 
 +(BOOL)usesNativePermissions;
 
-//+(void)removeRequestFromQueue:(RUAddressBookUtilImageRequest*)request;  
 +(NSData*)imageDataFromAddressBookForContactIndex:(CFIndex)contactIndex;
 
 @end
+
+//@interface RUAddressBookUtil (ImageDataRequestQueue)
+//
+//
+//@end
 
 
 
@@ -61,8 +97,8 @@ static NSMutableArray* sharedInstances;
 {
     if (self == [RUAddressBookUtil class])
     {
-        getImageDataQueue = dispatch_queue_create(getImageDataQueueLabel, 0);
-//        getImageDataRequestQueue = [NSMutableArray array];
+//        getImageDataQueue = dispatch_queue_create(getImageDataQueueLabel, 0);
+        getImageDataRequestQueue = [RUAddressBookUtilImageRequestQueue new];
     }
 }
 
@@ -226,46 +262,13 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
     }
 }
 
-//+(void)removeRequestFromQueue:(RUAddressBookUtilImageRequest*)request
-//{
-//    RUDLog(@"will remove %@ from getImageDataRequestQueue: %@",request,getImageDataRequestQueue);
-//    [getImageDataRequestQueue removeObject:request];
-//    RUDLog(@"removed %@ from getImageDataRequestQueue: %@",request,getImageDataRequestQueue);
-//}
-
-+(RUAddressBookUtilImageRequest*)getImageDataFromAddressBookForContactIndex:(CFIndex)contactIndex completion:(RUAddressBookUtilGetImageBlock)completion
++(RUAddressBookUtilImageRequest*)getImageDataFromAddressBookForContactIndex:(CFIndex)contactIndex completion:(RUAddressBookUtilGetImageDataBlock)completion
 {
     if (completion)
     {
-        __block RUAddressBookUtilImageRequest* request = [[RUAddressBookUtilImageRequest alloc] initWithContactIndex:contactIndex completionBlock:completion];
-        if (request)
-        {
-//            RUDLog(@"will add to getImageDataRequestQueue: %@",getImageDataRequestQueue);
-//            [getImageDataRequestQueue addObject:request];
-//            RUDLog(@"added to getImageDataRequestQueue: %@",getImageDataRequestQueue);
-            dispatch_async(getImageDataQueue, ^{
-                if (request.canceled)
-                {
-//                    [self removeRequestFromQueue:request];
-                }
-                else
-                {
-                    NSData* imageData = [self imageDataFromAddressBookForContactIndex:request.contactIndex];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (!request.canceled)
-                            request.completionBlock(imageData,request.contactIndex);
-
-//                        [self removeRequestFromQueue:request];
-                    });
-                }
-            });
-            return request;
-        }
-        else
-        {
-            RUDLog(@"nil request");
-            return nil;
-        }
+        RUAddressBookUtilImageRequest* request = [[RUAddressBookUtilImageRequest alloc] initWithContactIndex:contactIndex queue:getImageDataRequestQueue completionBlock:completion];
+        [getImageDataRequestQueue addRequestToQueue:request];
+        return request;
     }
     else
     {
@@ -410,7 +413,6 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
     }
 }
 
-//+(NSArray*)getDictionariesFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties
 +(NSArray*)getObjectsFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties objectCreationBlock:(RUAddressBookUtilCreateObjectWithDictBlock)objectCreationBlock
 {
     if (!objectCreationBlock)
@@ -555,8 +557,22 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
 
 @implementation RUAddressBookUtilImageRequest
 
--(id)initWithContactIndex:(CFIndex)contactIndex completionBlock:(RUAddressBookUtilGetImageBlock)completionBlock
+//-(void)dealloc
+//{
+//    RUDLog(@"%@",self);
+//}
+
+-(id)init
 {
+    if (!_queue)
+        [NSException raise:NSInternalInconsistencyException format:@"Queue not present, must use RUAddressBookUtil's getImageDataFromAddressBookForContactIndex method"];
+
+    return (self = [super init]);
+}
+
+-(id)initWithContactIndex:(CFIndex)contactIndex queue:(RUAddressBookUtilImageRequestQueue*)queue completionBlock:(RUAddressBookUtilGetImageDataBlock)completionBlock
+{
+    _queue = queue;
     if (self = [self init])
     {
         _contactIndex = contactIndex;
@@ -566,10 +582,269 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
     return self;
 }
 
+-(NSString *)description
+{
+    return RUStringWithFormat(@"%@ at '%p' contactIndex: '%li' state: '%i'",NSStringFromClass(self.class),self,_contactIndex,_state);
+}
+
+#pragma mark - Setter methods
+-(void)setState:(RUAddressBookUtilImageRequestState)state
+{
+    _state = state;
+}
+
+#pragma mark - Private methods
+-(NSData*)fetchImageData
+{
+    if (_state == RUAddressBookUtilImageRequestStateFetching)
+    {
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:RUStringWithFormat(@"request %@ already fetching",self) userInfo:nil];
+    }
+    else
+    {
+        [self setState:RUAddressBookUtilImageRequestStateFetching];
+        NSData* imageData = [RUAddressBookUtil imageDataFromAddressBookForContactIndex:self.contactIndex];
+        if (_state == RUAddressBookUtilImageRequestStateFetching)
+            [self setState:RUAddressBookUtilImageRequestStateFinished];
+        else
+            RUDLog(@"not setting %@ to finished because state wasn't at fetching",self);
+        return imageData;
+    }
+}
+
 #pragma mark - Public methods
 -(void)cancel
 {
-    _canceled = TRUE;
+    switch (_state)
+    {
+        case RUAddressBookUtilImageRequestStateCanceled:
+            RUDLog(@"already canceled");
+            break;
+
+        case RUAddressBookUtilImageRequestStateFetching:
+//            RUDLog(@"Already fetching, too late to cancel");
+            break;
+
+        case RUAddressBookUtilImageRequestStateFinished:
+            RUDLog(@"already finished");
+            break;
+
+        case RUAddressBookUtilImageRequestStateNone:
+        case RUAddressBookUtilImageRequestStatePending:
+            [self setState:RUAddressBookUtilImageRequestStateCanceled];
+            [_queue removeRequestFromQueue:self];
+            break;
+    }
+}
+
+@end
+
+@implementation RUAddressBookUtilImageRequestQueue
+
+-(id)init
+{
+    if (self = [super init])
+    {
+        _getImageDataQueue = dispatch_queue_create(kRUAddressBookUtilGetImageDataQueueLabel, 0);
+        _manageQueueArrayQueue = dispatch_queue_create(kRUAddressBookUtilManageQueueArrayLabel, 0);
+        _queueArray = [NSMutableArray array];
+    }
+
+    return self;
+}
+
+-(NSString *)description
+{
+    return RUStringWithFormat(@"%@ at '%p' queueArray: '%@'",NSStringFromClass(self.class),self,_queueArray);
+}
+
+//+(void)removeRequestFromQueue:(RUAddressBookUtilImageRequest*)request
+//{
+//    RUDLog(@"will remove %@ from getImageDataRequestQueue: %@",request,getImageDataRequestQueue);
+//    [getImageDataRequestQueue removeObject:request];
+//    RUDLog(@"removed %@ from getImageDataRequestQueue: %@",request,getImageDataRequestQueue);
+//}
+
+#pragma mark - C methods
+BOOL kRUAddressBookUtilImageRequestQueueRequestHasAcceptableRemoveState(RUAddressBookUtilImageRequest* request)
+{
+    switch (request.state)
+    {
+        case RUAddressBookUtilImageRequestStateCanceled:
+        case RUAddressBookUtilImageRequestStateFinished:
+            return YES;
+            break;
+
+        case RUAddressBookUtilImageRequestStateFetching:
+        case RUAddressBookUtilImageRequestStateNone:
+        case RUAddressBookUtilImageRequestStatePending:
+            return NO;
+    }
+}
+
+#pragma mark - Public methods
+-(void)removeRequestFromQueue:(RUAddressBookUtilImageRequest*)request
+{
+    if (request)
+    {
+        switch (request.state)
+        {
+            case RUAddressBookUtilImageRequestStatePending:
+            case RUAddressBookUtilImageRequestStateFetching:
+            case RUAddressBookUtilImageRequestStateNone:
+                [NSException raise:NSInternalInconsistencyException format:@"request %@ must be canceled or finished if it wants to be removed from queue %@",request,self];
+                break;
+
+            case RUAddressBookUtilImageRequestStateCanceled:
+            case RUAddressBookUtilImageRequestStateFinished:
+            {
+                dispatch_async(_manageQueueArrayQueue, ^{
+                    NSInteger requestIndex = [_queueArray indexOfObject:request];
+                    if (requestIndex == NSNotFound)
+                    {
+                        RUDLog(@"Already removed");
+                    }
+                    else
+                    {
+//                        RUDLog(@"removing %@ from queue: %@",request,_queueArray);
+                        [_queueArray removeObjectAtIndex:requestIndex];
+//                        RUDLog(@"removedfrom queue: %@",_queueArray);
+                    }
+                });
+            }
+                break;
+        }
+    }
+    else
+    {
+        RUDLog(@"shouldn't pass nil request");
+    }
+}
+
+-(void)addRequestToQueue:(RUAddressBookUtilImageRequest*)request
+{
+    if (request)
+    {
+        dispatch_async(_manageQueueArrayQueue, ^{
+            switch (request.state)
+            {
+                case RUAddressBookUtilImageRequestStateNone:
+                    [request setState:RUAddressBookUtilImageRequestStatePending];
+                    [_queueArray addObject:request];
+                    [self checkForNextRequest];
+                    break;
+
+                case RUAddressBookUtilImageRequestStatePending:
+                    RUDLog(@"already pending");
+                    break;
+
+                case RUAddressBookUtilImageRequestStateCanceled:
+//                    RUDLog(@"request was canceled");
+                    break;
+
+                case RUAddressBookUtilImageRequestStateFetching:
+                    RUDLog(@"already fetching");
+                    break;
+
+                case RUAddressBookUtilImageRequestStateFinished:
+                    RUDLog(@"already finished");
+                    break;
+            }
+        });
+    }
+    else
+    {
+        RUDLog(@"shouldn't pass a nil request");
+    }
+}
+
+-(void)clearCurrentRequestAndCheckForNextRequest
+{
+    [self removeRequestFromQueue:_currentImageRequest];
+    _currentImageRequest = nil;
+    [self checkForNextRequest];
+}
+
+-(void)checkForNextRequest
+{
+    dispatch_async(_manageQueueArrayQueue, ^{
+        if (!_currentImageRequest)
+        {
+            if (_queueArray.count)
+            {
+                RUAddressBookUtilImageRequest* firstRequest = [_queueArray objectAtIndex:0];
+                switch (firstRequest.state)
+                {
+                    case RUAddressBookUtilImageRequestStatePending:
+                        _currentImageRequest = firstRequest;
+                        [self runCurrentRequest];
+                        break;
+
+                    case RUAddressBookUtilImageRequestStateCanceled:
+                        RUDLog(@"already canceled");
+                        break;
+
+                    case RUAddressBookUtilImageRequestStateFinished:
+                        RUDLog(@"already finished");
+                        break;
+                        
+                    case RUAddressBookUtilImageRequestStateFetching:
+                        RUDLog(@"already fetching");
+                        break;
+                        
+                    case RUAddressBookUtilImageRequestStateNone:
+                        RUDLog(@"none");
+                        break;
+                }
+            }
+            else
+            {
+                RUDLog(@"done");
+            }
+        }
+//        else
+//        {
+//            RUDLog(@"busy");
+//        }
+    });
+}
+
+-(void)runCurrentRequest
+{
+    dispatch_async(_getImageDataQueue, ^{
+        if (_currentImageRequest.state == RUAddressBookUtilImageRequestStatePending)
+        {
+            //Fetch and process image data
+            NSData* imageData = [_currentImageRequest fetchImageData];
+            if (_currentImageRequest.state == RUAddressBookUtilImageRequestStateFinished)
+            {
+                __block RUAddressBookUtilImageRequest* currentImageRequest = _currentImageRequest;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (currentImageRequest.state == RUAddressBookUtilImageRequestStateFinished)
+                    {
+                        if (currentImageRequest.completionBlock)
+                            currentImageRequest.completionBlock(imageData,currentImageRequest);
+                    }
+                    else
+                    {
+                        RUDLog(@"request: '%@' queue: '%@'",_currentImageRequest,self);
+                    }
+                });
+            }
+            else
+            {
+                RUDLog(@"request: '%@' queue: '%@'",_currentImageRequest,self);
+            }
+            
+            [self clearCurrentRequestAndCheckForNextRequest];
+        }
+        else
+        {
+            RUDLog(@"request: '%@' queue: '%@'",_currentImageRequest,self);
+            [self clearCurrentRequestAndCheckForNextRequest];
+        }
+    });
 }
 
 @end

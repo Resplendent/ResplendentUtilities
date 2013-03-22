@@ -8,18 +8,28 @@
 
 #import <Foundation/Foundation.h>
 
+@class RUAddressBookUtilImageRequest;
+
 typedef void (^RUAddressBookUtilAskForPermissionsCompletionBlock)(BOOL alreadyAsked, BOOL granted);
 typedef id (^RUAddressBookUtilCreateObjectWithDictBlock)(NSDictionary* properites,NSUInteger contactIndex);
-typedef void (^RUAddressBookUtilGetImageBlock)(NSData* imageData,CFIndex contactIndex);
+typedef void (^RUAddressBookUtilGetImageDataBlock)(NSData* imageData,RUAddressBookUtilImageRequest* request);
+
+typedef enum {
+    RUAddressBookUtilImageRequestStateNone = 0,
+    RUAddressBookUtilImageRequestStatePending = 100,
+    RUAddressBookUtilImageRequestStateFetching = 200,
+    RUAddressBookUtilImageRequestStateFinished,
+    RUAddressBookUtilImageRequestStateCanceled = 300,
+}RUAddressBookUtilImageRequestState;
 
 //++++Image load request interface
 @interface RUAddressBookUtilImageRequest : NSObject
 
-@property (nonatomic, readonly) BOOL canceled;
-@property (nonatomic, readonly) RUAddressBookUtilGetImageBlock completionBlock;
+//@property (nonatomic, readonly) BOOL canceled;
+//@property (nonatomic, readonly) BOOL fetching;
+@property (nonatomic, readonly) RUAddressBookUtilImageRequestState state;
+@property (nonatomic, readonly) RUAddressBookUtilGetImageDataBlock completionBlock;
 @property (nonatomic, readonly) CFIndex contactIndex;
-
--(id)initWithContactIndex:(CFIndex)contactIndex completionBlock:(RUAddressBookUtilGetImageBlock)completionBlock;
 
 -(void)cancel;
 
@@ -48,6 +58,6 @@ typedef enum
 //+(NSArray*)getDictionariesFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties;
 +(NSArray*)getObjectsFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties objectCreationBlock:(RUAddressBookUtilCreateObjectWithDictBlock)objectCreationBlock;
 
-+(RUAddressBookUtilImageRequest*)getImageDataFromAddressBookForContactIndex:(CFIndex)contactIndex completion:(RUAddressBookUtilGetImageBlock)completion;
++(RUAddressBookUtilImageRequest*)getImageDataFromAddressBookForContactIndex:(CFIndex)contactIndex completion:(RUAddressBookUtilGetImageDataBlock)completion;
 
 @end
