@@ -7,6 +7,7 @@
 //
 
 #import "UIImage+Resizing.h"
+#import "RUConstants.h"
 
 #define UIImage_Resizing_DEBUG_TIMING 0
 
@@ -207,6 +208,7 @@ UIImage* resizedImagePreservingAspectRatio(UIImage* sourceImage, CGSize targetSi
                 transform:(CGAffineTransform)transform
            drawTransposed:(BOOL)transpose
      interpolationQuality:(CGInterpolationQuality)quality {
+
     CGRect newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height));
     CGRect transposedRect = CGRectMake(0, 0, newRect.size.height, newRect.size.width);
     CGImageRef imageRef = self.CGImage;
