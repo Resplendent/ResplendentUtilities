@@ -32,3 +32,11 @@ RUStaticVariableSynthesizationGetterDeclaration(UIImage, varName);
 RUStaticVariableSynthesizationWithGetter(UIImage,varName,[UIImage imageNamed:imageNameString]) \
 //----
 
+//++++ UIImage helpers
+#define RUStaticVariableSynthesizationGetterColorDeclaration(varName) \
+RUStaticVariableSynthesizationGetterDeclaration(UIColor, varName);
+
+#define RUStaticVariableSynthesizationWithGetterColorHex(varName,colorHexColor) \
+RUStaticVariableSynthesizationWithGetter(UIColor,varName,[UIColor colorWithHexString:colorHexColor]) \
+//----
+

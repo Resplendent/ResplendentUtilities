@@ -16,6 +16,7 @@
 #define CGRectSetX(x, rect) (CGRectMake(x, (rect).origin.y, (rect).size.width, (rect).size.height))
 #define CGRectSetY(y, rect) (CGRectMake((rect).origin.x, y, (rect).size.width, (rect).size.height))
 #define CGRectSetXY(x, y, rect) (CGRectMake(x, y, (rect).size.width, (rect).size.height))
+#define CGRectSetYHeight(y,height, rect) (CGRectMake((rect).origin.x, y, (rect).size.width, height))
 #define CGRectSetWidth(w, rect) (CGRectMake((rect).origin.x, (rect).origin.y, w, (rect).size.height))
 #define CGRectSetHeight(h, rect) (CGRectMake((rect).origin.x, (rect).origin.y, (rect).size.width, (h)))
 #define CGRectSetSize(s, rect) ((CGRect){(rect).origin.x, (rect).origin.y, s})
