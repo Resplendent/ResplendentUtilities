@@ -160,7 +160,7 @@ static NSTimeInterval popPushAnimationDuration;
                 break;
         }
 
-        [navbarViewController.navbar.rightButton setAlpha:0.0f];
+//        [navbarViewController.navbar.rightButton setAlpha:0.0f];
 
         //Move navbar to superview
         [self.view addSubview:navbarViewController.view];
