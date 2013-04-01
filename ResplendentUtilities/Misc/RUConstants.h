@@ -26,6 +26,8 @@
 
 #define RUiOSSystemVersionIsAtLeast(version) ([UIDevice currentDevice].systemVersion.floatValue >= version)
 
+#define RUSizeAdjustedToDeviceScreenSize(sourceSize) ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] ? CGSizeMake(sourceSize.width * [[UIScreen mainScreen] scale],sourceSize.height * [[UIScreen mainScreen] scale]) : sourceSize)
+
 //Enums
 typedef enum{
     RUScrollDirectionNone = 0,

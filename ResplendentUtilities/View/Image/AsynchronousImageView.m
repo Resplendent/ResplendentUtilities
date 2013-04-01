@@ -55,23 +55,17 @@
     _imageRequest = nil;
 }
 
--(void)fetchImageFromURL:(NSString*)anUrl
+-(void)fetchImageFromURL:(NSURL*)url
 {
-    [self fetchImageFromURL:anUrl withCacheName:anUrl];
+    [self fetchImageFromURL:url withCacheName:url.absoluteString];
 }
 
--(NSString *)url
-{
-    return [_imageRequest url];
-}
-
--(void)fetchImageFromURL:(NSString*)anUrl withCacheName:(NSString*)cacheName
+-(void)fetchImageFromURL:(NSURL*)url withCacheName:(NSString*)cacheName
 {
     [self cancelFetch];
-
-//    if (!_ignoreFetchImageClear)
-        [self setImage:nil];
-
+    
+    [self setImage:nil];
+    
     if (self.loadsUsingSpinner)
     {
         if (!_spinner)
@@ -79,39 +73,54 @@
             _spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             [self addSubview:_spinner];
         }
-
+        
         [_spinner startAnimating];
     }
-
-    _imageRequest = [[AsynchronousUIImageRequest alloc] initAndFetchWithURL:anUrl andCacheName:cacheName withBlock:^(UIImage *image, NSError *error) {
-            _imageRequest = nil;
+    
+    _imageRequest = [[AsynchronousUIImageRequest alloc] initAndFetchWithURL:url cacheName:cacheName block:^(UIImage *image, NSError *error) {
+        _imageRequest = nil;
+        
+        if (_spinner)
+        {
+            [_spinner stopAnimating];
+            [_spinner removeFromSuperview];;
+            _spinner = nil;
+        }
+        
+        //            RUDLog(@"setting image");
+        [self setImage:image];
+        //            [self drawRect:self.bounds];
+        
+        if (image)
+        {
+            //                if (self.frame.size.width == 0 || self.frame.size.height == 0)
+            //                    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.image.size.width, self.image.size.height);
             
-            if (_spinner)
+            CGFloat alpha = self.alpha;
+            if (self.fadeInDuration > 0)
             {
-                [_spinner stopAnimating];
-                [_spinner removeFromSuperview];;
-                _spinner = nil;
+                [self setAlpha:0.0f];
+                [UIView animateWithDuration:self.fadeInDuration animations:^{
+                    [self setAlpha:alpha];
+                }];
             }
-
-//            RUDLog(@"setting image");
-            [self setImage:image];
-            //            [self drawRect:self.bounds];
-            
-            if (image)
-            {
-                //                if (self.frame.size.width == 0 || self.frame.size.height == 0)
-                //                    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.image.size.width, self.image.size.height);
-
-                CGFloat alpha = self.alpha;
-                if (self.fadeInDuration > 0)
-                {
-                    [self setAlpha:0.0f];
-                    [UIView animateWithDuration:self.fadeInDuration animations:^{
-                        [self setAlpha:alpha];
-                    }];
-                }
-            }
+        }
     }];
+}
+
+-(void)fetchImageFromURLString:(NSString*)anUrl
+{
+    [self fetchImageFromURLString:anUrl withCacheName:anUrl];
+}
+
+//-(NSString *)url
+//{
+//    return [_imageRequest url];
+//}
+
+-(void)fetchImageFromURLString:(NSString*)anUrl withCacheName:(NSString*)cacheName
+{
+    [self fetchImageFromURL:[NSURL URLWithString:anUrl] withCacheName:cacheName];
 }
 
 @end

@@ -22,7 +22,7 @@
 @property (nonatomic, assign)   NSTimeInterval fadeInDuration;
 //@property (nonatomic, assign)   BOOL clearOnFail;
 
-@property (nonatomic, readonly) NSString* url;
+//@property (nonatomic, readonly) NSString* url;
 
 //#if EC_DEBUG
 //@property (nonatomic, assign)   UIView* viewToSetNeedsLayoutOnComplete;
@@ -30,8 +30,10 @@
 //@property (nonatomic, retain)   UIView* viewToSetNeedsLayoutOnComplete;
 //#endif
 
--(void)fetchImageFromURL:(NSString*)anUrl;
--(void)fetchImageFromURL:(NSString*)anUrl withCacheName:(NSString*)cacheName;
+-(void)fetchImageFromURLString:(NSString*)anUrl;
+-(void)fetchImageFromURLString:(NSString*)anUrl withCacheName:(NSString*)cacheName;
+-(void)fetchImageFromURL:(NSURL*)url;
+-(void)fetchImageFromURL:(NSURL*)url withCacheName:(NSString*)cacheName;
 
 -(void)cancelFetch;
 
