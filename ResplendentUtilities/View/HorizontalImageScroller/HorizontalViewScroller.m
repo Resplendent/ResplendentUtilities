@@ -103,6 +103,7 @@ RUCreateDestroyViewSynthesizeDeclarations(PageControl);
 {
     if (pageControlSize.height && pageControlSize.width)
     {
+        [_scrollView setShowsHorizontalScrollIndicator:NO];
         [self createPageControl];
         [_pageControl setFrame:(CGRect){0,0,pageControlSize}];
     }
