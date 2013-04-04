@@ -42,4 +42,6 @@ typedef void (^imageErrorBlock)(UIImage* image, NSError* error);
 +(void)hideLastImage;
 #endif
 
++(UIImage*)cachedImageForCacheName:(NSString*)cacheName;
+
 @end
