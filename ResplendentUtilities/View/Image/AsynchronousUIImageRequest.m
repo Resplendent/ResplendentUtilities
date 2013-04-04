@@ -62,8 +62,8 @@ static NSMutableDictionary* fetchedImages;
 -(void)fetchImageWithBlock:(imageErrorBlock)block
 {
     [self cancelFetch];
-    
-    UIImage* cachedImage = [fetchedImages objectForKey:_cacheName];
+
+    UIImage* cachedImage = [AsynchronousUIImageRequest cachedImageForCacheName:_cacheName];
     
     if (cachedImage)
     {
@@ -134,6 +134,11 @@ static NSMutableDictionary* fetchedImages;
 }
 
 #pragma mark - Static methods
++(UIImage*)cachedImageForCacheName:(NSString*)cacheName
+{
+    return [fetchedImages objectForKey:cacheName];
+}
+
 +(void)removeCacheImageByCacheName:(NSString*)cacheName
 {
     [fetchedImages removeObjectForKey:cacheName];
