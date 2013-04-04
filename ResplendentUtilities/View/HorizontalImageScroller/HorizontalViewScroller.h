@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HorizontalViewScrollerProtocols.h"
 
 @interface HorizontalViewScroller : UIView <UIScrollViewDelegate>
 {
@@ -19,6 +20,8 @@
 @property (nonatomic, readonly) NSUInteger selectedIndex;
 
 @property (nonatomic, assign) CGSize pageControlSize;
+@property (nonatomic, assign) id<HorizontalViewScrollerDelegate> delegate;
+@property (nonatomic, assign) id<HorizontalViewScrollerScrollingDelegate> scrollingDelegate;
 
 -(void)addView:(UIView*)view;
 

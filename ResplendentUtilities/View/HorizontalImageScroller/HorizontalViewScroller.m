@@ -121,7 +121,7 @@ RUCreateDestroyViewSynthesizeDeclarations(PageControl);
 
 -(NSUInteger)selectedIndex
 {
-    return _scrollView.contentOffset.x / _scrollView.frame.size.width;;
+    return _scrollView.contentOffset.x / CGRectGetWidth(_scrollView.frame);
 }
 
 -(UIImage *)selectedImage
@@ -138,9 +138,21 @@ RUCreateDestroyViewSynthesizeDeclarations(PageControl);
 #pragma mark - UIScrollViewDelegate methods
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    int newOffset = scrollView.contentOffset.x;
-    int newPage = (int)(newOffset/(scrollView.frame.size.width));
-    [_pageControl setCurrentPage:newPage];
+//    int newOffset = scrollView.contentOffset.x;
+//    int newPage = (int)(newOffset/(scrollView.frame.size.width));
+    NSInteger selectedIndex = self.selectedIndex;
+    [_pageControl setCurrentPage:selectedIndex];
+
+    if (_delegate)
+        [_delegate horizontalViewScroller:self didScrollToIndex:selectedIndex];
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    RUDLog(@"%f",scrollView.contentOffset.x);
+
+    if (_scrollingDelegate)
+        [_scrollingDelegate horizontalViewScroller:self didScrollToXOffset:scrollView.contentOffset.x];
 }
 
 #pragma mark - Create/Destroy Methods
