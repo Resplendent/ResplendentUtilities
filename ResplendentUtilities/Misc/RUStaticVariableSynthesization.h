@@ -32,6 +32,14 @@ RUStaticVariableSynthesizationGetterDeclaration(UIImage, varName);
 RUStaticVariableSynthesizationWithGetter(UIImage,varName,[UIImage imageNamed:imageNameString]) \
 //----
 
+//++++ UIFont helpers
+#define RUStaticVariableSynthesizationGetterFontDeclaration(varName) \
+RUStaticVariableSynthesizationGetterDeclaration(UIFont, varName);
+
+#define RUStaticVariableSynthesizationWithGetterFont(varName,fontName,fontSize) \
+RUStaticVariableSynthesizationWithGetter(UIFont,varName,[UIFont fontWithName:fontName size:fontSize]) \
+//----
+
 //++++ UIColor helpers
 #define RUStaticVariableSynthesizationGetterColorDeclaration(varName) \
 RUStaticVariableSynthesizationGetterDeclaration(UIColor, varName);
