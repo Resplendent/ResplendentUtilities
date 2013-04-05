@@ -31,3 +31,7 @@ RUSynthesizeSetUserDefaultsMethodCompletion(varName,key,nil)
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
     return [userDefaults objectForKey:key]; \
 }
+
+#define RUSynthesizeSetGetUserDefaultsMethod(VarName,varName,key) \
+RUSynthesizeSetUserDefaultsMethod(VarName,key) \
+RUSynthesizeGetUserDefaultsMethod(varName,key)
