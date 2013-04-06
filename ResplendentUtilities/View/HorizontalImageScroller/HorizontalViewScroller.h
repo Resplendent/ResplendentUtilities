@@ -11,13 +11,15 @@
 
 @interface HorizontalViewScroller : UIView <UIScrollViewDelegate>
 {
-    UIScrollView* _scrollView;
     UIPageControl* _pageControl;
     NSMutableArray* _views;
 }
 
 @property (nonatomic, readonly) UIImage* selectedImage;
+@property (nonatomic, readonly) UIView* selectedView;
+@property (nonatomic, readonly) UIScrollView* scrollView;
 @property (nonatomic, readonly) NSUInteger selectedIndex;
+@property (nonatomic, readonly) NSUInteger numberOfViews;
 
 @property (nonatomic, assign) CGSize pageControlSize;
 @property (nonatomic, assign) id<HorizontalViewScrollerDelegate> delegate;

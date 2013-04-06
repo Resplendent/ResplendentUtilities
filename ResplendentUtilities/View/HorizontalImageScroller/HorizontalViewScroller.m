@@ -119,27 +119,35 @@ RUCreateDestroyViewSynthesizeDeclarations(PageControl);
     return _pageControl.frame.size;
 }
 
+-(NSUInteger)numberOfViews
+{
+    return _views.count;
+}
+
 -(NSUInteger)selectedIndex
 {
     return _scrollView.contentOffset.x / CGRectGetWidth(_scrollView.frame);
 }
 
+-(UIView *)selectedView
+{
+    return [_views objectAtIndex:self.selectedIndex];
+}
+
 -(UIImage *)selectedImage
 {
-    UIImageView* view = [_views objectAtIndex:self.selectedIndex];
+    UIImageView* view = (UIImageView*)self.selectedView;
     if (kRUClassOrNil(view, UIImageView))
     {
         return view.image;
     }
-    
+
     return nil;
 }
 
 #pragma mark - UIScrollViewDelegate methods
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-//    int newOffset = scrollView.contentOffset.x;
-//    int newPage = (int)(newOffset/(scrollView.frame.size.width));
     NSInteger selectedIndex = self.selectedIndex;
     [_pageControl setCurrentPage:selectedIndex];
 
@@ -149,8 +157,6 @@ RUCreateDestroyViewSynthesizeDeclarations(PageControl);
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    RUDLog(@"%f",scrollView.contentOffset.x);
-
     if (_scrollingDelegate)
         [_scrollingDelegate horizontalViewScroller:self didScrollToXOffset:scrollView.contentOffset.x];
 }

@@ -11,6 +11,8 @@
 @interface PAHorizontalViewScroller : HorizontalViewScroller
 {
     UIImageView* _cornerRibbon;
+
+//    NSTimer* _cornerRibbonTimer;
 }
 
 @property (nonatomic, readonly) UIImageView* addedView;

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #define kRUFontNameWithHelvetica(bold) (bold ? @"Helvetica-Bold" : @"Helvetica")
-#define kRUFontWithHelvetica(bold,fontSize) [UIFont fontWithName:kRUFontNameWithHelvetica(bold) size:fontSize]
+#define kRUFontWithHelvetica(isBold,fontSize) [UIFont fontWithName:kRUFontNameWithHelvetica(isBold) size:fontSize]
 
 @interface UIFont (RUConstants)
 
