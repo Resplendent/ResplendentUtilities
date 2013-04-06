@@ -13,7 +13,8 @@
 
 @property (nonatomic, readonly) CGFloat height;
 
-@property (nonatomic, retain) UIView* animatableContentView;
+@property (nonatomic, readonly) UIView* animatableContentView;
+@property (nonatomic, readonly) CGFloat animatableContentViewLowerPadding;
 
 @property (nonatomic, assign) CGFloat buttonHorizontalEdgeInset;
 

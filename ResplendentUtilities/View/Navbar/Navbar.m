@@ -8,6 +8,7 @@
 
 #import "Navbar.h"
 #import "UIView+Utility.h"
+#import "RUConstants.h"
 
 #define kNavbarDefaultButtonHorizontalEdgeInset 0.0f
 
@@ -47,20 +48,26 @@
 {
     [super layoutSubviews];
 
-    [_animatableContentView setFrame:CGRectSetSize(self.bounds.size, _animatableContentView.frame)];
+    CGSize animatableContentViewSize = self.bounds.size;
+    animatableContentViewSize.height -= self.animatableContentViewLowerPadding;
+    [_animatableContentView setFrame:CGRectSetSize(animatableContentViewSize, _animatableContentView.frame)];
 
     if (_autoAdjustButtons)
     {
-        CGFloat middle = self.frame.size.height / 2.0f;
-
-        [_leftButton setCenter:CGPointMake(MAX(middle, CGRectGetWidth(_leftButton.frame) / 2.0f) + _buttonHorizontalEdgeInset, middle)];
-        ceilCoordinates(_leftButton);
-
-        [_rightButton setCenter:CGPointMake(self.frame.size.width - MAX(middle, CGRectGetWidth(_rightButton.frame) / 2.0f) - _buttonHorizontalEdgeInset, middle)];
-        ceilCoordinates(_rightButton);
+        if (_leftButton)
+        {
+            CGFloat leftButtonPadding = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(CGRectGetHeight(_leftButton.frame), CGRectGetHeight(self.animatableContentView.frame));
+            [_leftButton setFrame:CGRectSetXY(leftButtonPadding, leftButtonPadding, _leftButton.frame)];
+        }
+        
+        if (_rightButton)
+        {
+            CGFloat leftButtonPadding = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(CGRectGetHeight(_rightButton.frame), CGRectGetHeight(self.animatableContentView.frame));
+            [_rightButton setFrame:CGRectSetXY(leftButtonPadding, leftButtonPadding, _rightButton.frame)];
+        }
     }
 
-    [_titleLabel setFrame:CGRectMake(_rightButton.frame.size.width, _titleLabelTopEdgeInset, CGRectGetWidth(self.frame) - (_rightButton.frame.size.width * 2), CGRectGetHeight(self.frame) - _titleLabelTopEdgeInset)];
+    [_titleLabel setFrame:CGRectMake(_rightButton.frame.size.width, _titleLabelTopEdgeInset, CGRectGetWidth(self.frame) - (_rightButton.frame.size.width * 2), CGRectGetHeight(_animatableContentView.frame) - _titleLabelTopEdgeInset)];
 }
 
 -(void)setLeftButton:(UIButton *)leftButton
@@ -89,7 +96,12 @@
 #pragma mark - Getter methods
 -(CGFloat)height
 {
-    return 44.0f;
+    return CGRectGetHeight([UIScreen mainScreen].bounds);
+}
+
+-(CGFloat)animatableContentViewLowerPadding
+{
+    return 0.0f;
 }
 
 -(NIAttributedLabel *)titleLabel
