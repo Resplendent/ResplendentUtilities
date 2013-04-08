@@ -16,4 +16,22 @@
         [super scrollRectToVisible:rect animated:animated];
 }
 
+-(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+{
+    if (_disableTouchesOutsideOfSubviews)
+    {
+        for (UIView* subview in self.subviews)
+        {
+            if (CGRectContainsPoint(subview.frame, point))
+                return YES;
+        }
+
+        return NO;
+    }
+    else
+    {
+        return [super pointInside:point withEvent:event];
+    }
+}
+
 @end

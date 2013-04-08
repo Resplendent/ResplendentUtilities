@@ -12,4 +12,6 @@
 
 @property (assign) BOOL disableAutoScrollToSubview;
 
+@property (assign) BOOL disableTouchesOutsideOfSubviews;
+
 @end
