@@ -13,4 +13,6 @@
 @property (nonatomic, strong) UIColor* placeholderColor;
 @property (nonatomic, strong) UIFont* placeholderFont;
 
+@property (nonatomic, assign) CGFloat placeholderLeftPadding;
+
 @end

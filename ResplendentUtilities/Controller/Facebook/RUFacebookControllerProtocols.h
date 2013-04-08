@@ -9,10 +9,11 @@
 #import <Foundation/Foundation.h>
 
 @class RUFacebookController;
+@class FBAccessTokenData;
 
 @protocol RUFacebookControllerDelegate <NSObject>
 
-- (void)facebookController:(RUFacebookController*)facebookController didLogInWithToken:(NSString*)token;
+- (void)facebookController:(RUFacebookController*)facebookController didLogInWithToken:(FBAccessTokenData*)token;
 - (void)facebookController:(RUFacebookController*)facebookController didFailWithError:(NSError*)error;
 - (void)facebookControllerClearedToken:(RUFacebookController*)facebookController;
 

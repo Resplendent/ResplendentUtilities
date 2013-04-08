@@ -16,4 +16,9 @@
     [[self placeholder] drawInRect:rect withFont:_placeholderFont];
 }
 
+-(CGRect)textRectForBounds:(CGRect)bounds
+{
+    return CGRectInset(bounds, _placeholderLeftPadding, 0);
+}
+
 @end

@@ -89,7 +89,7 @@
             else
             {
                 // We have a valid session
-                [_delegate facebookController:self didLogInWithToken:session.accessToken];
+                [_delegate facebookController:self didLogInWithToken:session.accessTokenData];
             }
             break;
             
@@ -116,9 +116,9 @@
     return nil;
 }
 
--(NSString *)accessToken
+-(FBAccessTokenData *)accessTokenData
 {
-    return FBSession.activeSession.accessToken;
+    return FBSession.activeSession.accessTokenData;
 }
 
 @end

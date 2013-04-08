@@ -21,7 +21,7 @@
 @interface RUFacebookController : NSObject
 
 @property (nonatomic, assign) id<RUFacebookControllerDelegate> delegate;
-@property (nonatomic, readonly) NSString* accessToken;
+@property (nonatomic, readonly) FBAccessTokenData* accessTokenData;
 
 @property (nonatomic, readonly) NSArray* readPermissions;
 @property (nonatomic, readonly) NSArray* publishPermissions;
