@@ -18,13 +18,6 @@
 
 @implementation HTTPClientJSONAPIController
 
-@synthesize network = _network;
-
--(void)checkToUploadNextImage
-{
-    RUDLog(@"");
-}
-
 -(id)initWithBaseUrl:(NSString*)baseUrl
 {
     if (self = [super init])
