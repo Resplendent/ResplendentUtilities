@@ -15,7 +15,11 @@
 }
 
 //Must be overloaded by a subclass
+@property (nonatomic, readonly) NSString* accessKey;
+@property (nonatomic, readonly) NSString* secretKey;
 @property (nonatomic, readonly) NSString* bucketName;
+
+//-(id)initWithAccessKey:(NSString*)accessKey secretKey:(NSString*)secretKey bucketName:(NSString*)bucketName;
 
 //returns name of photo in amazon bucket
 -(void)uploadImage:(UIImage*)image imageName:(NSString*)imageName;

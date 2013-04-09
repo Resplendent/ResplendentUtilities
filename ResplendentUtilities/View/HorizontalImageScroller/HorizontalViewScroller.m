@@ -14,6 +14,9 @@
 
 @interface HorizontalViewScroller ()
 
+-(void)updateFrameForView:(UIView*)view forIndex:(NSInteger)index;
+-(void)addViewToScrollViewAndUpdate:(UIView*)view;
+
 -(void)updateScrollViewSizeFromViewsCount;
 -(void)updatePageControlCountFromViewsCount;
 
@@ -59,19 +62,36 @@ RUCreateDestroyViewSynthesizeDeclarations(PageControl);
     [_scrollView setFrame:scrollViewFrame];
 }
 
+#pragma mark - Subclass methods
+-(void)didAddView:(UIView *)view
+{
+
+}
+
+#pragma mark - Public methods
 -(void)addView:(UIView*)view
 {
-    CGFloat yCoord = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(CGRectGetHeight(view.frame), CGRectGetHeight(_scrollView.frame));
-
-    CGFloat xCoordOffset = floorf(_views.count * CGRectGetWidth(_scrollView.frame));
-    CGFloat xCoord = xCoordOffset + CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(CGRectGetWidth(view.frame), CGRectGetWidth(_scrollView.frame));
-
-    [view setFrame:CGRectSetXY(xCoord, yCoord, view.frame)];
-    [_scrollView addSubview:view];
+    [self updateFrameForView:view forIndex:_views.count];
 
     [_views addObject:view];
-    [self updatePageControlCountFromViewsCount];
-    [self updateScrollViewSizeFromViewsCount];
+
+    [self addViewToScrollViewAndUpdate:view];
+}
+
+-(void)insertView:(UIView*)view atIndex:(NSInteger)index
+{
+    if (index > _views.count)
+        [NSException raise:NSRangeException format:@"%@ had index %i out of range of views %@",self,index,_views];
+
+    [_views insertObject:view atIndex:index];
+
+    for (int updateViewFrameIndex = index; updateViewFrameIndex < _views.count; updateViewFrameIndex++)
+    {
+        UIView* updateView = [_views objectAtIndex:updateViewFrameIndex];
+        [self updateFrameForView:updateView forIndex:updateViewFrameIndex];
+    }
+
+    [self addViewToScrollViewAndUpdate:view];
 }
 
 -(void)empty
@@ -86,6 +106,26 @@ RUCreateDestroyViewSynthesizeDeclarations(PageControl);
 }
 
 #pragma mark - Private methods
+-(void)updateFrameForView:(UIView*)view forIndex:(NSInteger)index
+{
+    CGFloat yCoord = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(CGRectGetHeight(view.frame), CGRectGetHeight(_scrollView.frame));
+    
+    CGFloat xCoordOffset = floorf(index * CGRectGetWidth(_scrollView.frame));
+    CGFloat xCoord = xCoordOffset + CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(CGRectGetWidth(view.frame), CGRectGetWidth(_scrollView.frame));
+    
+    [view setFrame:CGRectSetXY(xCoord, yCoord, view.frame)];
+}
+
+-(void)addViewToScrollViewAndUpdate:(UIView*)view
+{
+    [_scrollView addSubview:view];
+    
+    [self updatePageControlCountFromViewsCount];
+    [self updateScrollViewSizeFromViewsCount];
+    [self didAddView:view];
+}
+
+
 -(void)updateScrollViewSizeFromViewsCount
 {
     CGSize newSize = CGSizeMake(_scrollView.frame.size.width * _views.count, _scrollView.frame.size.height);

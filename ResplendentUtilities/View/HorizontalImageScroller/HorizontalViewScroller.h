@@ -26,7 +26,11 @@
 @property (nonatomic, assign) id<HorizontalViewScrollerScrollingDelegate> scrollingDelegate;
 
 -(void)addView:(UIView*)view;
+-(void)insertView:(UIView*)view atIndex:(NSInteger)index;
 
 -(void)empty;
+
+//For subclassing
+-(void)didAddView:(UIView*)view;
 
 @end
