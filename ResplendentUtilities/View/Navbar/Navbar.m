@@ -30,8 +30,10 @@
     if (self = [super initWithFrame:frame])
     {
         _buttonHorizontalEdgeInset = kNavbarDefaultButtonHorizontalEdgeInset;
+
         _animatableContentView = [UIView new];
         [self addSubview:_animatableContentView];
+
         [self setUserInteractionEnabled:YES];
     }
 
