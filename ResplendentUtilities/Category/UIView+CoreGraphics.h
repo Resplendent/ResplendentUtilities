@@ -23,4 +23,8 @@ void drawLinearGradient(CGContextRef context, CGRect rect, CGColorRef startColor
 //Rounded Rect
 //void drawRoundedRect(CGContextRef context, CGRect rect, CGFloat radius);
 
+//Draw rect helper methods
+-(void)drawOverLine:(CGContextRef)context colorRef:(CGColorRef)colorRef lineWidth:(CGFloat)lineWidth padding:(CGFloat)padding;
+-(void)drawUnderLine:(CGContextRef)context colorRef:(CGColorRef)colorRef lineWidth:(CGFloat)lineWidth padding:(CGFloat)padding;
+
 @end
