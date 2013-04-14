@@ -50,10 +50,6 @@
         [_connection cancel];
         _connection = nil;
     }
-    else
-    {
-        RUDLog(@"Already canceled, should avoid holding onto canceled requests");
-    }
 }
 
 #pragma mark - NSURLConnectionDataDelegate methods
