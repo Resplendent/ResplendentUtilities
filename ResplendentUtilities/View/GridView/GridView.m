@@ -165,13 +165,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
             }
             else
             {
-                __unsafe_unretained GridView* selfPointer = self;
-                [_scrollView addPullToRefreshWithActionHandler:^{
-                    if (selfPointer.pullToLoadDelegate)
-                    {
-                        [selfPointer.pullToLoadDelegate gridViewPullToReload:selfPointer];
-                    }
-                }];
+                [_scrollView addPullToRefreshWithDelegate:self];
             }
         }
         else if (!pullToRefresh && self.pullToRefresh)
@@ -179,6 +173,12 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
             [_scrollView setShowsPullToRefresh:NO];
         }
     }
+}
+
+#pragma mark - SVPullToRefreshViewDelegate methods
+-(void)pullToRefreshWasPulled:(SVPullToRefreshView *)pullToRefreshView
+{
+    [_pullToLoadDelegate gridViewPullToReload:self];
 }
 
 #pragma mark - Action methods

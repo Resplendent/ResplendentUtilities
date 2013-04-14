@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GridViewProtocols.h"
+#import "SVPullToRefreshViewDelegate.h"
 
 typedef enum {
     GridViewTileAnimationStyleFade = 0,
@@ -15,7 +16,7 @@ typedef enum {
     GridViewTileAnimationStyleFromLeft
 }GridViewTileAnimationStyle;
 
-@interface GridView : UIView <UIScrollViewDelegate>
+@interface GridView : UIView <UIScrollViewDelegate,SVPullToRefreshViewDelegate>
 {
     NSMutableDictionary* _cellsDictionary;
     
