@@ -13,13 +13,13 @@
 #pragma mark - Draw rect helper methods
 -(void)drawOverLine:(CGContextRef)context colorRef:(CGColorRef)colorRef lineWidth:(CGFloat)lineWidth padding:(CGFloat)padding
 {
-    CGFloat top = floor(lineWidth / 2.0f);
+    CGFloat top = lineWidth / 2.0f;
     drawLine(context, lineWidth, colorRef, (CGPoint){padding, top}, (CGPoint){CGRectGetWidth(self.frame) - padding, top});
 }
 
 -(void)drawUnderLine:(CGContextRef)context colorRef:(CGColorRef)colorRef lineWidth:(CGFloat)lineWidth padding:(CGFloat)padding
 {
-    CGFloat top = CGRectGetHeight(self.bounds) - floor(lineWidth / 2.0f);
+    CGFloat top = CGRectGetHeight(self.bounds) - lineWidth / 2.0f;
     drawLine(context, lineWidth, colorRef, (CGPoint){padding, top}, CGPointMake(CGRectGetWidth(self.frame) - padding, top));
 }
 
