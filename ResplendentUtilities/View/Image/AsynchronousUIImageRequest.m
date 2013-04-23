@@ -32,14 +32,14 @@ static NSMutableDictionary* fetchedImages;
     }
 }
 
--(id)initAndFetchWithURLString:(NSString*)anUrl block:(imageErrorBlock)block
+-(id)initAndFetchWithURLString:(NSString*)urlString block:(imageErrorBlock)block
 {
-    return [self initAndFetchWithURLString:anUrl cacheName:anUrl block:block];
+    return [self initAndFetchWithURLString:urlString cacheName:urlString block:block];
 }
 
--(id)initAndFetchWithURLString:(NSString*)anUrl cacheName:(NSString *)cacheName block:(imageErrorBlock)block
+-(id)initAndFetchWithURLString:(NSString*)urlString cacheName:(NSString *)cacheName block:(imageErrorBlock)block
 {
-    return [self initAndFetchWithURLString:[NSURL URLWithString:anUrl] cacheName:cacheName block:block];
+    return [self initAndFetchWithURL:[NSURL URLWithString:urlString] cacheName:cacheName block:block];
 }
 
 -(id)initAndFetchWithURL:(NSURL*)url block:(imageErrorBlock)block

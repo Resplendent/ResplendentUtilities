@@ -10,7 +10,10 @@
 
 @interface UIButton (RUAsynchronousImageFetching)
 
--(void)fetchImageAtUrl:(NSURL*)url forState:(UIControlState)state;
--(void)fetchBackgroundImageAtUrl:(NSURL*)url forState:(UIControlState)state;
+@property (nonatomic, assign) BOOL loadsUsingSpinner;
+
+-(void)ruCancelAsynchronousImageFetching;
+-(void)ruFetchImageAsynchronouslyAtUrl:(NSURL*)url forState:(UIControlState)state;
+-(void)ruFetchBackgroundImageAsynchronouslyAtUrl:(NSURL*)url forState:(UIControlState)state;
 
 @end
