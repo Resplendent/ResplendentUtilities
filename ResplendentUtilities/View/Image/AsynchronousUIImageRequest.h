@@ -19,14 +19,17 @@ typedef void (^imageErrorBlock)(UIImage* image, NSError* error);
     NSString*           _cacheName;
     imageErrorBlock     _block;
     
-//#if __AsynchronousUIImageRequest_DEBUG
-//    NSString* __urlStringDubug;
+    //#if __AsynchronousUIImageRequest_DEBUG
+    //    NSString* __urlStringDubug;
 }
 
-@property (nonatomic, retain) NSString* url;
+@property (nonatomic, readonly) NSURL* url;
 
--(id)initAndFetchWithURL:(NSString*)anUrl withBlock:(imageErrorBlock)block;
--(id)initAndFetchWithURL:(NSString*)anUrl andCacheName:(NSString*)cacheName withBlock:(imageErrorBlock)block;
+-(id)initAndFetchWithURLString:(NSString*)anUrl block:(imageErrorBlock)block;
+-(id)initAndFetchWithURLString:(NSString*)anUrl cacheName:(NSString*)cacheName block:(imageErrorBlock)block;
+
+-(id)initAndFetchWithURL:(NSURL*)url block:(imageErrorBlock)block;
+-(id)initAndFetchWithURL:(NSURL*)url cacheName:(NSString*)cacheName block:(imageErrorBlock)block;
 
 -(void)cancelFetch;
 

@@ -17,21 +17,13 @@
 }
 
 @property (nonatomic, assign)   BOOL loadsUsingSpinner;
-//@property (nonatomic, assign)   BOOL ignoreFetchImageClear;
 @property (nonatomic, readonly) BOOL isLoading;
 @property (nonatomic, assign)   NSTimeInterval fadeInDuration;
-//@property (nonatomic, assign)   BOOL clearOnFail;
 
-@property (nonatomic, readonly) NSString* url;
+@property (nonatomic, readonly) NSURL* url;
 
-//#if EC_DEBUG
-//@property (nonatomic, assign)   UIView* viewToSetNeedsLayoutOnComplete;
-//#else
-//@property (nonatomic, retain)   UIView* viewToSetNeedsLayoutOnComplete;
-//#endif
-
--(void)fetchImageFromURL:(NSString*)anUrl;
--(void)fetchImageFromURL:(NSString*)anUrl withCacheName:(NSString*)cacheName;
+-(void)fetchImageFromURLString:(NSString*)urlString;
+-(void)fetchImageFromURLString:(NSString*)urlString withCacheName:(NSString*)cacheName;
 
 -(void)cancelFetch;
 

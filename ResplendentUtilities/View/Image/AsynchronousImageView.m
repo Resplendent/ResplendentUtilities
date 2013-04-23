@@ -55,22 +55,21 @@
     _imageRequest = nil;
 }
 
--(void)fetchImageFromURL:(NSString*)anUrl
+-(void)fetchImageFromURLString:(NSString *)urlString
 {
-    [self fetchImageFromURL:anUrl withCacheName:anUrl];
+    [self fetchImageFromURLString:urlString withCacheName:urlString];
 }
 
--(NSString *)url
+-(NSURL *)url
 {
     return [_imageRequest url];
 }
 
--(void)fetchImageFromURL:(NSString*)anUrl withCacheName:(NSString*)cacheName
+-(void)fetchImageFromURLString:(NSString*)urlString withCacheName:(NSString*)cacheName
 {
     [self cancelFetch];
 
-//    if (!_ignoreFetchImageClear)
-        [self setImage:nil];
+    [self setImage:nil];
 
     if (self.loadsUsingSpinner)
     {
@@ -83,25 +82,20 @@
         [_spinner startAnimating];
     }
 
-    _imageRequest = [[AsynchronousUIImageRequest alloc] initAndFetchWithURL:anUrl andCacheName:cacheName withBlock:^(UIImage *image, NSError *error) {
-            _imageRequest = nil;
-            
-            if (_spinner)
+    _imageRequest = [[AsynchronousUIImageRequest alloc] initAndFetchWithURLString:urlString cacheName:cacheName block:^(UIImage *image, NSError *error) {
+        _imageRequest = nil;
+        
+        if (_spinner)
+        {
+            [_spinner stopAnimating];
+            [_spinner removeFromSuperview];;
+            _spinner = nil;
+        }
+        
+        [self setImage:image];
+        
+        if (image)
             {
-                [_spinner stopAnimating];
-                [_spinner removeFromSuperview];;
-                _spinner = nil;
-            }
-
-//            RUDLog(@"setting image");
-            [self setImage:image];
-            //            [self drawRect:self.bounds];
-            
-            if (image)
-            {
-                //                if (self.frame.size.width == 0 || self.frame.size.height == 0)
-                //                    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.image.size.width, self.image.size.height);
-
                 CGFloat alpha = self.alpha;
                 if (self.fadeInDuration > 0)
                 {
