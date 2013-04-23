@@ -11,6 +11,11 @@
 @implementation UIView (CoreGraphics)
 
 #pragma mark - Draw rect helper methods
+-(void)RUDrawBackgroundColor:(CGContextRef)context
+{
+    drawColoredRect(context, self.bounds, self.backgroundColor.CGColor, YES);
+}
+
 -(void)drawOverLine:(CGContextRef)context colorRef:(CGColorRef)colorRef lineWidth:(CGFloat)lineWidth padding:(CGFloat)padding
 {
     CGFloat top = lineWidth / 2.0f;
