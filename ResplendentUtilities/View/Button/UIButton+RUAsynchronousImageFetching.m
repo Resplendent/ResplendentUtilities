@@ -129,7 +129,6 @@ typedef enum{
     }
 
     [self setImageRequest:[[AsynchronousUIImageRequest alloc] initAndFetchWithURL:url cacheName:url.absoluteString block:^(UIImage *image, NSError *error) {
-        NSLog(@"class for dealloc check: %@",NSStringFromClass([self class]));
         [self setImageRequest:nil];
 
         [self removeSpinner];
