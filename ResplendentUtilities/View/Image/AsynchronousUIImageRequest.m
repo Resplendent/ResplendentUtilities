@@ -62,6 +62,11 @@ static NSMutableDictionary* fetchedImages;
     return self;
 }
 
+-(void)dealloc
+{
+    [self cancelFetch];
+}
+
 #pragma mark - Public methods
 -(void)fetchImageWithBlock:(imageErrorBlock)block
 {
@@ -92,7 +97,11 @@ static NSMutableDictionary* fetchedImages;
 
 -(void)cancelFetch
 {
-    [_connection cancel];
+    if (_connection)
+    {
+        [_connection cancel];
+        _connection = nil;
+    }
 }
 
 #pragma mark - NSURLConnectionDataDelegate methods

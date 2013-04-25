@@ -12,9 +12,9 @@
 
 #import <objc/runtime.h>
 
-NSString* const kRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest = @"kRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest";
-NSString* const kRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner = @"kRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner";
-NSString* const kRUAsynchronousImageFetchingAssociatedObjectKeySpinner = @"kRUAsynchronousImageFetchingAssociatedObjectKeySpinner";
+NSString* const kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest = @"kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest";
+NSString* const kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner = @"kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner";
+NSString* const kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeySpinner = @"kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeySpinner";
 
 typedef enum{
     RUAsynchronousImageFetchingImageDestinationNormal = 0,
@@ -74,21 +74,21 @@ typedef enum{
 #pragma mark - Setter methods
 -(void)setLoadsUsingSpinnerNumber:(NSNumber *)loadsUsingSpinnerNumber
 {
-    objc_setAssociatedObject(self, &kRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner,
+    objc_setAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner,
                              loadsUsingSpinnerNumber,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 -(void)setImageRequest:(AsynchronousUIImageRequest *)imageRequest
 {
-    objc_setAssociatedObject(self, &kRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest,
+    objc_setAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest,
                              imageRequest,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 -(void)setSpinner:(UIActivityIndicatorView *)spinner
 {
-    objc_setAssociatedObject(self, &kRUAsynchronousImageFetchingAssociatedObjectKeySpinner,
+    objc_setAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeySpinner,
                              spinner,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -96,17 +96,17 @@ typedef enum{
 #pragma mark - Getter methods
 -(NSNumber *)loadsUsingSpinnerNumber
 {
-    return objc_getAssociatedObject(self, &kRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner);
+    return objc_getAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner);
 }
 
 -(AsynchronousUIImageRequest *)imageRequest
 {
-    return objc_getAssociatedObject(self, &kRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest);
+    return objc_getAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest);
 }
 
 -(UIActivityIndicatorView *)spinner
 {
-    return objc_getAssociatedObject(self, &kRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner);
+    return objc_getAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner);
 }
 
 #pragma mark - Request sending
