@@ -119,7 +119,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 
 -(NSInteger)lowestVisibleRow
 {
-    return MAX(floor(_scrollView.contentOffset.y / (_cellWidth + _modifiedSpaceBetweenCells)), 0);
+    return MAX(floor((_scrollView.contentOffset.y - _contentInsets.top) / (_cellWidth + _modifiedSpaceBetweenCells)), 0);
 }
 
 #pragma mark Pull to load more
@@ -368,7 +368,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     NSUInteger firstVisibleCell = lowerVisibleRow * _numberOfColumns;
     NSUInteger currentNumberOfVisibleRows = self.currentNumberOfVisibleRows;
     NSUInteger lastVisibleCell = (lowerVisibleRow + currentNumberOfVisibleRows) * _numberOfColumns;
-    
+
     if (firstVisibleCell)
     {
         //Check for old cells to throw out
