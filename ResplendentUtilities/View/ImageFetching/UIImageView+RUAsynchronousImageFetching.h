@@ -14,5 +14,6 @@
 
 -(void)ruCancelAsynchronousImageFetching;
 -(void)ruFetchImageAsynchronouslyAtUrl:(NSURL*)url;
+-(void)ruFetchImageAsynchronouslyAtUrlString:(NSString*)urlString;
 
 @end

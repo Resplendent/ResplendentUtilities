@@ -35,6 +35,11 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
     }
 }
 
+-(void)ruFetchImageAsynchronouslyAtUrlString:(NSString*)urlString
+{
+    [self ruFetchImageAsynchronouslyAtUrl:[NSURL URLWithString:urlString]];
+}
+
 -(void)ruFetchImageAsynchronouslyAtUrl:(NSURL*)url
 {
     [self ruCancelAsynchronousImageFetching];
