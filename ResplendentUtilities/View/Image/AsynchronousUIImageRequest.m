@@ -67,6 +67,20 @@ static NSMutableDictionary* fetchedImages;
     [self cancelFetch];
 }
 
+#pragma mark - Private methods
+-(void)ruAsynchronousUIImageRequestCallBlock:(imageErrorBlock)block withImage:(UIImage*)image error:(NSError*)error
+{
+    if (block)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (block)
+            {
+                block(image,error);
+            }
+        });
+    }
+}
+
 #pragma mark - Public methods
 -(void)fetchImageWithBlock:(imageErrorBlock)block
 {
@@ -80,8 +94,7 @@ static NSMutableDictionary* fetchedImages;
         if (showLastImageView)
             [showLastImageView setImage:cachedImage];
 #endif
-        if (block)
-            block(cachedImage,nil);
+        [self ruAsynchronousUIImageRequestCallBlock:block withImage:cachedImage error:nil];
     }
     else
     {
@@ -116,8 +129,8 @@ static NSMutableDictionary* fetchedImages;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     NSLog(@"Error downloading from url %@ with error %@",self.url,error);
-    if (_block)
-        _block(nil,error);
+    [self ruAsynchronousUIImageRequestCallBlock:_block withImage:nil error:error];
+    _block = nil;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)theConnection
@@ -137,12 +150,8 @@ static NSMutableDictionary* fetchedImages;
     if (showLastImageView)
         [showLastImageView setImage:image];
 #endif
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (_block)
-            _block(image,nil);
-    });
-    //    });
+
+    [self ruAsynchronousUIImageRequestCallBlock:_block withImage:image error:nil];
 }
 
 #pragma mark - Static methods

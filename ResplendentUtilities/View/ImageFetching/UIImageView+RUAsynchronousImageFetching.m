@@ -16,11 +16,11 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
 
 @interface UIImageView (RUAsynchronousImageFetchingPrivate)
 
-@property (nonatomic, strong) AsynchronousUIImageRequest* imageRequest;
-@property (nonatomic, strong) UIActivityIndicatorView* spinner;
-@property (nonatomic, assign) NSNumber* loadsUsingSpinnerNumber;
+@property (nonatomic, strong) AsynchronousUIImageRequest* ruAsynchronousImageFetchingPrivateImageRequest;
+@property (nonatomic, strong) UIActivityIndicatorView* ruAsynchronousImageFetchingPrivateSpinner;
+@property (nonatomic, assign) NSNumber* ruAsynchronousImageFetchingPrivateLoadsUsingSpinnerNumber;
 
--(void)removeSpinner;
+-(void)ruAsynchronousImageFetchingPrivateRemoveSpinner;
 
 @end
 
@@ -28,10 +28,10 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
 
 -(void)ruCancelAsynchronousImageFetching
 {
-    if (self.imageRequest)
+    if (self.ruAsynchronousImageFetchingPrivateImageRequest)
     {
-        [self.imageRequest cancelFetch];
-        [self setImageRequest:nil];
+        [self.ruAsynchronousImageFetchingPrivateImageRequest cancelFetch];
+        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
     }
 }
 
@@ -44,36 +44,36 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
 {
     [self ruCancelAsynchronousImageFetching];
 
-    if (self.loadsUsingSpinner)
+    if (self.ruLoadsUsingSpinner)
     {
-        if (!self.spinner)
+        if (!self.ruAsynchronousImageFetchingPrivateSpinner)
         {
-            [self setSpinner:[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray]];
-            [self addSubview:self.spinner];
+            [self setRuAsynchronousImageFetchingPrivateSpinner:[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray]];
+            [self addSubview:self.ruAsynchronousImageFetchingPrivateSpinner];
         }
         
-        [self.spinner startAnimating];
+        [self.ruAsynchronousImageFetchingPrivateSpinner startAnimating];
     }
 
-    [self setImageRequest:[[AsynchronousUIImageRequest alloc] initAndFetchWithURL:url cacheName:url.absoluteString block:^(UIImage *image, NSError *error) {
-        [self setImageRequest:nil];
+    [self setRuAsynchronousImageFetchingPrivateImageRequest:[[AsynchronousUIImageRequest alloc] initAndFetchWithURL:url cacheName:url.absoluteString block:^(UIImage *image, NSError *error) {
+        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
 
-        [self removeSpinner];
+        [self ruAsynchronousImageFetchingPrivateRemoveSpinner];
 
         [self setImage:image];
     }]];
 }
 
 #pragma mark - Getter methods
--(BOOL)loadsUsingSpinner
+-(BOOL)ruLoadsUsingSpinner
 {
-    return self.loadsUsingSpinnerNumber.boolValue;
+    return self.ruAsynchronousImageFetchingPrivateLoadsUsingSpinnerNumber.boolValue;
 }
 
 #pragma mark - Setter methods
--(void)setLoadsUsingSpinner:(BOOL)loadsUsingSpinner
+-(void)setRuLoadsUsingSpinner:(BOOL)ruLoadsUsingSpinner
 {
-    [self setLoadsUsingSpinnerNumber:@(loadsUsingSpinner)];
+    [self setRuAsynchronousImageFetchingPrivateLoadsUsingSpinnerNumber:@(ruLoadsUsingSpinner)];
 }
 
 @end
@@ -82,32 +82,32 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
 @implementation UIImageView (RUAsynchronousImageFetchingPrivate)
 
 #pragma mark - Content
--(void)removeSpinner
+-(void)ruAsynchronousImageFetchingPrivateRemoveSpinner
 {
-    if (self.spinner)
+    if (self.ruAsynchronousImageFetchingPrivateSpinner)
     {
-        [self.spinner stopAnimating];
-        [self.spinner removeFromSuperview];
-        [self setSpinner:nil];
+        [self.ruAsynchronousImageFetchingPrivateSpinner stopAnimating];
+        [self.ruAsynchronousImageFetchingPrivateSpinner removeFromSuperview];
+        [self setRuAsynchronousImageFetchingPrivateSpinner:nil];
     }
 }
 
 #pragma mark - Setters
--(void)setLoadsUsingSpinnerNumber:(NSNumber *)loadsUsingSpinnerNumber
+-(void)setRuAsynchronousImageFetchingPrivateLoadsUsingSpinnerNumber:(NSNumber *)loadsUsingSpinnerNumber
 {
     objc_setAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner,
                              loadsUsingSpinnerNumber,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
--(void)setImageRequest:(AsynchronousUIImageRequest *)imageRequest
+-(void)setRuAsynchronousImageFetchingPrivateImageRequest:(AsynchronousUIImageRequest *)imageRequest
 {
     objc_setAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest,
                              imageRequest,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
--(void)setSpinner:(UIActivityIndicatorView *)spinner
+-(void)setRuAsynchronousImageFetchingPrivateSpinner:(UIActivityIndicatorView *)spinner
 {
     objc_setAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinner,
                              spinner,
@@ -115,17 +115,17 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
 }
 
 #pragma mark - Getter methods
--(NSNumber *)loadsUsingSpinnerNumber
+-(NSNumber *)ruAsynchronousImageFetchingPrivateLoadsUsingSpinnerNumber
 {
     return objc_getAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner);
 }
 
--(AsynchronousUIImageRequest *)imageRequest
+-(AsynchronousUIImageRequest *)ruAsynchronousImageFetchingPrivateImageRequest
 {
     return objc_getAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest);
 }
 
--(UIActivityIndicatorView *)spinner
+-(UIActivityIndicatorView *)ruAsynchronousImageFetchingPrivateSpinner
 {
     return objc_getAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinner);
 }

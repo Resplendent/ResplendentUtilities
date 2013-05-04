@@ -10,7 +10,7 @@
 
 @interface UIImageView (RUAsynchronousImageFetching)
 
-@property (nonatomic, assign) BOOL loadsUsingSpinner;
+@property (nonatomic, assign) BOOL ruLoadsUsingSpinner;
 
 -(void)ruCancelAsynchronousImageFetching;
 -(void)ruFetchImageAsynchronouslyAtUrl:(NSURL*)url;
