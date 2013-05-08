@@ -192,14 +192,14 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     NSInteger touchColumn = floor(scrollViewTouch.x / (_cellWidth + _modifiedSpaceBetweenCells));
     if (touchColumn < 0 || touchColumn >= _numberOfColumns)
     {
-        NSLog(@"touch column %i out of bounds",touchColumn);
+        RUDLog(@"touch column %i out of bounds",touchColumn);
         return;
     }
     
     NSInteger touchRow = floor(scrollViewTouch.y / (_cellWidth + _modifiedSpaceBetweenCells));
     if (touchRow < 0 || touchRow >= _numberOfRows)
     {
-        NSLog(@"touch row %i out of bounds",touchRow);
+        RUDLog(@"touch row %i out of bounds",touchRow);
         return;
     }
     
@@ -501,7 +501,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     }
     else
     {
-        NSLog(@"%s didn't have a tile at index %i, creating one instead",__PRETTY_FUNCTION__,index);
+        RUDLog(@"%s didn't have a tile at index %i, creating one instead",__PRETTY_FUNCTION__,index);
         [self addCellAtIndex:index];
     }
 }
