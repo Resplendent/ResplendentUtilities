@@ -11,6 +11,7 @@
 @interface UIImageView (RUAsynchronousImageFetching)
 
 @property (nonatomic, assign) BOOL ruLoadsUsingSpinner;
+@property (nonatomic, assign) BOOL ruClearImageOnFetch;
 
 -(void)ruCancelAsynchronousImageFetching;
 -(void)ruFetchImageAsynchronouslyAtUrl:(NSURL*)url;
