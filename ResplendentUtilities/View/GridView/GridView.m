@@ -196,7 +196,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
         return;
     }
     
-    NSInteger touchRow = floor(scrollViewTouch.y / (_cellWidth + _modifiedSpaceBetweenCells));
+    NSInteger touchRow = floor((scrollViewTouch.y - self.contentInsets.top) / (_cellWidth + _modifiedSpaceBetweenCells));
     if (touchRow < 0 || touchRow >= _numberOfRows)
     {
         RUDLog(@"touch row %i out of bounds",touchRow);
