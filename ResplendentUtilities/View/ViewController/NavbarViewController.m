@@ -45,8 +45,9 @@ static NSTimeInterval popPushAnimationDuration;
     [self.view addSubview:self.navbar];
 }
 
--(void)viewWillLayoutSubviews
+-(void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     [self bringNavbarToFont];
 }
 
