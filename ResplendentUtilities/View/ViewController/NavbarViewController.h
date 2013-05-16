@@ -32,7 +32,6 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 
 @property (nonatomic, assign) NavbarViewController* parentNBViewController;
 @property (nonatomic, strong) NavbarViewController* childNBViewController;
-//@property (nonatomic, readonly) NavbarViewController* lastChildNBViewController;
 
 @property (nonatomic, assign) NavbarViewControllerChildTransitionStyle childTransitionStyle;
 @property (nonatomic, assign) NavbarViewControllerParentTransitionStyle parentTransitionStyle;
