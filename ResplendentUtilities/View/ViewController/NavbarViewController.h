@@ -46,6 +46,12 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 -(void)pushViewController:(NavbarViewController*)navbarViewController animated:(BOOL)animated completion:(void (^)())completion;
 -(void)popViewControllerAnimated:(BOOL)animated completion:(void (^)())completion;
 
+-(void)navbarViewWillAppear:(BOOL)animated;
+-(void)navbarViewDidAppear:(BOOL)animated;
+
+-(void)navbarViewWillDisappear:(BOOL)animated;
+-(void)navbarViewDidDisappear:(BOOL)animated;
+
 +(void)setPushPopTransitionDuration:(NSTimeInterval)duration;
 
 @end

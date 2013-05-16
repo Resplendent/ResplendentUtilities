@@ -45,15 +45,18 @@ static NSTimeInterval popPushAnimationDuration;
     [self.view addSubview:self.navbar];
 }
 
--(void)viewWillAppear:(BOOL)animated
+-(void)viewWillLayoutSubviews
 {
-    [super viewWillAppear:animated];
+    [self bringNavbarToFont];
+}
 
+-(void)bringNavbarToFont
+{
     if (_childNBViewController)
     {
         if (_childNBViewController.view.superview != self.view)
             RUDLog(@"child view's superview should be self's view");
-
+        
         [self.navbar removeFromSuperview];
         [self.view insertSubview:self.navbar belowSubview:_childNBViewController.view];
     }
@@ -72,6 +75,12 @@ static NSTimeInterval popPushAnimationDuration;
 {
     return CGRectMake(0, CGRectGetMaxY(self.navbar.frame), self.view.frame.size.width, self.view.frame.size.height - CGRectGetMaxY(self.navbar.frame));
 }
+
+#pragma mark - Navbar view lifecycle methods
+-(void)navbarViewWillAppear:(BOOL)animated{}
+-(void)navbarViewDidAppear:(BOOL)animated{}
+-(void)navbarViewWillDisappear:(BOOL)animated{}
+-(void)navbarViewDidDisappear:(BOOL)animated{}
 
 #pragma mark - Navbar class
 -(Class)navbarClass
@@ -110,6 +119,7 @@ static NSTimeInterval popPushAnimationDuration;
     [self addChildViewController:navbarViewController];
 
     [self viewWillDisappear:animated];
+    [navbarViewController navbarViewWillAppear:animated];
 
     if (animated)
     {
@@ -211,10 +221,10 @@ static NSTimeInterval popPushAnimationDuration;
                 superView = superView.superview;
             }
 
-
             [self.view bringSubviewToFront:navbarViewController.view];
 
-            [self viewDidDisappear:YES];
+            [self navbarViewDidDisappear:YES];
+            [navbarViewController navbarViewDidAppear:YES];
 
             [[NSNotificationCenter defaultCenter] postNotificationName:kNavbarViewControllerNotificationCenterDidPush object:navbarViewController];
             if (completion)
@@ -225,8 +235,9 @@ static NSTimeInterval popPushAnimationDuration;
     {
         [self.view addSubview:navbarViewController.view];
         [navbarViewController.view setFrame:CGRectSetXY(0, 0, navbarViewController.view.frame)];
-//        setXCoord(navbarViewController.view, 0);
-        [self viewDidDisappear:NO];
+
+        [self navbarViewDidDisappear:NO];
+        [navbarViewController navbarViewDidAppear:NO];
 
         [[NSNotificationCenter defaultCenter] postNotificationName:kNavbarViewControllerNotificationCenterDidPush object:navbarViewController];
         if (completion)
@@ -239,7 +250,8 @@ static NSTimeInterval popPushAnimationDuration;
     if (!_parentNBViewController)
         [NSException raise:NSInternalInconsistencyException format:@"can't pop with a nil parent navbar viewcontroller"];
 
-    [_parentNBViewController viewWillAppear:animated];
+    [_parentNBViewController navbarViewWillAppear:animated];
+    [self navbarViewWillDisappear:animated];
 
     if (animated)
     {
@@ -309,13 +321,16 @@ static NSTimeInterval popPushAnimationDuration;
             [self.navbar removeFromSuperview];
             [self.view addSubview:self.navbar];
 
-            [_parentNBViewController viewDidAppear:YES];
+            [_parentNBViewController navbarViewDidAppear:YES];
+            [_parentNBViewController navbarViewDidDisappear:YES];
+            
             [self postPopLogicCompletion:completion];
         }];
     }
     else
     {
-        [_parentNBViewController viewDidAppear:NO];
+        [_parentNBViewController navbarViewDidAppear:NO];
+        [_parentNBViewController navbarViewDidDisappear:NO];
         [self postPopLogicCompletion:completion];
     }
 }
