@@ -14,5 +14,6 @@
 @interface NSString (RUUtil)
 
 +(NSString*)ruProperlyPluralizedStringWithValue:(NSInteger)value singularWord:(NSString*)singularWord possibleSuffix:(NSString*)possibleSuffix;
++(NSString*)ruProperlyPluralizedWordWithValue:(NSInteger)value singularWord:(NSString*)singularWord possibleSuffix:(NSString*)possibleSuffix;
 
 @end

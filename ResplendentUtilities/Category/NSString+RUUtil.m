@@ -13,13 +13,18 @@
 
 +(NSString*)ruProperlyPluralizedStringWithValue:(NSInteger)value singularWord:(NSString*)singularWord possibleSuffix:(NSString*)possibleSuffix
 {
+    return RUStringWithFormat(@"%i %@",value,[self ruProperlyPluralizedWordWithValue:value singularWord:singularWord possibleSuffix:possibleSuffix]);
+}
+
++(NSString*)ruProperlyPluralizedWordWithValue:(NSInteger)value singularWord:(NSString*)singularWord possibleSuffix:(NSString*)possibleSuffix
+{
     if (value == 1)
     {
-        return RUStringWithFormat(@"%i %@",value,singularWord);
+        return singularWord;
     }
     else
     {
-        return RUStringWithFormat(@"%i %@%@",value,singularWord,possibleSuffix);
+        return [singularWord stringByAppendingString:possibleSuffix];
     }
 }
 
