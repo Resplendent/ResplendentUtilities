@@ -51,6 +51,12 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 -(void)navbarViewWillDisappear:(BOOL)animated;
 -(void)navbarViewDidDisappear:(BOOL)animated;
 
+-(void)navbarChildWillPerformPopAnimationToXCoord:(CGFloat)startParentXCoord;
+-(void)navbarChildIsPerformingAnimationToXCoord:(CGFloat)animateToParentXCoord;
+
+-(void)performPushTransitionAnimationsWithChildXCoord:(CGFloat)animateToChildXCoord parentXCoord:(CGFloat)animateToParentXCoord;
+-(void)performPopTransitionAnimationsWithChildXCoord:(CGFloat)animateToChildXCoord parentXCoord:(CGFloat)animateToParentXCoord;
+
 +(void)setPushPopTransitionDuration:(NSTimeInterval)duration;
 
 @end

@@ -185,10 +185,7 @@ static NSTimeInterval popPushAnimationDuration;
         [self prepareForNavbarPushTransitionToViewController:navbarViewController];
 
         [UIView animateWithDuration:popPushAnimationDuration animations:^{
-            [navbarViewController.view setFrame:CGRectSetX(animateToChildXCoord, navbarViewController.view.frame)];
-            [self.view setFrame:CGRectSetX(animateToParentXCoord, self.view.frame)];
-
-            [self performNavbarPushTransitionToViewController:navbarViewController];
+            [self performPushTransitionAnimationsWithChildXCoord:animateToChildXCoord parentXCoord:animateToParentXCoord];
         } completion:^(BOOL finished) {
             //Move navbar back
             [self performNavbarPushTransitionCompletionToViewController:navbarViewController];
@@ -278,15 +275,13 @@ static NSTimeInterval popPushAnimationDuration;
         }
 
         [self.view setFrame:CGRectSetX(startChildXCoord, self.view.frame)];
-        [_parentNBViewController.view setFrame:CGRectSetX(startParentXCoord, _parentNBViewController.view.frame)];
+
+        [_parentNBViewController navbarChildWillPerformPopAnimationToXCoord:startParentXCoord];
 
         [self prepareForNavbarPopTransition];
 
         [UIView animateWithDuration:popPushAnimationDuration animations:^{
-            [self.view setFrame:CGRectSetX(animateToChildXCoord, self.view.frame)];
-            [_parentNBViewController.view setFrame:CGRectSetX(animateToParentXCoord, _parentNBViewController.view.frame)];
-
-            [self performNavbarPopTransition];
+            [self performPopTransitionAnimationsWithChildXCoord:animateToChildXCoord parentXCoord:animateToParentXCoord];
         } completion:^(BOOL finished) {
             [self performNavbarPopTransitionCompletion];
 
@@ -333,6 +328,32 @@ static NSTimeInterval popPushAnimationDuration;
 +(void)setPushPopTransitionDuration:(NSTimeInterval)duration
 {
     popPushAnimationDuration = duration;
+}
+
+#pragma mark - Transitions
+-(void)performPushTransitionAnimationsWithChildXCoord:(CGFloat)animateToChildXCoord parentXCoord:(CGFloat)animateToParentXCoord
+{
+    [self.childNBViewController.view setFrame:CGRectSetX(animateToChildXCoord, self.childNBViewController.view.frame)];
+    [self.view setFrame:CGRectSetX(animateToParentXCoord, self.view.frame)];
+
+    [self performNavbarPushTransitionToViewController:self.childNBViewController];
+}
+
+-(void)navbarChildWillPerformPopAnimationToXCoord:(CGFloat)startParentXCoord
+{
+    [self.view setFrame:CGRectSetX(startParentXCoord, self.view.frame)];
+}
+
+-(void)navbarChildIsPerformingAnimationToXCoord:(CGFloat)animateToParentXCoord
+{
+    [self.view setFrame:CGRectSetX(animateToParentXCoord, self.view.frame)];
+}
+
+-(void)performPopTransitionAnimationsWithChildXCoord:(CGFloat)animateToChildXCoord parentXCoord:(CGFloat)animateToParentXCoord
+{
+    [self.view setFrame:CGRectSetX(animateToChildXCoord, self.view.frame)];
+    [self.parentNBViewController navbarChildIsPerformingAnimationToXCoord:animateToParentXCoord];
+    [self performNavbarPopTransition];
 }
 
 #pragma mark - Navbar Transitions
