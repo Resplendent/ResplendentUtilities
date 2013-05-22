@@ -63,6 +63,7 @@
     [_titleLabel setFrame:CGRectMake(_rightButton.frame.size.width, _titleLabelTopEdgeInset, CGRectGetWidth(self.frame) - (_rightButton.frame.size.width * 2), CGRectGetHeight(self.frame) - _titleLabelTopEdgeInset)];
 }
 
+#pragma mark - Setters
 -(void)setLeftButton:(UIButton *)leftButton
 {
     if (leftButton == _leftButton)
