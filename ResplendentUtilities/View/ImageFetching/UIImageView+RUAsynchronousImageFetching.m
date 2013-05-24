@@ -53,14 +53,16 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
         if (!self.ruAsynchronousImageFetchingPrivateSpinner)
         {
             [self setRuAsynchronousImageFetchingPrivateSpinner:[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:self.spinnerStyle]];
-            [self.ruAsynchronousImageFetchingPrivateSpinner setCenter:(CGPoint){CGRectGetMidX(self.bounds),CGRectGetMidY(self.bounds)}];
             [self addSubview:self.ruAsynchronousImageFetchingPrivateSpinner];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.ruAsynchronousImageFetchingPrivateSpinner setCenter:(CGPoint){CGRectGetMidX(self.bounds),CGRectGetMidY(self.bounds)}];
+            });
         }
 
         [self.ruAsynchronousImageFetchingPrivateSpinner startAnimating];
     }
 
-    if (self.ruAsynchronousImageFetchingPrivateClearImageOnFetchNumber.boolValue)
+    if (self.ruClearImageOnFetch)
     {
         [self setImage:nil];
     }
