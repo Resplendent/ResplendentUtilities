@@ -53,15 +53,18 @@ void drawColorArrayLine(CGContextRef context, CGFloat lineWidth, CGFloat lineCol
 #pragma mark - Rectangle methods
 void drawColoredRect(CGContextRef context, CGRect rect, CGColorRef color, bool colorFill)
 {
-    if (colorFill)
+    if (color)
     {
-        CGContextSetFillColorWithColor(context, color);
-        CGContextFillRect(context, rect);
-    }
-    else
-    {
-        CGContextSetStrokeColorWithColor(context, color);
-        CGContextStrokeRect(context, rect);
+        if (colorFill)
+        {
+            CGContextSetFillColorWithColor(context, color);
+            CGContextFillRect(context, rect);
+        }
+        else
+        {
+            CGContextSetStrokeColorWithColor(context, color);
+            CGContextStrokeRect(context, rect);
+        }
     }
 }
 
