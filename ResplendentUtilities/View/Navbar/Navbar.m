@@ -8,6 +8,7 @@
 
 #import "Navbar.h"
 #import "UIView+Utility.h"
+#import "RUConstants.h"
 
 #define kNavbarDefaultButtonHorizontalEdgeInset 0.0f
 
@@ -60,7 +61,37 @@
         ceilCoordinates(_rightButton);
     }
 
-    [_titleLabel setFrame:CGRectMake(_rightButton.frame.size.width, _titleLabelTopEdgeInset, CGRectGetWidth(self.frame) - (_rightButton.frame.size.width * 2), CGRectGetHeight(self.frame) - _titleLabelTopEdgeInset)];
+    if (_titleLabel)
+    {
+        [_titleLabel setFrame:self.titleLabelFrame];
+    }
+}
+
+-(void)dealloc
+{
+    if (_titleLabel)
+    {
+        [_titleLabel removeObserver:self forKeyPath:@"text"];
+    }
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (object == _titleLabel)
+    {
+        if ([keyPath isEqualToString:@"text"])
+        {
+            [self setNeedsLayout];
+        }
+        else
+        {
+            RUDLog(@"unhandled keypath %@ for object %@",keyPath,object);
+        }
+    }
+    else
+    {
+        RUDLog(@"unhandled object %@",object);
+    }
 }
 
 #pragma mark - Setters
@@ -87,7 +118,14 @@
     [self setNeedsLayout];
 }
 
-#pragma mark - Getter methods
+#pragma mark - Getters
+-(CGRect)titleLabelFrame
+{
+    CGFloat width = [_titleLabel.text sizeWithFont:_titleLabel.font].width;
+    return (CGRect){CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(width, CGRectGetWidth(self.frame)),self.titleLabelTopEdgeInset,width,CGRectGetHeight(self.frame) - self.titleLabelTopEdgeInset};
+//    return (CGRect){_rightButton.frame.size.width, _titleLabelTopEdgeInset, CGRectGetWidth(self.frame) - (_rightButton.frame.size.width * 2), CGRectGetHeight(self.frame) - _titleLabelTopEdgeInset};
+}
+
 -(NIAttributedLabel *)titleLabel
 {
     if (!_titleLabel)
@@ -97,6 +135,7 @@
         [_titleLabel setTextAlignment:NSTextAlignmentCenter];
         [_titleLabel setVerticalTextAlignment:NIVerticalTextAlignmentMiddle];
         [_animatableContentView addSubview:_titleLabel];
+        [_titleLabel addObserver:self forKeyPath:@"text" options:0 context:nil];
         [self setNeedsLayout];
     }
 
