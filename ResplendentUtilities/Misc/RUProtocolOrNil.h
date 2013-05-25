@@ -8,4 +8,4 @@
 
 #import <Foundation/Foundation.h>
 
-#define kRUProtocolOrNil(val,valProtocol) (val && [val conformsToProtocol:@protocol(valProtocol)] ? val : nil)
+#define kRUProtocolOrNil(val,valProtocol) (val && [val conformsToProtocol:@protocol(valProtocol)] ? (id<valProtocol>)val : nil)
