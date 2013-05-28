@@ -16,6 +16,8 @@
 @property (nonatomic, readonly) UIView* animatableContentView;
 @property (nonatomic, readonly) CGFloat animatableContentViewLowerPadding;
 
+@property (nonatomic, readonly) CGRect titleLabelFrame;
+
 @property (nonatomic, assign) CGFloat buttonHorizontalEdgeInset;
 
 @property (nonatomic, retain) NIAttributedLabel* titleLabel;

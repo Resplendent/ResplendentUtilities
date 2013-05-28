@@ -17,8 +17,10 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 
 @interface GridView ()
 
-@property (nonatomic, readonly) NSInteger lowestVisibleRow;
-@property (nonatomic, readonly) NSUInteger currentNumberOfVisibleRows;
+@property (nonatomic, readonly) NSInteger firstVisibleRow;
+//@property (nonatomic, readonly) NSUInteger currentNumberOfVisibleRows;
+
+-(NSUInteger)numberOfVisibleRowsFromFirstVisibleRow:(NSInteger)firstVisibleRow;
 
 -(void)layoutScrollViewComponents;
 
@@ -104,22 +106,23 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     return (CGSize){CGRectGetWidth(self.frame), contentHeight};
 }
 
--(NSUInteger)currentNumberOfVisibleRows
+-(NSUInteger)numberOfVisibleRowsFromFirstVisibleRow:(NSInteger)firstVisibleRow
 {
-    NSUInteger numberOfVisibleRows =  ceilf(CGRectGetHeight(_scrollView.frame) / (_cellWidth + _modifiedSpaceBetweenCells));
-    
-    NSUInteger lowerVisibleRow = self.lowestVisibleRow;
-    CGFloat bottofOfMinNumberOfVisibleCells = (lowerVisibleRow + numberOfVisibleRows) * (_cellWidth + _modifiedSpaceBetweenCells);
-    
-    if (_scrollView.contentOffset.y + CGRectGetHeight(_scrollView.frame) > bottofOfMinNumberOfVisibleCells)
-        numberOfVisibleRows++;
-    
-    return numberOfVisibleRows;
+    CGFloat contentHeight = CGRectGetHeight(_scrollView.frame);
+
+    //visible Top Cutoff Height
+    contentHeight -= MAX(0, _contentInsets.top - _scrollView.contentOffset.y);
+
+    CGFloat cellWidthAndSpacing = (_cellWidth + _modifiedSpaceBetweenCells);
+    CGFloat topRowVisibleHeight = cellWidthAndSpacing - MAX(0, _scrollView.contentOffset.y - cellWidthAndSpacing * firstVisibleRow + _contentInsets.top);
+    contentHeight -= topRowVisibleHeight;
+
+    return ceilf(contentHeight / cellWidthAndSpacing) + 1;
 }
 
--(NSInteger)lowestVisibleRow
+-(NSInteger)firstVisibleRow
 {
-    return MAX(floor(_scrollView.contentOffset.y / (_cellWidth + _modifiedSpaceBetweenCells)), 0);
+    return MAX(floor((_scrollView.contentOffset.y - _contentInsets.top) / (_cellWidth + _modifiedSpaceBetweenCells)), 0);
 }
 
 #pragma mark Pull to load more
@@ -189,14 +192,14 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     NSInteger touchColumn = floor(scrollViewTouch.x / (_cellWidth + _modifiedSpaceBetweenCells));
     if (touchColumn < 0 || touchColumn >= _numberOfColumns)
     {
-        NSLog(@"touch column %i out of bounds",touchColumn);
+        RUDLog(@"touch column %i out of bounds",touchColumn);
         return;
     }
     
-    NSInteger touchRow = floor(scrollViewTouch.y / (_cellWidth + _modifiedSpaceBetweenCells));
+    NSInteger touchRow = floor((scrollViewTouch.y - self.contentInsets.top) / (_cellWidth + _modifiedSpaceBetweenCells));
     if (touchRow < 0 || touchRow >= _numberOfRows)
     {
-        NSLog(@"touch row %i out of bounds",touchRow);
+        RUDLog(@"touch row %i out of bounds",touchRow);
         return;
     }
     
@@ -363,12 +366,12 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     {
         _cellsDictionary = [NSMutableDictionary dictionary];
     }
-    
-    NSUInteger lowerVisibleRow = self.lowestVisibleRow;
-    NSUInteger firstVisibleCell = lowerVisibleRow * _numberOfColumns;
-    NSUInteger currentNumberOfVisibleRows = self.currentNumberOfVisibleRows;
-    NSUInteger lastVisibleCell = (lowerVisibleRow + currentNumberOfVisibleRows) * _numberOfColumns;
-    
+
+    NSUInteger firstVisibleRow = self.firstVisibleRow;
+    NSUInteger firstVisibleCell = firstVisibleRow * _numberOfColumns;
+    NSUInteger currentNumberOfVisibleRows = [self numberOfVisibleRowsFromFirstVisibleRow:firstVisibleRow];;
+    NSUInteger lastVisibleCell = (firstVisibleRow + currentNumberOfVisibleRows) * _numberOfColumns;
+
     if (firstVisibleCell)
     {
         //Check for old cells to throw out
@@ -377,7 +380,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
             [self deleteCellAtIndex:index stepBack:NO];
         }
     }
-    
+
     for (int index = firstVisibleCell; index < lastVisibleCell; index++)
     {
         if (index < _numberOfCells)
@@ -385,7 +388,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
             [self addCellAtIndex:index];
         }
     }
-    
+
     if (lastVisibleCell < _numberOfCells)
     {
         //Check for old cells to throw out
@@ -498,7 +501,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     }
     else
     {
-        NSLog(@"%s didn't have a tile at index %i, creating one instead",__PRETTY_FUNCTION__,index);
+        RUDLog(@"%s didn't have a tile at index %i, creating one instead",__PRETTY_FUNCTION__,index);
         [self addCellAtIndex:index];
     }
 }

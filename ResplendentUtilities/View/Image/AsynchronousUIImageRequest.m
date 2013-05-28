@@ -13,10 +13,6 @@
 static UIImageView* showLastImageView;
 #endif
 
-static dispatch_queue_t kAsynchronousUIImageRequestQueueNSURLRequest;
-//static dispatch_queue_t kAsynchronousUIImageRequestQueueFinishedRequest;
-
-
 
 @implementation AsynchronousUIImageRequest
 
@@ -27,19 +23,17 @@ static NSMutableDictionary* fetchedImages;
     if (self == [AsynchronousUIImageRequest class])
     {
         fetchedImages = [NSMutableDictionary dictionary];
-        kAsynchronousUIImageRequestQueueNSURLRequest = dispatch_queue_create("com.respledentUtilities.asynchronousUIImageRequest.nsurlrequests", 0);
-//        kAsynchronousUIImageRequestQueueFinishedRequest = dispatch_queue_create("com.respledentUtilities.asynchronousUIImageRequest.finishedrequest", 0);
     }
 }
 
--(id)initAndFetchWithURLString:(NSString*)anUrl block:(imageErrorBlock)block
+-(id)initAndFetchWithURLString:(NSString*)urlString block:(imageErrorBlock)block
 {
-    return [self initAndFetchWithURLString:anUrl cacheName:anUrl block:block];
+    return [self initAndFetchWithURLString:urlString cacheName:urlString block:block];
 }
 
--(id)initAndFetchWithURLString:(NSString*)anUrl cacheName:(NSString *)cacheName block:(imageErrorBlock)block
+-(id)initAndFetchWithURLString:(NSString*)urlString cacheName:(NSString *)cacheName block:(imageErrorBlock)block
 {
-    return [self initAndFetchWithURL:[NSURL URLWithString:anUrl] cacheName:cacheName block:block];
+    return [self initAndFetchWithURL:[NSURL URLWithString:urlString] cacheName:cacheName block:block];
 }
 
 -(id)initAndFetchWithURL:(NSURL*)url block:(imageErrorBlock)block
@@ -51,7 +45,7 @@ static NSMutableDictionary* fetchedImages;
 {
     if (!url)
         [NSException raise:NSInvalidArgumentException format:@"Can't fetch image without a url"];
-
+    
     if (self = [self init])
     {
         _cacheName = (cacheName ? cacheName : url.absoluteString);
@@ -62,11 +56,30 @@ static NSMutableDictionary* fetchedImages;
     return self;
 }
 
+-(void)dealloc
+{
+    [self cancelFetch];
+}
+
+#pragma mark - Private methods
+-(void)ruAsynchronousUIImageRequestCallBlock:(imageErrorBlock)block withImage:(UIImage*)image error:(NSError*)error
+{
+    if (block)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (block)
+            {
+                block(image,error);
+            }
+        });
+    }
+}
+
 #pragma mark - Public methods
 -(void)fetchImageWithBlock:(imageErrorBlock)block
 {
     [self cancelFetch];
-
+    
     UIImage* cachedImage = [AsynchronousUIImageRequest cachedImageForCacheName:_cacheName];
     
     if (cachedImage)
@@ -75,8 +88,7 @@ static NSMutableDictionary* fetchedImages;
         if (showLastImageView)
             [showLastImageView setImage:cachedImage];
 #endif
-        if (block)
-            block(cachedImage,nil);
+        [self ruAsynchronousUIImageRequestCallBlock:block withImage:cachedImage error:nil];
     }
     else
     {
@@ -92,7 +104,11 @@ static NSMutableDictionary* fetchedImages;
 
 -(void)cancelFetch
 {
-    [_connection cancel];
+    if (_connection)
+    {
+        [_connection cancel];
+        _connection = nil;
+    }
 }
 
 #pragma mark - NSURLConnectionDataDelegate methods
@@ -100,40 +116,36 @@ static NSMutableDictionary* fetchedImages;
 {
     if (!_data)
         _data = [[NSMutableData alloc] initWithCapacity:2024];
-
+    
     [_data appendData:incrementalData];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     NSLog(@"Error downloading from url %@ with error %@",self.url,error);
-    if (_block)
-        _block(nil,error);
+    [self ruAsynchronousUIImageRequestCallBlock:_block withImage:nil error:error];
+    _block = nil;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)theConnection
 {
-//    dispatch_async(kAsynchronousUIImageRequestQueueFinishedRequest, ^{
-        UIImage* image = [[UIImage alloc] initWithData:_data];
-        
-        if (image)
-            [fetchedImages setObject:image forKey:_cacheName];
-        else
-            [fetchedImages removeObjectForKey:_cacheName];
-        
-        _data = nil;
-        _connection = nil;
-        
+    //    dispatch_async(kAsynchronousUIImageRequestQueueFinishedRequest, ^{
+    UIImage* image = [[UIImage alloc] initWithData:_data];
+    
+    if (image)
+        [fetchedImages setObject:image forKey:_cacheName];
+    else
+        [fetchedImages removeObjectForKey:_cacheName];
+    
+    _data = nil;
+    _connection = nil;
+    
 #if kAsynchronousUIImageRequestEnableShowLastImage
-        if (showLastImageView)
-            [showLastImageView setImage:image];
+    if (showLastImageView)
+        [showLastImageView setImage:image];
 #endif
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (_block)
-                _block(image,nil);
-        });
-//    });
+
+    [self ruAsynchronousUIImageRequestCallBlock:_block withImage:image error:nil];
 }
 
 #pragma mark - Static methods
@@ -157,7 +169,7 @@ static NSMutableDictionary* fetchedImages;
 +(void)showLastImageOnView:(UIView*)view atFrame:(CGRect)showFrame withContentMode:(UIViewContentMode)contentMode
 {
     [self hideLastImage];
-
+    
     showLastImageView = [UIImageView new];
     [showLastImageView setFrame:showFrame];
     [showLastImageView setContentMode:contentMode];

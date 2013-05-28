@@ -32,7 +32,6 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 
 @property (nonatomic, assign) NavbarViewController* parentNBViewController;
 @property (nonatomic, strong) NavbarViewController* childNBViewController;
-//@property (nonatomic, readonly) NavbarViewController* lastChildNBViewController;
 
 @property (nonatomic, assign) NavbarViewControllerChildTransitionStyle childTransitionStyle;
 @property (nonatomic, assign) NavbarViewControllerParentTransitionStyle parentTransitionStyle;
@@ -45,6 +44,18 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 
 -(void)pushViewController:(NavbarViewController*)navbarViewController animated:(BOOL)animated completion:(void (^)())completion;
 -(void)popViewControllerAnimated:(BOOL)animated completion:(void (^)())completion;
+
+-(void)navbarViewWillAppear:(BOOL)animated;
+-(void)navbarViewDidAppear:(BOOL)animated;
+
+-(void)navbarViewWillDisappear:(BOOL)animated;
+-(void)navbarViewDidDisappear:(BOOL)animated;
+
+-(void)navbarChildWillPerformPopAnimationToXCoord:(CGFloat)startParentXCoord;
+-(void)navbarChildIsPerformingAnimationToXCoord:(CGFloat)animateToParentXCoord;
+
+-(void)performPushTransitionAnimationsWithChildXCoord:(CGFloat)animateToChildXCoord parentXCoord:(CGFloat)animateToParentXCoord;
+-(void)performPopTransitionAnimationsWithChildXCoord:(CGFloat)animateToChildXCoord parentXCoord:(CGFloat)animateToParentXCoord;
 
 +(void)setPushPopTransitionDuration:(NSTimeInterval)duration;
 

@@ -69,9 +69,40 @@
         }
     }
 
-    [_titleLabel setFrame:CGRectMake(_rightButton.frame.size.width, _titleLabelTopEdgeInset, CGRectGetWidth(self.frame) - (_rightButton.frame.size.width * 2), CGRectGetHeight(_animatableContentView.frame) - _titleLabelTopEdgeInset)];
+    if (_titleLabel)
+    {
+        [_titleLabel setFrame:self.titleLabelFrame];
+    }
 }
 
+-(void)dealloc
+{
+    if (_titleLabel)
+    {
+        [_titleLabel removeObserver:self forKeyPath:@"text"];
+    }
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (object == _titleLabel)
+    {
+        if ([keyPath isEqualToString:@"text"])
+        {
+            [self setNeedsLayout];
+        }
+        else
+        {
+            RUDLog(@"unhandled keypath %@ for object %@",keyPath,object);
+        }
+    }
+    else
+    {
+        RUDLog(@"unhandled object %@",object);
+    }
+}
+
+#pragma mark - Setters
 -(void)setLeftButton:(UIButton *)leftButton
 {
     if (leftButton == _leftButton)
@@ -95,7 +126,7 @@
     [self setNeedsLayout];
 }
 
-#pragma mark - Getter methods
+#pragma mark - Getters
 -(CGFloat)height
 {
     return CGRectGetHeight([UIScreen mainScreen].bounds);
@@ -104,6 +135,12 @@
 -(CGFloat)animatableContentViewLowerPadding
 {
     return 0.0f;
+}
+
+-(CGRect)titleLabelFrame
+{
+    CGFloat width = [_titleLabel.text sizeWithFont:_titleLabel.font].width;
+    return (CGRect){CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(width, CGRectGetWidth(self.frame)),self.titleLabelTopEdgeInset,width,CGRectGetHeight(self.frame) - self.titleLabelTopEdgeInset};
 }
 
 -(NIAttributedLabel *)titleLabel
@@ -115,6 +152,7 @@
         [_titleLabel setTextAlignment:NSTextAlignmentCenter];
         [_titleLabel setVerticalTextAlignment:NIVerticalTextAlignmentMiddle];
         [_animatableContentView addSubview:_titleLabel];
+        [_titleLabel addObserver:self forKeyPath:@"text" options:0 context:nil];
         [self setNeedsLayout];
     }
 

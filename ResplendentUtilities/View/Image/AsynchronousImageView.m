@@ -48,6 +48,11 @@
     return _imageRequest != nil;
 }
 
+-(NSURL *)url
+{
+    return [_imageRequest url];
+}
+
 #pragma mark - Public methods
 -(void)cancelFetch
 {
@@ -76,8 +81,9 @@
         
         [_spinner startAnimating];
     }
-    
+
     _imageRequest = [[AsynchronousUIImageRequest alloc] initAndFetchWithURL:url cacheName:cacheName block:^(UIImage *image, NSError *error) {
+
         _imageRequest = nil;
         
         if (_spinner)
@@ -86,16 +92,11 @@
             [_spinner removeFromSuperview];;
             _spinner = nil;
         }
-        
-        //            RUDLog(@"setting image");
+
         [self setImage:image];
-        //            [self drawRect:self.bounds];
-        
+
         if (image)
         {
-            //                if (self.frame.size.width == 0 || self.frame.size.height == 0)
-            //                    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.image.size.width, self.image.size.height);
-            
             CGFloat alpha = self.alpha;
             if (self.fadeInDuration > 0)
             {
@@ -112,11 +113,6 @@
 {
     [self fetchImageFromURLString:anUrl withCacheName:anUrl];
 }
-
-//-(NSString *)url
-//{
-//    return [_imageRequest url];
-//}
 
 -(void)fetchImageFromURLString:(NSString*)anUrl withCacheName:(NSString*)cacheName
 {
