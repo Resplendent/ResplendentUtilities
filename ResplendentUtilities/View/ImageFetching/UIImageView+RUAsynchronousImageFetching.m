@@ -41,10 +41,20 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
 
 -(void)ruFetchImageAsynchronouslyAtUrlString:(NSString*)urlString
 {
-    [self ruFetchImageAsynchronouslyAtUrl:[NSURL URLWithString:urlString]];
+    [self ruFetchImageAsynchronouslyAtUrl:[NSURL URLWithString:urlString] cacheName:urlString];
+}
+
+-(void)ruFetchImageAsynchronouslyAtUrlString:(NSString*)urlString cacheName:(NSString*)cacheName
+{
+    [self ruFetchImageAsynchronouslyAtUrl:[NSURL URLWithString:urlString] cacheName:cacheName];
 }
 
 -(void)ruFetchImageAsynchronouslyAtUrl:(NSURL*)url
+{
+    [self ruFetchImageAsynchronouslyAtUrl:url cacheName:url.absoluteString];
+}
+
+-(void)ruFetchImageAsynchronouslyAtUrl:(NSURL*)url cacheName:(NSString*)cacheName;
 {
     [self ruCancelAsynchronousImageFetching];
 
@@ -67,7 +77,7 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
         [self setImage:nil];
     }
 
-    [self setRuAsynchronousImageFetchingPrivateImageRequest:[[AsynchronousUIImageRequest alloc] initAndFetchWithURL:url cacheName:url.absoluteString block:^(UIImage *image, NSError *error) {
+    [self setRuAsynchronousImageFetchingPrivateImageRequest:[[AsynchronousUIImageRequest alloc] initAndFetchWithURL:url cacheName:cacheName block:^(UIImage *image, NSError *error) {
         [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
 
         [self ruAsynchronousImageFetchingPrivateRemoveSpinner];
