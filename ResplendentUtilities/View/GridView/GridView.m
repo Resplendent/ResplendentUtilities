@@ -57,6 +57,8 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 {
     if (self = [super initWithFrame:frame])
     {
+        _cellsDictionary = [NSMutableDictionary dictionary];
+
         _scrollView = [UIScrollView new];
         [_scrollView setBackgroundColor:[UIColor clearColor]];
         [_scrollView setDelegate:self];
@@ -362,11 +364,6 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 #pragma mark update methods
 -(void)updateTiles
 {
-    if (!_cellsDictionary)
-    {
-        _cellsDictionary = [NSMutableDictionary dictionary];
-    }
-
     NSUInteger firstVisibleRow = self.firstVisibleRow;
     NSUInteger firstVisibleCell = firstVisibleRow * _numberOfColumns;
     NSUInteger currentNumberOfVisibleRows = [self numberOfVisibleRowsFromFirstVisibleRow:firstVisibleRow];;
