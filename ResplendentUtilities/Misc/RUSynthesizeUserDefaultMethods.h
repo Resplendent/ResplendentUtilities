@@ -35,3 +35,37 @@ RUSynthesizeSetUserDefaultsMethodCompletion(varName,key,nil)
 #define RUSynthesizeSetGetUserDefaultsMethod(VarName,varName,key) \
 RUSynthesizeSetUserDefaultsMethod(VarName,key) \
 RUSynthesizeGetUserDefaultsMethod(varName,key)
+
+//Static
+#define RUSynthesizeStaticSetGetUserDefaultsMethodDeclarations(VarName,varName) \
++(void)set##VarName:(id)varName; \
++(id)varName;
+
+#define RUSynthesizeStaticSetGetUserDefaultsMethod(VarName,varName,key) \
+RUSynthesizeStaticSetUserDefaultsMethod(VarName,key) \
+RUSynthesizeStaticGetUserDefaultsMethod(varName,key)
+
+#define RUSynthesizeStaticSetUserDefaultsMethodCompletion(varName,key,completion) \
++(void)set##varName:(id)varName \
+{ \
+NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
+if (varName) [userDefaults setObject:varName forKey:key]; \
+else [userDefaults removeObjectForKey:key]; \
+[userDefaults synchronize]; \
+if (completion) \
+{ \
+void (^completionBlock)() = completion; \
+completionBlock(varName); \
+} \
+}
+
+#define RUSynthesizeStaticSetUserDefaultsMethod(varName,key) \
+RUSynthesizeStaticSetUserDefaultsMethodCompletion(varName,key,nil)
+
+#define RUSynthesizeStaticGetUserDefaultsMethod(varName,key) \
++(id)varName \
+{ \
+NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
+return [userDefaults objectForKey:key]; \
+}
+
