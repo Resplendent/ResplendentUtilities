@@ -56,8 +56,6 @@
 {
     [super layoutSubviews];
 
-//    CGSize animatableContentViewSize = self.bounds.size;
-//    animatableContentViewSize.height -= self.animatableContentViewLowerPadding;
     [_animatableContentView setFrame:CGRectSetSize(CGSizeMake(CGRectGetWidth(self.frame),self.animatableContentViewHeight), _animatableContentView.frame)];
 
     if (_autoAdjustButtons)
