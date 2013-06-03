@@ -12,6 +12,12 @@
 
 #define kNavbarDefaultButtonHorizontalEdgeInset 0.0f
 
+@interface Navbar ()
+
+@property (nonatomic, readonly) CGFloat animatableContentViewHeight;
+
+@end
+
 @implementation Navbar
 
 @synthesize autoAdjustButtons = _autoAdjustButtons;
@@ -50,9 +56,9 @@
 {
     [super layoutSubviews];
 
-    CGSize animatableContentViewSize = self.bounds.size;
-    animatableContentViewSize.height -= self.animatableContentViewLowerPadding;
-    [_animatableContentView setFrame:CGRectSetSize(animatableContentViewSize, _animatableContentView.frame)];
+//    CGSize animatableContentViewSize = self.bounds.size;
+//    animatableContentViewSize.height -= self.animatableContentViewLowerPadding;
+    [_animatableContentView setFrame:CGRectSetSize(CGSizeMake(CGRectGetWidth(self.frame),self.animatableContentViewHeight), _animatableContentView.frame)];
 
     if (_autoAdjustButtons)
     {
@@ -127,6 +133,11 @@
 }
 
 #pragma mark - Getters
+-(CGFloat)animatableContentViewHeight
+{
+    return (CGRectGetHeight(self.frame) - self.animatableContentViewLowerPadding);
+}
+
 -(CGFloat)height
 {
     return CGRectGetHeight([UIScreen mainScreen].bounds);
@@ -140,7 +151,7 @@
 -(CGRect)titleLabelFrame
 {
     CGFloat width = [_titleLabel.text sizeWithFont:_titleLabel.font].width;
-    return (CGRect){CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(width, CGRectGetWidth(self.frame)),self.titleLabelTopEdgeInset,width,CGRectGetHeight(self.frame) - self.titleLabelTopEdgeInset};
+    return (CGRect){CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(width, CGRectGetWidth(self.frame)),self.titleLabelTopEdgeInset,width,self.animatableContentViewHeight - self.titleLabelTopEdgeInset};
 }
 
 -(NIAttributedLabel *)titleLabel
