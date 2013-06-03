@@ -71,6 +71,10 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
 
         [self.ruAsynchronousImageFetchingPrivateSpinner startAnimating];
     }
+    else
+    {
+        [self ruAsynchronousImageFetchingPrivateRemoveSpinner];
+    }
 
     if (self.ruClearImageOnFetch)
     {
