@@ -10,8 +10,6 @@
 #import "UIView+Utility.h"
 #import "RUConstants.h"
 
-#define kNavbarDefaultButtonHorizontalEdgeInset 0.0f
-
 @implementation Navbar
 
 @synthesize autoAdjustButtons = _autoAdjustButtons;
@@ -29,7 +27,6 @@
 {
     if (self = [super initWithFrame:frame])
     {
-        _buttonHorizontalEdgeInset = kNavbarDefaultButtonHorizontalEdgeInset;
         _animatableContentView = [UIView new];
         [self addSubview:_animatableContentView];
         [self setUserInteractionEnabled:YES];
@@ -52,13 +49,17 @@
 
     if (_autoAdjustButtons)
     {
-        CGFloat middle = self.frame.size.height / 2.0f;
+        if (_leftButton)
+        {
+            CGSize size = _leftButton.frame.size;
+            [_leftButton setFrame:(CGRect){self.leftButtonLeftPadding,CGRectGetVerticallyAlignedYCoordForHeightOnHeight(size.height, CGRectGetHeight(self.frame)),size}];
+        }
 
-        [_leftButton setCenter:CGPointMake(MAX(middle, CGRectGetWidth(_leftButton.frame) / 2.0f) + _buttonHorizontalEdgeInset, middle)];
-        ceilCoordinates(_leftButton);
-
-        [_rightButton setCenter:CGPointMake(self.frame.size.width - MAX(middle, CGRectGetWidth(_rightButton.frame) / 2.0f) - _buttonHorizontalEdgeInset, middle)];
-        ceilCoordinates(_rightButton);
+        if (_rightButton)
+        {
+            CGSize size = _rightButton.frame.size;
+            [_rightButton setFrame:(CGRect){ceil(CGRectGetWidth(self.frame) - size.width - self.rightButtonRightPadding),CGRectGetVerticallyAlignedYCoordForHeightOnHeight(size.height, CGRectGetHeight(self.frame)),size}];
+        }
     }
 
     if (_titleLabel)
