@@ -326,10 +326,9 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     else
     {
         UIView* tile = [_dataSource gridView:self newTileForIndex:index];
-        
+
         [_cellsDictionary setObject:tile forKey:indexStringForKey(index)];
-        //        [tile setUserInteractionEnabled:NO];
-        
+
         [_tileContentView addSubview:tile];
         [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
         [self layoutTile:tile tileIndex:index onScreen:YES animated:YES withDelay:0 completion:nil];
