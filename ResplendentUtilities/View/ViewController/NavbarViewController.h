@@ -17,7 +17,8 @@ typedef enum {
 typedef enum {
     NavbarViewControllerTransitionToStyleNone,
     NavbarViewControllerTransitionToStyleToRight,
-    NavbarViewControllerTransitionToStyleToLeft
+    NavbarViewControllerTransitionToStyleToLeft,
+    NavbarViewControllerTransitionToStyleToBottom
 }NavbarViewControllerTransitionToStyle;
 
 extern NSString* const kNavbarViewControllerNotificationCenterDidPop;
@@ -54,11 +55,11 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 -(void)navbarViewWillDisappear:(BOOL)animated;
 -(void)navbarViewDidDisappear:(BOOL)animated;
 
--(void)navbarChildWillPerformPopAnimationToXCoord:(CGFloat)startParentXCoord;
--(void)navbarChildIsPerformingAnimationToXCoord:(CGFloat)animateToParentXCoord;
+-(void)navbarChildWillPerformPopAnimationToOrigin:(CGPoint)startParentOrigin;
+-(void)navbarChildIsPerformingAnimationToOrigin:(CGPoint)animateToParentOrigin;
 
--(void)performPushTransitionAnimationsWithChildXCoord:(CGFloat)animateToChildXCoord parentXCoord:(CGFloat)animateToParentXCoord;
--(void)performPopTransitionAnimationsWithChildXCoord:(CGFloat)animateToChildXCoord parentXCoord:(CGFloat)animateToParentXCoord;
+-(void)performPushTransitionAnimationsWithChildOrigin:(CGPoint)animateToChildOrigin parentOrigin:(CGPoint)animateToParentOrigin;
+-(void)performPopTransitionAnimationsWithChildOrigin:(CGPoint)animateToChildOrigin parentOrigin:(CGPoint)animateToParentOrigin;
 
 +(void)setPushPopTransitionDuration:(NSTimeInterval)duration;
 
