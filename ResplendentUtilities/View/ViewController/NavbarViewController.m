@@ -226,7 +226,7 @@ static NSTimeInterval popPushAnimationDuration;
         [self.view addSubview:navbarViewController.view];
         [navbarViewController.view setFrame:CGRectSetXY(0,0, navbarViewController.view.frame)];
 
-        [self performNavbarPushTransitionCompletionToViewController:navbarViewController];
+//        [self performNavbarPushTransitionCompletionToViewController:navbarViewController];
 
         [self navbarViewDidDisappear:NO];
         [navbarViewController navbarViewDidAppear:NO];
