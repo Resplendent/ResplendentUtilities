@@ -130,7 +130,6 @@ static NSTimeInterval popPushAnimationDuration;
     [self viewWillDisappear:animated];
     [navbarViewController navbarViewWillAppear:animated];
 
-    RUDLog(@"child starting %@",navbarViewController.view);
     if (animated)
     {
         __block NSMutableArray* userInteractionEnabledArray = [NSMutableArray array];
@@ -186,20 +185,15 @@ static NSTimeInterval popPushAnimationDuration;
                 break;
         }
 
-        RUDLog(@"child view check 1: %@",navbarViewController.view);
         //Move navbar to superview
         [self.view addSubview:navbarViewController.view];
 
         [self prepareForNavbarPushTransitionToViewController:navbarViewController];
 
-        RUDLog(@"child view check 2: %@",navbarViewController.view);
         [UIView animateWithDuration:popPushAnimationDuration animations:^{
-            RUDLog(@"child view check 3: %@",navbarViewController.view);
             [self performPushTransitionAnimationsWithChildXCoord:animateToChildXCoord parentXCoord:animateToParentXCoord];
-            RUDLog(@"child view check 4: %@",navbarViewController.view);
         } completion:^(BOOL finished) {
             //Move navbar back
-            RUDLog(@"child view check 5: %@",navbarViewController.view);
             [self performNavbarPushTransitionCompletionToViewController:navbarViewController];
 
             [navbarViewController.view setFrame:CGRectSetX(0, navbarViewController.view.frame)];
@@ -217,13 +211,11 @@ static NSTimeInterval popPushAnimationDuration;
                 superView = superView.superview;
             }
 
-            RUDLog(@"child view check 6: %@",navbarViewController.view);
             [self.view bringSubviewToFront:navbarViewController.view];
 
             [self navbarViewDidDisappear:YES];
             [navbarViewController navbarViewDidAppear:YES];
 
-            RUDLog(@"child view: %@",navbarViewController.view);
             [[NSNotificationCenter defaultCenter] postNotificationName:kNavbarViewControllerNotificationCenterDidPush object:navbarViewController];
             if (completion)
                 completion();
@@ -239,7 +231,6 @@ static NSTimeInterval popPushAnimationDuration;
         [self navbarViewDidDisappear:NO];
         [navbarViewController navbarViewDidAppear:NO];
 
-        RUDLog(@"child view: %@",navbarViewController.view);
         [[NSNotificationCenter defaultCenter] postNotificationName:kNavbarViewControllerNotificationCenterDidPush object:navbarViewController];
         if (completion)
             completion();
