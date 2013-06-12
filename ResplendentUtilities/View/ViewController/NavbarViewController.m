@@ -152,30 +152,34 @@ static NSTimeInterval popPushAnimationDuration;
         CGFloat animateToChildXCoord = 0.0f;
         CGFloat animateToParentXCoord = originalParentXCoord;
 
-        switch (self.childTransitionStyle)
+        switch (self.pushChildTransitionStyle)
         {
-            case NavbarViewControllerChildTransitionStyleFromLeft:
+            case NavbarViewControllerTransitionFromStyleFromLeft:
                 setCoords(navbarViewController.view, -CGRectGetWidth(self.view.frame), 0);
                 break;
                 
-            case NavbarViewControllerChildTransitionStyleFromRight:
+            case NavbarViewControllerTransitionFromStyleFromRight:
                 setCoords(navbarViewController.view, CGRectGetWidth(self.view.frame), 0);
                 break;
 
-            case NavbarViewControllerChildTransitionStyleNone:
+            case NavbarViewControllerTransitionFromStyleNone:
                 setCoords(navbarViewController.view, 0, 0);
                 break;
         }
 
-        switch (self.parentTransitionStyle)
+        switch (self.pushTransitionStyle)
         {
-            case NavbarViewControllerParentTransitionStyleToLeft:
+            case NavbarViewControllerTransitionToStyleToLeft:
                 animateToParentXCoord -= CGRectGetWidth(self.view.frame);
                 animateToChildXCoord += CGRectGetWidth(self.view.frame);
                 break;
 
-            default:
-                RU_METHOD_IMPLEMENTATION_NEEDED;
+            case NavbarViewControllerTransitionToStyleToRight:
+                animateToParentXCoord += CGRectGetWidth(self.view.frame);
+                animateToChildXCoord -= CGRectGetWidth(self.view.frame);
+                break;
+
+            case NavbarViewControllerTransitionToStyleNone:
                 break;
         }
 
@@ -249,28 +253,33 @@ static NSTimeInterval popPushAnimationDuration;
         CGFloat animateToParentXCoord = originalParentXCoord;
         CGFloat animateToChildXCoord = originalChildXCoord;
 
-        switch (self.parentNBViewController.childTransitionStyle)
+        switch (self.popParentTransitionStyle)
         {
-            case NavbarViewControllerChildTransitionStyleFromLeft:
-                animateToChildXCoord -= CGRectGetWidth(_parentNBViewController.view.frame);
-                break;
-                
-            case NavbarViewControllerChildTransitionStyleFromRight:
-                animateToChildXCoord += CGRectGetWidth(_parentNBViewController.view.frame);
-                break;
-
-            case NavbarViewControllerChildTransitionStyleNone:
-                break;
-        }
-
-        switch (self.parentNBViewController.parentTransitionStyle)
-        {
-            case NavbarViewControllerParentTransitionStyleToLeft:
+            case NavbarViewControllerTransitionFromStyleFromLeft:
                 startParentXCoord -= CGRectGetWidth(_parentNBViewController.view.frame);
                 startChildXCoord += CGRectGetWidth(_parentNBViewController.view.frame);
                 break;
                 
-            default:
+            case NavbarViewControllerTransitionFromStyleFromRight:
+                startParentXCoord += CGRectGetWidth(_parentNBViewController.view.frame);
+                startChildXCoord -= CGRectGetWidth(_parentNBViewController.view.frame);
+                break;
+
+            case NavbarViewControllerTransitionFromStyleNone:
+                break;
+        }
+
+        switch (self.popTransitionStyle)
+        {
+            case NavbarViewControllerTransitionToStyleToLeft:
+                animateToChildXCoord -= CGRectGetWidth(_parentNBViewController.view.frame);
+                break;
+
+            case NavbarViewControllerTransitionToStyleToRight:
+                animateToChildXCoord += CGRectGetWidth(_parentNBViewController.view.frame);
+                break;
+
+            case NavbarViewControllerTransitionToStyleNone:
                 break;
         }
 
