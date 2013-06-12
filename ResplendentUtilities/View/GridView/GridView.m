@@ -330,8 +330,9 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
         [_cellsDictionary setObject:tile forKey:indexStringForKey(index)];
 
         [_tileContentView addSubview:tile];
-        [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
-        [self layoutTile:tile tileIndex:index onScreen:YES animated:YES withDelay:0 completion:nil];
+        [self layoutTile:tile tileIndex:index onScreen:YES animated:NO withDelay:0 completion:nil];
+//        [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
+//        [self layoutTile:tile tileIndex:index onScreen:YES animated:YES withDelay:0 completion:nil];
         
         return YES;
     }
