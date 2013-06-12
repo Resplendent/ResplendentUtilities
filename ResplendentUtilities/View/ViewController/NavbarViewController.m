@@ -153,22 +153,26 @@ static NSTimeInterval popPushAnimationDuration;
         [navbarViewController.view setUserInteractionEnabled:NO];
 
         CGPoint originalParentOrigin = self.view.frame.origin;
+        CGPoint startChildOrigin = CGPointZero;
         CGPoint animateToParentOrigin = originalParentOrigin;
+
+        CGFloat animationDuration = popPushAnimationDuration;
 
         switch (self.pushChildTransitionStyle)
         {
             case NavbarViewControllerTransitionFromStyleFromLeft:
-                [navbarViewController.view setFrame:CGRectSetXY(-CGRectGetWidth(self.view.frame), 0, navbarViewController.view.frame)];
+                startChildOrigin.x = -CGRectGetWidth(self.view.frame);
                 break;
 
             case NavbarViewControllerTransitionFromStyleFromRight:
-                [navbarViewController.view setFrame:CGRectSetXY(CGRectGetWidth(self.view.frame), 0, navbarViewController.view.frame)];
+                startChildOrigin.x = CGRectGetWidth(self.view.frame);
                 break;
 
             case NavbarViewControllerTransitionFromStyleNone:
-                [navbarViewController.view setFrame:CGRectSetXY(0, 0, navbarViewController.view.frame)];
                 break;
         }
+
+        [navbarViewController.view setFrame:(CGRect){startChildOrigin, navbarViewController.view.frame.size}];
 
         switch (self.pushTransitionStyle)
         {
@@ -183,6 +187,7 @@ static NSTimeInterval popPushAnimationDuration;
                 break;
 
             case NavbarViewControllerTransitionToStyleToBottom:
+                animationDuration *= 2;
                 animateToParentOrigin.y += CGRectGetHeight(self.view.window.frame);
                 animateToChildOrigin.y -= CGRectGetHeight(self.view.window.frame);
                 break;
@@ -196,7 +201,7 @@ static NSTimeInterval popPushAnimationDuration;
 
         [self prepareForNavbarPushTransitionToViewController:navbarViewController];
 
-        [UIView animateWithDuration:popPushAnimationDuration animations:^{
+        [UIView animateWithDuration:animationDuration animations:^{
             [self performPushTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
             //Move navbar back
@@ -263,6 +268,8 @@ static NSTimeInterval popPushAnimationDuration;
         CGPoint animateToParentOrigin = originalParentOrigin;
         CGPoint animateToChildOrigin = originalChildOrigin;
 
+        CGFloat animationDuration = popPushAnimationDuration;
+
         switch (self.popParentTransitionStyle)
         {
             case NavbarViewControllerTransitionFromStyleFromLeft:
@@ -290,6 +297,7 @@ static NSTimeInterval popPushAnimationDuration;
                 break;
 
             case NavbarViewControllerTransitionToStyleToBottom:
+                animationDuration *= 2;
                 animateToChildOrigin.y += CGRectGetHeight(_parentNBViewController.view.window.frame);
                 break;
 
@@ -303,7 +311,7 @@ static NSTimeInterval popPushAnimationDuration;
 
         [self prepareForNavbarPopTransition];
 
-        [UIView animateWithDuration:popPushAnimationDuration animations:^{
+        [UIView animateWithDuration:animationDuration animations:^{
             [self performPopTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
             [self performNavbarPopTransitionCompletion];
@@ -382,16 +390,46 @@ static NSTimeInterval popPushAnimationDuration;
 }
 
 #pragma mark - Navbar Transitions
--(void)prepareForNavbarPushTransitionToViewController:(NavbarViewController*)navbarViewController
+-(void)moveNavbarToParentForPushTransitionPreperation
 {
     [self.navbar removeFromSuperview];
+//    [self.navbar setFrame:CGRectSetX(-CGRectGetWidth(self.view.frame), self.navbar.frame)];
+    [self.childNBViewController.view insertSubview:self.navbar aboveSubview:self.childNBViewController.navbar];
+
+    [self.childNBViewController.navbar.animatableContentView removeFromSuperview];
+//    [self.childNBViewController.navbar.animatableContentView setAlpha:0.0f];
+//    [navbarViewController.navbar.animatableContentView setFrame:CGRectSetX(CGRectGetWidth(self.view.frame) / kNavbarViewControllerPushPopNavbarMovementScale, navbarViewController.navbar.animatableContentView.frame)];
+
+    [self.navbar addSubview:self.childNBViewController.navbar.animatableContentView];
+//    [self.childNBViewController.navbar removeFromSuperview];
+//    [self.childNBViewController.childNBViewController.view insertSubview:self.childNBViewController.navbar aboveSubview:self.childNBViewController.childNBViewController.navbar];
+
+//    [self.navbar addSubview:self.childNBViewController.navbar.animatableContentView];
+}
+
+-(void)recursivelyAddChildNavbarsToNavbarForPush
+{
+    if (self.childNBViewController.childNBViewController)
+    {
+        [self.childNBViewController moveNavbarToParentForPushTransitionPreperation];
+        [self.childNBViewController recursivelyAddChildNavbarsToNavbarForPush];
+    }
+}
+
+-(void)prepareForNavbarPushTransitionToViewController:(NavbarViewController*)navbarViewController
+{
+//    [self recursivelyAddChildNavbarsToNavbarForPush];
+
+    [self moveNavbarToParentForPushTransitionPreperation];
+//    [self.navbar removeFromSuperview];
     [self.navbar setFrame:CGRectSetX(-CGRectGetWidth(self.view.frame), self.navbar.frame)];
-    [navbarViewController.view insertSubview:self.navbar aboveSubview:navbarViewController.navbar];
-    
-    [navbarViewController.navbar.animatableContentView removeFromSuperview];
+//    [navbarViewController.view insertSubview:self.navbar aboveSubview:navbarViewController.navbar];
+
+//    [navbarViewController.navbar.animatableContentView removeFromSuperview];
     [navbarViewController.navbar.animatableContentView setAlpha:0.0f];
     [navbarViewController.navbar.animatableContentView setFrame:CGRectSetX(CGRectGetWidth(self.view.frame) / kNavbarViewControllerPushPopNavbarMovementScale, navbarViewController.navbar.animatableContentView.frame)];
-    [self.navbar addSubview:navbarViewController.navbar.animatableContentView];
+
+//    [self.navbar addSubview:navbarViewController.navbar.animatableContentView];
 }
 
 -(void)performNavbarPushTransitionToViewController:(NavbarViewController*)navbarViewController
