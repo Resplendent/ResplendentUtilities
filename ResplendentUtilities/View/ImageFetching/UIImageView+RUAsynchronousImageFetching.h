@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RUAsynchronousImageFetchingProtocols.h"
 
 @interface UIImageView (RUAsynchronousImageFetching)
 
@@ -15,6 +16,8 @@
 @property (nonatomic) UIActivityIndicatorViewStyle spinnerStyle;
 
 @property (nonatomic) CGFloat ruFadeInDuration;
+
+@property (nonatomic) id<RUAsynchronousImageFetchingDelegate> ruAsynchronousImageFetchingDelegate;
 
 -(void)ruCancelAsynchronousImageFetching;
 -(void)ruFetchImageAsynchronouslyAtUrl:(NSURL*)url;

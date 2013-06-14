@@ -16,6 +16,7 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyClearI
 NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinner = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinner";
 NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinnerStyleNumber = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinnerStyleNumber";
 NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyFadeInDuration = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyFadeInDuration";
+NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelegate = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelegate";
 
 @interface UIImageView (RUAsynchronousImageFetchingPrivate)
 
@@ -97,10 +98,17 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyFadeIn
                 [self setAlpha:1.0f];
             }];
         }
+
+        [self.ruAsynchronousImageFetchingDelegate ruAsynchronousFetchingImageView:self finishedFetchingImage:image];
     }]];
 }
 
 #pragma mark - Getter methods
+-(id<RUAsynchronousImageFetchingDelegate>)ruAsynchronousImageFetchingDelegate
+{
+    return objc_getAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelegate);
+}
+
 -(CGFloat)ruFadeInDuration
 {
     return self.ruAsynchronousImageFetchingPrivateFadeInDuration.floatValue;
@@ -130,6 +138,13 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyFadeIn
 }
 
 #pragma mark - Setters
+-(void)setRuAsynchronousImageFetchingDelegate:(id<RUAsynchronousImageFetchingDelegate>)ruAsynchronousImageFetchingDelegate
+{
+    objc_setAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelegate,
+                             ruAsynchronousImageFetchingDelegate,
+                             OBJC_ASSOCIATION_ASSIGN);
+}
+
 -(void)setRuFadeInDuration:(CGFloat)ruFadeInDuration
 {
     [self setRuAsynchronousImageFetchingPrivateFadeInDuration:@(ruFadeInDuration)];
