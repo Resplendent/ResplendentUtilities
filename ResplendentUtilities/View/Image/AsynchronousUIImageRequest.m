@@ -27,8 +27,6 @@ static NSMutableDictionary* fetchedImages;
     if (self == [AsynchronousUIImageRequest class])
     {
         fetchedImages = [NSMutableDictionary dictionary];
-//        kAsynchronousUIImageRequestQueueNSURLRequest = dispatch_queue_create("com.respledentUtilities.asynchronousUIImageRequest.nsurlrequests", 0);
-        //        kAsynchronousUIImageRequestQueueFinishedRequest = dispatch_queue_create("com.respledentUtilities.asynchronousUIImageRequest.finishedrequest", 0);
     }
 }
 
@@ -100,7 +98,7 @@ static NSMutableDictionary* fetchedImages;
     {
         _block = block;
         _connection = [[NSURLConnection alloc]
-                       initWithRequest:[NSURLRequest requestWithURL:_url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0]
+                       initWithRequest:[NSURLRequest requestWithURL:_url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10.0]
                        delegate:self
                        startImmediately:NO];
         [_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];

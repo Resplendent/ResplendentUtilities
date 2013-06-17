@@ -7,6 +7,7 @@
 //
 
 #import "GridView.h"
+#import "UIView+Utility.h"
 #import "SVPullToRefresh.h"
 #import "RUConstants.h"
 
@@ -77,6 +78,11 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 -(void)layoutScrollViewComponents
 {
     [_scrollView setFrame:self.bounds];
+
+    if (_topSpinner)
+    {
+        [_topSpinner setFrame:self.topSpinnerFrame];
+    }
     
     [self updateTileWidth];
     [self updateScrollViewContentSize];
@@ -95,6 +101,53 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 }
 
 #pragma mark - Setter/Getter methods
+-(CGRect)scrollViewFrame
+{
+    return self.bounds;
+}
+
+-(CGFloat)topSpinnerUpperPadding
+{
+    return self.contentInsets.top;
+}
+
+-(CGRect)topSpinnerFrame
+{
+    CGRect scrollViewFrame = self.scrollViewFrame;
+    CGSize size = [_topSpinner sizeThatFits:scrollViewFrame.size];
+    return (CGRect){CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(size.width, CGRectGetWidth(scrollViewFrame)),self.topSpinnerUpperPadding,size};
+}
+
+-(void)setTopSpinnerVisibility:(BOOL)topSpinnerVisibility
+{
+    if (self.topSpinnerVisibility == topSpinnerVisibility)
+        return;
+
+    if (topSpinnerVisibility)
+    {
+        if (!_topSpinner)
+        {
+            _topSpinner = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [_topSpinner setFrame:self.topSpinnerFrame];
+            [_topSpinner startAnimating];
+            [self.scrollView addSubview:_topSpinner];
+        }
+    }
+    else
+    {
+        if (_topSpinner)
+        {
+            [_topSpinner removeFromSuperview];
+            _topSpinner = nil;
+        }
+    }
+}
+
+-(BOOL)topSpinnerVisibility
+{
+    return _topSpinner != nil;
+}
+
 -(CGSize)scrollViewContentSize
 {
     CGFloat contentHeight = MAX(_numberOfRows * _cellWidth + (_numberOfRows - 1) * _modifiedSpaceBetweenCells + _contentInsets.top + _contentInsets.bottom, CGRectGetHeight(_scrollView.frame) + 1);
@@ -273,13 +326,13 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     else
     {
         UIView* tile = [_dataSource gridView:self newTileForIndex:index];
-        
+
         [_cellsDictionary setObject:tile forKey:indexStringForKey(index)];
-        //        [tile setUserInteractionEnabled:NO];
-        
+
         [_tileContentView addSubview:tile];
-        [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
-        [self layoutTile:tile tileIndex:index onScreen:YES animated:YES withDelay:0 completion:nil];
+        [self layoutTile:tile tileIndex:index onScreen:YES animated:NO withDelay:0 completion:nil];
+//        [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
+//        [self layoutTile:tile tileIndex:index onScreen:YES animated:YES withDelay:0 completion:nil];
         
         return YES;
     }
