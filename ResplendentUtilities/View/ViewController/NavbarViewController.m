@@ -48,7 +48,7 @@ static NSTimeInterval popPushAnimationDuration;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
+
     [self setNavbar:[self.navbarClass new]];
     [self.view addSubview:self.navbar];
 }
@@ -98,6 +98,15 @@ static NSTimeInterval popPushAnimationDuration;
 }
 
 #pragma mark - Public methods
+-(void)setDefaultLeftToRightTransitionProperties
+{
+    [self setPushTransitionStyle:NavbarViewControllerTransitionToStyleToLeft];
+    [self setPushChildTransitionStyle:NavbarViewControllerTransitionFromStyleFromRight];
+    
+    [self setPopTransitionStyle:NavbarViewControllerTransitionToStyleToRight];
+    [self setPopParentTransitionStyle:NavbarViewControllerTransitionFromStyleFromLeft];
+}
+
 -(void)popChildrenViewControllers:(BOOL)animated completion:(void (^)())completion
 {
     [self.childNBViewController popViewControllerAnimated:animated completion:completion];

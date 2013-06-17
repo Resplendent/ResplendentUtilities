@@ -44,6 +44,8 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 
 //-(void)setTransitionStyleIncludeChildren:(NavbarViewControllerTransitionFromStyle)transitionStyle;
 
+-(void)setDefaultLeftToRightTransitionProperties;
+
 -(void)popChildrenViewControllers:(BOOL)animated completion:(void (^)())completion;
 
 -(void)pushViewController:(NavbarViewController*)navbarViewController animated:(BOOL)animated completion:(void (^)())completion;
