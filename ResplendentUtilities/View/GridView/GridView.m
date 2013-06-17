@@ -63,7 +63,8 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
         _scrollView = [UIScrollView new];
         [_scrollView setBackgroundColor:[UIColor clearColor]];
         [_scrollView setDelegate:self];
-        [_scrollView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedScrollView:)]];
+        _scrollViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedScrollView:)];
+        [_scrollView addGestureRecognizer:_scrollViewTap];
         [self addSubview:_scrollView];
         
         _tileContentView = [UIView new];
