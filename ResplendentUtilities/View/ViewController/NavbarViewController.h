@@ -9,16 +9,17 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    NavbarViewControllerChildTransitionStyleNone,
-    NavbarViewControllerChildTransitionStyleFromRight,
-    NavbarViewControllerChildTransitionStyleFromLeft,
-}NavbarViewControllerChildTransitionStyle;
+    NavbarViewControllerTransitionFromStyleNone,
+    NavbarViewControllerTransitionFromStyleFromRight,
+    NavbarViewControllerTransitionFromStyleFromLeft,
+}NavbarViewControllerTransitionFromStyle;
 
 typedef enum {
-    NavbarViewControllerParentTransitionStyleNone,
-    NavbarViewControllerParentTransitionStyleToRight,
-    NavbarViewControllerParentTransitionStyleToLeft
-}NavbarViewControllerParentTransitionStyle;
+    NavbarViewControllerTransitionToStyleNone,
+    NavbarViewControllerTransitionToStyleToRight,
+    NavbarViewControllerTransitionToStyleToLeft,
+    NavbarViewControllerTransitionToStyleToBottom
+}NavbarViewControllerTransitionToStyle;
 
 extern NSString* const kNavbarViewControllerNotificationCenterDidPop;
 extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
@@ -33,12 +34,15 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 @property (nonatomic, assign) NavbarViewController* parentNBViewController;
 @property (nonatomic, strong) NavbarViewController* childNBViewController;
 
-@property (nonatomic, assign) NavbarViewControllerChildTransitionStyle childTransitionStyle;
-@property (nonatomic, assign) NavbarViewControllerParentTransitionStyle parentTransitionStyle;
+//User by parent on push, child on pop
+@property (nonatomic, assign) NavbarViewControllerTransitionFromStyle pushChildTransitionStyle;
+@property (nonatomic, assign) NavbarViewControllerTransitionToStyle pushTransitionStyle;
+@property (nonatomic, assign) NavbarViewControllerTransitionFromStyle popParentTransitionStyle;
+@property (nonatomic, assign) NavbarViewControllerTransitionToStyle popTransitionStyle;
 
 @property (nonatomic, readonly) Class navbarClass;
 
-//-(void)setTransitionStyleIncludeChildren:(NavbarViewControllerChildTransitionStyle)transitionStyle;
+//-(void)setTransitionStyleIncludeChildren:(NavbarViewControllerTransitionFromStyle)transitionStyle;
 
 -(void)popChildrenViewControllers:(BOOL)animated completion:(void (^)())completion;
 
@@ -51,11 +55,11 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 -(void)navbarViewWillDisappear:(BOOL)animated;
 -(void)navbarViewDidDisappear:(BOOL)animated;
 
--(void)navbarChildWillPerformPopAnimationToXCoord:(CGFloat)startParentXCoord;
--(void)navbarChildIsPerformingAnimationToXCoord:(CGFloat)animateToParentXCoord;
+-(void)navbarChildWillPerformPopAnimationToOrigin:(CGPoint)startParentOrigin;
+-(void)navbarChildIsPerformingAnimationToOrigin:(CGPoint)animateToParentOrigin;
 
--(void)performPushTransitionAnimationsWithChildXCoord:(CGFloat)animateToChildXCoord parentXCoord:(CGFloat)animateToParentXCoord;
--(void)performPopTransitionAnimationsWithChildXCoord:(CGFloat)animateToChildXCoord parentXCoord:(CGFloat)animateToParentXCoord;
+-(void)performPushTransitionAnimationsWithChildOrigin:(CGPoint)animateToChildOrigin parentOrigin:(CGPoint)animateToParentOrigin;
+-(void)performPopTransitionAnimationsWithChildOrigin:(CGPoint)animateToChildOrigin parentOrigin:(CGPoint)animateToParentOrigin;
 
 +(void)setPushPopTransitionDuration:(NSTimeInterval)duration;
 

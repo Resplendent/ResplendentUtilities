@@ -94,7 +94,7 @@ static NSMutableDictionary* fetchedImages;
     {
         _block = block;
         _connection = [[NSURLConnection alloc]
-                       initWithRequest:[NSURLRequest requestWithURL:_url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10.0]
+                       initWithRequest:[NSURLRequest requestWithURL:_url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10.0]
                        delegate:self
                        startImmediately:NO];
         [_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];

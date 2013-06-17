@@ -29,11 +29,14 @@ typedef enum {
 
     CGFloat _lastScrollOffset;
 //    dispatch_queue_t _layoutTileQueue;
+
+    UIActivityIndicatorView* _topSpinner;
 }
 
 @property (nonatomic, assign) GridViewTileAnimationStyle tileAnimationStyle;
 
 @property (nonatomic, readonly) UIScrollView* scrollView;
+@property (nonatomic, readonly) CGRect scrollViewFrame;
 @property (nonatomic, readonly) UIView* tileContentView;
 @property (nonatomic, readonly) CGFloat cellWidth;
 @property (nonatomic, readonly) CGSize scrollViewContentSize;
@@ -47,6 +50,10 @@ typedef enum {
 
 @property (nonatomic, assign) CGFloat cellSpacing;
 @property (nonatomic, assign) NSUInteger numberOfColumns;
+
+@property (nonatomic, assign) BOOL topSpinnerVisibility;
+@property (nonatomic, readonly) CGRect topSpinnerFrame;
+@property (nonatomic, readonly) CGFloat topSpinnerUpperPadding;
 
 @property (nonatomic, assign) BOOL pullToRefresh;
 @property (nonatomic, assign) BOOL pullToLoadMore;

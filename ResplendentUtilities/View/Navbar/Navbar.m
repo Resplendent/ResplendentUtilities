@@ -10,8 +10,6 @@
 #import "UIView+Utility.h"
 #import "RUConstants.h"
 
-#define kNavbarDefaultButtonHorizontalEdgeInset 0.0f
-
 @interface Navbar ()
 
 @property (nonatomic, readonly) CGFloat animatableContentViewHeight;
@@ -35,8 +33,6 @@
 {
     if (self = [super initWithFrame:frame])
     {
-        _buttonHorizontalEdgeInset = kNavbarDefaultButtonHorizontalEdgeInset;
-
         _animatableContentView = [UIView new];
         [self addSubview:_animatableContentView];
 
@@ -62,14 +58,14 @@
     {
         if (_leftButton)
         {
-            CGFloat leftButtonPadding = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(CGRectGetHeight(_leftButton.frame), CGRectGetHeight(self.animatableContentView.frame));
-            [_leftButton setFrame:CGRectSetXY(leftButtonPadding, leftButtonPadding, _leftButton.frame)];
+            CGSize size = _leftButton.frame.size;
+            [_leftButton setFrame:(CGRect){self.leftButtonLeftPadding,CGRectGetVerticallyAlignedYCoordForHeightOnHeight(size.height, CGRectGetHeight(self.frame)),size}];
         }
-        
+
         if (_rightButton)
         {
-            CGFloat leftButtonPadding = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(CGRectGetHeight(_rightButton.frame), CGRectGetHeight(self.animatableContentView.frame));
-            [_rightButton setFrame:CGRectSetXY(leftButtonPadding, leftButtonPadding, _rightButton.frame)];
+            CGSize size = _rightButton.frame.size;
+            [_rightButton setFrame:(CGRect){ceil(CGRectGetWidth(self.frame) - size.width - self.rightButtonRightPadding),CGRectGetVerticallyAlignedYCoordForHeightOnHeight(size.height, CGRectGetHeight(self.frame)),size}];
         }
     }
 

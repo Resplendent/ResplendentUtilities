@@ -15,14 +15,17 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyLoadUs
 NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyClearImageOnFetch = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyClearImageOnFetch";
 NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinner = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinner";
 NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinnerStyleNumber = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinnerStyleNumber";
+NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyFadeInDuration = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyFadeInDuration";
+NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelegate = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelegate";
 
 @interface UIImageView (RUAsynchronousImageFetchingPrivate)
 
-@property (nonatomic, strong) AsynchronousUIImageRequest* ruAsynchronousImageFetchingPrivateImageRequest;
-@property (nonatomic, strong) UIActivityIndicatorView* ruAsynchronousImageFetchingPrivateSpinner;
-@property (nonatomic, strong) NSNumber* ruAsynchronousImageFetchingPrivateSpinnerStyleNumber;
-@property (nonatomic, assign) NSNumber* ruAsynchronousImageFetchingPrivateLoadsUsingSpinnerNumber;
-@property (nonatomic, assign) NSNumber* ruAsynchronousImageFetchingPrivateClearImageOnFetchNumber;
+@property (nonatomic) AsynchronousUIImageRequest* ruAsynchronousImageFetchingPrivateImageRequest;
+@property (nonatomic) UIActivityIndicatorView* ruAsynchronousImageFetchingPrivateSpinner;
+@property (nonatomic) NSNumber* ruAsynchronousImageFetchingPrivateSpinnerStyleNumber;
+@property (nonatomic) NSNumber* ruAsynchronousImageFetchingPrivateLoadsUsingSpinnerNumber;
+@property (nonatomic) NSNumber* ruAsynchronousImageFetchingPrivateClearImageOnFetchNumber;
+@property (nonatomic) NSNumber* ruAsynchronousImageFetchingPrivateFadeInDuration;
 
 -(void)ruAsynchronousImageFetchingPrivateRemoveSpinner;
 
@@ -71,6 +74,10 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
 
         [self.ruAsynchronousImageFetchingPrivateSpinner startAnimating];
     }
+    else
+    {
+        [self ruAsynchronousImageFetchingPrivateRemoveSpinner];
+    }
 
     if (self.ruClearImageOnFetch)
     {
@@ -83,10 +90,30 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
         [self ruAsynchronousImageFetchingPrivateRemoveSpinner];
 
         [self setImage:image];
+
+        if (self.ruFadeInDuration)
+        {
+            [self setAlpha:0.0f];
+            [UIView animateWithDuration:self.ruFadeInDuration animations:^{
+                [self setAlpha:1.0f];
+            }];
+        }
+
+        [self.ruAsynchronousImageFetchingDelegate ruAsynchronousFetchingImageView:self finishedFetchingImage:image];
     }]];
 }
 
 #pragma mark - Getter methods
+-(id<RUAsynchronousImageFetchingDelegate>)ruAsynchronousImageFetchingDelegate
+{
+    return objc_getAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelegate);
+}
+
+-(CGFloat)ruFadeInDuration
+{
+    return self.ruAsynchronousImageFetchingPrivateFadeInDuration.floatValue;
+}
+
 -(BOOL)ruLoadsUsingSpinner
 {
     return self.ruAsynchronousImageFetchingPrivateLoadsUsingSpinnerNumber.boolValue;
@@ -110,7 +137,19 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
     return self.ruAsynchronousImageFetchingPrivateClearImageOnFetchNumber.boolValue;
 }
 
-#pragma mark - Setter methods
+#pragma mark - Setters
+-(void)setRuAsynchronousImageFetchingDelegate:(id<RUAsynchronousImageFetchingDelegate>)ruAsynchronousImageFetchingDelegate
+{
+    objc_setAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelegate,
+                             ruAsynchronousImageFetchingDelegate,
+                             OBJC_ASSOCIATION_ASSIGN);
+}
+
+-(void)setRuFadeInDuration:(CGFloat)ruFadeInDuration
+{
+    [self setRuAsynchronousImageFetchingPrivateFadeInDuration:@(ruFadeInDuration)];
+}
+
 -(void)setSpinnerStyle:(UIActivityIndicatorViewStyle)spinnerStyle
 {
     [self setRuAsynchronousImageFetchingPrivateSpinnerStyleNumber:@(spinnerStyle)];
@@ -143,6 +182,13 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
 }
 
 #pragma mark - Setters
+-(void)setRuAsynchronousImageFetchingPrivateFadeInDuration:(NSNumber *)ruAsynchronousImageFetchingPrivateFadeInDuration
+{
+    objc_setAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyFadeInDuration,
+                             ruAsynchronousImageFetchingPrivateFadeInDuration,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 -(void)setRuAsynchronousImageFetchingPrivateSpinnerStyleNumber:(NSNumber *)ruAsynchronousImageFetchingPrivateSpinnerStyleNumber
 {
     objc_setAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinnerStyleNumber,
@@ -179,11 +225,15 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
 }
 
 #pragma mark - Getter methods
+-(NSNumber *)ruAsynchronousImageFetchingPrivateFadeInDuration
+{
+    return objc_getAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyFadeInDuration);
+}
+
 -(NSNumber *)ruAsynchronousImageFetchingPrivateSpinnerStyleNumber
 {
     return objc_getAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinnerStyleNumber);
 }
-
 
 -(NSNumber *)ruAsynchronousImageFetchingPrivateClearImageOnFetchNumber
 {

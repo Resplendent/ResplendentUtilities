@@ -18,14 +18,15 @@
 
 @property (nonatomic, readonly) CGRect titleLabelFrame;
 
-@property (nonatomic, assign) CGFloat buttonHorizontalEdgeInset;
-
 @property (nonatomic, retain) NIAttributedLabel* titleLabel;
 @property (nonatomic, assign) CGFloat titleLabelTopEdgeInset;
 
 @property (nonatomic, strong) UIButton* leftButton;
 @property (nonatomic, strong) UIButton* rightButton;
-@property (nonatomic, assign) BOOL      autoAdjustButtons;
+
+@property (nonatomic, assign) CGFloat leftButtonLeftPadding;
+@property (nonatomic, assign) CGFloat rightButtonRightPadding;
+@property (nonatomic, assign) BOOL autoAdjustButtons;
 
 -(id)initWithFrame:(CGRect)frame autoAdjustButtons:(BOOL)autoAdjustButtons;
 
