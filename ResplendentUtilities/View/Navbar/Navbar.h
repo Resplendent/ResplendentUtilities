@@ -24,8 +24,8 @@
 @property (nonatomic, strong) UIButton* leftButton;
 @property (nonatomic, strong) UIButton* rightButton;
 
-@property (nonatomic, assign) CGFloat leftButtonLeftPadding;
-@property (nonatomic, assign) CGFloat rightButtonRightPadding;
+@property (nonatomic, strong) NSNumber* leftButtonLeftPadding;
+@property (nonatomic, strong) NSNumber* rightButtonRightPadding;
 @property (nonatomic, assign) BOOL autoAdjustButtons;
 
 -(id)initWithFrame:(CGRect)frame autoAdjustButtons:(BOOL)autoAdjustButtons;

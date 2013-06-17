@@ -59,13 +59,15 @@
         if (_leftButton)
         {
             CGSize size = _leftButton.frame.size;
-            [_leftButton setFrame:(CGRect){self.leftButtonLeftPadding,CGRectGetVerticallyAlignedYCoordForHeightOnHeight(size.height, CGRectGetHeight(self.frame)),size}];
+            CGFloat yCoord = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(size.height, CGRectGetHeight(self.frame));
+            [_leftButton setFrame:(CGRect){(self.leftButtonLeftPadding ? self.leftButtonLeftPadding.floatValue : yCoord),yCoord,size}];
         }
 
         if (_rightButton)
         {
             CGSize size = _rightButton.frame.size;
-            [_rightButton setFrame:(CGRect){ceil(CGRectGetWidth(self.frame) - size.width - self.rightButtonRightPadding),CGRectGetVerticallyAlignedYCoordForHeightOnHeight(size.height, CGRectGetHeight(self.frame)),size}];
+            CGFloat yCoord = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(size.height, CGRectGetHeight(self.frame));
+            [_rightButton setFrame:(CGRect){ceil(CGRectGetWidth(self.frame) - size.width - (self.rightButtonRightPadding ? self.rightButtonRightPadding.floatValue : yCoord)),yCoord,size}];
         }
     }
 
