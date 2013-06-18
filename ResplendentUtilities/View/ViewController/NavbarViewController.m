@@ -326,7 +326,7 @@ static NSTimeInterval popPushAnimationDuration;
             [self performNavbarPopTransitionCompletion];
 
             [_parentNBViewController navbarViewDidAppear:YES];
-            [_parentNBViewController navbarViewDidDisappear:YES];
+            [self navbarViewDidDisappear:YES];
 
             [self postPopLogicCompletion:completion];
         }];
@@ -334,7 +334,7 @@ static NSTimeInterval popPushAnimationDuration;
     else
     {
         [_parentNBViewController navbarViewDidAppear:NO];
-        [_parentNBViewController navbarViewDidDisappear:NO];
+        [self navbarViewDidDisappear:NO];
         [self postPopLogicCompletion:completion];
     }
 }
