@@ -7,12 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#include "RUAsynchronousUIImageRequestProtocols.h"
 
-@class AsynchronousUIImageRequest;
-
-@interface AsynchronousImageView : UIImageView
+@interface AsynchronousImageView : UIImageView <RUAsynchronousUIImageRequestDelegate>
 {
-    AsynchronousUIImageRequest* _imageRequest;
+    RUAsynchronousUIImageRequest* _imageRequest;
     UIActivityIndicatorView*    _spinner;
 }
 

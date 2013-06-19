@@ -7,25 +7,35 @@
 //
 
 #import "UIButton+RUAsynchronousImageFetching.h"
-
-#import "AsynchronousUIImageRequest.h"
+#import "RUConstants.h"
+#import "RUDeallocHook.h"
+#import "RUAsynchronousUIImageRequest.h"
 
 #import <objc/runtime.h>
 
 NSString* const kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest = @"kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest";
+NSString* const kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyDeallocHook = @"kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyDeallocHook";
 NSString* const kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner = @"kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner";
 NSString* const kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeySpinner = @"kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeySpinner";
+NSString* const kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyDestinationNumber = @"kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyDestinationNumber";
+NSString* const kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyStateNumber = @"kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyStateNumber";
 
 typedef enum{
     RUAsynchronousImageFetchingImageDestinationNormal = 0,
     RUAsynchronousImageFetchingImageDestinationBackground
 }RUAsynchronousImageFetchingImageDestination;
 
-@interface UIButton (RUAsynchronousImageFetchingPrivate)
+@interface UIButton (RUAsynchronousImageFetchingPrivate) <RUAsynchronousUIImageRequestDelegate>
 
-@property (nonatomic, strong) AsynchronousUIImageRequest* imageRequest;
+@property (nonatomic, readonly) RUAsynchronousImageFetchingImageDestination ruAsynchronousImageFetchingPrivateDestination;
+@property (nonatomic, readonly) UIControlState ruAsynchronousImageFetchingPrivateState;
+
+@property (nonatomic) RUDeallocHook* ruAsynchronousImageFetchingPrivateDeallocHook;
+@property (nonatomic, strong) RUAsynchronousUIImageRequest* ruAsynchronousImageFetchingPrivateImageRequest;
 @property (nonatomic, strong) UIActivityIndicatorView* spinner;
 @property (nonatomic, assign) NSNumber* loadsUsingSpinnerNumber;
+@property (nonatomic, assign) NSNumber* ruAsynchronousImageFetchingPrivateDestinationNumber;
+@property (nonatomic, assign) NSNumber* ruAsynchronousImageFetchingPrivateStateNumber;
 
 //Requires a completion block. Performs all the networking functionality. The completion block is expected to set the image
 -(void)ruFetchImageForButtonAsynchronouslyAtUrl:(NSURL *)url forState:(UIControlState)state destination:(RUAsynchronousImageFetchingImageDestination)destination;
@@ -38,10 +48,12 @@ typedef enum{
 
 -(void)ruCancelAsynchronousImageFetching
 {
-    if (self.imageRequest)
+    [self setRuAsynchronousImageFetchingPrivateDeallocHook:nil];
+
+    if (self.ruAsynchronousImageFetchingPrivateImageRequest)
     {
-        [self.imageRequest cancelFetch];
-        [self setImageRequest:nil];
+        [self.ruAsynchronousImageFetchingPrivateImageRequest cancelFetch];
+        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
     }
 }
 
@@ -72,6 +84,20 @@ typedef enum{
 @implementation UIButton (RUAsynchronousImageFetchingPrivate)
 
 #pragma mark - Setter methods
+-(void)setRuAsynchronousImageFetchingPrivateStateNumber:(NSNumber *)ruAsynchronousImageFetchingPrivateStateNumber
+{
+    objc_setAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyStateNumber,
+                             ruAsynchronousImageFetchingPrivateStateNumber,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(void)setRuAsynchronousImageFetchingPrivateDestinationNumber:(NSNumber *)ruAsynchronousImageFetchingPrivateDestinationNumber
+{
+    objc_setAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyDestinationNumber,
+                             ruAsynchronousImageFetchingPrivateDestinationNumber,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 -(void)setLoadsUsingSpinnerNumber:(NSNumber *)loadsUsingSpinnerNumber
 {
     objc_setAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner,
@@ -79,10 +105,17 @@ typedef enum{
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
--(void)setImageRequest:(AsynchronousUIImageRequest *)imageRequest
+-(void)setRuAsynchronousImageFetchingPrivateDeallocHook:(RUDeallocHook *)ruAsynchronousImageFetchingPrivateDeallocHook
+{
+    objc_setAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyDeallocHook,
+                             ruAsynchronousImageFetchingPrivateDeallocHook,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(void)setRuAsynchronousImageFetchingPrivateImageRequest:(RUAsynchronousUIImageRequest *)ruAsynchronousImageFetchingPrivateImageRequest
 {
     objc_setAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest,
-                             imageRequest,
+                             ruAsynchronousImageFetchingPrivateImageRequest,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
@@ -94,12 +127,37 @@ typedef enum{
 }
 
 #pragma mark - Getter methods
+-(RUAsynchronousImageFetchingImageDestination)ruAsynchronousImageFetchingPrivateDestination
+{
+    return self.ruAsynchronousImageFetchingPrivateDestinationNumber.integerValue;
+}
+
+-(UIControlState)ruAsynchronousImageFetchingPrivateState
+{
+    return self.ruAsynchronousImageFetchingPrivateStateNumber.integerValue;
+}
+
+-(NSNumber *)ruAsynchronousImageFetchingPrivateStateNumber
+{
+    return objc_getAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyStateNumber);
+}
+
+-(NSNumber *)ruAsynchronousImageFetchingPrivateDestinationNumber
+{
+    return objc_getAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyDestinationNumber);
+}
+
 -(NSNumber *)loadsUsingSpinnerNumber
 {
     return objc_getAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner);
 }
 
--(AsynchronousUIImageRequest *)imageRequest
+-(RUDeallocHook *)ruAsynchronousImageFetchingPrivateDeallocHook
+{
+    return objc_getAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyDeallocHook);
+}
+
+-(RUAsynchronousUIImageRequest *)ruAsynchronousImageFetchingPrivateImageRequest
 {
     return objc_getAssociatedObject(self, &kUIButtonRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest);
 }
@@ -128,25 +186,13 @@ typedef enum{
         [self.spinner startAnimating];
     }
 
-    [self setImageRequest:[[AsynchronousUIImageRequest alloc] initAndFetchWithURL:url cacheName:url.absoluteString block:^(UIImage *image, NSError *error) {
-        [self setImageRequest:nil];
+    [self setRuAsynchronousImageFetchingPrivateStateNumber:@(state)];
+    [self setRuAsynchronousImageFetchingPrivateDestinationNumber:@(destination)];
+    [self setRuAsynchronousImageFetchingPrivateImageRequest:[[RUAsynchronousUIImageRequest alloc]initAndFetchWithURL:url delegate:self]];
 
-        [self removeSpinner];
-        
-        switch (destination)
-        {
-            case RUAsynchronousImageFetchingImageDestinationNormal:
-                [self setImage:image forState:state];
-                break;
-                
-            case RUAsynchronousImageFetchingImageDestinationBackground:
-                [self setBackgroundImage:image forState:state];
-                break;
-                
-            default:
-                [NSException raise:NSInvalidArgumentException format:@"unhandled destination %i",destination];
-                break;
-        }
+    __weak typeof(self.ruAsynchronousImageFetchingPrivateImageRequest) imageRequestPointer = self.ruAsynchronousImageFetchingPrivateImageRequest;
+    [self setRuAsynchronousImageFetchingPrivateDeallocHook:[RUDeallocHook deallocHookWithBlock:^{
+        [imageRequestPointer cancelFetch];
     }]];
 }
 
@@ -160,17 +206,51 @@ typedef enum{
     }
 }
 
+#pragma mark - RUAsynchronousUIImageRequestDelegate methods
+-(void)asynchronousUIImageRequest:(RUAsynchronousUIImageRequest *)asynchronousUIImageRequest didFinishLoadingWithImage:(UIImage *)image
+{
+    if (asynchronousUIImageRequest == self.ruAsynchronousImageFetchingPrivateImageRequest)
+    {
+        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
+        [self removeSpinner];
+        
+        switch (self.ruAsynchronousImageFetchingPrivateDestination)
+        {
+            case RUAsynchronousImageFetchingImageDestinationNormal:
+                [self setImage:image forState:self.ruAsynchronousImageFetchingPrivateState];
+                break;
+                
+            case RUAsynchronousImageFetchingImageDestinationBackground:
+                [self setBackgroundImage:image forState:self.ruAsynchronousImageFetchingPrivateState];
+                break;
+                
+            default:
+                [NSException raise:NSInvalidArgumentException format:@"unhandled destination %i",self.ruAsynchronousImageFetchingPrivateDestination];
+                break;
+        }
+        
+        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
+        [self setRuAsynchronousImageFetchingPrivateDeallocHook:nil];
+    }
+    else
+    {
+        RUDLog(@"ignoring request %@",asynchronousUIImageRequest);
+    }
+    
+}
+
+-(void)asynchronousUIImageRequest:(RUAsynchronousUIImageRequest *)asynchronousUIImageRequest didFailLoadingWithError:(NSError *)error
+{
+    RUDLog(@"%@",error);
+    if (asynchronousUIImageRequest == self.ruAsynchronousImageFetchingPrivateImageRequest)
+    {
+        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
+        [self setRuAsynchronousImageFetchingPrivateDeallocHook:nil];
+    }
+    else
+    {
+        RUDLog(@"ignoring request %@",asynchronousUIImageRequest);
+    }
+}
+
 @end
-
-//@implementation UIButton
-//
-//-(void)dealloc
-//{
-//    [self ruCancelAsynchronousImageFetching];
-//    [self setLoadsUsingSpinnerNumber:nil];
-//    [self removeSpinner];
-//}
-//
-//@end
-
-

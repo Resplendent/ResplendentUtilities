@@ -8,40 +8,40 @@
 
 #import <UIKit/UIKit.h>
 
-#define kAsynchronousUIImageRequestEnableShowLastImage 0
+//@TODO remove
 
-typedef void (^imageErrorBlock)(UIImage* image, NSError* error);
+//#define kAsynchronousUIImageRequestEnableShowLastImage 0
+//
+//typedef void (^imageErrorBlock)(UIImage* image, NSError* error);
+//
+//@interface AsynchronousUIImageRequest : NSObject <NSURLConnectionDataDelegate>
+//{
+//    NSURLConnection*    _connection;
+//    NSMutableData*      _data;
+//    NSString*           _cacheName;
+//    imageErrorBlock     _block;
+//}
 
-@interface AsynchronousUIImageRequest : NSObject <NSURLConnectionDataDelegate>
-{
-    NSURLConnection*    _connection;
-    NSMutableData*      _data;
-    NSString*           _cacheName;
-    imageErrorBlock     _block;
-    
-    //#if __AsynchronousUIImageRequest_DEBUG
-    //    NSString* __urlStringDubug;
-}
+//@property (nonatomic, readonly) NSURL* url;
+//@property (nonatomic, readonly) BOOL canceled;
+//
+//-(id)initAndFetchWithURLString:(NSString*)urlString block:(imageErrorBlock)block;
+//-(id)initAndFetchWithURLString:(NSString*)urlString cacheName:(NSString*)cacheName block:(imageErrorBlock)block;
+//
+//-(id)initAndFetchWithURL:(NSURL*)url block:(imageErrorBlock)block;
+//-(id)initAndFetchWithURL:(NSURL*)url cacheName:(NSString*)cacheName block:(imageErrorBlock)block;
+//
+//-(void)cancelFetch;
+//
+//+(void)removeCacheImageByCacheName:(NSString*)cacheName;
+//+(void)clearCache;
+//
+////DEBUGGING
+//#if kAsynchronousUIImageRequestEnableShowLastImage
+//+(void)showLastImageOnView:(UIView*)view atFrame:(CGRect)showFrame withContentMode:(UIViewContentMode)contentMode;
+//+(void)hideLastImage;
+//#endif
+//
+//+(UIImage*)cachedImageForCacheName:(NSString*)cacheName;
 
-@property (nonatomic, readonly) NSURL* url;
-
--(id)initAndFetchWithURLString:(NSString*)urlString block:(imageErrorBlock)block;
--(id)initAndFetchWithURLString:(NSString*)urlString cacheName:(NSString*)cacheName block:(imageErrorBlock)block;
-
--(id)initAndFetchWithURL:(NSURL*)url block:(imageErrorBlock)block;
--(id)initAndFetchWithURL:(NSURL*)url cacheName:(NSString*)cacheName block:(imageErrorBlock)block;
-
--(void)cancelFetch;
-
-+(void)removeCacheImageByCacheName:(NSString*)cacheName;
-+(void)clearCache;
-
-//DEBUGGING
-#if kAsynchronousUIImageRequestEnableShowLastImage
-+(void)showLastImageOnView:(UIView*)view atFrame:(CGRect)showFrame withContentMode:(UIViewContentMode)contentMode;
-+(void)hideLastImage;
-#endif
-
-+(UIImage*)cachedImageForCacheName:(NSString*)cacheName;
-
-@end
+//@end
