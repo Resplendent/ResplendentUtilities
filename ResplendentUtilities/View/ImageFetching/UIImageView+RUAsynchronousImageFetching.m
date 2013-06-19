@@ -195,6 +195,8 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
     RUDLog(@"%@",error);
     if (asynchronousUIImageRequest == self.ruAsynchronousImageFetchingPrivateImageRequest)
     {
+        [self ruAsynchronousImageFetchingPrivateRemoveSpinner];
+
         [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
         [self setRuAsynchronousImageFetchingPrivateDeallocHook:nil];
     }

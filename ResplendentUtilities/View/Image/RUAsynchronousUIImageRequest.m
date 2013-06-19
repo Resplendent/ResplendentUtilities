@@ -76,30 +76,32 @@ static NSMutableDictionary* fetchedImages;
 #pragma mark - Private methods
 -(void)fetchImageWithDelegate:(id<RUAsynchronousUIImageRequestDelegate>)delegate
 {
-    [self cancelFetch];
-    _canceled = NO;
-    _delegate = delegate;
-
-    UIImage* cachedImage = [RUAsynchronousUIImageRequest cachedImageForCacheName:_cacheName];
-    
-    if (cachedImage)
-    {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self cancelFetch];
+        _canceled = NO;
+        _delegate = delegate;
+        
+        UIImage* cachedImage = [RUAsynchronousUIImageRequest cachedImageForCacheName:_cacheName];
+        
+        if (cachedImage)
+        {
 #if kAsynchronousUIImageRequestEnableShowLastImage
-        if (showLastImageView)
-            [showLastImageView setImage:cachedImage];
+            if (showLastImageView)
+                [showLastImageView setImage:cachedImage];
 #endif
-        [self ruAsynchronousUIImageFinishedWithImage:cachedImage error:nil];
-    }
-    else
-    {
-//        _delegate = delegate;
-        _connection = [[NSURLConnection alloc]
-                       initWithRequest:[NSURLRequest requestWithURL:_url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10.0]
-                       delegate:self
-                       startImmediately:NO];
-        [_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-        [_connection start];
-    }
+            [self ruAsynchronousUIImageFinishedWithImage:cachedImage error:nil];
+        }
+        else
+        {
+            //        _delegate = delegate;
+            _connection = [[NSURLConnection alloc]
+                           initWithRequest:[NSURLRequest requestWithURL:_url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10.0]
+                           delegate:self
+                           startImmediately:NO];
+            [_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+            [_connection start];
+        }
+    });
 }
 
 #pragma mark - Public methods
