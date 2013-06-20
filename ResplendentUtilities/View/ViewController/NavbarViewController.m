@@ -16,6 +16,7 @@
 #define kNavbarViewControllerPushPopNavbarMovementScale 8.0f
 
 NSString* const kNavbarViewControllerNotificationCenterDidPop = @"kNavbarViewControllerNotificationCenterDidPop";
+NSString* const kNavbarViewControllerNotificationCenterWillPush = @"kNavbarViewControllerNotificationCenterWillPush";
 NSString* const kNavbarViewControllerNotificationCenterDidPush = @"kNavbarViewControllerNotificationCenterDidPush";
 
 static NSTimeInterval popPushAnimationDuration;
@@ -85,6 +86,26 @@ static NSTimeInterval popPushAnimationDuration;
     return CGRectMake(0, CGRectGetMaxY(self.navbar.frame), self.view.frame.size.width, self.view.frame.size.height - CGRectGetMaxY(self.navbar.frame));
 }
 
+#pragma mark - Getters
+-(BOOL)isNavbarViewControllerAChild:(NavbarViewController*)navbarViewController
+{
+    if (self.childNBViewController)
+    {
+        if (self.childNBViewController == navbarViewController)
+        {
+            return YES;
+        }
+        else
+        {
+            return [self.childNBViewController isNavbarViewControllerAChild:navbarViewController];
+        }
+    }
+    else
+    {
+        return NO;
+    }
+}
+
 #pragma mark - Navbar view lifecycle methods
 -(void)navbarViewWillAppear:(BOOL)animated{}
 -(void)navbarViewDidAppear:(BOOL)animated{}
@@ -140,6 +161,8 @@ static NSTimeInterval popPushAnimationDuration;
     [navbarViewController navbarViewWillAppear:animated];
 
     CGPoint animateToChildOrigin = CGPointZero;
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNavbarViewControllerNotificationCenterWillPush object:navbarViewController];
 
     if (animated)
     {
