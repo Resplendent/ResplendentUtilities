@@ -15,6 +15,7 @@
 
 #define kNavbarViewControllerPushPopNavbarMovementScale 8.0f
 
+NSString* const kNavbarViewControllerNotificationCenterWillPop = @"kNavbarViewControllerNotificationCenterWillPop";
 NSString* const kNavbarViewControllerNotificationCenterDidPop = @"kNavbarViewControllerNotificationCenterDidPop";
 NSString* const kNavbarViewControllerNotificationCenterWillPush = @"kNavbarViewControllerNotificationCenterWillPush";
 NSString* const kNavbarViewControllerNotificationCenterDidPush = @"kNavbarViewControllerNotificationCenterDidPush";
@@ -283,7 +284,11 @@ static NSTimeInterval popPushAnimationDuration;
 -(void)popViewControllerAnimated:(BOOL)animated completion:(void (^)())completion
 {
     if (!_parentNBViewController)
+    {
         [NSException raise:NSInternalInconsistencyException format:@"can't pop with a nil parent navbar viewcontroller"];
+    }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNavbarViewControllerNotificationCenterWillPop object:self];
 
     [_parentNBViewController navbarViewWillAppear:animated];
     [self navbarViewWillDisappear:animated];

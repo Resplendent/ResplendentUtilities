@@ -21,6 +21,7 @@ typedef enum {
     NavbarViewControllerTransitionToStyleToBottom
 }NavbarViewControllerTransitionToStyle;
 
+extern NSString* const kNavbarViewControllerNotificationCenterWillPop;
 extern NSString* const kNavbarViewControllerNotificationCenterDidPop;
 extern NSString* const kNavbarViewControllerNotificationCenterWillPush;
 extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
