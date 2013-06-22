@@ -31,6 +31,8 @@ typedef enum {
 //    dispatch_queue_t _layoutTileQueue;
 
     UIActivityIndicatorView* _topSpinner;
+
+    UITapGestureRecognizer* _scrollViewTap;
 }
 
 @property (nonatomic, assign) GridViewTileAnimationStyle tileAnimationStyle;

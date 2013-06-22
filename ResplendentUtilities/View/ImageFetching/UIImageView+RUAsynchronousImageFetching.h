@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "RUAsynchronousImageFetchingProtocols.h"
+#import "RUAsynchronousUIImageRequestProtocols.h"
 
-@interface UIImageView (RUAsynchronousImageFetching)
+@interface UIImageView (RUAsynchronousImageFetching) <RUAsynchronousUIImageRequestDelegate>
 
 @property (nonatomic) BOOL ruLoadsUsingSpinner;
 @property (nonatomic) BOOL ruClearImageOnFetch;

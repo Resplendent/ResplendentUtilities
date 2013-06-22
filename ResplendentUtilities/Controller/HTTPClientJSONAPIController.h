@@ -11,7 +11,7 @@
 
 #define kNSErrorMake(_text,_code) [NSError errorWithDomain:_text code:_code userInfo:nil]
 
-BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictionary* responseDict);
+//BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictionary* responseDict);
 
 @interface HTTPClientJSONAPIController : NSObject
 
@@ -43,6 +43,8 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
 //Put
 -(void)putNetworkRequestWithUrl:(NSString*)url params:(NSDictionary*)params noSuccessError:(NSError*)noSuccessError completionBlock:(void(^)(NSDictionary* responseDict))completionBlock failBlock:(void(^)(AFHTTPRequestOperation *operation, NSError* error))failBlock;
 
--(void)postSuccessLogicWithReponseObject:(id)responseObject noSuccessError:(NSError*)noSuccessError completionBlock:(void(^)(NSDictionary* responseDict))completionBlock failBlock:(void(^)(AFHTTPRequestOperation *operation, NSError* error))failBlock;
+//Post Success Logic
+-(NSError*)errorForResponseJsonParseObject:(id)responseJSONParsedObject fromOperation:(AFHTTPRequestOperation*)operation;
+-(void)postSuccessLogicWithReponseObject:(id)responseObject fromOperation:(AFHTTPRequestOperation*)operation completionBlock:(void(^)(id responseObject))completionBlock failBlock:(void(^)(AFHTTPRequestOperation* operation, NSError* error))failBlock;
 
 @end

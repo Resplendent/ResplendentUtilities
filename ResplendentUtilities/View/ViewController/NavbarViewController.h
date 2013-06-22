@@ -21,7 +21,9 @@ typedef enum {
     NavbarViewControllerTransitionToStyleToBottom
 }NavbarViewControllerTransitionToStyle;
 
+extern NSString* const kNavbarViewControllerNotificationCenterWillPop;
 extern NSString* const kNavbarViewControllerNotificationCenterDidPop;
+extern NSString* const kNavbarViewControllerNotificationCenterWillPush;
 extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 
 @class Navbar;
@@ -43,6 +45,7 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 @property (nonatomic, readonly) Class navbarClass;
 
 //-(void)setTransitionStyleIncludeChildren:(NavbarViewControllerTransitionFromStyle)transitionStyle;
+-(BOOL)isNavbarViewControllerAChild:(NavbarViewController*)navbarViewController;
 
 -(void)setDefaultLeftToRightTransitionProperties;
 

@@ -25,7 +25,7 @@
 -(void)postSecureNetworkRequestWithUrl:(NSString*)url params:(NSDictionary*)params noSuccessError:(NSError*)noSuccessError completionBlock:(void(^)(NSDictionary* responseDict))completionBlock failBlock:(void(^)(AFHTTPRequestOperation *operation, NSError* error))failBlock
 {
     [_secureNetwork postPath:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self postSuccessLogicWithReponseObject:responseObject noSuccessError:noSuccessError completionBlock:completionBlock failBlock:failBlock];
+        [self postSuccessLogicWithReponseObject:responseObject fromOperation:operation completionBlock:completionBlock failBlock:failBlock];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failBlock)
             failBlock(operation,error);
@@ -77,7 +77,7 @@
     }];
     
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self postSuccessLogicWithReponseObject:responseObject noSuccessError:noSuccessError completionBlock:completionBlock failBlock:failBlock];
+        [self postSuccessLogicWithReponseObject:responseObject fromOperation:operation completionBlock:completionBlock failBlock:failBlock];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failBlock)
             failBlock(operation,error);
@@ -89,7 +89,7 @@
 -(void)putSecureNetworkRequestWithUrl:(NSString*)url params:(NSDictionary*)params noSuccessError:(NSError*)noSuccessError completionBlock:(void(^)(NSDictionary* responseDict))completionBlock failBlock:(void(^)(AFHTTPRequestOperation *operation, NSError* error))failBlock
 {
     [_secureNetwork putPath:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self postSuccessLogicWithReponseObject:responseObject noSuccessError:noSuccessError completionBlock:completionBlock failBlock:failBlock];
+        [self postSuccessLogicWithReponseObject:responseObject fromOperation:operation completionBlock:completionBlock failBlock:failBlock];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failBlock)
             failBlock(operation,error);

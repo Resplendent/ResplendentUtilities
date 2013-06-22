@@ -7,8 +7,14 @@
 //
 
 #import "AsynchronousImageView.h"
-#import "AsynchronousUIImageRequest.h"
+#import "RUAsynchronousUIImageRequest.h"
 #import "RUConstants.h"
+
+@interface AsynchronousImageView ()
+
+-(void)removeSpinner;
+
+@end
 
 @implementation AsynchronousImageView
 
@@ -36,12 +42,6 @@
     [self cancelFetch];
 }
 
-//-(void)removeFromSuperview
-//{
-//    [self cancelFetch];
-//    [super removeFromSuperview];
-//}
-
 #pragma mark - Getter method
 -(BOOL)isLoading
 {
@@ -50,7 +50,7 @@
 
 -(NSURL *)url
 {
-    return [_imageRequest url];
+    return _imageRequest.url;
 }
 
 #pragma mark - Public methods
@@ -82,31 +82,59 @@
         [_spinner startAnimating];
     }
 
-    _imageRequest = [[AsynchronousUIImageRequest alloc] initAndFetchWithURL:url cacheName:cacheName block:^(UIImage *image, NSError *error) {
+    _imageRequest = [[RUAsynchronousUIImageRequest alloc]initAndFetchWithURL:url cacheName:cacheName delegate:self];
+//    _imageRequest = [[RUAsynchronousUIImageRequest alloc]initAndFetchWithURLString:urlString cacheName:cacheName delegate:self];
+}
 
+#pragma mark - Update Content
+-(void)removeSpinner
+{
+    if (_spinner)
+    {
+        [_spinner stopAnimating];
+        [_spinner removeFromSuperview];;
+        _spinner = nil;
+    }
+}
+
+#pragma mark - RUAsynchronousUIImageRequestDelegate methods
+-(void)asynchronousUIImageRequest:(RUAsynchronousUIImageRequest *)asynchronousUIImageRequest didFinishLoadingWithImage:(UIImage *)image
+{
+    if (asynchronousUIImageRequest == _imageRequest)
+    {
         _imageRequest = nil;
-        
-        if (_spinner)
-        {
-            [_spinner stopAnimating];
-            [_spinner removeFromSuperview];;
-            _spinner = nil;
-        }
+
+        [self removeSpinner];
 
         [self setImage:image];
 
-        if (image)
+        if (image && self.fadeInDuration > 0)
         {
             CGFloat alpha = self.alpha;
-            if (self.fadeInDuration > 0)
-            {
-                [self setAlpha:0.0f];
-                [UIView animateWithDuration:self.fadeInDuration animations:^{
-                    [self setAlpha:alpha];
-                }];
-            }
+            [self setAlpha:0.0f];
+            [UIView animateWithDuration:self.fadeInDuration animations:^{
+                [self setAlpha:alpha];
+            }];
         }
-    }];
+    }
+    else
+    {
+        RUDLog(@"ingoring request %@",asynchronousUIImageRequest);
+    }
+}
+
+-(void)asynchronousUIImageRequest:(RUAsynchronousUIImageRequest *)asynchronousUIImageRequest didFailLoadingWithError:(NSError *)error
+{
+    RUDLog(@"%@",error);
+    if (asynchronousUIImageRequest == _imageRequest)
+    {
+        _imageRequest = nil;
+        [self removeSpinner];
+    }
+    else
+    {
+        RUDLog(@"ingoring request %@",asynchronousUIImageRequest);
+    }
 }
 
 -(void)fetchImageFromURLString:(NSString*)anUrl

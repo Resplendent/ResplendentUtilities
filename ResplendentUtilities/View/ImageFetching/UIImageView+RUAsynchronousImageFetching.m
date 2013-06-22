@@ -7,10 +7,13 @@
 //
 
 #import "UIImageView+RUAsynchronousImageFetching.h"
-#import "AsynchronousUIImageRequest.h"
+#import "RUDeallocHook.h"
+#import "RUAsynchronousUIImageRequest.h"
+#import "RUConstants.h"
 #import <objc/runtime.h>
 
 NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest";
+NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequestDeallocHook = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequestDeallocHook";
 NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner";
 NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyClearImageOnFetch = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyClearImageOnFetch";
 NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinner = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinner";
@@ -20,7 +23,8 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
 
 @interface UIImageView (RUAsynchronousImageFetchingPrivate)
 
-@property (nonatomic) AsynchronousUIImageRequest* ruAsynchronousImageFetchingPrivateImageRequest;
+@property (nonatomic) RUDeallocHook* ruAsynchronousImageFetchingPrivateDeallocHook;
+@property (nonatomic) RUAsynchronousUIImageRequest* ruAsynchronousImageFetchingPrivateImageRequest;
 @property (nonatomic) UIActivityIndicatorView* ruAsynchronousImageFetchingPrivateSpinner;
 @property (nonatomic) NSNumber* ruAsynchronousImageFetchingPrivateSpinnerStyleNumber;
 @property (nonatomic) NSNumber* ruAsynchronousImageFetchingPrivateLoadsUsingSpinnerNumber;
@@ -35,6 +39,8 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
 
 -(void)ruCancelAsynchronousImageFetching
 {
+    [self setRuAsynchronousImageFetchingPrivateDeallocHook:nil];
+
     if (self.ruAsynchronousImageFetchingPrivateImageRequest)
     {
         [self.ruAsynchronousImageFetchingPrivateImageRequest cancelFetch];
@@ -84,22 +90,11 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
         [self setImage:nil];
     }
 
-    [self setRuAsynchronousImageFetchingPrivateImageRequest:[[AsynchronousUIImageRequest alloc] initAndFetchWithURL:url cacheName:cacheName block:^(UIImage *image, NSError *error) {
-        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
+    [self setRuAsynchronousImageFetchingPrivateImageRequest:[[RUAsynchronousUIImageRequest alloc]initAndFetchWithURL:url cacheName:cacheName delegate:self]];
 
-        [self ruAsynchronousImageFetchingPrivateRemoveSpinner];
-
-        [self setImage:image];
-
-        if (self.ruFadeInDuration)
-        {
-            [self setAlpha:0.0f];
-            [UIView animateWithDuration:self.ruFadeInDuration animations:^{
-                [self setAlpha:1.0f];
-            }];
-        }
-
-        [self.ruAsynchronousImageFetchingDelegate ruAsynchronousFetchingImageView:self finishedFetchingImage:image];
+    __weak typeof(self.ruAsynchronousImageFetchingPrivateImageRequest) imageRequestPointer = self.ruAsynchronousImageFetchingPrivateImageRequest;
+    [self setRuAsynchronousImageFetchingPrivateDeallocHook:[RUDeallocHook deallocHookWithBlock:^{
+        [imageRequestPointer cancelFetch];
     }]];
 }
 
@@ -165,6 +160,58 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
     [self setRuAsynchronousImageFetchingPrivateClearImageOnFetchNumber:@(ruClearImageOnFetch)];
 }
 
+
+#pragma mark - RUAsynchronousUIImageRequestDelegate methods
+-(void)asynchronousUIImageRequest:(RUAsynchronousUIImageRequest *)asynchronousUIImageRequest didFinishLoadingWithImage:(UIImage *)image
+{
+    if (asynchronousUIImageRequest == self.ruAsynchronousImageFetchingPrivateImageRequest)
+    {
+        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
+        
+        [self ruAsynchronousImageFetchingPrivateRemoveSpinner];
+        
+        [self setImage:image];
+        
+        if (self.ruFadeInDuration)
+        {
+            [self setAlpha:0.0f];
+            [UIView animateWithDuration:self.ruFadeInDuration animations:^{
+                [self setAlpha:1.0f];
+            }];
+        }
+        
+        [self.ruAsynchronousImageFetchingDelegate ruAsynchronousFetchingImageView:self finishedFetchingImage:image];
+        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
+        [self setRuAsynchronousImageFetchingPrivateDeallocHook:nil];
+    }
+    else
+    {
+        RUDLog(@"ignoring request %@",asynchronousUIImageRequest);
+    }
+}
+
+-(void)asynchronousUIImageRequest:(RUAsynchronousUIImageRequest *)asynchronousUIImageRequest didFailLoadingWithError:(NSError *)error
+{
+    RUDLog(@"%@",error);
+    if (asynchronousUIImageRequest == self.ruAsynchronousImageFetchingPrivateImageRequest)
+    {
+        [self ruAsynchronousImageFetchingPrivateRemoveSpinner];
+
+        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
+        [self setRuAsynchronousImageFetchingPrivateDeallocHook:nil];
+    }
+    else
+    {
+        RUDLog(@"ignoring request %@",asynchronousUIImageRequest);
+    }
+}
+
+#pragma mark - RUDeallocHookDelegate methods
+-(void)deallocHookDidDealloc:(RUDeallocHook*)deallocHook
+{
+    [self ruCancelAsynchronousImageFetching];
+}
+
 @end
 
 
@@ -182,6 +229,13 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
 }
 
 #pragma mark - Setters
+-(void)setRuAsynchronousImageFetchingPrivateDeallocHook:(RUDeallocHook *)ruAsynchronousImageFetchingPrivateDeallocHook
+{
+    objc_setAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequestDeallocHook,
+                             ruAsynchronousImageFetchingPrivateDeallocHook,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 -(void)setRuAsynchronousImageFetchingPrivateFadeInDuration:(NSNumber *)ruAsynchronousImageFetchingPrivateFadeInDuration
 {
     objc_setAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyFadeInDuration,
@@ -203,17 +257,17 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
--(void)setRuAsynchronousImageFetchingPrivateLoadsUsingSpinnerNumber:(NSNumber *)loadsUsingSpinnerNumber
+-(void)setRuAsynchronousImageFetchingPrivateLoadsUsingSpinnerNumber:(NSNumber *)ruAsynchronousImageFetchingPrivateLoadsUsingSpinnerNumber
 {
     objc_setAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner,
-                             loadsUsingSpinnerNumber,
+                             ruAsynchronousImageFetchingPrivateLoadsUsingSpinnerNumber,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
--(void)setRuAsynchronousImageFetchingPrivateImageRequest:(AsynchronousUIImageRequest *)imageRequest
+-(void)setRuAsynchronousImageFetchingPrivateImageRequest:(RUAsynchronousUIImageRequest *)ruAsynchronousImageFetchingPrivateImageRequest
 {
     objc_setAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest,
-                             imageRequest,
+                             ruAsynchronousImageFetchingPrivateImageRequest,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
@@ -225,6 +279,11 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
 }
 
 #pragma mark - Getter methods
+-(RUDeallocHook *)ruAsynchronousImageFetchingPrivateDeallocHook
+{
+    return objc_getAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequestDeallocHook);
+}
+
 -(NSNumber *)ruAsynchronousImageFetchingPrivateFadeInDuration
 {
     return objc_getAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyFadeInDuration);
@@ -245,7 +304,7 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
     return objc_getAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyLoadUsingSpinner);
 }
 
--(AsynchronousUIImageRequest *)ruAsynchronousImageFetchingPrivateImageRequest
+-(RUAsynchronousUIImageRequest *)ruAsynchronousImageFetchingPrivateImageRequest
 {
     return objc_getAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest);
 }
@@ -256,4 +315,3 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
 }
 
 @end
-

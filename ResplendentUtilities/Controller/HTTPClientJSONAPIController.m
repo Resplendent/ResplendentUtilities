@@ -28,45 +28,60 @@
     return self;
 }
 
-#pragma mark - Private methods
--(void)postSuccessLogicWithReponseObject:(id)responseObject noSuccessError:(NSError*)noSuccessError completionBlock:(void(^)(NSDictionary* responseDict))completionBlock failBlock:(void(^)(AFHTTPRequestOperation *operation, NSError* error))failBlock
+#pragma mark - Post Success Logic
+-(NSError*)errorForResponseJsonParseObject:(id)responseJSONParsedObject fromOperation:(AFHTTPRequestOperation*)operation
 {
-    NSString* response = [[NSString alloc]initWithData:(NSData*)responseObject encoding:NSUTF8StringEncoding];
+    return nil;
+}
+
+-(void)postSuccessLogicWithReponseObject:(id)responseObject fromOperation:(AFHTTPRequestOperation*)operation completionBlock:(void(^)(id responseObject))completionBlock failBlock:(void(^)(AFHTTPRequestOperation* operation, NSError* error))failBlock
+{
+    NSString* response = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
     id responseJSONParsedObject = [response objectFromJSONString];
-    if (!responseJSONParsedObject) // router returned non-compliant json
+
+    NSError* error = [self errorForResponseJsonParseObject:responseJSONParsedObject fromOperation:operation];
+    if (error)
     {
-        if (failBlock)
-            failBlock(nil, noSuccessError);
+        failBlock(operation,error);
     }
     else
     {
-        if (noSuccessError)
-        {
-            if (![responseJSONParsedObject isKindOfClass:[NSDictionary class]] || kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(responseJSONParsedObject))
-            {
-                if (completionBlock)
-                    completionBlock(responseJSONParsedObject);
-            }
-            else
-            {
-                if (failBlock)
-                    failBlock(nil,noSuccessError);
-            }
-        }
-        else
-        {
-            if (completionBlock)
-                completionBlock(responseJSONParsedObject);
-        }
+        completionBlock(responseJSONParsedObject);
     }
+//    if (responseJSONParsedObject) // router returned non-compliant json
+//    {
+////        if (noSuccessError)
+////        {
+////            if (![responseJSONParsedObject isKindOfClass:[NSDictionary class]] || kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(responseJSONParsedObject))
+////            {
+////                if (completionBlock)
+////                    completionBlock(responseJSONParsedObject);
+////            }
+////            else
+////            {
+////                if (failBlock)
+////                    failBlock(nil,noSuccessError);
+////            }
+////        }
+////        else
+////        {
+////            if (completionBlock)
+////                completionBlock(responseJSONParsedObject);
+////        }
+//    }
+//    else
+//    {
+//        if (failBlock)
+//            failBlock(operation,error);
+//    }
 }
 
-#pragma mark - C methods
-BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictionary* responseDict)
-{
-        NSNumber* successValue = [responseDict objectForKey:@"success"];
-        return kRUNumberOrNil(successValue) && successValue.boolValue;
-}
+//#pragma mark - C methods
+//BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictionary* responseDict)
+//{
+//        NSNumber* successValue = [responseDict objectForKey:@"success"];
+//        return kRUNumberOrNil(successValue) && successValue.boolValue;
+//}
 
 #pragma mark - Public methods
 //@TODO remove this after master is updated on albumatic
@@ -101,7 +116,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
 -(void)getNetworkRequestWithUrl:(NSString*)url params:(NSDictionary*)params noSuccessError:(NSError *)noSuccessError completionBlock:(void (^)(NSDictionary* responseDict))completionBlock failBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failBlock
 {
     [_network getPath:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self postSuccessLogicWithReponseObject:responseObject noSuccessError:noSuccessError completionBlock:completionBlock failBlock:failBlock];
+        [self postSuccessLogicWithReponseObject:responseObject fromOperation:operation completionBlock:completionBlock failBlock:failBlock];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failBlock)
             failBlock(operation,error);
@@ -112,7 +127,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
 -(void)postNetworkRequestWithUrl:(NSString*)url params:(NSDictionary*)params noSuccessError:(NSError *)noSuccessError completionBlock:(void (^)(NSDictionary *))completionBlock failBlock:(void (^)(AFHTTPRequestOperation *operation, NSError *))failBlock
 {
     [_network postPath:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self postSuccessLogicWithReponseObject:responseObject noSuccessError:noSuccessError completionBlock:completionBlock failBlock:failBlock];
+        [self postSuccessLogicWithReponseObject:responseObject fromOperation:operation completionBlock:completionBlock failBlock:failBlock];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failBlock)
             failBlock(operation,error);
@@ -155,7 +170,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
     }];
     
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self postSuccessLogicWithReponseObject:responseObject noSuccessError:noSuccessError completionBlock:completionBlock failBlock:failBlock];
+        [self postSuccessLogicWithReponseObject:responseObject fromOperation:operation completionBlock:completionBlock failBlock:failBlock];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failBlock)
             failBlock(operation,error);
@@ -180,7 +195,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
 -(void)putNetworkRequestWithUrl:(NSString*)url params:(NSDictionary*)params noSuccessError:(NSError*)noSuccessError completionBlock:(void(^)(NSDictionary* responseDict))completionBlock failBlock:(void(^)(AFHTTPRequestOperation *operation, NSError* error))failBlock
 {
     [_network putPath:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self postSuccessLogicWithReponseObject:responseObject noSuccessError:noSuccessError completionBlock:completionBlock failBlock:failBlock];
+        [self postSuccessLogicWithReponseObject:responseObject fromOperation:operation completionBlock:completionBlock failBlock:failBlock];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failBlock)
             failBlock(operation,error);
@@ -191,7 +206,7 @@ BOOL kHTTPClientJSONAPIControllerResponseDictionaryHasValidSuccessValue(NSDictio
 -(void)deleteNetworkRequestWithUrl:(NSString*)url params:(NSDictionary*)params noSuccessError:(NSError*)noSuccessError completionBlock:(void(^)(NSDictionary* responseDict))completionBlock failBlock:(void(^)(AFHTTPRequestOperation *operation, NSError* error))failBlock
 {
     [_network deletePath:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self postSuccessLogicWithReponseObject:responseObject noSuccessError:noSuccessError completionBlock:completionBlock failBlock:failBlock];
+        [self postSuccessLogicWithReponseObject:responseObject fromOperation:operation completionBlock:completionBlock failBlock:failBlock];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failBlock)
             failBlock(operation,error);

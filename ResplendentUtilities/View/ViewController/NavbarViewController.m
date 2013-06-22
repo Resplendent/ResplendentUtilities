@@ -15,7 +15,9 @@
 
 #define kNavbarViewControllerPushPopNavbarMovementScale 8.0f
 
+NSString* const kNavbarViewControllerNotificationCenterWillPop = @"kNavbarViewControllerNotificationCenterWillPop";
 NSString* const kNavbarViewControllerNotificationCenterDidPop = @"kNavbarViewControllerNotificationCenterDidPop";
+NSString* const kNavbarViewControllerNotificationCenterWillPush = @"kNavbarViewControllerNotificationCenterWillPush";
 NSString* const kNavbarViewControllerNotificationCenterDidPush = @"kNavbarViewControllerNotificationCenterDidPush";
 
 static NSTimeInterval popPushAnimationDuration;
@@ -85,6 +87,26 @@ static NSTimeInterval popPushAnimationDuration;
     return CGRectMake(0, CGRectGetMaxY(self.navbar.frame), CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame) - CGRectGetMaxY(self.navbar.frame));
 }
 
+#pragma mark - Getters
+-(BOOL)isNavbarViewControllerAChild:(NavbarViewController*)navbarViewController
+{
+    if (self.childNBViewController)
+    {
+        if (self.childNBViewController == navbarViewController)
+        {
+            return YES;
+        }
+        else
+        {
+            return [self.childNBViewController isNavbarViewControllerAChild:navbarViewController];
+        }
+    }
+    else
+    {
+        return NO;
+    }
+}
+
 #pragma mark - Navbar view lifecycle methods
 -(void)navbarViewWillAppear:(BOOL)animated{}
 -(void)navbarViewDidAppear:(BOOL)animated{}
@@ -140,6 +162,8 @@ static NSTimeInterval popPushAnimationDuration;
     [navbarViewController navbarViewWillAppear:animated];
 
     CGPoint animateToChildOrigin = CGPointZero;
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNavbarViewControllerNotificationCenterWillPush object:navbarViewController];
 
     if (animated)
     {
@@ -260,7 +284,11 @@ static NSTimeInterval popPushAnimationDuration;
 -(void)popViewControllerAnimated:(BOOL)animated completion:(void (^)())completion
 {
     if (!_parentNBViewController)
+    {
         [NSException raise:NSInternalInconsistencyException format:@"can't pop with a nil parent navbar viewcontroller"];
+    }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNavbarViewControllerNotificationCenterWillPop object:self];
 
     [_parentNBViewController navbarViewWillAppear:animated];
     [self navbarViewWillDisappear:animated];
@@ -326,7 +354,7 @@ static NSTimeInterval popPushAnimationDuration;
             [self performNavbarPopTransitionCompletion];
 
             [_parentNBViewController navbarViewDidAppear:YES];
-            [_parentNBViewController navbarViewDidDisappear:YES];
+            [self navbarViewDidDisappear:YES];
 
             [self postPopLogicCompletion:completion];
         }];
@@ -334,7 +362,7 @@ static NSTimeInterval popPushAnimationDuration;
     else
     {
         [_parentNBViewController navbarViewDidAppear:NO];
-        [_parentNBViewController navbarViewDidDisappear:NO];
+        [self navbarViewDidDisappear:NO];
         [self postPopLogicCompletion:completion];
     }
 }
