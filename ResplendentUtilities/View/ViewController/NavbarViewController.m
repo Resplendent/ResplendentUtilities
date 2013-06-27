@@ -52,8 +52,12 @@ static NSTimeInterval popPushAnimationDuration;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-    [self setNavbar:[self.navbarClass new]];
-    [self.view addSubview:self.navbar];
+    Class navbarClass = self.navbarClass;
+    if (navbarClass)
+    {
+        [self setNavbar:[self.navbarClass new]];
+        [self.view addSubview:self.navbar];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -64,17 +68,20 @@ static NSTimeInterval popPushAnimationDuration;
 
 -(void)bringNavbarToFont
 {
-    if (_childNBViewController)
+    if (self.navbar)
     {
-        if (_childNBViewController.view.superview != self.view)
-            RUDLog(@"child view's superview should be self's view");
-        
-        [self.navbar removeFromSuperview];
-        [self.view insertSubview:self.navbar belowSubview:_childNBViewController.view];
-    }
-    else
-    {
-        [self.view bringSubviewToFront:self.navbar];
+        if (_childNBViewController)
+        {
+            if (_childNBViewController.view.superview != self.view)
+                RUDLog(@"child view's superview should be self's view");
+            
+            [self.navbar removeFromSuperview];
+            [self.view insertSubview:self.navbar belowSubview:_childNBViewController.view];
+        }
+        else
+        {
+            [self.view bringSubviewToFront:self.navbar];
+        }
     }
 }
 
