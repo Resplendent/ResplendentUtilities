@@ -25,6 +25,8 @@ static NSTimeInterval popPushAnimationDuration;
 
 @interface NavbarViewController ()
 
+-(void)bringNavbarToFont;
+
 -(void)prepareForNavbarPushTransitionToViewController:(NavbarViewController*)navbarViewController;
 -(void)performNavbarPushTransitionToViewController:(NavbarViewController*)navbarViewController;
 -(void)performNavbarPushTransitionCompletionToViewController:(NavbarViewController*)navbarViewController;
@@ -66,6 +68,24 @@ static NSTimeInterval popPushAnimationDuration;
     [self bringNavbarToFont];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+-(CGRect)contentFrame
+{
+    CGFloat yCoord = 0;
+
+    if (self.navbar)
+    {
+        yCoord += CGRectGetMaxY(self.navbar.frame);
+    }
+
+    return CGRectMake(0, yCoord, self.view.frame.size.width, self.view.frame.size.height - yCoord);
+}
+
+#pragma mark - Update Content
 -(void)bringNavbarToFont
 {
     if (self.navbar)
@@ -83,23 +103,6 @@ static NSTimeInterval popPushAnimationDuration;
             [self.view bringSubviewToFront:self.navbar];
         }
     }
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
--(CGRect)contentFrame
-{
-    CGFloat yCoord = 0;
-
-    if (self.navbar)
-    {
-        yCoord += CGRectGetMaxY(self.navbar.frame);
-    }
-
-    return CGRectMake(0, yCoord, self.view.frame.size.width, self.view.frame.size.height - yCoord);
 }
 
 #pragma mark - Getters
