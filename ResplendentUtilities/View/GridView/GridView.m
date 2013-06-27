@@ -196,13 +196,14 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     {
         _pullToLoadMoreSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [_scrollView addSubview:_pullToLoadMoreSpinner];
-        [self updateScrollViewContentSize];
     }
     else
     {
         [_pullToLoadMoreSpinner removeFromSuperview];
         _pullToLoadMoreSpinner = nil;
     }
+
+    [self updateScrollViewContentSize];
 }
 
 #pragma mark Pull To Refresh
