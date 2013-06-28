@@ -83,6 +83,24 @@
 //        return kRUNumberOrNil(successValue) && successValue.boolValue;
 //}
 
+#pragma mark - Getters
+-(NSArray*)operationsWithUrl:(NSString*)url
+{
+    NSMutableArray* requests = [NSMutableArray array];
+    for (AFHTTPRequestOperation* operation in [_network.operationQueue operations])
+    {
+        if (kRUClassOrNil(operation, AFHTTPRequestOperation))
+        {
+            if ([operation.request.URL.relativePath isEqualToString:url])
+            {
+                [requests addObject:operation];
+            }
+        }
+    }
+
+    return [NSArray arrayWithArray:requests];
+}
+
 #pragma mark - Public methods
 //@TODO remove this after master is updated on albumatic
 - (void)cancelAllHTTPOperationsWithMethod:(NSString *)method

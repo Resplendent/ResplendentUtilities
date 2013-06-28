@@ -19,6 +19,9 @@
 
 - (void)cancelAllHTTPOperationsWithMethod:(NSString *)method;
 - (void)cancelAllHTTPOperationsWithMethod:(NSString *)method respectingCancellableRequests:(BOOL)respectingCancellableRequests;
+
+-(NSArray*)operationsWithUrl:(NSString*)url;
+
 //Can be overloaded by subclass
 -(BOOL)operationCanBeCancelled:(AFHTTPRequestOperation*)operation;
 
