@@ -24,13 +24,13 @@
 @end
 
 typedef enum{
-    GridViewScrollDelegateDirectionUp,
-    GridViewScrollDelegateDirectionDown
-}GridViewScrollDelegateDirection;
+    GridViewScrollDirectionDelegateDirectionUp,
+    GridViewScrollDirectionDelegateDirectionDown
+}GridViewScrollDirectionDelegateDirection;
 
-@protocol GridViewScrollDelegate <NSObject>
+@protocol GridViewScrollDirectionDelegate <NSObject>
 
--(void)gridView:(GridView*)gridView didScrollWithDirection:(GridViewScrollDelegateDirection)direction;
+-(void)gridView:(GridView*)gridView didScrollWithDirection:(GridViewScrollDirectionDelegateDirection)direction;
 
 @end
 
