@@ -293,10 +293,10 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
         {
             ABAddressBookRequestAccessWithCompletion(addressbook, ^(bool granted, CFErrorRef error) {
                 // First time access has been granted, add the contact
-                if (granted)
-                    RUDLog(@"got permission");
-                else
-                    RUDLog(@"rejected");
+//                if (granted)
+//                    RUDLog(@"got permission");
+//                else
+//                    RUDLog(@"rejected");
                 
                 if (completion)
                     completion(NO,granted);
