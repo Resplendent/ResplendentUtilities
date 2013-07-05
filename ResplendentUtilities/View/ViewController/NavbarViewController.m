@@ -11,9 +11,10 @@
 #import "RUConstants.h"
 #import "UIView+Utility.h"
 
-#define kNavbarViewControllerPushPopAnimationDuration 0.3f
+NSTimeInterval const kNavbarViewControllerPushPopAnimationDefaultDuration = 0.3f;
+NSTimeInterval const kNavbarViewControllerPushPopAnimationDefaultModalMultiplier = 1.5f;
 
-#define kNavbarViewControllerPushPopNavbarMovementScale 8.0f
+NSTimeInterval const  kNavbarViewControllerPushPopNavbarMovementScale = 8.0f;
 
 NSString* const kNavbarViewControllerNotificationCenterWillPop = @"kNavbarViewControllerNotificationCenterWillPop";
 NSString* const kNavbarViewControllerNotificationCenterDidPop = @"kNavbarViewControllerNotificationCenterDidPop";
@@ -23,6 +24,8 @@ NSString* const kNavbarViewControllerNotificationCenterDidPush = @"kNavbarViewCo
 static NSTimeInterval popPushAnimationDuration;
 
 @interface NavbarViewController ()
+
+-(void)bringNavbarToFont;
 
 -(void)prepareForNavbarPushTransitionToViewController:(NavbarViewController*)navbarViewController;
 -(void)performNavbarPushTransitionToViewController:(NavbarViewController*)navbarViewController;
@@ -42,7 +45,7 @@ static NSTimeInterval popPushAnimationDuration;
 {
     if (self == [NavbarViewController class])
     {
-        [self setPushPopTransitionDuration:kNavbarViewControllerPushPopAnimationDuration];
+        [self setPushPopTransitionDuration:kNavbarViewControllerPushPopAnimationDefaultDuration];
     }
 }
 
@@ -51,30 +54,18 @@ static NSTimeInterval popPushAnimationDuration;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-    [self setNavbar:[self.navbarClass new]];
-    [self.view addSubview:self.navbar];
+    Class navbarClass = self.navbarClass;
+    if (navbarClass)
+    {
+        [self setNavbar:[self.navbarClass new]];
+        [self.view addSubview:self.navbar];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self bringNavbarToFont];
-}
-
--(void)bringNavbarToFont
-{
-    if (_childNBViewController)
-    {
-        if (_childNBViewController.view.superview != self.view)
-            RUDLog(@"child view's superview should be self's view");
-        
-        [self.navbar removeFromSuperview];
-        [self.view insertSubview:self.navbar belowSubview:_childNBViewController.view];
-    }
-    else
-    {
-        [self.view bringSubviewToFront:self.navbar];
-    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -84,7 +75,34 @@ static NSTimeInterval popPushAnimationDuration;
 
 -(CGRect)contentFrame
 {
-    return CGRectMake(0, CGRectGetMaxY(self.navbar.frame), CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame) - CGRectGetMaxY(self.navbar.frame));
+    CGFloat yCoord = 0;
+
+    if (self.navbar)
+    {
+        yCoord += CGRectGetMaxY(self.navbar.frame);
+    }
+
+    return CGRectMake(0, yCoord, self.view.frame.size.width, self.view.frame.size.height - yCoord);
+}
+
+#pragma mark - Update Content
+-(void)bringNavbarToFont
+{
+    if (self.navbar)
+    {
+        if (_childNBViewController)
+        {
+            if (_childNBViewController.view.superview != self.view)
+                RUDLog(@"child view's superview should be self's view");
+            
+            [self.navbar removeFromSuperview];
+            [self.view insertSubview:self.navbar belowSubview:_childNBViewController.view];
+        }
+        else
+        {
+            [self.view bringSubviewToFront:self.navbar];
+        }
+    }
 }
 
 #pragma mark - Getters
@@ -220,7 +238,7 @@ static NSTimeInterval popPushAnimationDuration;
                 break;
 
             case NavbarViewControllerTransitionToStyleToBottom:
-                animationDuration *= 2;
+                animationDuration *= kNavbarViewControllerPushPopAnimationDefaultModalMultiplier;
                 animateToParentOrigin.y += CGRectGetHeight(self.view.window.frame);
                 animateToChildOrigin.y -= CGRectGetHeight(self.view.window.frame);
                 break;
@@ -305,7 +323,7 @@ static NSTimeInterval popPushAnimationDuration;
         CGPoint animateToParentOrigin = originalParentOrigin;
         CGPoint animateToChildOrigin = originalChildOrigin;
 
-        CGFloat animationDuration = popPushAnimationDuration;
+        NSTimeInterval animationDuration = popPushAnimationDuration;
 
         switch (self.popParentTransitionStyle)
         {
@@ -334,7 +352,7 @@ static NSTimeInterval popPushAnimationDuration;
                 break;
 
             case NavbarViewControllerTransitionToStyleToBottom:
-                animationDuration *= 2;
+                animationDuration *= kNavbarViewControllerPushPopAnimationDefaultModalMultiplier;
                 animateToChildOrigin.y += CGRectGetHeight(_parentNBViewController.view.window.frame);
                 break;
 

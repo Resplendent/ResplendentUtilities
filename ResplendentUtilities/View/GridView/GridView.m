@@ -196,13 +196,14 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     {
         _pullToLoadMoreSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [_scrollView addSubview:_pullToLoadMoreSpinner];
-        [self updateScrollViewContentSize];
     }
     else
     {
         [_pullToLoadMoreSpinner removeFromSuperview];
         _pullToLoadMoreSpinner = nil;
     }
+
+    [self updateScrollViewContentSize];
 }
 
 #pragma mark Pull To Refresh
@@ -570,10 +571,23 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 }
 
 #pragma mark - UIScrollViewDelegate methods
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self.scrollDelegate gridView:self didFinishScrollingWithContentOffset:scrollView.contentOffset];
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (!decelerate)
+    {
+        [self.scrollDelegate gridView:self didFinishScrollingWithContentOffset:scrollView.contentOffset];
+    }
+}
+
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self updateTiles];
-    
+
     if (self.pullToLoadMore && _pullToLoadDelegate && !_pullToLoadMoreSpinner.isAnimating)
     {
         if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.frame) > scrollView.contentSize.height - kGridViewPullToLoadMoreDefaultHeight + kGridViewPullToLoadMorePullDistance)
@@ -582,12 +596,17 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
             [_pullToLoadDelegate gridViewPullToLoadMore:self];
         }
     }
-    
+
+    if (self.scrollDelegate)
+    {
+        [self.scrollDelegate gridView:self didScrollWithContentOffset:scrollView.contentOffset];
+    }
+
     if (_lastScrollOffset != scrollView.contentOffset.y)
     {
-        if (_scrollDelegate && scrollView.contentOffset.y + CGRectGetHeight(scrollView.frame) < scrollView.contentSize.height && scrollView.contentOffset.y >= 0)
+        if (self.scrollDirectionDelegate && scrollView.contentOffset.y + CGRectGetHeight(scrollView.frame) < scrollView.contentSize.height && scrollView.contentOffset.y >= 0)
         {
-            [_scrollDelegate gridView:self didScrollWithDirection:(_lastScrollOffset > scrollView.contentOffset.y ? GridViewScrollDelegateDirectionUp : GridViewScrollDelegateDirectionDown)];
+            [self.scrollDirectionDelegate gridView:self didScrollWithDirection:(_lastScrollOffset > scrollView.contentOffset.y ? GridViewScrollDirectionDelegateDirectionUp : GridViewScrollDirectionDelegateDirectionDown)];
             _lastScrollOffset = scrollView.contentOffset.y;
         }
     }

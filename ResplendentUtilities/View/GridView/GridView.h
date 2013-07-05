@@ -49,6 +49,7 @@ typedef enum {
 @property (nonatomic, assign) id<GridViewDataSourceSelectionDelegate> selectionDelegate;
 @property (nonatomic, assign) id<GridViewPullToLoad> pullToLoadDelegate;
 @property (nonatomic, assign) id<GridViewScrollDelegate> scrollDelegate;
+@property (nonatomic, assign) id<GridViewScrollDirectionDelegate> scrollDirectionDelegate;
 
 @property (nonatomic, assign) CGFloat cellSpacing;
 @property (nonatomic, assign) NSUInteger numberOfColumns;
