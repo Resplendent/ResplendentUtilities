@@ -548,9 +548,12 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
     }
     else
     {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated"
         addressBookRef = ABAddressBookCreate();
+#pragma GCC diagnostic pop
     }
-    
+
     return addressBookRef;
 }
 
