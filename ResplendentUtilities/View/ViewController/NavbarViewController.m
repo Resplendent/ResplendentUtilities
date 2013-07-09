@@ -79,7 +79,7 @@ static NSTimeInterval popPushAnimationDuration;
 
     if (self.navbar)
     {
-        yCoord += CGRectGetMaxY(self.navbar.frame);
+        yCoord += CGRectGetHeight(self.navbar.frame);
     }
 
     return CGRectMake(0, yCoord, self.view.frame.size.width, self.view.frame.size.height - yCoord);
