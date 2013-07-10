@@ -536,23 +536,36 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
 +(ABAddressBookRef)currentAddressBook
 {
     ABAddressBookRef addressBookRef = NULL;
-    if (&ABAddressBookCreateWithOptions)
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
+    addressBookRef = ABAddressBookCreate();
+#else
+    CFErrorRef error = nil;
+    //        NSError *error = nil;
+    addressBookRef = ABAddressBookCreateWithOptions(NULL, (CFErrorRef *)&error);
+    if (error)
     {
-        CFErrorRef error = nil;
-        //        NSError *error = nil;
-        addressBookRef = ABAddressBookCreateWithOptions(NULL, (CFErrorRef *)&error);
-        if (error)
-        {
-            RUDLog(@"error: %@",error);
-        }
+        RUDLog(@"error: %@",error);
     }
-    else
-    {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated"
-        addressBookRef = ABAddressBookCreate();
-#pragma GCC diagnostic pop
-    }
+#endif
+
+//    ABAddressBookRef addressBookRef = NULL;
+//    if (&ABAddressBookCreateWithOptions)
+//    {
+//        CFErrorRef error = nil;
+//        //        NSError *error = nil;
+//        addressBookRef = ABAddressBookCreateWithOptions(NULL, (CFErrorRef *)&error);
+//        if (error)
+//        {
+//            RUDLog(@"error: %@",error);
+//        }
+//    }
+//    else
+//    {
+//#pragma GCC diagnostic push
+//#pragma GCC diagnostic ignored "-Wdeprecated"
+//        addressBookRef = ABAddressBookCreate();
+//#pragma GCC diagnostic pop
+//    }
 
     return addressBookRef;
 }
