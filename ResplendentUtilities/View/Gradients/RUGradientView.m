@@ -29,7 +29,10 @@
     if (self.readyToDrawGradient)
     {
         CGFloat xCoord = CGRectGetWidth(rect) / 2.0f;
-        CGContextDrawLinearGradient(context, CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(),(__bridge CFArrayRef) @[(id)_topGradientColor.CGColor, (id)_bottomGradientColor.CGColor], NULL), (CGPoint){xCoord,0}, (CGPoint){xCoord,CGRectGetHeight(rect)}, 0);
+        CGGradientRef gradientRef = CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(),(__bridge CFArrayRef) @[(id)_topGradientColor.CGColor, (id)_bottomGradientColor.CGColor], NULL);
+        CGContextDrawLinearGradient(context, gradientRef, (CGPoint){xCoord,0}, (CGPoint){xCoord,CGRectGetHeight(rect)}, 0);
+        CGGradientRelease(gradientRef);
+
     }
 }
 
