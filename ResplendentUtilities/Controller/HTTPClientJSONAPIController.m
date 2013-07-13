@@ -102,7 +102,6 @@
 }
 
 #pragma mark - Public methods
-//@TODO remove this after master is updated on albumatic
 - (void)cancelAllHTTPOperationsWithMethod:(NSString *)method
 {
     [self cancelAllHTTPOperationsWithMethod:method respectingCancellableRequests:YES];

@@ -72,6 +72,8 @@ static NSMutableArray* sharedInstances;
 
 +(NSData*)imageDataFromAddressBookForContactIndex:(CFIndex)contactIndex;
 
++(ABAddressBookRef)currentAddressBook;
+
 @end
 
 //@interface RUAddressBookUtil (ImageDataRequestQueue)
@@ -207,7 +209,7 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
 #pragma mark - Image methods
 +(NSData*)imageDataFromAddressBookForContactIndex:(CFIndex)contactIndex
 {
-    ABAddressBookRef addressbook = ABAddressBookCreate();
+    ABAddressBookRef addressbook = self.currentAddressBook;
     
     if(addressbook)
     {
@@ -285,7 +287,7 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
 
 +(void)askUserForPermissionWithCompletion:(RUAddressBookUtilAskForPermissionsCompletionBlock)completion
 {
-    ABAddressBookRef addressbook = ABAddressBookCreate();
+    ABAddressBookRef addressbook = self.currentAddressBook;
 
     if ([self usesNativePermissions])
     {
@@ -341,7 +343,7 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
 //phoneProperties must be an array of ABPropertyID types
 +(NSDictionary*)getArraysFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties
 {
-    ABAddressBookRef addressbook = ABAddressBookCreate();
+    ABAddressBookRef addressbook = self.currentAddressBook;
 
     if(addressbook)
     {
@@ -421,7 +423,7 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
         return nil;
     }
 
-    ABAddressBookRef addressbook = ABAddressBookCreate();
+    ABAddressBookRef addressbook = self.currentAddressBook;
     
     if(addressbook)
     {
@@ -488,7 +490,7 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
 +(NSArray*)getContactsPhoneNumbersArray
 {
     NSMutableArray* phoneNumbersArray = [NSMutableArray array];
-    ABAddressBookRef addressbook = ABAddressBookCreate();
+    ABAddressBookRef addressbook = self.currentAddressBook;
     if( addressbook )
     {
         ABRecordRef source = ABAddressBookCopyDefaultSource(addressbook);
@@ -528,6 +530,44 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
 
     RUDLog(@"phoneNumbersArray: %@",phoneNumbersArray);
     return phoneNumbersArray;
+}
+
+#pragma mark - Getters
++(ABAddressBookRef)currentAddressBook
+{
+    ABAddressBookRef addressBookRef = NULL;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
+    addressBookRef = ABAddressBookCreate();
+#else
+    CFErrorRef error = nil;
+    //        NSError *error = nil;
+    addressBookRef = ABAddressBookCreateWithOptions(NULL, (CFErrorRef *)&error);
+    if (error)
+    {
+        RUDLog(@"error: %@",error);
+    }
+#endif
+
+//    ABAddressBookRef addressBookRef = NULL;
+//    if (&ABAddressBookCreateWithOptions)
+//    {
+//        CFErrorRef error = nil;
+//        //        NSError *error = nil;
+//        addressBookRef = ABAddressBookCreateWithOptions(NULL, (CFErrorRef *)&error);
+//        if (error)
+//        {
+//            RUDLog(@"error: %@",error);
+//        }
+//    }
+//    else
+//    {
+//#pragma GCC diagnostic push
+//#pragma GCC diagnostic ignored "-Wdeprecated"
+//        addressBookRef = ABAddressBookCreate();
+//#pragma GCC diagnostic pop
+//    }
+
+    return addressBookRef;
 }
 
 @end
