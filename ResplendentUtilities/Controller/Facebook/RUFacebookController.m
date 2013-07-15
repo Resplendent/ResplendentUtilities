@@ -121,4 +121,82 @@
     return FBSession.activeSession.accessTokenData;
 }
 
+#pragma mark - Static Share Actions
++(void)showInviteOnFriendsWallWithFacebookId:(NSInteger)facebookId
+{
+    NSDictionary *dict = [[NSBundle mainBundle] infoDictionary];
+    NSString* facebookAppId = [dict objectForKey:@"FacebookAppID"];
+
+    if (facebookAppId.length)
+    {
+        NSMutableDictionary* params = [NSMutableDictionary dictionaryWithDictionary:@{@"app_id": facebookAppId,@"to":RUStringWithFormat(@"%i",facebookId)}];
+        
+        NSString* link = [self shareLink];
+        if (link.length)
+        {
+            [params setObject:link forKey:@"link"];
+        }
+        
+        NSString* name = [self shareName];
+        if (name.length)
+        {
+            [params setObject:name forKey:@"name"];
+        }
+        
+        NSString* caption = [self shareCaption];
+        if (caption.length)
+        {
+            [params setObject:name forKey:@"caption"];
+        }
+        
+        NSString* description = [self shareDescription];
+        if (description.length)
+        {
+            [params setObject:name forKey:@"description"];
+        }
+        
+        [FBWebDialogs presentDialogModallyWithSession:[FBSession activeSession] dialog:@"feed" parameters:params handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+            [self didFinishPostingToWallOfUserWithFacebookId:facebookId result:result resultURL:resultURL error:error];
+        }];
+    }
+    else
+    {
+        RUDLog(@"can't find facebook app id");
+    }
+}
+
+#pragma mark - Post Action methods
++(void)didFinishPostingToWallOfUserWithFacebookId:(NSInteger)facebookId result:(FBWebDialogResult)result resultURL:(NSURL*)resultURL error:(NSError*)error
+{
+    if (error)
+    {
+        RUDLog(@"error: %@",error);
+    }
+    
+    RUDLog(@"resultURL: %@",resultURL);
+}
+
+#pragma mark - Parsing
++(NSDictionary*)parseURLParams:(NSString *)query
+{
+    NSArray *pairs = [query componentsSeparatedByString:@"&"];
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    
+    for (NSString *pair in pairs)
+    {
+        NSArray *kv = [pair componentsSeparatedByString:@"="];
+        NSString *val = [[kv objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        [params setObject:val forKey:[kv objectAtIndex:0]];
+    }
+    
+    return params;
+}
+
+#pragma mark - Static Getters
++(NSString*)shareLink{return nil;}
++(NSString*)shareName{return nil;}
++(NSString*)shareCaption{return nil;}
++(NSString*)shareDescription{return nil;}
+
 @end

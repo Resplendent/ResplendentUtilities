@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "RUFacebookControllerProtocols.h"
+#import <FacebookSDK/FBWebDialogs.h>
 
 /*
  To compile, the following is required:
@@ -39,5 +40,18 @@
 - (void)applicationWillTerminate;
 - (void)applicationDidBecomeActive;
 
-@end
+//Share on facebook actions
++(void)showInviteOnFriendsWallWithFacebookId:(NSInteger)facebookId;
 
+//Meant to be overloaded by subclasses. Should never be called directly.
++(void)didFinishPostingToWallOfUserWithFacebookId:(NSInteger)facebookId result:(FBWebDialogResult)result resultURL:(NSURL*)resultURL error:(NSError*)error;
+
++(NSDictionary*)parseURLParams:(NSString *)query;
+
+//Share on facebook variables. Subclasses should overloaded
++(NSString*)shareLink;
++(NSString*)shareName;
++(NSString*)shareCaption;
++(NSString*)shareDescription;
+
+@end
