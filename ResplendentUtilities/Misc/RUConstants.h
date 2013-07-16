@@ -21,13 +21,9 @@
 #endif
 
 #define RU_METHOD_IMPLEMENTATION_NEEDED RUDLog(@"@IMPLEMENT Need to implement method")
-<<<<<<< Updated upstream
-//#define RU_METHOD_IMPLEMENTATION_NEEDED NSLog(@"@IMPLEMENT Need to implement method %@ in class %@",NSStringFromSelector(_cmd),NSStringFromClass([self class]))
-//lcl_log(RKLogComponent, lcl_vDebug, @"" __VA_ARGS__)
-=======
+
 #define RU_METHOD_IMPLEMENTATION_NEEDED_EXCEPTION \
 @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:RUStringWithFormat(@"%@ must overload",NSStringFromClass([self class])) userInfo:nil];
->>>>>>> Stashed changes
 
 #define RUStringWithFormat(...) [NSString stringWithFormat:__VA_ARGS__]
 
