@@ -837,10 +837,10 @@ BOOL kRUAddressBookUtilImageRequestQueueRequestHasAcceptableRemoveState(RUAddres
                         break;
                 }
             }
-            else
-            {
-                RUDLog(@"done");
-            }
+//            else
+//            {
+//                RUDLog(@"done");
+//            }
         }
 //        else
 //        {
