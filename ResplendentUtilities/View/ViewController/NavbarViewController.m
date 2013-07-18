@@ -106,6 +106,18 @@ static NSTimeInterval popPushAnimationDuration;
 }
 
 #pragma mark - Getters
+-(NavbarViewController *)mostDistantChildNBViewController
+{
+    if (self.childNBViewController)
+    {
+        return self.childNBViewController.mostDistantChildNBViewController;
+    }
+    else
+    {
+        return self;
+    }
+}
+
 -(BOOL)isNavbarViewControllerAChild:(NavbarViewController*)navbarViewController
 {
     if (self.childNBViewController)
