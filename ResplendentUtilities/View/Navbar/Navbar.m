@@ -12,12 +12,6 @@
 
 #define kNavbarDefaultButtonHorizontalEdgeInset 0.0f
 
-@interface Navbar ()
-
-@property (nonatomic, readonly) CGFloat animatableContentViewHeight;
-
-@end
-
 @implementation Navbar
 
 @synthesize autoAdjustButtons = _autoAdjustButtons;
@@ -49,11 +43,16 @@
     return [self initWithFrame:frame];
 }
 
+-(CGRect)animatableContentViewFrame
+{
+    return CGRectSetSize(CGSizeMake(CGRectGetWidth(self.frame),self.animatableContentViewHeight), _animatableContentView.frame);
+}
+
 -(void)layoutSubviews
 {
     [super layoutSubviews];
 
-    [_animatableContentView setFrame:CGRectSetSize(CGSizeMake(CGRectGetWidth(self.frame),self.animatableContentViewHeight), _animatableContentView.frame)];
+    [_animatableContentView setFrame:self.animatableContentViewFrame];
 
     if (_autoAdjustButtons)
     {
