@@ -36,6 +36,8 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 @property (nonatomic, assign) NavbarViewController* parentNBViewController;
 @property (nonatomic, strong) NavbarViewController* childNBViewController;
 
+@property (nonatomic, readonly) NavbarViewController* mostDistantChildNBViewController;
+
 //User by parent on push, child on pop
 @property (nonatomic, assign) NavbarViewControllerTransitionFromStyle pushChildTransitionStyle;
 @property (nonatomic, assign) NavbarViewControllerTransitionToStyle pushTransitionStyle;
