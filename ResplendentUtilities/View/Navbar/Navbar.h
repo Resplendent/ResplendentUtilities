@@ -13,10 +13,9 @@
 
 @property (nonatomic, readonly) CGRect titleLabelFrame;
 
+@property (nonatomic, readonly) UIView* animatableContentView;
 @property (nonatomic, readonly) CGRect animatableContentViewFrame;
 @property (nonatomic, readonly) CGFloat animatableContentViewHeight;
-
-@property (nonatomic, retain) UIView* animatableContentView;
 
 @property (nonatomic, retain) NIAttributedLabel* titleLabel;
 @property (nonatomic, assign) CGFloat titleLabelTopEdgeInset;

@@ -10,8 +10,6 @@
 #import "UIView+Utility.h"
 #import "RUConstants.h"
 
-#define kNavbarDefaultButtonHorizontalEdgeInset 0.0f
-
 @implementation Navbar
 
 @synthesize autoAdjustButtons = _autoAdjustButtons;
