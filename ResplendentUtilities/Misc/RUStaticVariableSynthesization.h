@@ -55,5 +55,8 @@ RUStaticVariableSynthesizationWithGetterColor(varName,[UIColor colorWithHexStrin
 
 #define RUStaticVariableSynthesizationWithGetterColorWhiteAlpha(varName,whiteVal,alphaVal) \
 RUStaticVariableSynthesizationWithGetterColor(varName,[UIColor colorWithWhite:(whiteVal) alpha:(alphaVal)]) \
+
+#define RUStaticVariableSynthesizationWithGetterColorGrayShade(prefix,grayVal) \
+RUStaticVariableSynthesizationWithGetterColorWhiteAlpha(prefix##grayVal##ShadeColor, (grayVal)/255.0f, 1.0f);
 //----
 
