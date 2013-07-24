@@ -19,7 +19,9 @@
 @property (nonatomic, assign) NSUInteger numberOfRows;
 @property (nonatomic, assign) CGFloat buttonPadding;
 
+@property (nonatomic, assign) NSUInteger selectedButtonIndex;
+
 //Meant for subclasses
--(CTFramesetterRef)drawButtonFrameSetterWithRect:(CGRect)button buttonTitle:(NSString *)buttonTitle;
+-(CTFramesetterRef)drawButtonFrameSetterWithRect:(CGRect)button buttonTitle:(NSString *)buttonTitle textColor:(UIColor*)textColor
 
 @end
