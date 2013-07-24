@@ -48,10 +48,8 @@
         {
             CGFloat xCoord = (row * (buttonWidth + buttonPadding));
             CGFloat yCoord = (column * (buttonHeight + buttonPadding));
-            //        UIColor* textColor = (buttonTitleIndex == self.selectedButtonIndex ? self.selectedTextColor : self.textColor);
 
             [button setFrame:(CGRect){xCoord, yCoord ,buttonWidth,buttonHeight}];
-            RUDLog(@"button: %@",button);
 
             if (row == numberOfColumns - 1)
             {
@@ -63,103 +61,8 @@
                 row++;
             }
         }
-
-//        [_buttons enumerateObjectsUsingBlock:^(UIButton* button, NSUInteger buttonIndex, BOOL *stop) {
-//            CGFloat xCoord = (row * (buttonWidth + buttonPadding));
-//            CGFloat yCoord = (column * (buttonHeight + buttonPadding));
-//            //        UIColor* textColor = (buttonTitleIndex == self.selectedButtonIndex ? self.selectedTextColor : self.textColor);
-//
-//            [button setFrame:(CGRect){xCoord, -yCoord ,buttonWidth,buttonHeight}];
-////            CTFramesetterRef frameSetter = [self drawButtonFrameSetterWithRect:(CGRect){xCoord,yCoord,buttonWidth,buttonHeight} buttonTitle:buttonTitle textColor:textColor];
-////            CGMutablePathRef textPath = CGPathCreateMutable();
-////            CGPathAddRect(textPath, NULL,(CGRect){xCoord, -yCoord ,buttonWidth,buttonHeight});
-//            
-//            // left column frame
-////            CTFrameRef textFrame = CTFramesetterCreateFrame(frameSetter,CFRangeMake(0, 0),textPath, NULL);
-////            
-////            CFRelease(textFrame);
-////            CGPathRelease(textPath);
-////            CFRelease(frameSetter);
-//            
-//            if (row == numberOfColumns - 1)
-//            {
-//                row = 0;
-//                column++;
-//            }
-//            else
-//            {
-//                row++;
-//            }
-//        }];
     }
-
 }
-
-//-(void)drawRect:(CGRect)rect
-//{
-//    [super drawRect:rect];
-//
-//    if (self.buttonTitles.count)
-//    {
-//        NSString* reasonUnableToDraw = self.reasonUnableToDraw;
-//        if (reasonUnableToDraw)
-//        {
-//            RUDLog(@"reasonUnableToDraw: %@",reasonUnableToDraw);
-//        }
-//        else
-//        {
-//            CGContextRef context = UIGraphicsGetCurrentContext();
-//
-//            CGContextSetTextMatrix(context, CGAffineTransformIdentity);
-//            CGContextTranslateCTM(context, 0, rect.size.height);
-//            CGContextScaleCTM(context, 1.0, -1.0);
-//
-//            NSUInteger numberOfRows = self.numberOfRows;
-//            NSUInteger numberOfColumns = ceil((double)self.buttonTitles.count / (double)numberOfRows);
-//            CGFloat buttonPadding = self.buttonPadding;
-//            CGFloat buttonWidth = ((CGRectGetWidth(rect) + buttonPadding) / (double)numberOfColumns) - buttonPadding;
-//            CGFloat buttonHeight = ((CGRectGetHeight(rect) + buttonPadding) / (double)numberOfRows) - buttonPadding;
-////            CGFloat buttonWidth = (CGRectGetWidth(rect) - (buttonPadding * numberOfColumns)) / (double)numberOfColumns;
-////            CGFloat buttonHeight = (CGRectGetHeight(rect) - (numberOfRows * numberOfColumns)) / (double)numberOfRows;
-//
-//            __block NSUInteger row = 0;
-//            __block NSUInteger column = 0;
-//
-//            [self.buttonTitles enumerateObjectsUsingBlock:^(NSString* buttonTitle, NSUInteger buttonTitleIndex, BOOL *stop) {
-//                CGFloat xCoord = (row * (buttonWidth + buttonPadding));
-//                CGFloat yCoord = (column * (buttonHeight + buttonPadding));
-//                UIColor* textColor = (buttonTitleIndex == self.selectedButtonIndex ? self.selectedTextColor : self.textColor);
-//                
-//                CTFramesetterRef frameSetter = [self drawButtonFrameSetterWithRect:(CGRect){xCoord,yCoord,buttonWidth,buttonHeight} buttonTitle:buttonTitle textColor:textColor];
-//                CGMutablePathRef textPath = CGPathCreateMutable();
-//                CGPathAddRect(textPath, NULL,(CGRect){xCoord, -yCoord ,buttonWidth,buttonHeight});
-//                
-//                // left column frame
-//                CTFrameRef textFrame = CTFramesetterCreateFrame(frameSetter,CFRangeMake(0, 0),textPath, NULL);
-//                
-//                CFRelease(textFrame);
-//                CGPathRelease(textPath);
-//                CFRelease(frameSetter);
-//                
-//                if (row == numberOfColumns - 1)
-//                {
-//                    row = 0;
-//                    column++;
-//                }
-//                else
-//                {
-//                    row++;
-//                }
-//            }];
-//        }
-//    }
-//}
-//
-//-(CTFramesetterRef)drawButtonFrameSetterWithRect:(CGRect)button buttonTitle:(NSString *)buttonTitle textColor:(UIColor*)textColor
-//{
-//    NSAttributedString* attributedString = [[NSAttributedString alloc]initWithString:buttonTitle attributes:@{kRUCompatibleFontAttributeDictPairWithFont(self.font),kRUCompatibleForegroundColorAttributeDictPairWithColor(textColor)}];
-//    return CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);;
-//}
 
 #pragma mark - New Button
 -(UIButton*)newButtonForTitle:(NSString*)title
@@ -169,7 +72,7 @@
     [button.titleLabel setFont:self.font];
     [button setTitleColor:self.textColor forState:UIControlStateNormal];
     [button setTitleColor:self.selectedTextColor forState:UIControlStateSelected];
-    [button setBackgroundColor:[UIColor redColor]];
+    [button setBackgroundColor:[UIColor clearColor]];
     [button addTarget:self action:@selector(pressedButton:) forControlEvents:UIControlEventTouchUpInside];
 
     return button;
@@ -245,24 +148,6 @@
         [self setSelectedButtonIndex:0];
     }
 }
-
-//-(void)setFont:(UIFont *)font
-//{
-//    _font = font;
-//    [self setNeedsDisplay];
-//}
-//
-//-(void)setTextColor:(UIColor *)textColor
-//{
-//    _textColor = textColor;
-//    [self setNeedsDisplay];
-//}
-//
-//-(void)setSelectedTextColor:(UIColor *)selectedTextColor
-//{
-//    _selectedTextColor = selectedTextColor;
-//    [self setNeedsDisplay];
-//}
 
 #pragma mark - Actions
 -(void)pressedButton:(UIButton*)button
