@@ -27,25 +27,25 @@
     CGFloat buttonWidth = (CGRectGetWidth(rect) + buttonPadding) / (double)numberOfColumns;
     CGFloat buttonHeight = (CGRectGetHeight(rect) + buttonPadding) / (double)numberOfRows;
 
-    NSUInteger row = 0;
-    NSUInteger column = 0;
+    __block NSUInteger row = 0;
+    __block NSUInteger column = 0;
 
-    for (NSString* buttonTitle in self.buttonTitles)
-    {
+    [self.buttonTitles enumerateObjectsUsingBlock:^(NSString* buttonTitle, NSUInteger buttonTitleIndex, BOOL *stop) {
         CGFloat xCoord = (row * (buttonWidth + buttonPadding));
         CGFloat yCoord = (column * (buttonHeight + buttonPadding));
-        CTFramesetterRef frameSetter = [self drawButtonFrameSetterWithRect:(CGRect){xCoord,yCoord,buttonWidth,buttonHeight} buttonTitle:buttonTitle];
-        CGMutablePathRef textPath = CGPathCreateMutable();
+        UIColor* textColor = (buttonTitleIndex == self.selectedButtonIndex ? self.selectedTextColor : self.textColor);
 
+        CTFramesetterRef frameSetter = [self drawButtonFrameSetterWithRect:(CGRect){xCoord,yCoord,buttonWidth,buttonHeight} buttonTitle:buttonTitle textColor:textColor];
+        CGMutablePathRef textPath = CGPathCreateMutable();
         CGPathAddRect(textPath, NULL,(CGRect){xCoord, -yCoord ,buttonWidth,buttonHeight});
 
         // left column frame
         CTFrameRef textFrame = CTFramesetterCreateFrame(frameSetter,CFRangeMake(0, 0),textPath, NULL);
-
+        
         CFRelease(textFrame);
         CGPathRelease(textPath);
         CFRelease(frameSetter);
-
+        
         if (row == numberOfColumns - 1)
         {
             row = 0;
@@ -55,12 +55,12 @@
         {
             row++;
         }
-    }
+    }];
 }
 
--(CTFramesetterRef)drawButtonFrameSetterWithRect:(CGRect)button buttonTitle:(NSString *)buttonTitle
+-(CTFramesetterRef)drawButtonFrameSetterWithRect:(CGRect)button buttonTitle:(NSString *)buttonTitle textColor:(UIColor*)textColor
 {
-    NSAttributedString* attributedString = [[NSAttributedString alloc]initWithString:buttonTitle attributes:@{kRUCompatibleFontAttributeDictPairWithFont(self.font),kRUCompatibleForegroundColorAttributeDictPairWithColor(self.textColor)}];
+    NSAttributedString* attributedString = [[NSAttributedString alloc]initWithString:buttonTitle attributes:@{kRUCompatibleFontAttributeDictPairWithFont(self.font),kRUCompatibleForegroundColorAttributeDictPairWithColor(textColor)}];
     return CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);;
 }
 
