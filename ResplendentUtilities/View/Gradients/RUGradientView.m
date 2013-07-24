@@ -57,4 +57,13 @@
     return (_topGradientColor && _bottomGradientColor);
 }
 
+#pragma mark - Static Constructors
++(instancetype)gradientViewWithTopColor:(UIColor*)topColor bottomColor:(UIColor*)bottomColor
+{
+    RUGradientView* gradientView = [self new];
+    [gradientView setTopGradientColor:topColor];
+    [gradientView setBottomGradientColor:bottomColor];
+    return gradientView;
+}
+
 @end
