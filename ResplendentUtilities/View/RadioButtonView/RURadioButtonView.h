@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RURadioButtonViewProtocols.h"
 
 @interface RURadioButtonView : UIView
 {
     NSArray* _buttons;
 }
+
+@property (nonatomic, assign) id<RURadioButtonViewSelectionDelegate> selectionDelegate;
 
 @property (nonatomic, strong) NSArray* buttonTitles;
 @property (nonatomic, strong) UIFont* font;
