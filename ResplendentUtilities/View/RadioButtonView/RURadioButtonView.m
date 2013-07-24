@@ -64,6 +64,11 @@
     }
 }
 
+-(NSString *)description
+{
+    return RUStringWithFormat(@"%@ button titles: %@",[super description],self.buttonTitles);
+}
+
 #pragma mark - New Button
 -(UIButton*)newButtonForTitle:(NSString*)title
 {
@@ -160,6 +165,7 @@
     else
     {
         [self setSelectedButtonIndex:buttonIndex];
+        [self.selectionDelegate radioButtonView:self selectedButtonAtIndex:buttonIndex];
     }
 }
 
