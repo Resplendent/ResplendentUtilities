@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <CoreText/CoreText.h>
 
 @interface RURadioButtonView : UIView
+{
+    NSArray* _buttons;
+}
 
 @property (nonatomic, strong) NSArray* buttonTitles;
 @property (nonatomic, strong) UIFont* font;
@@ -20,8 +22,12 @@
 @property (nonatomic, assign) CGFloat buttonPadding;
 
 @property (nonatomic, assign) NSUInteger selectedButtonIndex;
+@property (nonatomic, assign) UIButton* selectedButton;
 
 //Meant for subclasses
--(CTFramesetterRef)drawButtonFrameSetterWithRect:(CGRect)button buttonTitle:(NSString *)buttonTitle textColor:(UIColor*)textColor;
+-(UIButton*)newButtonForTitle:(NSString*)title;
+//-(CTFramesetterRef)drawButtonFrameSetterWithRect:(CGRect)button buttonTitle:(NSString *)buttonTitle textColor:(UIColor*)textColor;
+
+-(void)pressedButton:(UIButton*)button;
 
 @end
