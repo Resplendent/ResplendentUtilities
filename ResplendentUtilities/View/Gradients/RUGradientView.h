@@ -16,4 +16,6 @@
 @property (nonatomic,strong) UIColor* topGradientColor;
 @property (nonatomic,strong) UIColor* bottomGradientColor;
 
++(instancetype)gradientViewWithTopColor:(UIColor*)topColor bottomColor:(UIColor*)bottomColor;
+
 @end
