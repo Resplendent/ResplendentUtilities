@@ -14,11 +14,16 @@
 
 @property (nonatomic) BOOL ruLoadsUsingSpinner;
 @property (nonatomic) BOOL ruClearImageOnFetch;
-@property (nonatomic) UIActivityIndicatorViewStyle spinnerStyle;
+@property (nonatomic) UIActivityIndicatorViewStyle ruAsynchronousImageFetchingSpinnerStyle;
 
 @property (nonatomic) CGFloat ruFadeInDuration;
 
 @property (nonatomic) id<RUAsynchronousImageFetchingDelegate> ruAsynchronousImageFetchingDelegate;
+
+@property (nonatomic, assign) BOOL ruAsynchronousImageFetchingSpinnerVisibility; //Always animating when visible
+
+//-(void)ruAsynchronousImageFetchingShowSpinner;
+//-(void)ruAsynchronousImageFetchingRemoveSpinner;
 
 -(void)ruCancelAsynchronousImageFetching;
 -(void)ruFetchImageAsynchronouslyAtUrl:(NSURL*)url;
