@@ -103,10 +103,9 @@ UIActivityIndicatorViewStyle const kUIImageViewRUAsynchronousImageFetchingDefaul
         {
             [self setRuAsynchronousImageFetchingPrivateSpinner:[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:self.ruAsynchronousImageFetchingSpinnerStyle]];
             [self addSubview:self.ruAsynchronousImageFetchingPrivateSpinner];
+            [self setAutoresizesSubviews:YES];
             [self ruCenterSpinner];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self ruCenterSpinner];
-            });
+            [self.ruAsynchronousImageFetchingPrivateSpinner setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin)];
         }
         
         [self.ruAsynchronousImageFetchingPrivateSpinner startAnimating];
