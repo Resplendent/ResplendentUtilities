@@ -8,44 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#define RUSynthesizeSetUserDefaultsMethodCompletion(varName,key,completion) \
--(void)set##varName:(id)varName \
-{ \
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
-    if (varName) [userDefaults setObject:varName forKey:key]; \
-    else [userDefaults removeObjectForKey:key]; \
-    [userDefaults synchronize]; \
-    if (completion) \
-    { \
-        void (^completionBlock)() = completion; \
-        completionBlock(varName); \
-    } \
-}
-
-#define RUSynthesizeSetUserDefaultsMethod(varName,key) \
-RUSynthesizeSetUserDefaultsMethodCompletion(varName,key,nil)
-
-#define RUSynthesizeGetUserDefaultsMethod(varName,key) \
--(id)varName \
-{ \
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
-    return [userDefaults objectForKey:key]; \
-}
-
-#define RUSynthesizeSetGetUserDefaultsMethod(VarName,varName,key) \
-RUSynthesizeSetUserDefaultsMethod(VarName,key) \
-RUSynthesizeGetUserDefaultsMethod(varName,key)
-
-//Static
-#define RUSynthesizeStaticSetGetUserDefaultsMethodDeclarations(VarName,varName,varType) \
-+(void)set##VarName:(varType)varName; \
-+(varType)varName;
-
-#define RUSynthesizeStaticSetUserDefaultsMethodCompletion(varName,key,varType,completion) \
-+(void)set##varName:(varType)varName \
-{ \
+#define kRUSynthesizeSetUserDefaultsMethodCompletionImplementation(varName,varType,key,completion) \
 NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
-if (varName) [userDefaults setObject:varName forKey:key]; \
+if (varName && !kRUClassOrNil(varName,NSNull)) [userDefaults setObject:varName forKey:key]; \
 else [userDefaults removeObjectForKey:key]; \
 [userDefaults synchronize]; \
 if (completion) \
@@ -53,20 +18,51 @@ if (completion) \
 void (^completionBlock)() = completion; \
 completionBlock(varName); \
 } \
+
+
+#define RUSynthesizeSetUserDefaultsMethodCompletion(varName,varType,key,completion) \
+-(void)set##varName:(varType *)varName \
+{ \
+    kRUSynthesizeSetUserDefaultsMethodCompletionImplementation(varName,varType,key,completion) \
+}
+
+#define RUSynthesizeSetUserDefaultsMethod(varName,varType,key) \
+RUSynthesizeSetUserDefaultsMethodCompletion(varName,varType,key,nil)
+
+#define RUSynthesizeGetUserDefaultsMethod(varName,varType,key) \
+-(varType *)varName \
+{ \
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
+    return [userDefaults objectForKey:key]; \
+}
+
+#define RUSynthesizeSetGetUserDefaultsMethod(VarName,varName,varType,key) \
+RUSynthesizeSetUserDefaultsMethod(VarName,varType,key) \
+RUSynthesizeGetUserDefaultsMethod(varName,varType,key)
+
+//Static
+#define RUSynthesizeStaticSetGetUserDefaultsMethodDeclarations(VarName,varName,varType) \
++(void)set##VarName:(varType *)varName; \
++(varType *)varName;
+
+#define RUSynthesizeStaticSetUserDefaultsMethodCompletion(varName,varType,key,completion) \
++(void)set##varName:(varType *)varName \
+{ \
+kRUSynthesizeSetUserDefaultsMethodCompletionImplementation(varName,varType,key,completion) \
 }
 
 
-#define RUSynthesizeStaticSetUserDefaultsMethod(varName,key,varType) \
-RUSynthesizeStaticSetUserDefaultsMethodCompletion(varName,key,varType,nil)
+#define RUSynthesizeStaticSetUserDefaultsMethod(varName,varType,key) \
+RUSynthesizeStaticSetUserDefaultsMethodCompletion(varName,varType,key,nil)
 
-#define RUSynthesizeStaticGetUserDefaultsMethod(varName,key,varType) \
-+(varType)varName \
+#define RUSynthesizeStaticGetUserDefaultsMethod(varName,varType,key) \
++(varType *)varName \
 { \
 NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
 return [userDefaults objectForKey:key]; \
 }
 
 #define RUSynthesizeStaticSetGetUserDefaultsMethod(VarName,varName,varType,key) \
-RUSynthesizeStaticSetUserDefaultsMethod(VarName,key,varType) \
-RUSynthesizeStaticGetUserDefaultsMethod(varName,key,varType)
+RUSynthesizeStaticSetUserDefaultsMethod(VarName,varType,key) \
+RUSynthesizeStaticGetUserDefaultsMethod(varName,varType,key)
 
