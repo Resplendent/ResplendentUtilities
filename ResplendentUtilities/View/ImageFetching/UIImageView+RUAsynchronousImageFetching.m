@@ -21,6 +21,8 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeySpinne
 NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyFadeInDuration = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyFadeInDuration";
 NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelegate = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelegate";
 
+UIActivityIndicatorViewStyle const kUIImageViewRUAsynchronousImageFetchingDefaultSpinnerStyle = UIActivityIndicatorViewStyleGray;
+
 @interface UIImageView (RUAsynchronousImageFetchingPrivate)
 
 @property (nonatomic) RUDeallocHook* ruAsynchronousImageFetchingPrivateDeallocHook;
@@ -31,7 +33,9 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
 @property (nonatomic) NSNumber* ruAsynchronousImageFetchingPrivateClearImageOnFetchNumber;
 @property (nonatomic) NSNumber* ruAsynchronousImageFetchingPrivateFadeInDuration;
 
--(void)ruAsynchronousImageFetchingPrivateRemoveSpinner;
+-(void)ruCenterSpinner;
+
+//-(void)ruAsynchronousImageFetchingPrivateRemoveSpinner;
 
 @end
 
@@ -67,23 +71,7 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
 {
     [self ruCancelAsynchronousImageFetching];
 
-    if (self.ruLoadsUsingSpinner)
-    {
-        if (!self.ruAsynchronousImageFetchingPrivateSpinner)
-        {
-            [self setRuAsynchronousImageFetchingPrivateSpinner:[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:self.spinnerStyle]];
-            [self addSubview:self.ruAsynchronousImageFetchingPrivateSpinner];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.ruAsynchronousImageFetchingPrivateSpinner setCenter:(CGPoint){CGRectGetMidX(self.bounds),CGRectGetMidY(self.bounds)}];
-            });
-        }
-
-        [self.ruAsynchronousImageFetchingPrivateSpinner startAnimating];
-    }
-    else
-    {
-        [self ruAsynchronousImageFetchingPrivateRemoveSpinner];
-    }
+    [self setRuAsynchronousImageFetchingSpinnerVisibility:self.ruLoadsUsingSpinner];
 
     if (self.ruClearImageOnFetch)
     {
@@ -96,6 +84,41 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
     [self setRuAsynchronousImageFetchingPrivateDeallocHook:[RUDeallocHook deallocHookWithBlock:^{
         [imageRequestPointer cancelFetch];
     }]];
+}
+
+#pragma mark - Spinner
+-(BOOL)ruAsynchronousImageFetchingSpinnerVisibility
+{
+    return self.ruAsynchronousImageFetchingPrivateSpinner.isAnimating;
+}
+
+-(void)setRuAsynchronousImageFetchingSpinnerVisibility:(BOOL)ruAsynchronousImageFetchingSpinnerVisibility
+{
+    if (self.ruAsynchronousImageFetchingSpinnerVisibility == ruAsynchronousImageFetchingSpinnerVisibility)
+        return;
+
+    if (ruAsynchronousImageFetchingSpinnerVisibility)
+    {
+        if (!self.ruAsynchronousImageFetchingPrivateSpinner)
+        {
+            [self setRuAsynchronousImageFetchingPrivateSpinner:[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:self.ruAsynchronousImageFetchingSpinnerStyle]];
+            [self addSubview:self.ruAsynchronousImageFetchingPrivateSpinner];
+            [self setAutoresizesSubviews:YES];
+            [self ruCenterSpinner];
+            [self.ruAsynchronousImageFetchingPrivateSpinner setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin)];
+        }
+        
+        [self.ruAsynchronousImageFetchingPrivateSpinner startAnimating];
+    }
+    else
+    {
+        if (self.ruAsynchronousImageFetchingPrivateSpinner)
+        {
+            [self.ruAsynchronousImageFetchingPrivateSpinner stopAnimating];
+            [self.ruAsynchronousImageFetchingPrivateSpinner removeFromSuperview];
+            [self setRuAsynchronousImageFetchingPrivateSpinner:nil];
+        }
+    }
 }
 
 #pragma mark - Getter methods
@@ -114,7 +137,7 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
     return self.ruAsynchronousImageFetchingPrivateLoadsUsingSpinnerNumber.boolValue;
 }
 
--(UIActivityIndicatorViewStyle)spinnerStyle
+-(UIActivityIndicatorViewStyle)ruAsynchronousImageFetchingSpinnerStyle
 {
     NSNumber* spinnerStyleNumber = self.ruAsynchronousImageFetchingPrivateSpinnerStyleNumber;
     if (spinnerStyleNumber)
@@ -123,7 +146,7 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
     }
     else
     {
-        return UIActivityIndicatorViewStyleGray;
+        return kUIImageViewRUAsynchronousImageFetchingDefaultSpinnerStyle;
     }
 }
 
@@ -145,9 +168,9 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
     [self setRuAsynchronousImageFetchingPrivateFadeInDuration:@(ruFadeInDuration)];
 }
 
--(void)setSpinnerStyle:(UIActivityIndicatorViewStyle)spinnerStyle
+-(void)setRuAsynchronousImageFetchingSpinnerStyle:(UIActivityIndicatorViewStyle)ruAsynchronousImageFetchingSpinnerStyle
 {
-    [self setRuAsynchronousImageFetchingPrivateSpinnerStyleNumber:@(spinnerStyle)];
+    [self setRuAsynchronousImageFetchingPrivateSpinnerStyleNumber:@(ruAsynchronousImageFetchingSpinnerStyle)];
 }
 
 -(void)setRuLoadsUsingSpinner:(BOOL)ruLoadsUsingSpinner
@@ -167,8 +190,8 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
     if (asynchronousUIImageRequest == self.ruAsynchronousImageFetchingPrivateImageRequest)
     {
         [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
-        
-        [self ruAsynchronousImageFetchingPrivateRemoveSpinner];
+
+        [self setRuAsynchronousImageFetchingSpinnerVisibility:NO];
         
         [self setImage:image];
         
@@ -195,8 +218,7 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
     RUDLog(@"%@",error);
     if (asynchronousUIImageRequest == self.ruAsynchronousImageFetchingPrivateImageRequest)
     {
-        [self ruAsynchronousImageFetchingPrivateRemoveSpinner];
-
+        [self setRuAsynchronousImageFetchingSpinnerVisibility:NO];
         [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
         [self setRuAsynchronousImageFetchingPrivateDeallocHook:nil];
     }
@@ -218,14 +240,9 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelega
 @implementation UIImageView (RUAsynchronousImageFetchingPrivate)
 
 #pragma mark - Content
--(void)ruAsynchronousImageFetchingPrivateRemoveSpinner
+-(void)ruCenterSpinner
 {
-    if (self.ruAsynchronousImageFetchingPrivateSpinner)
-    {
-        [self.ruAsynchronousImageFetchingPrivateSpinner stopAnimating];
-        [self.ruAsynchronousImageFetchingPrivateSpinner removeFromSuperview];
-        [self setRuAsynchronousImageFetchingPrivateSpinner:nil];
-    }
+    [self.ruAsynchronousImageFetchingPrivateSpinner setCenter:(CGPoint){CGRectGetMidX(self.bounds),CGRectGetMidY(self.bounds)}];
 }
 
 #pragma mark - Setters
