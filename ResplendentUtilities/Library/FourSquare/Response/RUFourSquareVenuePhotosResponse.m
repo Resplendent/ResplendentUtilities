@@ -18,7 +18,7 @@
     {
         if (self.successfulResponse)
         {
-            _venuePhotos = [RUFourSquareVenuePhoto fourSquareVenuePhotosForResponseDict:self.responseDictionary withLimit:kRUFourSquareVenuePhotosRequestLimit];
+            _venuePhotos = [RUFourSquareVenuePhoto fourSquareVenuePhotosForResponseDict:[self.responseDictionary objectForKey:@"response"] withLimit:kRUFourSquareVenuePhotosRequestLimit];
         }
     }
     
