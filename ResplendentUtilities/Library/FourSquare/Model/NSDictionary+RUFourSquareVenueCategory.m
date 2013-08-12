@@ -8,6 +8,8 @@
 
 #import "NSDictionary+RUFourSquareVenueCategory.h"
 
+NSString* const kRUFourSquareVenueCategoryNSDictionaryCategoriesKey = @"categories";
+
 @implementation NSDictionary (RUFourSquareVenueCategory)
 
 -(NSString *)ruFourSquareVenueCategoryName
@@ -32,7 +34,7 @@
 
 -(NSArray *)ruFourSquareVenueCategoryCategories
 {
-    return [self objectForKey:@"categories"];
+    return [self objectForKey:kRUFourSquareVenueCategoryNSDictionaryCategoriesKey];
 }
 
 -(NSDictionary *)ruFourSquareVenueCategoryIcon

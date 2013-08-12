@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString* const kRUFourSquareVenueCategoryNSDictionaryCategoriesKey;
+
 @interface NSDictionary (RUFourSquareVenueCategory)
 
 @property (nonatomic, readonly) NSString* ruFourSquareVenueCategoryName;
