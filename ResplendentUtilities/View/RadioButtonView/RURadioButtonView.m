@@ -108,7 +108,12 @@
 
 -(UIButton *)selectedButton
 {
-    return [_buttons objectAtIndex:self.selectedButtonIndex];
+    if (self.selectedButtonIndex != NSNotFound)
+    {
+        return [_buttons objectAtIndex:self.selectedButtonIndex];
+    }
+
+    return nil;
 }
 
 #pragma mark - Setters
@@ -164,6 +169,13 @@
     }
     else
     {
+        if (self.deSelectButtonOnPress)
+        {
+            if (buttonIndex == self.selectedButtonIndex)
+            {
+                buttonIndex = NSNotFound;
+            }
+        }
         [self setSelectedButtonIndex:buttonIndex];
         [self.selectionDelegate radioButtonView:self selectedButtonAtIndex:buttonIndex];
     }

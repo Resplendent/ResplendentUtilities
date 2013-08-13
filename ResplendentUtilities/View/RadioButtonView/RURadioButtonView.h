@@ -24,8 +24,10 @@
 @property (nonatomic, assign) NSUInteger numberOfRows;
 @property (nonatomic, assign) CGFloat buttonPadding;
 
-@property (nonatomic, assign) NSUInteger selectedButtonIndex;
+@property (nonatomic, assign) NSUInteger selectedButtonIndex; //if set to NSNotFound, then none selected
 @property (nonatomic, assign) UIButton* selectedButton;
+
+@property (nonatomic, assign) BOOL deSelectButtonOnPress;
 
 //Meant for subclasses
 -(UIButton*)newButtonForTitle:(NSString*)title;
