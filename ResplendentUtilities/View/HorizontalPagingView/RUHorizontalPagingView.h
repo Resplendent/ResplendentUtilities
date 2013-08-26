@@ -12,11 +12,10 @@
 @interface RUHorizontalPagingView : UIView <UIScrollViewDelegate>
 {
     UIScrollView* _scrollView;
-    
+    UIPageControl* _scrollViewPageControl;
+
     NSMutableDictionary* _visibleCells;
     NSMutableArray* _dequedCells;
-
-    BOOL _updateContentOffsetOnLayoutSubviews;
 
     NSInteger _lastContentOffsetX;
 }
@@ -26,6 +25,9 @@
 @property (nonatomic, assign) CGFloat cellMinAdjustedAlpha; //1.0f by default
 @property (nonatomic, assign) CGFloat cellHorizontalSeparationDistance;
 
+@property (nonatomic, assign) CGSize pageControlSize;
+@property (nonatomic, assign) BOOL pageControlOverlapsScrollView;
+
 @property (nonatomic, assign) id<RUHorizontalPagingViewCellDelegate> cellDelegate;
 @property (nonatomic, assign) id<RUHorizontalPagingViewScrollDelegate> scrollDelegate;
 
@@ -33,6 +35,9 @@
 
 @property (nonatomic, readonly) UIView* mostlyVisibleCell; //Always present if there are any photos to show
 
--(void)setNeedsToUpdateContentOffsetFromAlbum;
+-(void)reloadContent;
+
+-(void)addViewAtEnd;
+-(void)insertViewAtPage:(NSInteger)page preserveDistanceScrolledFromRight:(BOOL)preserveDistanceScrolledFromRight;
 
 @end

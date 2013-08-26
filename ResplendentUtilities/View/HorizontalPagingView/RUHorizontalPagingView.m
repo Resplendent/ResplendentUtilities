@@ -9,12 +9,15 @@
 #import "RUHorizontalPagingView.h"
 #import "RUConstants.h"
 #import "UIView+Utility.h"
+#import "RUCreateDestroyViewSynthesization.h"
 
 @interface RUHorizontalPagingView ()
 
 @property (nonatomic, readonly) NSInteger delegateNumberOfPages;
 @property (nonatomic, readonly) NSInteger closestScrolledPage;
 -(NSInteger)closestScrolledPageToContentOffsetX:(CGFloat)contentOffsetX;
+
+@property (nonatomic, readonly) CGRect scrollViewPageControlFrame;
 
 @property (nonatomic, readonly) CGRect scrollViewFrame;
 @property (nonatomic, readonly) CGRect visibleScrollViewFrame;
@@ -26,6 +29,9 @@
 @property (nonatomic, readonly) UIView* requeCell;
 //Returns a new cell to be added to the scroll view
 @property (nonatomic, readonly) UIView* newCell;
+
+-(void)reloadCells;
+-(void)updatePageControlCountFromViewsCount;
 
 -(CGRect)frameForCellAtPage:(NSInteger)page;
 
@@ -69,6 +75,20 @@
     return self;
 }
 
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    [_scrollView setFrame:self.scrollViewFrame];
+    [_scrollView setContentSize:self.scrollViewContentSize];
+
+    if (_scrollViewPageControl)
+    {
+        [_scrollViewPageControl setFrame:self.scrollViewPageControlFrame];
+    }
+
+    [self updateVisibleCellsAndDequeOffscreenCells];
+}
+
 #pragma mark - Getters
 -(Class)cellClass
 {
@@ -103,6 +123,25 @@
 }
 
 #pragma mark - Setters
+-(void)setPageControlSize:(CGSize)pageControlSize
+{
+    if (pageControlSize.height && pageControlSize.width)
+    {
+        [_scrollView setShowsHorizontalScrollIndicator:NO];
+        if (!_scrollViewPageControl)
+        {
+            _scrollViewPageControl = [UIPageControl new];
+            [_scrollViewPageControl setBackgroundColor:[UIColor clearColor]];
+            [self addSubview:_scrollViewPageControl];
+        }
+        [_scrollViewPageControl setFrame:(CGRect){0,0,pageControlSize}];
+    }
+    else
+    {
+        [self destroyPageControl];
+    }
+}
+
 -(void)setLastScrollViewContentOffsetX:(CGFloat)newLastContentOffsetX updateDelegate:(BOOL)updateDelegate
 {
     if (newLastContentOffsetX != _lastContentOffsetX)
@@ -127,15 +166,6 @@
     
     _scrollViewFrameInsets = scrollViewFrameInsets;
     [self setNeedsLayout];
-}
-
--(void)setNeedsToUpdateContentOffsetFromAlbum
-{
-    if (!_updateContentOffsetOnLayoutSubviews)
-    {
-        _updateContentOffsetOnLayoutSubviews = YES;
-        [self setNeedsLayout];
-    }
 }
 
 #pragma mark - Cell Getters
@@ -187,9 +217,19 @@
 
 
 #pragma mark - Frames
+-(CGRect)scrollViewPageControlFrame
+{
+    return (CGRect){CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(self.pageControlSize.width, CGRectGetWidth(self.bounds)), CGRectGetHeight(self.bounds) - self.pageControlSize.height,self.pageControlSize};
+}
+
 -(CGRect)scrollViewFrame
 {
-    return UIEdgeInsetsInsetRect(self.bounds, self.scrollViewFrameInsets);
+    CGRect scrollViewFrame = UIEdgeInsetsInsetRect(self.bounds, self.scrollViewFrameInsets);
+    if (_scrollViewPageControl && !self.pageControlOverlapsScrollView)
+    {
+        scrollViewFrame.size.height -= self.pageControlSize.height;
+    }
+    return scrollViewFrame;
 }
 
 -(CGRect)visibleScrollViewFrame
@@ -244,6 +284,31 @@
 }
 
 #pragma mark - Update Content
+-(void)updatePageControlCountFromViewsCount
+{
+    if (_scrollViewPageControl)
+    {
+        [_scrollViewPageControl setNumberOfPages:self.delegateNumberOfPages];
+    }
+}
+
+-(void)reloadCells
+{
+    [self flushDequedCells];
+    for (UIView* cell in _visibleCells.allValues)
+    {
+        [cell removeFromSuperview];
+    }
+    [_visibleCells removeAllObjects];
+    
+    [self updateVisibleCellsAndDequeOffscreenCells];
+}
+
+-(void)reloadContent
+{
+    [self reloadCells];
+}
+
 -(void)scrollViewDidSettle
 {
     [self flushDequedCells];
@@ -307,6 +372,8 @@
             break;
         }
     }
+
+    [self updatePageControlCountFromViewsCount];
 }
 
 -(BOOL)checkToAddCellAtPage:(NSInteger)page visibleScrollViewFrame:(CGRect)visibleScrollViewFrame
@@ -336,6 +403,30 @@
     return YES;
 }
 
+#pragma mark - Adding view
+-(void)addViewAtEnd
+{
+    [self insertViewAtPage:self.delegateNumberOfPages preserveDistanceScrolledFromRight:NO];
+}
+
+-(void)insertViewAtPage:(NSInteger)page preserveDistanceScrolledFromRight:(BOOL)preserveDistanceScrolledFromRight
+{
+    if (preserveDistanceScrolledFromRight)
+    {
+        CGFloat distanceFromEnd = _scrollView.contentSize.width - _scrollView.contentOffset.x;
+
+        [self insertViewAtPage:page preserveDistanceScrolledFromRight:NO];
+
+        [_scrollView setContentOffset:(CGPoint){_scrollView.contentSize.width - distanceFromEnd,_scrollView.contentOffset.y}];
+    }
+    else
+    {
+        [self reloadContent];
+        [self updatePageControlCountFromViewsCount];
+    }
+}
+
+
 #pragma mark - UIScrollViewDelegate methods
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -360,5 +451,8 @@
 {
     [self scrollViewDidSettle];
 }
+
+#pragma mark - Static
+RUDestroyViewSynthesizeImplementation(PageControl, _scrollViewPageControl);
 
 @end
