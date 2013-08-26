@@ -139,6 +139,11 @@
 }
 
 #pragma mark - Cell Getters
+-(UIView *)mostlyVisibleCell
+{
+    return [self visibleCellAtPage:self.closestScrolledPage];
+}
+
 -(UIView*)newCell
 {
     Class cellClass = self.cellClass;

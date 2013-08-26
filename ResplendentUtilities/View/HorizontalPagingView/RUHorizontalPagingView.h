@@ -31,6 +31,8 @@
 
 @property (nonatomic, readonly) Class cellClass;
 
+@property (nonatomic, readonly) UIView* mostlyVisibleCell; //Always present if there are any photos to show
+
 -(void)setNeedsToUpdateContentOffsetFromAlbum;
 
 @end
