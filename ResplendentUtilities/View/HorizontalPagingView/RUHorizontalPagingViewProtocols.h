@@ -13,7 +13,11 @@
 @protocol RUHorizontalPagingViewCellDelegate <NSObject>
 
 -(NSInteger)horizontalPagingViewNumberOfCells:(RUHorizontalPagingView*)horizontalPagingView;
--(UIView*)horizontalPagingView:(RUHorizontalPagingView*)horizontalPagingView cellForPage:(NSInteger)page;
+-(void)horizontalPagingView:(RUHorizontalPagingView*)horizontalPagingView didCreateNewCell:(UIView*)newCell;
+-(void)horizontalPagingView:(RUHorizontalPagingView*)horizontalPagingView willDisplayCell:(UIView*)cell atPage:(NSInteger)page;
+
+@optional
+-(void)horizontalPagingView:(RUHorizontalPagingView*)horizontalPagingView didDequeCell:(UIView*)cell;
 
 @end
 

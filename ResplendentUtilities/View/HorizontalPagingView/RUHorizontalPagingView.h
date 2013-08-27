@@ -20,6 +20,8 @@
     NSInteger _lastContentOffsetX;
 }
 
+@property (nonatomic, readonly) NSInteger delegateNumberOfPages;
+
 @property (nonatomic, assign) UIEdgeInsets scrollViewFrameInsets;
 @property (nonatomic, assign) CGFloat cellMinAdjustedTransformScale; //1.0f by default
 @property (nonatomic, assign) CGFloat cellMinAdjustedAlpha; //1.0f by default
@@ -31,13 +33,22 @@
 @property (nonatomic, assign) id<RUHorizontalPagingViewCellDelegate> cellDelegate;
 @property (nonatomic, assign) id<RUHorizontalPagingViewScrollDelegate> scrollDelegate;
 
-@property (nonatomic, readonly) Class cellClass;
+//Must be set, or overloaded by subclass. Trying to create a new cell with a new cellClass will result in crash.
+@property (nonatomic, strong) Class cellClass;
 
+@property (nonatomic, readonly) NSInteger closestScrolledPage;
 @property (nonatomic, readonly) UIView* mostlyVisibleCell; //Always present if there are any photos to show
 
 -(void)reloadContent;
 
 -(void)addViewAtEnd;
 -(void)insertViewAtPage:(NSInteger)page preserveDistanceScrolledFromRight:(BOOL)preserveDistanceScrolledFromRight;
+
+// ++++++
+// Only to be overloaded, not called directly
+
+-(void)scrollViewDidSettle;
+
+// ------
 
 @end
