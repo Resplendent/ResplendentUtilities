@@ -13,10 +13,6 @@
 
 @interface RUHorizontalPagingView ()
 
-@property (nonatomic, readonly) NSInteger delegateNumberOfPages;
-@property (nonatomic, readonly) NSInteger closestScrolledPage;
--(NSInteger)closestScrolledPageToContentOffsetX:(CGFloat)contentOffsetX;
-
 @property (nonatomic, readonly) CGRect scrollViewPageControlFrame;
 
 @property (nonatomic, readonly) CGRect scrollViewFrame;
@@ -30,14 +26,14 @@
 //Returns a new cell to be added to the scroll view
 @property (nonatomic, readonly) UIView* newCell;
 
+-(NSInteger)closestScrolledPageToContentOffsetX:(CGFloat)contentOffsetX;
+
 -(void)reloadCells;
 -(void)updatePageControlCountFromViewsCount;
 
 -(CGRect)frameForCellAtPage:(NSInteger)page;
 
 -(void)setLastScrollViewContentOffsetX:(CGFloat)newLastContentOffsetX updateDelegate:(BOOL)updateDelegate;
-
--(void)scrollViewDidSettle;
 
 -(void)updateVisibleCellsAndDequeOffscreenCells;
 -(BOOL)checkToAddCellAtPage:(NSInteger)page visibleScrollViewFrame:(CGRect)visibleScrollViewFrame;
@@ -90,10 +86,10 @@
 }
 
 #pragma mark - Getters
--(Class)cellClass
-{
-    return [UIView class];
-}
+//-(Class)cellClass
+//{
+//    return [UIView class];
+//}
 
 -(NSInteger)delegateNumberOfPages
 {
@@ -123,6 +119,16 @@
 }
 
 #pragma mark - Setters
+-(void)setCellClass:(Class)cellClass
+{
+    if (cellClass && (cellClass != [UIView class] || ![cellClass isSubclassOfClass:[UIView class]]))
+    {
+        [NSException raise:NSInvalidArgumentException format:@"cell class %@ must be of kind of class of UIView",NSStringFromClass(cellClass)];
+    }
+    
+    _cellClass = cellClass;
+}
+
 -(void)setPageControlSize:(CGSize)pageControlSize
 {
     if (pageControlSize.height && pageControlSize.width)
@@ -182,7 +188,12 @@
     {
         [NSException raise:NSInternalInconsistencyException format:@"Must return non-nil cell class"];
     }
-    
+
+    if (cellClass != [UIView class] || [cellClass isSubclassOfClass:[UIView class]])
+    {
+        [NSException raise:NSInternalInconsistencyException format:@"Cell class %@ must be kind of class UIView",NSStringFromClass(cellClass)];
+    }
+
     return [cellClass new];
 }
 
@@ -193,6 +204,7 @@
     if (!cell)
     {
         cell = self.newCell;
+        [self.cellDelegate horizontalPagingView:self didCreateNewCell:cell];
     }
     
     return cell;
@@ -350,6 +362,11 @@
             [pagesToDeque addObject:page];
             [cell removeFromSuperview];
             [_dequedCells addObject:cell];
+
+            if ([self.cellDelegate respondsToSelector:@selector(horizontalPagingView:didDequeCell:)])
+            {
+                [self.cellDelegate horizontalPagingView:self didDequeCell:cell];
+            }
         }
     }
     
@@ -393,6 +410,7 @@
             [cell setFrame:adjustedCellFrame];
             [_scrollView addSubview:cell];
             [_visibleCells setObject:cell forKey:RUStringWithFormat(@"%i",page)];
+            [self.cellDelegate horizontalPagingView:self willDisplayCell:cell atPage:page];
         }
         else
         {
