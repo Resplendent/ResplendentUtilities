@@ -19,7 +19,7 @@
 @property (nonatomic, readonly) CGRect visibleScrollViewFrame;
 
 @property (nonatomic, readonly) CGSize scrollViewContentSize;
-@property (nonatomic, readonly) CGSize cellSize;
+//@property (nonatomic, readonly) CGSize cellSize;
 
 @property (nonatomic, readonly) UIView* requeOrCreateCell;
 @property (nonatomic, readonly) UIView* requeCell;
@@ -30,6 +30,7 @@
 
 -(void)reloadCells;
 -(void)updatePageControlCountFromViewsCount;
+-(void)updatePageControlCurrentPageCount;
 
 -(CGRect)frameForCellAtPage:(NSInteger)page;
 
@@ -76,16 +77,23 @@
     [super layoutSubviews];
     [_scrollView setFrame:self.scrollViewFrame];
     [_scrollView setContentSize:self.scrollViewContentSize];
+    RUDLog(@"_scrollView: %@",_scrollView);
 
     if (_scrollViewPageControl)
     {
         [_scrollViewPageControl setFrame:self.scrollViewPageControlFrame];
+        RUDLog(@"_scrollViewPageControl: %@",_scrollViewPageControl);
     }
 
     [self updateVisibleCellsAndDequeOffscreenCells];
 }
 
 #pragma mark - Getters
+-(CGSize)pageControlSize
+{
+    return _scrollViewPageControl.frame.size;
+}
+
 //-(Class)cellClass
 //{
 //    return [UIView class];
@@ -101,13 +109,14 @@
     CGFloat numberOfPagesScrolled = contentOffsetX / CGRectGetWidth(_scrollView.frame);
     NSInteger closestPageIndex = round(numberOfPagesScrolled);
     
+    if (closestPageIndex >= self.delegateNumberOfPages)
+    {
+        closestPageIndex = self.delegateNumberOfPages - 1;
+    }
+
     if (closestPageIndex < 0)
     {
         closestPageIndex = 0;
-    }
-    else if (closestPageIndex >= self.delegateNumberOfPages)
-    {
-        closestPageIndex = self.delegateNumberOfPages - 1;
     }
     
     return closestPageIndex;
@@ -121,7 +130,7 @@
 #pragma mark - Setters
 -(void)setCellClass:(Class)cellClass
 {
-    if (cellClass && (cellClass != [UIView class] || ![cellClass isSubclassOfClass:[UIView class]]))
+    if (cellClass && cellClass != [UIView class] && ![cellClass isSubclassOfClass:[UIView class]])
     {
         [NSException raise:NSInvalidArgumentException format:@"cell class %@ must be of kind of class of UIView",NSStringFromClass(cellClass)];
     }
@@ -189,7 +198,7 @@
         [NSException raise:NSInternalInconsistencyException format:@"Must return non-nil cell class"];
     }
 
-    if (cellClass != [UIView class] || [cellClass isSubclassOfClass:[UIView class]])
+    if (cellClass != [UIView class] && ![cellClass isSubclassOfClass:[UIView class]])
     {
         [NSException raise:NSInternalInconsistencyException format:@"Cell class %@ must be kind of class UIView",NSStringFromClass(cellClass)];
     }
@@ -253,20 +262,24 @@
 
 -(CGSize)scrollViewContentSize
 {
-    CGSize photoCellSize = self.cellSize;
+    CGSize photoCellSize = self.scrollViewFrame.size;
     photoCellSize.width *= self.delegateNumberOfPages;
     return photoCellSize;
 }
 
--(CGSize)cellSize
-{
-    return (CGSize){CGRectGetWidth(self.frame) - self.scrollViewFrameInsets.left - self.scrollViewFrameInsets.right,CGRectGetHeight(self.frame) - self.scrollViewFrameInsets.top - self.scrollViewFrameInsets.bottom};
-}
+//-(CGSize)cellSize
+//{
+//    return UIEdgeInsetsInsetRect((CGRect){0,0,self.scrollViewFrame.size}, self.scrollViewFrameInsets).size;
+////    return (CGSize){CGRectGetWidth(self.frame) - self.scrollViewFrameInsets.left - self.scrollViewFrameInsets.right,CGRectGetHeight(self.frame) - self.scrollViewFrameInsets.top - self.scrollViewFrameInsets.bottom};
+//}
 
 -(CGRect)frameForCellAtPage:(NSInteger)page
 {
-    CGSize photoCellSize = self.cellSize;
-    return (CGRect){page * photoCellSize.width,0,photoCellSize};
+    CGRect scrollViewFrame = self.scrollViewFrame;
+    CGRect cellFrame = UIEdgeInsetsInsetRect((CGRect){0,0,scrollViewFrame.size}, self.cellFrameInsets);
+    cellFrame.origin.x += CGRectGetWidth(scrollViewFrame) * page;
+    return cellFrame;
+//    return (CGRect){page * photoCellSize.width,0,photoCellSize};
 }
 
 #pragma mark - Cell Frame Helpers
@@ -296,6 +309,11 @@
 }
 
 #pragma mark - Update Content
+-(void)updatePageControlCurrentPageCount
+{
+    [_scrollViewPageControl setCurrentPage:self.closestScrolledPage];
+}
+
 -(void)updatePageControlCountFromViewsCount
 {
     if (_scrollViewPageControl)
@@ -319,11 +337,13 @@
 -(void)reloadContent
 {
     [self reloadCells];
+    [self setNeedsLayout];
 }
 
 -(void)scrollViewDidSettle
 {
     [self flushDequedCells];
+    [self updatePageControlCurrentPageCount];
     [self.scrollDelegate horizontalPagingViewDidFinishScrolling:self];
 }
 
