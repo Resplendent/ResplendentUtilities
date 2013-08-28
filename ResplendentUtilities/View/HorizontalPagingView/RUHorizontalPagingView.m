@@ -62,6 +62,10 @@
         _dequedCells = [NSMutableArray array];
         
         _scrollView = [UIScrollView new];
+//        [_scrollView.panGestureRecognizer setDelaysTouchesBegan:NO];
+//        [_scrollView.panGestureRecognizer setDelaysTouchesEnded:NO];
+        [_scrollView setDelaysContentTouches:NO];
+        [_scrollView setCanCancelContentTouches:NO];
         [_scrollView setDelegate:self];
         [_scrollView setPagingEnabled:YES];
         [_scrollView setShowsHorizontalScrollIndicator:NO];
@@ -77,12 +81,10 @@
     [super layoutSubviews];
     [_scrollView setFrame:self.scrollViewFrame];
     [_scrollView setContentSize:self.scrollViewContentSize];
-    RUDLog(@"_scrollView: %@",_scrollView);
 
     if (_scrollViewPageControl)
     {
         [_scrollViewPageControl setFrame:self.scrollViewPageControlFrame];
-        RUDLog(@"_scrollViewPageControl: %@",_scrollViewPageControl);
     }
 
     [self updateVisibleCellsAndDequeOffscreenCells];
@@ -213,7 +215,11 @@
     if (!cell)
     {
         cell = self.newCell;
-        [self.cellDelegate horizontalPagingView:self didCreateNewCell:cell];
+
+        if ([self.cellDelegate respondsToSelector:@selector(horizontalPagingView:didCreateNewCell:)])
+        {
+            [self.cellDelegate horizontalPagingView:self didCreateNewCell:cell];
+        }
     }
     
     return cell;
@@ -345,6 +351,7 @@
     [self flushDequedCells];
     [self updatePageControlCurrentPageCount];
     [self.scrollDelegate horizontalPagingViewDidFinishScrolling:self];
+//    [self setVisibleCellsUserInteraction:YES];
 }
 
 -(void)flushDequedCells
@@ -472,8 +479,17 @@
     [self updateVisibleCellsAndDequeOffscreenCells];
 }
 
+-(void)setVisibleCellsUserInteraction:(BOOL)visibleCellsUserInteraction
+{
+    for (UIView* cell in _visibleCells.allValues)
+    {
+        [cell setUserInteractionEnabled:visibleCellsUserInteraction];
+    }
+}
+
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
+//    [self setVisibleCellsUserInteraction:NO];
     [self.scrollDelegate horizontalPagingViewWillBeginScrolling:self];
 }
 
