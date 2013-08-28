@@ -23,6 +23,7 @@
 @property (nonatomic, readonly) NSInteger delegateNumberOfPages;
 
 @property (nonatomic, assign) UIEdgeInsets scrollViewFrameInsets;
+@property (nonatomic, assign) UIEdgeInsets cellFrameInsets;
 @property (nonatomic, assign) CGFloat cellMinAdjustedTransformScale; //1.0f by default
 @property (nonatomic, assign) CGFloat cellMinAdjustedAlpha; //1.0f by default
 @property (nonatomic, assign) CGFloat cellHorizontalSeparationDistance;
