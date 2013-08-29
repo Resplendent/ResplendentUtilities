@@ -13,6 +13,6 @@
 @property (nonatomic, readonly) double latitude;
 @property (nonatomic, readonly) double longitude;
 
--(void)fetchWithLatitude:(double)latitude longitude:(double)longitude;
+-(void)fetchWithLatitude:(double)latitude longitude:(double)longitude limit:(NSInteger)limit;
 
 @end

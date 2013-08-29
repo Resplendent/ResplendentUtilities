@@ -11,17 +11,14 @@
 #import "RUConstants.h"
 #import "RUFourSquareVenueSearchResponse.h"
 
-NSInteger const kRUFourSquareVenueSearchRequestFetchLimit = 20;
-
-
 @implementation RUFourSquareVenueSearchRequest
 
--(void)fetchWithLatitude:(double)latitude longitude:(double)longitude
+-(void)fetchWithLatitude:(double)latitude longitude:(double)longitude limit:(NSInteger)limit
 {
     _latitude = latitude;
     _longitude = longitude;
 
-    [self fetchWithUrl:[NSURL URLWithString:[RUFourSquareVenueRequestUtil searchUrlWithLatitude:latitude longitude:longitude limit:kRUFourSquareVenueSearchRequestFetchLimit]]];
+    [self fetchWithUrl:[NSURL URLWithString:[RUFourSquareVenueRequestUtil searchUrlWithLatitude:latitude longitude:longitude limit:limit]]];
 }
 
 +(Class)responseClass
