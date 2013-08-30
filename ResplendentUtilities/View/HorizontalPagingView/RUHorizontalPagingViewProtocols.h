@@ -21,12 +21,20 @@
 
 @end
 
-@protocol RUHorizontalPagingViewScrollDelegate <NSObject>
+//Never used directly, but as a protocol for other protocols to inherit from
+@protocol RUHorizontalPagingViewBeginFinishScrollingProtocol <NSObject>
 
 -(void)horizontalPagingViewWillBeginScrolling:(RUHorizontalPagingView*)horizontalPagingView;
+-(void)horizontalPagingViewDidFinishScrolling:(RUHorizontalPagingView*)horizontalPagingView;
+
+@end
+
+@protocol RUHorizontalPagingViewScrollDelegate <RUHorizontalPagingViewBeginFinishScrollingProtocol>
 
 -(void)horizontalPagingView:(RUHorizontalPagingView*)horizontalPagingView didScrollFromPage:(NSInteger)fromPage toPage:(NSInteger)toPage;
 
--(void)horizontalPagingViewDidFinishScrolling:(RUHorizontalPagingView*)horizontalPagingView;
+@end
+
+@protocol RUHorizontalPagingViewCellProtocol <RUHorizontalPagingViewBeginFinishScrollingProtocol>
 
 @end

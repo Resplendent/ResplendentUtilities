@@ -351,6 +351,7 @@
     [self flushDequedCells];
     [self updatePageControlCurrentPageCount];
     [self.scrollDelegate horizontalPagingViewDidFinishScrolling:self];
+    [self updateVisibleCellsDidFinishScrolling];
 //    [self setVisibleCellsUserInteraction:YES];
 }
 
@@ -491,6 +492,30 @@
 {
 //    [self setVisibleCellsUserInteraction:NO];
     [self.scrollDelegate horizontalPagingViewWillBeginScrolling:self];
+
+    [self updateVisibleCellsWillBeginScrolling];
+}
+
+-(void)updateVisibleCellsWillBeginScrolling
+{
+    for (UIView<RUHorizontalPagingViewCellProtocol>* cell in _visibleCells.allValues)
+    {
+        if ([cell conformsToProtocol:@protocol(RUHorizontalPagingViewCellProtocol)])
+        {
+            [cell horizontalPagingViewWillBeginScrolling:self];
+        }
+    }
+}
+
+-(void)updateVisibleCellsDidFinishScrolling
+{
+    for (UIView<RUHorizontalPagingViewCellProtocol>* cell in _visibleCells.allValues)
+    {
+        if ([cell conformsToProtocol:@protocol(RUHorizontalPagingViewCellProtocol)])
+        {
+            [cell horizontalPagingViewDidFinishScrolling:self];
+        }
+    }
 }
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
