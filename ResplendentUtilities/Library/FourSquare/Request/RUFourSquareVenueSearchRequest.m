@@ -13,17 +13,44 @@
 
 @implementation RUFourSquareVenueSearchRequest
 
--(void)fetchWithLatitude:(double)latitude longitude:(double)longitude limit:(NSInteger)limit
+-(void)fetchWithCurrentInfo
+{
+    NSString* urlString = self.urlString;
+    if (urlString.length)
+    {
+        [self fetchWithUrl:[NSURL URLWithString:urlString]];
+    }
+    else
+    {
+        RUDLog(@"we need a url string!");
+    }
+}
+
+-(void)fetchWithSearchText:(NSString*)searchText latitude:(double)latitude longitude:(double)longitude limit:(NSInteger)limit
 {
     _latitude = latitude;
     _longitude = longitude;
+    _searchText = searchText;
+    _limit = limit;
 
-    [self fetchWithUrl:[NSURL URLWithString:[RUFourSquareVenueRequestUtil searchUrlWithLatitude:latitude longitude:longitude limit:limit]]];
+    [self fetchWithCurrentInfo];
 }
 
+#pragma mark - Overloaded
 +(Class)responseClass
 {
     return [RUFourSquareVenueSearchResponse class];
+}
+
+#pragma mark - Getters
+-(NSString *)urlString
+{
+    if (!self.latitude || !self.longitude)
+    {
+        return nil;
+    }
+
+    return [RUFourSquareVenueRequestUtil searchUrlWithSearchText:self.searchText latitude:self.latitude longitude:self.longitude limit:self.limit];
 }
 
 @end

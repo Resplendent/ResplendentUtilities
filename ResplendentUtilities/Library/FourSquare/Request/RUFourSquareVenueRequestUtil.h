@@ -16,7 +16,8 @@ extern NSString* const kRUFourSquareVenueRequestCategoryUrl;
 +(NSString*)urlWithBase:(NSString*)baseURL limit:(int)limit;
 
 +(NSString*)searchUrlWithLimit:(int)limit;
-+(NSString*)searchUrlWithLatitude:(double)latitude longitude:(double)longitude limit:(int)limit;
+
++(NSString*)searchUrlWithSearchText:(NSString*)searchText latitude:(double)latitude longitude:(double)longitude limit:(NSInteger)limit;
 
 +(NSString*)photosUrlWithVenueId:(NSString*)venueId limit:(int)limit;
 +(NSString*)urlForVenueWithId:(NSString*)venueId;

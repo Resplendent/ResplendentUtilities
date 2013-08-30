@@ -73,9 +73,16 @@ NSString* RUFourSquareVenueRequestURLBaseWithVenueId(NSString* venueId){
     return [self urlWithBase:kRUFourSquareVenueRequestBaseUrlSearch limit:limit];
 }
 
-+(NSString*)searchUrlWithLatitude:(double)latitude longitude:(double)longitude limit:(int)limit
++(NSString*)searchUrlWithSearchText:(NSString*)searchText latitude:(double)latitude longitude:(double)longitude limit:(NSInteger)limit
 {
-    return RUStringWithFormat(@"%@&ll=%f,%f",[RUFourSquareVenueRequestUtil searchUrlWithLimit:limit],latitude,longitude);
+    NSString* urlString = RUStringWithFormat(@"%@&ll=%f,%f",[RUFourSquareVenueRequestUtil searchUrlWithLimit:limit],latitude,longitude);
+
+    if (searchText.length)
+    {
+        return [urlString stringByAppendingFormat:@"&query='%@'",[searchText stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+    }
+
+    return urlString;
 }
 
 #pragma mark - Urls

@@ -12,7 +12,12 @@
 
 @property (nonatomic, readonly) double latitude;
 @property (nonatomic, readonly) double longitude;
+@property (nonatomic, readonly) NSString* searchText;
+@property (nonatomic, readonly) NSInteger limit;
 
--(void)fetchWithLatitude:(double)latitude longitude:(double)longitude limit:(NSInteger)limit;
+@property (nonatomic, readonly) NSString* urlString;
+
+//param searchText can be nil
+-(void)fetchWithSearchText:(NSString*)searchText latitude:(double)latitude longitude:(double)longitude limit:(NSInteger)limit;
 
 @end
