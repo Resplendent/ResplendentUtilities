@@ -17,7 +17,7 @@
 
 @property (nonatomic, readonly) NSString* name;
 
-@property (nonatomic, readonly) NSDictionary* address;
+@property (nonatomic, readonly) NSDictionary* addressDict;
 @property (nonatomic, readonly) NSString* fullAddress;
 
 @property (nonatomic, readonly) NSDictionary* contactInfo;
@@ -48,5 +48,12 @@
 +(NSMutableArray*)fourSquareVenueArrayFromSearchJsonResponse:(NSDictionary*) response;
 
 +(NSString*)categoryIconUrlFromCategoryInfoDict:(NSDictionary*)categoryInfoDict widthClosestTo:(NSInteger)width doubleForRetina:(BOOL)doubleForRetina;
++(NSString*)fullAddressWithAddressDict:(NSDictionary*)addressDict;
+
+@end
+
+@interface NSDictionary (RUFourSquareVenueCategoryInfo)
+
+@property (nonatomic, readonly) NSString* RUFourSquareVenueCategoryInfoPluralName;
 
 @end

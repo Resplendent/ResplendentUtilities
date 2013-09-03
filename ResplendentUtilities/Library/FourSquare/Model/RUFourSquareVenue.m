@@ -42,17 +42,17 @@
 
 -(NSNumber *)longitude
 {
-    return [self.address objectForKey:@"lng"];
+    return [self.addressDict objectForKey:@"lng"];
 }
 
 -(NSNumber *)latitude
 {
-    return [self.address objectForKey:@"lat"];
+    return [self.addressDict objectForKey:@"lat"];
 }
 
 -(NSString *)category
 {
-    return [self.categoryInfo objectForKey:@"pluralName"];
+    return self.categoryInfo.RUFourSquareVenueCategoryInfoPluralName;
 }
 
 -(NSDictionary *)categoryInfo
@@ -67,7 +67,7 @@
 
 -(NSNumber *)distance
 {
-    return [self.address objectForKey:@"distance"];
+    return [self.addressDict objectForKey:@"distance"];
 }
 
 -(NSDictionary *)contactInfo
@@ -80,7 +80,7 @@
     return [self.contactInfo objectForKey:@"formattedPhone"];
 }
 
--(NSDictionary *)address
+-(NSDictionary *)addressDict
 {
     return [_infoDict objectForKey:@"location"];
 }
@@ -133,21 +133,12 @@
 
 -(NSString*)fullAddress
 {
-    NSMutableString* fullAddress = [NSMutableString stringWithFormat:@"%@ %@",[self.address objectForKey:@"city"],[self.address objectForKey:@"state"]];
-    
-    NSString* address = kRUStringOrNil([self.address objectForKey:@"address"]);
-    if (address.length)
-        [fullAddress insertString:RUStringWithFormat(@"%@ ",address) atIndex:0];
-    
-    if ([self.address objectForKey:@"postalCode"])
-        [fullAddress appendFormat:@" %@",[self.address objectForKey:@"postalCode"]];
-    
-    return [NSString stringWithString:fullAddress];
+    return [[self class]fullAddressWithAddressDict:self.addressDict];
 }
 
 -(NSString*)shortAddress
 {
-    return [self.address objectForKey:@"address"];
+    return [self.addressDict objectForKey:@"address"];
 }
 
 -(NSString *)url
@@ -178,6 +169,59 @@
     }
     
     return venues;
+}
+
++(NSString*)fullAddressWithAddressDict:(NSDictionary*)addressDict
+{
+    NSString* city = kRUStringOrNil([addressDict objectForKey:@"city"]);
+    NSString* state = kRUStringOrNil([addressDict objectForKey:@"state"]);
+    
+    if (!city.length && !state.length)
+    {
+        return nil;
+    }
+    
+    NSMutableString* fullAddress = nil;
+    
+    if (city.length && state.length)
+    {
+        fullAddress = [NSMutableString stringWithFormat:@"%@ %@",city,state];
+    }
+    else
+    {
+        if (city.length)
+        {
+            fullAddress = [NSMutableString stringWithString:city];
+        }
+        else
+        {
+            fullAddress = [NSMutableString stringWithString:state];
+        }
+    }
+    
+    NSString* address = kRUStringOrNil([addressDict objectForKey:@"address"]);
+    
+    if (address.length)
+    {
+        [fullAddress insertString:RUStringWithFormat(@"%@ ",address) atIndex:0];
+    }
+    
+    id postalCode = [addressDict objectForKey:@"postalCode"];
+    if (postalCode)
+    {
+        [fullAddress appendFormat:@" %@",postalCode];
+    }
+    
+    return [NSString stringWithString:fullAddress];
+}
+
+@end
+
+@implementation NSDictionary (RUFourSquareVenueCategoryInfo)
+
+-(NSString *)RUFourSquareVenueCategoryInfoPluralName
+{
+    return [self objectForKey:@"pluralName"];
 }
 
 @end
