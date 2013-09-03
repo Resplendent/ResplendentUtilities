@@ -50,6 +50,11 @@
 #pragma mark - Static
 +(NSString*)urlFromFormatString:(NSString*)urlFormatString withSizeComponent:(NSString*)sizeComponent
 {
+    if (!urlFormatString)
+    {
+        [NSException raise:NSInternalInconsistencyException format:@"Must pass non-nil urlFormatString"];
+    }
+
     if (!sizeComponent.length)
     {
         sizeComponent = @"original";

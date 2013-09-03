@@ -33,6 +33,7 @@
 -(void)updatePageControlCurrentPageCount;
 
 -(CGRect)frameForCellAtPage:(NSInteger)page;
+-(CGRect)cellFrameForScrollViewFrame:(CGRect)scrollViewFrame;
 
 -(void)setLastScrollViewContentOffsetX:(CGFloat)newLastContentOffsetX updateDelegate:(BOOL)updateDelegate;
 
@@ -279,13 +280,22 @@
 ////    return (CGSize){CGRectGetWidth(self.frame) - self.scrollViewFrameInsets.left - self.scrollViewFrameInsets.right,CGRectGetHeight(self.frame) - self.scrollViewFrameInsets.top - self.scrollViewFrameInsets.bottom};
 //}
 
+-(CGRect)cellFrameForScrollViewFrame:(CGRect)scrollViewFrame
+{
+    return UIEdgeInsetsInsetRect((CGRect){0,0,scrollViewFrame.size}, self.cellFrameInsets);
+}
+
+-(CGSize)cellFrameSize
+{
+    return [self cellFrameForScrollViewFrame:self.scrollViewFrame].size;
+}
+
 -(CGRect)frameForCellAtPage:(NSInteger)page
 {
     CGRect scrollViewFrame = self.scrollViewFrame;
-    CGRect cellFrame = UIEdgeInsetsInsetRect((CGRect){0,0,scrollViewFrame.size}, self.cellFrameInsets);
+    CGRect cellFrame = [self cellFrameForScrollViewFrame:scrollViewFrame];
     cellFrame.origin.x += CGRectGetWidth(scrollViewFrame) * page;
     return cellFrame;
-//    return (CGRect){page * photoCellSize.width,0,photoCellSize};
 }
 
 #pragma mark - Cell Frame Helpers
