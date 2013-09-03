@@ -10,6 +10,7 @@
 #import "RUConstants.h"
 #import "UIView+Utility.h"
 #import "RUCreateDestroyViewSynthesization.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface RUHorizontalPagingView ()
 
@@ -43,7 +44,8 @@
 
 -(CGFloat)adjustRatioForCellFrame:(CGRect)cellFrame;
 -(CGFloat)roundedAdjustRatioForAdjustRatio:(CGFloat)adjustRatio;
--(CGRect)adjustCellFrameForFrame:(CGRect)cellFrame adjustRatio:(CGFloat)adjustRatio roundedAdjustRatio:(CGFloat)roundedAdjustRatio;
+-(CGFloat)adjustedScaleForRoundedAdjustRatio:(CGFloat)roundedAdjustRatio;
+-(CGRect)adjustCellFrameForFrame:(CGRect)cellFrame adjustRatio:(CGFloat)adjustRatio roundedAdjustRatio:(CGFloat)roundedAdjustRatio adjustedScale:(CGFloat)adjustedScale;
 
 -(UIView *)visibleCellAtPage:(NSInteger)page;
 
@@ -310,9 +312,14 @@
     return MIN(fabs(adjustRatio), 1);
 }
 
--(CGRect)adjustCellFrameForFrame:(CGRect)cellFrame adjustRatio:(CGFloat)adjustRatio roundedAdjustRatio:(CGFloat)roundedAdjustRatio
+-(CGFloat)adjustedScaleForRoundedAdjustRatio:(CGFloat)roundedAdjustRatio
 {
-    CGFloat adjustedScale = 1 - ((1.0f - self.cellMinAdjustedTransformScale) * roundedAdjustRatio);
+    return 1 - ((1.0f - self.cellMinAdjustedTransformScale) * roundedAdjustRatio);;
+}
+
+-(CGRect)adjustCellFrameForFrame:(CGRect)cellFrame adjustRatio:(CGFloat)adjustRatio roundedAdjustRatio:(CGFloat)roundedAdjustRatio adjustedScale:(CGFloat)adjustedScale
+{
+//    CGFloat adjustedScale = [self adjustScaleForRoundedAdjustRatio:roundedAdjustRatio];
     
     CGRect adjustedCellFrame = cellFrame;
     adjustedCellFrame.size.width *= adjustedScale;
@@ -370,6 +377,42 @@
     [_dequedCells removeAllObjects];
 }
 
+-(UIView*)updateAlphaAndLayerTransformOfCell:(UIView*)cell atPage:(NSInteger)page withVisibleScrollViewFrame:(CGRect)visibleScrollViewFrame allowRequeOrCreateCell:(BOOL)allowRequeOrCreateCell
+{
+    CGRect cellFrame = [self frameForCellAtPage:page];
+    
+    CGFloat adjustRatio = [self adjustRatioForCellFrame:cellFrame];
+    CGFloat roundedAdjustRatio = [self roundedAdjustRatioForAdjustRatio:adjustRatio];
+    CGFloat adjustedScale = [self adjustedScaleForRoundedAdjustRatio:roundedAdjustRatio];
+    CGRect adjustedCellFrame = [self adjustCellFrameForFrame:cellFrame adjustRatio:adjustRatio roundedAdjustRatio:roundedAdjustRatio adjustedScale:adjustedScale];
+
+    if (CGRectIntersectsRect(visibleScrollViewFrame, adjustedCellFrame))
+    {
+        if (!cell)
+        {
+            if (allowRequeOrCreateCell)
+            {
+                cell = self.requeOrCreateCell;
+            }
+            else
+            {
+                RUDLog(@"must pass non-nil cell, or allow for requeOrCreateCell");
+            }
+        }
+
+        [cell.layer setTransform:CATransform3DMakeScale(1.0, 1.0, 1.0)];
+        [cell.layer setFrame:cellFrame];
+        [cell layoutIfNeeded];
+        [cell.layer setTransform:CATransform3DMakeScale(adjustedScale, adjustedScale, 1.0)];
+//        [cell setFrame:adjustedCellFrame];
+        
+        [cell setAlpha:1 - (self.cellMinAdjustedAlpha * roundedAdjustRatio)];
+        return cell;
+    }
+
+    return nil;
+}
+
 -(void)updateVisibleCellsAndDequeOffscreenCells
 {
     if (CGRectIsEmpty(_scrollView.frame))
@@ -382,30 +425,48 @@
     
     for (NSString* page in _visibleCells)
     {
-        CGRect cellFrame = [self frameForCellAtPage:page.integerValue];
-        
-        CGFloat adjustRatio = [self adjustRatioForCellFrame:cellFrame];
-        CGFloat roundedAdjustRatio = [self roundedAdjustRatioForAdjustRatio:adjustRatio];
-        CGRect adjustedCellFrame = [self adjustCellFrameForFrame:cellFrame adjustRatio:adjustRatio roundedAdjustRatio:roundedAdjustRatio];
-
         UIView* cell = [self visibleCellAtPage:page.integerValue];
 
-        if (CGRectIntersectsRect(visibleScrollViewFrame, adjustedCellFrame))
-        {
-            [cell setFrame:adjustedCellFrame];
-            [cell setAlpha:1 - (self.cellMinAdjustedAlpha * roundedAdjustRatio)];
-        }
-        else
+        if (![self updateAlphaAndLayerTransformOfCell:cell atPage:page.integerValue withVisibleScrollViewFrame:visibleScrollViewFrame allowRequeOrCreateCell:NO])
         {
             [pagesToDeque addObject:page];
             [cell removeFromSuperview];
             [_dequedCells addObject:cell];
-
+            
             if ([self.cellDelegate respondsToSelector:@selector(horizontalPagingView:didDequeCell:)])
             {
                 [self.cellDelegate horizontalPagingView:self didDequeCell:cell];
             }
         }
+//        CGRect cellFrame = [self frameForCellAtPage:page.integerValue];
+//        
+//        CGFloat adjustRatio = [self adjustRatioForCellFrame:cellFrame];
+//        CGFloat roundedAdjustRatio = [self roundedAdjustRatioForAdjustRatio:adjustRatio];
+//        CGFloat adjustedScale = [self adjustedScaleForRoundedAdjustRatio:roundedAdjustRatio];
+//        CGRect adjustedCellFrame = [self adjustCellFrameForFrame:cellFrame adjustRatio:adjustRatio roundedAdjustRatio:roundedAdjustRatio adjustedScale:adjustedScale];
+//
+//        UIView* cell = [self visibleCellAtPage:page.integerValue];
+//
+//        if (CGRectIntersectsRect(visibleScrollViewFrame, adjustedCellFrame))
+//        {
+//            [cell.layer setTransform:CATransform3DMakeScale(1.0, 1.0, 1.0)];
+//            [cell.layer setFrame:cellFrame];
+//            [cell.layer setTransform:CATransform3DMakeScale(adjustedScale, adjustedScale, 1.0)];
+//            [cell setFrame:adjustedCellFrame];
+//
+//            [cell setAlpha:1 - (self.cellMinAdjustedAlpha * roundedAdjustRatio)];
+//        }
+//        else
+//        {
+//            [pagesToDeque addObject:page];
+//            [cell removeFromSuperview];
+//            [_dequedCells addObject:cell];
+//
+//            if ([self.cellDelegate respondsToSelector:@selector(horizontalPagingView:didDequeCell:)])
+//            {
+//                [self.cellDelegate horizontalPagingView:self didDequeCell:cell];
+//            }
+//        }
     }
     
     [_visibleCells removeObjectsForKeys:pagesToDeque];
@@ -435,27 +496,20 @@
 {
     if (![self visibleCellAtPage:page])
     {
-        CGRect cellFrame = [self frameForCellAtPage:page];
-        
-        CGFloat adjustRatio = [self adjustRatioForCellFrame:cellFrame];
-        
-        CGFloat roundedAdjustRatio = [self roundedAdjustRatioForAdjustRatio:adjustRatio];
-        CGRect adjustedCellFrame = [self adjustCellFrameForFrame:cellFrame adjustRatio:adjustRatio roundedAdjustRatio:roundedAdjustRatio];
-        
-        if (CGRectIntersectsRect(visibleScrollViewFrame, adjustedCellFrame))
+        UIView* cell = [self updateAlphaAndLayerTransformOfCell:nil atPage:page withVisibleScrollViewFrame:visibleScrollViewFrame allowRequeOrCreateCell:YES];
+        if (cell)
         {
-            UIView* cell = self.requeOrCreateCell;
-            [cell setFrame:adjustedCellFrame];
             [_scrollView addSubview:cell];
             [_visibleCells setObject:cell forKey:RUStringWithFormat(@"%i",page)];
             [self.cellDelegate horizontalPagingView:self willDisplayCell:cell atPage:page];
+            return YES;
         }
         else
         {
             return NO;
         }
     }
-    
+
     return YES;
 }
 
