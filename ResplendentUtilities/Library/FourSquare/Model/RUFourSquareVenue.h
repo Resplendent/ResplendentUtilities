@@ -57,3 +57,13 @@
 @property (nonatomic, readonly) NSString* RUFourSquareVenueCategoryInfoPluralName;
 
 @end
+
+@interface NSDictionary (RUFourSquareVenueLocationInfo)
+
+@property (nonatomic, readonly) NSString* RUFourSquareVenueLocationInfoCity;
+@property (nonatomic, readonly) NSString* RUFourSquareVenueLocationInfoState;
+@property (nonatomic, readonly) NSString* RUFourSquareVenueLocationInfoCountry;
+@property (nonatomic, readonly) NSString* RUFourSquareVenueLocationInfoAddress;
+@property (nonatomic, readonly) id RUFourSquareVenueLocationInfoPostalCode;
+
+@end

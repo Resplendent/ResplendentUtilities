@@ -10,6 +10,12 @@
 #import "RUClassOrNilUtil.h"
 #import "RUConstants.h"
 
+@interface RUFourSquareVenue ()
+
++(NSString*)cityStateCountryAddressChunkWithAddressDict:(NSDictionary*)addressDict;
+
+@end
+
 @implementation RUFourSquareVenue
 
 -(id) initWithFourSquareJSONDict:(NSDictionary*) dict
@@ -171,47 +177,60 @@
     return venues;
 }
 
-+(NSString*)fullAddressWithAddressDict:(NSDictionary*)addressDict
++(NSString*)cityStateCountryAddressChunkWithAddressDict:(NSDictionary*)addressDict
 {
-    NSString* city = kRUStringOrNil([addressDict objectForKey:@"city"]);
-    NSString* state = kRUStringOrNil([addressDict objectForKey:@"state"]);
+    NSString* city = kRUStringOrNil(addressDict.RUFourSquareVenueLocationInfoCity);
+    NSString* state = kRUStringOrNil(addressDict.RUFourSquareVenueLocationInfoState);
+    NSString* country = kRUStringOrNil(addressDict.RUFourSquareVenueLocationInfoCountry);
     
-    if (!city.length && !state.length)
+    if (!city.length && !state.length && !country.length)
     {
         return nil;
     }
     
-    NSMutableString* fullAddress = nil;
-    
     if (city.length && state.length)
     {
-        fullAddress = [NSMutableString stringWithFormat:@"%@ %@",city,state];
+        return RUStringWithFormat(@"%@ %@",city,state);
     }
     else
     {
         if (city.length)
         {
-            fullAddress = [NSMutableString stringWithString:city];
+            return city;
+        }
+        else if (state.length)
+        {
+            return state;
         }
         else
         {
-            fullAddress = [NSMutableString stringWithString:state];
+            return country;
         }
     }
-    
-    NSString* address = kRUStringOrNil([addressDict objectForKey:@"address"]);
-    
+}
+
++(NSString*)fullAddressWithAddressDict:(NSDictionary*)addressDict
+{
+    NSString* initialCityStateCountryAddressChunk = [self cityStateCountryAddressChunkWithAddressDict:addressDict];
+    if (!initialCityStateCountryAddressChunk.length)
+    {
+        return nil;
+    }
+
+    NSMutableString* fullAddress = [NSMutableString stringWithString:initialCityStateCountryAddressChunk];
+
+    NSString* address = kRUStringOrNil(addressDict.RUFourSquareVenueLocationInfoAddress);
     if (address.length)
     {
         [fullAddress insertString:RUStringWithFormat(@"%@ ",address) atIndex:0];
     }
-    
-    id postalCode = [addressDict objectForKey:@"postalCode"];
+
+    id postalCode = addressDict.RUFourSquareVenueLocationInfoPostalCode;
     if (postalCode)
     {
         [fullAddress appendFormat:@" %@",postalCode];
     }
-    
+
     return [NSString stringWithString:fullAddress];
 }
 
@@ -222,6 +241,35 @@
 -(NSString *)RUFourSquareVenueCategoryInfoPluralName
 {
     return [self objectForKey:@"pluralName"];
+}
+
+@end
+
+@implementation NSDictionary (RUFourSquareVenueLocationInfo)
+
+-(NSString *)RUFourSquareVenueLocationInfoCity
+{
+    return [self objectForKey:@"city"];
+}
+
+-(NSString *)RUFourSquareVenueLocationInfoState
+{
+    return [self objectForKey:@"state"];
+}
+
+-(NSString *)RUFourSquareVenueLocationInfoCountry
+{
+    return [self objectForKey:@"country"];
+}
+
+-(NSString *)RUFourSquareVenueLocationInfoAddress
+{
+    return [self objectForKey:@"address"];
+}
+
+-(id)RUFourSquareVenueLocationInfoPostalCode
+{
+    return [self objectForKey:@"postalCode"];
 }
 
 @end
