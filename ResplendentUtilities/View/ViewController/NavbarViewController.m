@@ -208,6 +208,9 @@ static NSTimeInterval popPushAnimationDuration;
             superView = superView.superview;
         }
 
+        BOOL oldClipToBounds = self.view.clipsToBounds;
+        [self.view setClipsToBounds:NO];
+
         __block BOOL selfUserInteractionEnabled = self.view.userInteractionEnabled;
         
         __block BOOL childUserInteractionEnabled = navbarViewController.view.userInteractionEnabled;
@@ -267,6 +270,8 @@ static NSTimeInterval popPushAnimationDuration;
         [UIView animateWithDuration:animationDuration animations:^{
             [self performPushTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
+            [self.view setClipsToBounds:oldClipToBounds];
+
             //Move navbar back
             [self performNavbarPushTransitionCompletionToViewController:navbarViewController];
 
@@ -325,6 +330,9 @@ static NSTimeInterval popPushAnimationDuration;
 
     if (animated)
     {
+        BOOL oldClipToBounds = self.parentNBViewController.view.clipsToBounds;
+        [self.parentNBViewController.view setClipsToBounds:NO];
+
         [self.view setUserInteractionEnabled:NO];
 
         CGPoint originalParentOrigin = _parentNBViewController.view.frame.origin;
@@ -381,6 +389,8 @@ static NSTimeInterval popPushAnimationDuration;
         [UIView animateWithDuration:animationDuration animations:^{
             [self performPopTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
+            [self.parentNBViewController.view setClipsToBounds:oldClipToBounds];
+
             [self performNavbarPopTransitionCompletion];
 
             [_parentNBViewController navbarViewDidAppear:YES];
