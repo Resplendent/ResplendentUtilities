@@ -153,20 +153,16 @@ static NSTimeInterval popPushAnimationDuration;
 #pragma mark - Public methods
 -(void)setDefaultLeftToRightTransitionProperties
 {
-#ifdef kCFCoreFoundationVersionNumber_iOS_6_1
-    if (kCFCoreFoundationVersionNumber <= kCFCoreFoundationVersionNumber_iOS_6_1)
+    if (RUiOSSystemVersionIsAtLeast(7.0))
+    {
+        [self setPushTransitionStyle:NavbarViewControllerTransitionToStyleToLeftQuarterDistance];
+        [self setPopParentTransitionStyle:NavbarViewControllerTransitionFromStyleFromLeftQuarterDistance];
+    }
+    else
     {
         [self setPushTransitionStyle:NavbarViewControllerTransitionToStyleToLeft];
         [self setPopParentTransitionStyle:NavbarViewControllerTransitionFromStyleFromLeft];
     }
-    else
-    {
-#endif
-        [self setPushTransitionStyle:NavbarViewControllerTransitionToStyleToLeftQuarterDistance];
-        [self setPopParentTransitionStyle:NavbarViewControllerTransitionFromStyleFromLeftQuarterDistance];
-#ifdef kCFCoreFoundationVersionNumber_iOS_6_1
-    }
-#endif
 
     [self setPushChildTransitionStyle:NavbarViewControllerTransitionFromStyleFromRight];
     
