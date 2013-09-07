@@ -12,7 +12,7 @@
 #import "UIView+Utility.h"
 #import <CoreFoundation/CFBase.h>
 
-NSTimeInterval const kNavbarViewControllerPushPopAnimationDefaultDuration = 0.3f;
+NSTimeInterval const kNavbarViewControllerPushPopAnimationDefaultDuration = 0.25f;
 NSTimeInterval const kNavbarViewControllerPushPopAnimationDefaultModalMultiplier = 1.5f;
 
 NSTimeInterval const  kNavbarViewControllerPushPopNavbarMovementScale = 8.0f;
@@ -291,7 +291,7 @@ static NSTimeInterval popPushAnimationDuration;
         [self prepareForNavbarPushTransitionToViewController:navbarViewController];
 
         [UIView animateWithDuration:animationDuration animations:^{
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
             [self performPushTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
             [self.view setClipsToBounds:oldClipToBounds];
@@ -417,7 +417,7 @@ static NSTimeInterval popPushAnimationDuration;
         [self prepareForNavbarPopTransition];
 
         [UIView animateWithDuration:animationDuration animations:^{
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
             [self performPopTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
             [self.parentNBViewController.view setClipsToBounds:oldClipToBounds];
