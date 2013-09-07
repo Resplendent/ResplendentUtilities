@@ -197,14 +197,10 @@ UIActivityIndicatorViewStyle const kUIImageViewRUAsynchronousImageFetchingDefaul
 
         if (self.ruFadeInDuration)
         {
-            [self setUserInteractionEnabled:NO];
-            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self setUserInteractionEnabled:NO];
-                [self setAlpha:0.0f];
-                [UIView animateWithDuration:self.ruFadeInDuration animations:^{
-                    [self setAlpha:1.0f];
-                }];
-            });
+            [self setAlpha:0.0f];
+            [UIView animateWithDuration:self.ruFadeInDuration animations:^{
+                [self setAlpha:1.0f];
+            }];
         }
     }
     else
