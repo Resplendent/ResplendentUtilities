@@ -45,11 +45,7 @@ UIActivityIndicatorViewStyle const kUIImageViewRUAsynchronousImageFetchingDefaul
 {
     [self setRuAsynchronousImageFetchingPrivateDeallocHook:nil];
 
-    if (self.ruAsynchronousImageFetchingPrivateImageRequest)
-    {
-        [self.ruAsynchronousImageFetchingPrivateImageRequest cancelFetch];
-        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
-    }
+    [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
 }
 
 -(void)ruFetchImageAsynchronouslyAtUrlString:(NSString*)urlString
@@ -288,6 +284,7 @@ UIActivityIndicatorViewStyle const kUIImageViewRUAsynchronousImageFetchingDefaul
     {
         [oldRequest cancelFetch];
     }
+
     objc_setAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest,
                              ruAsynchronousImageFetchingPrivateImageRequest,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
