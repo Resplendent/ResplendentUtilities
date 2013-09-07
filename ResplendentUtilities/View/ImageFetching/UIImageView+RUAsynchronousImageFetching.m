@@ -190,20 +190,22 @@ UIActivityIndicatorViewStyle const kUIImageViewRUAsynchronousImageFetchingDefaul
         [self setRuAsynchronousImageFetchingSpinnerVisibility:NO];
         
         [self setImage:image];
-        
+
+        [self.ruAsynchronousImageFetchingDelegate ruAsynchronousFetchingImageView:self finishedFetchingImage:image];
+        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
+        [self setRuAsynchronousImageFetchingPrivateDeallocHook:nil];
+
         if (self.ruFadeInDuration)
         {
+            [self setUserInteractionEnabled:NO];
             dispatch_async(dispatch_get_main_queue(), ^{
+//                [self setUserInteractionEnabled:NO];
                 [self setAlpha:0.0f];
                 [UIView animateWithDuration:self.ruFadeInDuration animations:^{
                     [self setAlpha:1.0f];
                 }];
             });
         }
-        
-        [self.ruAsynchronousImageFetchingDelegate ruAsynchronousFetchingImageView:self finishedFetchingImage:image];
-        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
-        [self setRuAsynchronousImageFetchingPrivateDeallocHook:nil];
     }
     else
     {
