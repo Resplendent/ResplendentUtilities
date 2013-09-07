@@ -76,10 +76,12 @@ static NSMutableDictionary* fetchedImages;
 #pragma mark - Private methods
 -(void)fetchImageWithDelegate:(id<RUAsynchronousUIImageRequestDelegate>)delegate
 {
+    [self cancelFetch];
+    _delegate = delegate;
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [self cancelFetch];
         _canceled = NO;
-        _delegate = delegate;
         
         UIImage* cachedImage = [RUAsynchronousUIImageRequest cachedImageForCacheName:_cacheName];
         
@@ -108,6 +110,7 @@ static NSMutableDictionary* fetchedImages;
 -(void)cancelFetch
 {
     _canceled = YES;
+    _delegate = nil;
 
     if (_connection)
     {

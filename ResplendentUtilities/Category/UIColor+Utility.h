@@ -1,6 +1,6 @@
 //
 //  UIColor+Utility.h
-//  Memeni
+//  Albumatic
 //
 //  Created by Benjamin Maer on 8/25/12.
 //  Copyright (c) 2012 Resplendent G.P.. All rights reserved.

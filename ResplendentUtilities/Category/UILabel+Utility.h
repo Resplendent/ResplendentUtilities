@@ -1,6 +1,6 @@
 //
 //  UILabel+Utility.h
-//  Memeni
+//  Albumatic
 //
 //  Created by Ben Maer on 9/26/12.
 //
