@@ -287,6 +287,7 @@ static NSTimeInterval popPushAnimationDuration;
         [self prepareForNavbarPushTransitionToViewController:navbarViewController];
 
         [UIView animateWithDuration:animationDuration animations:^{
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
             [self performPushTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
             [self.view setClipsToBounds:oldClipToBounds];
@@ -412,6 +413,7 @@ static NSTimeInterval popPushAnimationDuration;
         [self prepareForNavbarPopTransition];
 
         [UIView animateWithDuration:animationDuration animations:^{
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
             [self performPopTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
             [self.parentNBViewController.view setClipsToBounds:oldClipToBounds];
