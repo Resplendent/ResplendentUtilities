@@ -153,6 +153,7 @@ static NSTimeInterval popPushAnimationDuration;
 #pragma mark - Public methods
 -(void)setDefaultLeftToRightTransitionProperties
 {
+#ifdef kCFCoreFoundationVersionNumber_iOS_6_1
     if (kCFCoreFoundationVersionNumber <= kCFCoreFoundationVersionNumber_iOS_6_1)
     {
         [self setPushTransitionStyle:NavbarViewControllerTransitionToStyleToLeft];
@@ -160,9 +161,12 @@ static NSTimeInterval popPushAnimationDuration;
     }
     else
     {
+#endif
         [self setPushTransitionStyle:NavbarViewControllerTransitionToStyleToLeftQuarterDistance];
         [self setPopParentTransitionStyle:NavbarViewControllerTransitionFromStyleFromLeftQuarterDistance];
+#ifdef kCFCoreFoundationVersionNumber_iOS_6_1
     }
+#endif
 
     [self setPushChildTransitionStyle:NavbarViewControllerTransitionFromStyleFromRight];
     
@@ -287,6 +291,7 @@ static NSTimeInterval popPushAnimationDuration;
         [self prepareForNavbarPushTransitionToViewController:navbarViewController];
 
         [UIView animateWithDuration:animationDuration animations:^{
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
             [self performPushTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
             [self.view setClipsToBounds:oldClipToBounds];
@@ -412,6 +417,7 @@ static NSTimeInterval popPushAnimationDuration;
         [self prepareForNavbarPopTransition];
 
         [UIView animateWithDuration:animationDuration animations:^{
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
             [self performPopTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
             [self.parentNBViewController.view setClipsToBounds:oldClipToBounds];
