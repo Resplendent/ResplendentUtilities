@@ -417,7 +417,7 @@ static NSTimeInterval popPushAnimationDuration;
         [self prepareForNavbarPopTransition];
 
         [UIView animateWithDuration:animationDuration animations:^{
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
             [self performPopTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
             [self.parentNBViewController.view setClipsToBounds:oldClipToBounds];
