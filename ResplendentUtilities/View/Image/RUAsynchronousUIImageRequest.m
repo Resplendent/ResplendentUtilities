@@ -108,6 +108,7 @@ static NSMutableDictionary* fetchedImages;
 -(void)cancelFetch
 {
     _canceled = YES;
+    _delegate = nil;
 
     if (_connection)
     {

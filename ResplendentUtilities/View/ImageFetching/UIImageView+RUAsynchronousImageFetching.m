@@ -283,6 +283,11 @@ UIActivityIndicatorViewStyle const kUIImageViewRUAsynchronousImageFetchingDefaul
 
 -(void)setRuAsynchronousImageFetchingPrivateImageRequest:(RUAsynchronousUIImageRequest *)ruAsynchronousImageFetchingPrivateImageRequest
 {
+    RUAsynchronousUIImageRequest* oldRequest = self.ruAsynchronousImageFetchingPrivateImageRequest;
+    if (oldRequest)
+    {
+        [oldRequest cancelFetch];
+    }
     objc_setAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest,
                              ruAsynchronousImageFetchingPrivateImageRequest,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);
