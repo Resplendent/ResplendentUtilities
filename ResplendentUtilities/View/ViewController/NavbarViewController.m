@@ -79,7 +79,7 @@ static NSTimeInterval popPushAnimationDuration;
 
     if (self.navbar)
     {
-        yCoord += CGRectGetHeight(self.navbar.frame);
+        yCoord = CGRectGetMaxY(self.navbar.frame);
     }
 
     return CGRectMake(0, yCoord, self.view.frame.size.width, self.view.frame.size.height - yCoord);
@@ -390,6 +390,7 @@ static NSTimeInterval popPushAnimationDuration;
             [self performPopTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
             [self.parentNBViewController.view setClipsToBounds:oldClipToBounds];
+
             [self performNavbarPopTransitionCompletion];
 
             [_parentNBViewController navbarViewDidAppear:YES];
