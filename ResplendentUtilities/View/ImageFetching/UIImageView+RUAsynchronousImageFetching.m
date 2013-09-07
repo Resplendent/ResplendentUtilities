@@ -193,10 +193,12 @@ UIActivityIndicatorViewStyle const kUIImageViewRUAsynchronousImageFetchingDefaul
         
         if (self.ruFadeInDuration)
         {
-            [self setAlpha:0.0f];
-            [UIView animateWithDuration:self.ruFadeInDuration animations:^{
-                [self setAlpha:1.0f];
-            }];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self setAlpha:0.0f];
+                [UIView animateWithDuration:self.ruFadeInDuration animations:^{
+                    [self setAlpha:1.0f];
+                }];
+            });
         }
         
         [self.ruAsynchronousImageFetchingDelegate ruAsynchronousFetchingImageView:self finishedFetchingImage:image];
