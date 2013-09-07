@@ -84,6 +84,7 @@ static NSMutableDictionary* fetchedImages;
 {
     [self cancelFetch];
     _delegate = delegate;
+    _canceled = NO;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self cancelFetchClearDelegate:NO];
