@@ -8,12 +8,10 @@
 
 #import "RUFourSquareRequest.h"
 
-extern NSInteger const kRUFourSquareVenuePhotosRequestLimit;
-
 @interface RUFourSquareVenuePhotosRequest : RUFourSquareRequest
 
 @property (nonatomic, readonly) NSString* fourSquareVenueId;
 
--(void)fetchWithFourSquareVenueId:(NSString*)fourSquareVenueId;
+-(void)fetchWithFourSquareVenueId:(NSString*)fourSquareVenueId limit:(NSInteger)limit;
 
 @end
