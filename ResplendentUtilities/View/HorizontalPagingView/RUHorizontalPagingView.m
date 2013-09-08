@@ -71,7 +71,6 @@
         [_scrollView setCanCancelContentTouches:NO];
         [_scrollView setDelegate:self];
         [_scrollView setPagingEnabled:YES];
-        [_scrollView setShowsHorizontalScrollIndicator:NO];
         [_scrollView setClipsToBounds:NO];
         [self addSubview:_scrollView];
     }
