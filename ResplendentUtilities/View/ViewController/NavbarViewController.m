@@ -74,6 +74,22 @@ static NSTimeInterval popPushAnimationDuration;
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+-(void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+
+    if (self.navbar && !self.ignoreNavbarSetFrameOnLayout)
+    {
+        [self.navbar setFrame:self.navbarFrame];
+    }
+}
+
+#pragma mark - Frames
+-(CGRect)navbarFrame
+{
+    return (CGRect){0,0,[self.navbar sizeThatFits:self.view.bounds.size]};
+}
+
 -(CGRect)contentFrame
 {
     CGFloat yCoord = 0;
@@ -207,6 +223,8 @@ static NSTimeInterval popPushAnimationDuration;
 
     if (animated)
     {
+        [self setIgnoreNavbarSetFrameOnLayout:YES];
+        [navbarViewController setIgnoreNavbarSetFrameOnLayout:YES];
         __block NSMutableArray* userInteractionEnabledArray = [NSMutableArray array];
 
         //Loop through superviews and set then disabled, while storing their states
@@ -290,6 +308,8 @@ static NSTimeInterval popPushAnimationDuration;
             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
             [self performPushTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
+            [self setIgnoreNavbarSetFrameOnLayout:NO];
+            [navbarViewController setIgnoreNavbarSetFrameOnLayout:NO];
             [self.view setClipsToBounds:oldClipToBounds];
 
             //Move navbar back

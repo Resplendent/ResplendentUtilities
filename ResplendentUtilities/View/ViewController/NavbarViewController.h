@@ -32,7 +32,10 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 
 @interface NavbarViewController : UIViewController
 
+@property (nonatomic, assign) BOOL ignoreNavbarSetFrameOnLayout;
+
 @property (nonatomic, strong) Navbar* navbar;
+@property (nonatomic, readonly) CGRect navbarFrame;
 @property (nonatomic, readonly) CGRect contentFrame;
 
 @property (nonatomic, assign) NavbarViewController* parentNBViewController;
