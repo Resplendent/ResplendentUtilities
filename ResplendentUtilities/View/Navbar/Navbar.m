@@ -20,7 +20,7 @@
 
 -(id)init
 {
-    return ([self initWithFrame:CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds), 44.0f) autoAdjustButtons:YES]);
+    return ([self initWithFrame:(CGRect){0, 0, [self sizeThatFits:CGSizeZero]} autoAdjustButtons:YES]);
 }
 
 -(id)initWithFrame:(CGRect)frame
@@ -39,11 +39,6 @@
 {
     _autoAdjustButtons = autoAdjustButtons;
     return [self initWithFrame:frame];
-}
-
--(CGRect)animatableContentViewFrame
-{
-    return CGRectSetSize(CGSizeMake(CGRectGetWidth(self.frame),self.animatableContentViewHeight), _animatableContentView.frame);
 }
 
 -(void)layoutSubviews
@@ -102,6 +97,11 @@
     }
 }
 
+-(CGSize)sizeThatFits:(CGSize)size
+{
+    return (CGSize){CGRectGetWidth([UIScreen mainScreen].bounds), 44.0f};
+}
+
 #pragma mark - Setters
 -(void)setLeftButton:(UIButton *)leftButton
 {
@@ -126,7 +126,7 @@
     [self setNeedsLayout];
 }
 
-#pragma mark - Getters
+#pragma mark - Frames
 -(CGFloat)animatableContentViewHeight
 {
     return (CGRectGetHeight(self.frame) - self.animatableContentViewLowerPadding);
@@ -142,12 +142,18 @@
     return 0.0f;
 }
 
+-(CGRect)animatableContentViewFrame
+{
+    return CGRectSetSize(CGSizeMake(CGRectGetWidth(self.frame),self.animatableContentViewHeight), _animatableContentView.frame);
+}
+
 -(CGRect)titleLabelFrame
 {
     CGFloat width = [_titleLabel.text sizeWithFont:_titleLabel.font].width;
     return (CGRect){CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(width, CGRectGetWidth(self.frame)),self.titleLabelTopEdgeInset,width,self.animatableContentViewHeight - self.titleLabelTopEdgeInset};
 }
 
+#pragma mark - Getters
 -(NIAttributedLabel *)titleLabel
 {
     if (!_titleLabel)
