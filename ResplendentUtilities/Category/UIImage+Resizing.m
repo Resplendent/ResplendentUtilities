@@ -1,6 +1,6 @@
 //
 //  UIImage+Resizing.m
-//  Memeni
+//  Albumatic
 //
 //  Created by Sheldon on 10/2/12.
 //

@@ -1,6 +1,6 @@
 //
 //  UIButton+Utility.m
-//  Memeni
+//  Albumatic
 //
 //  Created by Benjamin Maer on 8/26/12.
 //  Copyright (c) 2012 Resplendent G.P.. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  NSDate+Utility.h
-//  Memeni
+//  Albumatic
 //
 //  Created by Benjamin Maer on 9/6/12.
 //  Copyright (c) 2012 Resplendent G.P.. All rights reserved.

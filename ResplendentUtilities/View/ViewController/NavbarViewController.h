@@ -12,13 +12,15 @@ typedef enum {
     NavbarViewControllerTransitionFromStyleNone,
     NavbarViewControllerTransitionFromStyleFromRight,
     NavbarViewControllerTransitionFromStyleFromLeft,
+    NavbarViewControllerTransitionFromStyleFromLeftQuarterDistance,
 }NavbarViewControllerTransitionFromStyle;
 
 typedef enum {
     NavbarViewControllerTransitionToStyleNone,
     NavbarViewControllerTransitionToStyleToRight,
     NavbarViewControllerTransitionToStyleToLeft,
-    NavbarViewControllerTransitionToStyleToBottom
+    NavbarViewControllerTransitionToStyleToLeftQuarterDistance,
+    NavbarViewControllerTransitionToStyleToBottom,
 }NavbarViewControllerTransitionToStyle;
 
 extern NSString* const kNavbarViewControllerNotificationCenterWillPop;

@@ -10,8 +10,9 @@
 #import "Navbar.h"
 #import "RUConstants.h"
 #import "UIView+Utility.h"
+#import <CoreFoundation/CFBase.h>
 
-NSTimeInterval const kNavbarViewControllerPushPopAnimationDefaultDuration = 0.3f;
+NSTimeInterval const kNavbarViewControllerPushPopAnimationDefaultDuration = 0.25f;
 NSTimeInterval const kNavbarViewControllerPushPopAnimationDefaultModalMultiplier = 1.5f;
 
 NSTimeInterval const  kNavbarViewControllerPushPopNavbarMovementScale = 8.0f;
@@ -79,7 +80,7 @@ static NSTimeInterval popPushAnimationDuration;
 
     if (self.navbar)
     {
-        yCoord += CGRectGetHeight(self.navbar.frame);
+        yCoord = CGRectGetMaxY(self.navbar.frame);
     }
 
     return CGRectMake(0, yCoord, self.view.frame.size.width, self.view.frame.size.height - yCoord);
@@ -152,11 +153,20 @@ static NSTimeInterval popPushAnimationDuration;
 #pragma mark - Public methods
 -(void)setDefaultLeftToRightTransitionProperties
 {
-    [self setPushTransitionStyle:NavbarViewControllerTransitionToStyleToLeft];
+    if (RUiOSSystemVersionIsAtLeast(7.0))
+    {
+        [self setPushTransitionStyle:NavbarViewControllerTransitionToStyleToLeftQuarterDistance];
+        [self setPopParentTransitionStyle:NavbarViewControllerTransitionFromStyleFromLeftQuarterDistance];
+    }
+    else
+    {
+        [self setPushTransitionStyle:NavbarViewControllerTransitionToStyleToLeft];
+        [self setPopParentTransitionStyle:NavbarViewControllerTransitionFromStyleFromLeft];
+    }
+
     [self setPushChildTransitionStyle:NavbarViewControllerTransitionFromStyleFromRight];
     
     [self setPopTransitionStyle:NavbarViewControllerTransitionToStyleToRight];
-    [self setPopParentTransitionStyle:NavbarViewControllerTransitionFromStyleFromLeft];
 }
 
 -(void)popChildrenViewControllers:(BOOL)animated completion:(void (^)())completion
@@ -230,6 +240,10 @@ static NSTimeInterval popPushAnimationDuration;
                 startChildOrigin.x = -CGRectGetWidth(self.view.frame);
                 break;
 
+            case NavbarViewControllerTransitionFromStyleFromLeftQuarterDistance:
+                startChildOrigin.x = -CGRectGetWidth(self.view.frame) * 0.25f;
+                break;
+
             case NavbarViewControllerTransitionFromStyleFromRight:
                 startChildOrigin.x = CGRectGetWidth(self.view.frame);
                 break;
@@ -258,6 +272,11 @@ static NSTimeInterval popPushAnimationDuration;
                 animateToChildOrigin.y -= CGRectGetHeight(self.view.window.frame);
                 break;
 
+            case NavbarViewControllerTransitionToStyleToLeftQuarterDistance:
+                animateToParentOrigin.x -= CGRectGetWidth(self.view.frame) * 0.25f;
+                animateToChildOrigin.x += CGRectGetWidth(self.view.frame) * 0.25f;
+                break;
+
             case NavbarViewControllerTransitionToStyleNone:
                 break;
         }
@@ -268,6 +287,7 @@ static NSTimeInterval popPushAnimationDuration;
         [self prepareForNavbarPushTransitionToViewController:navbarViewController];
 
         [UIView animateWithDuration:animationDuration animations:^{
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
             [self performPushTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
             [self.view setClipsToBounds:oldClipToBounds];
@@ -351,6 +371,11 @@ static NSTimeInterval popPushAnimationDuration;
                 startParentOrigin.x -= CGRectGetWidth(_parentNBViewController.view.frame);
                 startChildOrigin.x += CGRectGetWidth(_parentNBViewController.view.frame);
                 break;
+
+            case NavbarViewControllerTransitionFromStyleFromLeftQuarterDistance:
+                startParentOrigin.x -= CGRectGetWidth(_parentNBViewController.view.frame) * 0.25f;
+                startChildOrigin.x += CGRectGetWidth(_parentNBViewController.view.frame) * 0.25f;
+                break;
                 
             case NavbarViewControllerTransitionFromStyleFromRight:
                 startParentOrigin.x += CGRectGetWidth(_parentNBViewController.view.frame);
@@ -364,6 +389,7 @@ static NSTimeInterval popPushAnimationDuration;
         switch (self.popTransitionStyle)
         {
             case NavbarViewControllerTransitionToStyleToLeft:
+            case NavbarViewControllerTransitionToStyleToLeftQuarterDistance:
                 animateToChildOrigin.x -= CGRectGetWidth(_parentNBViewController.view.frame);
                 break;
 
@@ -387,9 +413,11 @@ static NSTimeInterval popPushAnimationDuration;
         [self prepareForNavbarPopTransition];
 
         [UIView animateWithDuration:animationDuration animations:^{
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
             [self performPopTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
             [self.parentNBViewController.view setClipsToBounds:oldClipToBounds];
+
             [self performNavbarPopTransitionCompletion];
 
             [_parentNBViewController navbarViewDidAppear:YES];
@@ -536,6 +564,7 @@ static NSTimeInterval popPushAnimationDuration;
     {
         case NavbarViewControllerTransitionToStyleToLeft:
         case NavbarViewControllerTransitionToStyleToRight:
+        case NavbarViewControllerTransitionToStyleToLeftQuarterDistance:
             [_parentNBViewController.navbar removeFromSuperview];
             [_parentNBViewController.navbar setFrame:CGRectSetX(0,_parentNBViewController.navbar.frame)];
             [self.view addSubview:_parentNBViewController.navbar];
@@ -555,12 +584,13 @@ static NSTimeInterval popPushAnimationDuration;
     }
 }
 
--(void)performNavbarPopTransition;
+-(void)performNavbarPopTransition
 {
     switch (self.popTransitionStyle)
     {
         case NavbarViewControllerTransitionToStyleToLeft:
         case NavbarViewControllerTransitionToStyleToRight:
+        case NavbarViewControllerTransitionToStyleToLeftQuarterDistance:
             [self.navbar setAlpha:0.0f];
             [_parentNBViewController.navbar setFrame:CGRectSetX(-CGRectGetWidth(_parentNBViewController.view.frame),_parentNBViewController.navbar.frame)];
             [_parentNBViewController.navbar.animatableContentView setFrame:CGRectSetX(0, _parentNBViewController.navbar.animatableContentView.frame)];
