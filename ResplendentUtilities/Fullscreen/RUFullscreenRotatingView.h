@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RUSingleton.h"
 
 @interface RUFullscreenRotatingView : UIView
 {
@@ -15,5 +16,7 @@
 
 -(void)showWithCompletion:(void (^)())completion;
 -(void)hide;
+
+RU_SYNTHESIZE_SINGLETON_DECLARATION_FOR_CLASS_WITH_ACCESSOR(RUFullscreenRotatingView, sharedInstance);
 
 @end

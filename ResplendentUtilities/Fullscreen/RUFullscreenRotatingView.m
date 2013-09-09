@@ -10,12 +10,15 @@
 
 @implementation RUFullscreenRotatingView
 
+-(id)init
+{
+    return ([self initWithFrame:[UIScreen mainScreen].bounds]);
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])
     {
-//        [self setClipsToBounds:NO];
-
         _contentView = [UIView new];
         [_contentView setBackgroundColor:[UIColor clearColor]];
         [self addSubview:_contentView];
@@ -30,13 +33,7 @@
     
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
+#pragma mark - Singleton
+RU_SYNTHESIZE_SINGLETON_FOR_CLASS_WITH_ACCESSOR(RUFullscreenRotatingView, sharedInstance);
 
 @end
