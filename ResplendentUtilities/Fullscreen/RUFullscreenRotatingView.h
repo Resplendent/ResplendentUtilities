@@ -7,16 +7,32 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RUSingleton.h"
+
+typedef enum{
+    RUFullscreenRotatingViewStateHiding = 0,
+    RUFullscreenRotatingViewStateMovingToShow,
+    RUFullscreenRotatingViewStateShowing,
+    RUFullscreenRotatingViewStateMovingToHide,
+}RUFullscreenRotatingViewState;
 
 @interface RUFullscreenRotatingView : UIView
 {
     UIView* _contentView;
+    UIView* _shadowView;
 }
+
+@property (nonatomic, assign) UIView* presenterView;
+
+@property (nonatomic, readonly) RUFullscreenRotatingViewState state;
+
+@property (nonatomic, readonly) CGRect adjustedContentViewFrame;
+
+@property (nonatomic, readonly) BOOL readyToShow;
+@property (nonatomic, readonly) BOOL readyToHide;
 
 -(void)showWithCompletion:(void (^)())completion;
 -(void)hide;
 
-RU_SYNTHESIZE_SINGLETON_DECLARATION_FOR_CLASS_WITH_ACCESSOR(RUFullscreenRotatingView, sharedInstance);
+-(void)hideAnimated:(BOOL)animated completion:(void(^)(BOOL didHide))completion;
 
 @end
