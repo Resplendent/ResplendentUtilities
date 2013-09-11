@@ -269,7 +269,7 @@
 
 -(void)notificationDidFireForOrientationDidChange:(NSNotification*)notification
 {
-    RU_METHOD_IMPLEMENTATION_NEEDED;
+    [self transitionToOrientation:(UIInterfaceOrientation)[UIDevice currentDevice].orientation animated:YES];
 }
 
 @end
