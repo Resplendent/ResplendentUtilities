@@ -37,6 +37,12 @@ CGFloat const kRUImageViewFullscreenRotatingViewDefaultShowAnimationDuration = 0
 }
 */
 
+#pragma mark - Getters
+-(UIImage *)imageForHide
+{
+    return nil;
+}
+
 #pragma mark - Frames
 -(CGRect)imageViewFrame
 {
@@ -150,6 +156,20 @@ CGFloat const kRUImageViewFullscreenRotatingViewDefaultShowAnimationDuration = 0
 -(void)willPerformHideAnimation
 {
     [super willPerformHideAnimation];
+    UIImage* image = self.imageForHide;
+    if (image)
+    {
+        [_animationTransitionImageView setImage:image];
+    }
+
+    [_animationTransitionImageView setAlpha:1.0f];
+}
+
+-(void)performHideAnimation
+{
+    [super performHideAnimation];
+    [_animationTransitionImageView setFrame:_convertedOriginalFrame];
+    _convertedOriginalFrame = CGRectZero;
 }
 
 @end
