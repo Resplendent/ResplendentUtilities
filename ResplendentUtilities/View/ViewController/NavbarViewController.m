@@ -370,6 +370,9 @@ static NSTimeInterval popPushAnimationDuration;
 
     if (animated)
     {
+        [self setIgnoreNavbarSetFrameOnLayout:YES];
+        [_parentNBViewController setIgnoreNavbarSetFrameOnLayout:YES];
+
         BOOL oldClipToBounds = self.parentNBViewController.view.clipsToBounds;
         [self.parentNBViewController.view setClipsToBounds:NO];
 
@@ -436,6 +439,9 @@ static NSTimeInterval popPushAnimationDuration;
             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
             [self performPopTransitionAnimationsWithChildOrigin:animateToChildOrigin parentOrigin:animateToParentOrigin];
         } completion:^(BOOL finished) {
+            [self setIgnoreNavbarSetFrameOnLayout:NO];
+            [_parentNBViewController setIgnoreNavbarSetFrameOnLayout:NO];
+
             [self.parentNBViewController.view setClipsToBounds:oldClipToBounds];
 
             [self performNavbarPopTransitionCompletion];
