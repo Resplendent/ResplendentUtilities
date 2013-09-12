@@ -26,6 +26,7 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 @property (nonatomic, readonly) CGAffineTransform contentViewTransformationForCurrentOrientation;
 
 -(void)transitionToOrientation:(UIInterfaceOrientation)orientation animated:(BOOL)animated;
+-(void)transitionToOrientation:(UIInterfaceOrientation)orientation;
 -(CGAffineTransform)contentViewTransformationForOrientation:(UIInterfaceOrientation)orientation;
 //----
 
@@ -143,6 +144,7 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
         } completion:^(BOOL finished) {
             _state = RUFullscreenRotatingViewStateShowing;
             [self setOrientationNotificationsEnabled:YES];
+            [self didShow];
             if (completion)
                 completion(YES);
         }];
@@ -175,6 +177,11 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 
     [_shadowView setAlpha:1.0f];
     [self transitionToOrientation:(UIInterfaceOrientation)[UIDevice currentDevice].orientation animated:NO];
+}
+
+-(void)didShow
+{
+    
 }
 
 -(void)hide
@@ -240,28 +247,49 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 #pragma mark - Orientation methods
 -(void)transitionToOrientation:(UIInterfaceOrientation)orientation animated:(BOOL)animated
 {
+    [self willTransitionToOrientation:orientation animated:animated];
+
     if (animated)
     {
         [UIView animateWithDuration:self.rotationAnimationDuration animations:^{
             [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-            [self transitionToOrientation:orientation animated:NO];
+            [self transitionToOrientation:orientation];
         }];
     }
     else
     {
-        CGAffineTransform newTransform = [self contentViewTransformationForOrientation:orientation];
-        if (CGAffineTransformEqualToTransform(_contentView.transform, newTransform))
+        [self transitionToOrientation:orientation];
+    }
+}
+
+-(void)willTransitionToOrientation:(UIInterfaceOrientation)orientation animated:(BOOL)animated
+{
+    
+}
+
+-(void)transitionToOrientation:(UIInterfaceOrientation)orientation
+{
+    BOOL didUpdateOrientation = NO;
+    CGAffineTransform newTransform = [self contentViewTransformationForOrientation:orientation];
+    if (CGAffineTransformEqualToTransform(_contentView.transform, newTransform))
+    {
+        if (self.forceLayoutSubviewsOnTransition)
         {
-            if (self.forceLayoutSubviewsOnTransition)
-            {
-                [self layoutSubviews];
-            }
-        }
-        else
-        {
-            [_contentView setTransform:newTransform];
+            [self layoutSubviews];
         }
     }
+    else
+    {
+        didUpdateOrientation = YES;
+        [_contentView setTransform:newTransform];
+    }
+
+    [self transitionToOrientation:orientation didUpdateOrientation:didUpdateOrientation];
+}
+
+-(void)transitionToOrientation:(UIInterfaceOrientation)orientation didUpdateOrientation:(BOOL)didUpdateOrientation
+{
+    
 }
 
 -(void)setOrientationNotificationsEnabled:(BOOL)orientationNotificationsEnabled

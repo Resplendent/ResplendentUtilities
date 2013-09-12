@@ -44,9 +44,14 @@ typedef enum{
 //Meant for subclassing, shouldn't be called directly. Subclasses must call their super
 -(void)willPerformShowAnimation;
 -(void)performShowAnimation;
+-(void)didShow;
 
 -(void)willPerformHideAnimation;
 -(void)performHideAnimation;
 -(void)didHide;
+
+//Meant to be subclassed, shouldn't be called directly.
+-(void)willTransitionToOrientation:(UIInterfaceOrientation)orientation animated:(BOOL)animated;
+-(void)transitionToOrientation:(UIInterfaceOrientation)orientation didUpdateOrientation:(BOOL)didUpdateOrientation;
 
 @end

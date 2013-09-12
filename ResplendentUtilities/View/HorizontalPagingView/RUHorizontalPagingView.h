@@ -47,6 +47,8 @@
 -(void)addViewAtEnd;
 -(void)insertViewAtPage:(NSInteger)page preserveDistanceScrolledFromRight:(BOOL)preserveDistanceScrolledFromRight;
 
+-(void)scrollToPage:(NSInteger)page selfSize:(CGSize)selfSize animated:(BOOL)animated;
+
 // ++++++
 // Only to be overloaded, not called directly
 

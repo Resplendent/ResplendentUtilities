@@ -17,6 +17,7 @@
 @property (nonatomic, readonly) CGRect scrollViewPageControlFrame;
 
 @property (nonatomic, readonly) CGRect scrollViewFrame;
+-(CGRect)scrollViewFrameWithSelfSize:(CGSize)selfSize;
 @property (nonatomic, readonly) CGRect visibleScrollViewFrame;
 
 @property (nonatomic, readonly) CGSize scrollViewContentSize;
@@ -112,10 +113,11 @@
 {
     CGFloat numberOfPagesScrolled = contentOffsetX / CGRectGetWidth(_scrollView.frame);
     NSInteger closestPageIndex = round(numberOfPagesScrolled);
-    
-    if (closestPageIndex >= self.delegateNumberOfPages)
+    NSInteger upperBound = self.delegateNumberOfPages - 1;
+
+    if (closestPageIndex > upperBound)
     {
-        closestPageIndex = self.delegateNumberOfPages - 1;
+        closestPageIndex = upperBound;
     }
 
     if (closestPageIndex < 0)
@@ -253,7 +255,12 @@
 
 -(CGRect)scrollViewFrame
 {
-    CGRect scrollViewFrame = UIEdgeInsetsInsetRect(self.bounds, self.scrollViewFrameInsets);
+    return [self scrollViewFrameWithSelfSize:self.bounds.size];
+}
+
+-(CGRect)scrollViewFrameWithSelfSize:(CGSize)selfSize
+{
+    CGRect scrollViewFrame = UIEdgeInsetsInsetRect((CGRect){0,0,selfSize}, self.scrollViewFrameInsets);
     if (_scrollViewPageControl && !self.pageControlOverlapsScrollView)
     {
         scrollViewFrame.size.height -= self.pageControlSize.height;
@@ -328,6 +335,26 @@
     adjustedCellFrame.origin.y = CGRectGetVerticallyAlignedYCoordForRectOnRect(adjustedCellFrame, cellFrame);
     
     return adjustedCellFrame;
+}
+
+#pragma mark - Scrolling
+-(void)scrollToPage:(NSInteger)page selfSize:(CGSize)selfSize animated:(BOOL)animated
+{
+    CGRect scrollViewFrameFromPageWidth = [self scrollViewFrameWithSelfSize:selfSize];
+    CGFloat newContentOffsetX = page * CGRectGetWidth(scrollViewFrameFromPageWidth);
+//    if (preserveDistanceScrolledFromPage && CGRectGetWidth(self.frame))
+//    {
+//        NSInteger currentPage = self.closestScrolledPage;
+//        CGFloat distanceFromPage = _scrollView.contentOffset.x - (CGRectGetWidth(_scrollView.frame) * currentPage);
+//        RUDLog(@"distanceFromPage: %f",distanceFromPage);
+//
+////        newContentOffsetX -= distanceFromEnd;
+////        [self insertViewAtPage:page preserveDistanceScrolledFromRight:NO];
+//        
+//    }
+
+//    NSLog(@"newContentOffsetX: %f",newContentOffsetX);
+    [_scrollView setContentOffset:(CGPoint){newContentOffsetX,_scrollView.contentOffset.y}];
 }
 
 #pragma mark - Update Content

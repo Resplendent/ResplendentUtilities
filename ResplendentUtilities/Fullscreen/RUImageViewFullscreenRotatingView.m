@@ -148,6 +148,12 @@ CGFloat const kRUImageViewFullscreenRotatingViewDefaultShowAnimationDuration = 0
     [_animationTransitionImageView setFrame:self.imageViewFrame];
 }
 
+-(void)didShow
+{
+    [super didShow];
+    [_animationTransitionImageView setHidden:YES];
+}
+
 -(BOOL)preparedToShow
 {
     return [super preparedToShow] && (_animationTransitionImageView != nil);
@@ -162,6 +168,7 @@ CGFloat const kRUImageViewFullscreenRotatingViewDefaultShowAnimationDuration = 0
         [_animationTransitionImageView setImage:image];
     }
 
+    [_animationTransitionImageView setHidden:NO];
     [_animationTransitionImageView setAlpha:1.0f];
 }
 
