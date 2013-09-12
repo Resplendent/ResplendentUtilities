@@ -22,17 +22,31 @@ typedef enum{
 }
 
 @property (nonatomic, assign) UIView* presenterView;
+@property (nonatomic, assign) BOOL forceLayoutSubviewsOnTransition;
+
+@property (nonatomic, assign) NSTimeInterval showAnimationDuration;
+@property (nonatomic, assign) NSTimeInterval hideAnimationDuration;
+@property (nonatomic, assign) NSTimeInterval rotationAnimationDuration;
 
 @property (nonatomic, readonly) RUFullscreenRotatingViewState state;
 
 @property (nonatomic, readonly) CGRect adjustedContentViewFrame;
 
 @property (nonatomic, readonly) BOOL readyToShow;
+@property (nonatomic, readonly) BOOL preparedToShow;
 @property (nonatomic, readonly) BOOL readyToHide;
 
--(void)showWithCompletion:(void (^)())completion;
+-(void)showWithCompletion:(void (^)(BOOL didShow))completion;
 -(void)hide;
 
 -(void)hideAnimated:(BOOL)animated completion:(void(^)(BOOL didHide))completion;
+
+//Meant for subclassing, shouldn't be called directly. Subclasses must call their super
+-(void)willPerformShowAnimation;
+-(void)performShowAnimation;
+
+-(void)willPerformHideAnimation;
+-(void)performHideAnimation;
+-(void)didHide;
 
 @end

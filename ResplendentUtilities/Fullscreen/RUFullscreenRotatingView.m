@@ -11,6 +11,10 @@
 #import "UIView+Utility.h"
 #import "RUConstants.h"
 
+CGFloat const kRUFullscreenRotatingViewDefaultShowAnimationDuration = 0.25;
+CGFloat const kRUFullscreenRotatingViewDefaultHideAnimationDuration = 0.25;
+CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
+
 @interface RUFullscreenRotatingView ()
 
 @property (nonatomic, readonly) CGRect contentViewFrame;
@@ -24,9 +28,6 @@
 -(void)transitionToOrientation:(UIInterfaceOrientation)orientation animated:(BOOL)animated;
 -(CGAffineTransform)contentViewTransformationForOrientation:(UIInterfaceOrientation)orientation;
 //----
-
--(void)performSharedHideAnimationBlock;
--(void)performSharedHideCompletionBlock;
 
 -(void)notificationDidFireForOrientationDidChange:(NSNotification*)notification;
 
@@ -45,6 +46,10 @@
 {
     if (self = [super initWithFrame:frame])
     {
+        [self setShowAnimationDuration:kRUFullscreenRotatingViewDefaultShowAnimationDuration];
+        [self setHideAnimationDuration:kRUFullscreenRotatingViewDefaultHideAnimationDuration];
+        [self setRotationAnimationDuration:kRUFullscreenRotatingViewDefaultRotationAnimationDuration];
+
         _contentView = [UIView new];
         [_contentView setBackgroundColor:[UIColor clearColor]];
         [_contentView addGestureRecognizer:[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapContentView:)]];
@@ -109,6 +114,11 @@
 }
 
 #pragma mark - Getters
+-(BOOL)preparedToShow
+{
+    return self.readyToShow;
+}
+
 -(BOOL)readyToShow
 {
     return (self.state == RUFullscreenRotatingViewStateHiding && !self.orientationNotificationsEnabled);
@@ -120,29 +130,51 @@
 }
 
 #pragma mark - Visibility Transitions
--(void)showWithCompletion:(void (^)())completion
+-(void)showWithCompletion:(void (^)(BOOL didShow))completion
 {
-    if (self.readyToShow)
+    if (self.readyToShow && self.preparedToShow)
     {
+        [self willPerformShowAnimation];
+
         _state = RUFullscreenRotatingViewStateMovingToShow;
 
-        [self updateFrame];
-//        [self setNeedsLayout];
-
-        [_shadowView setAlpha:0.0f];
-        [self.presenterView addSubview:self];
-
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-        [UIView animateWithDuration:0.25f animations:^{
-            [_shadowView setAlpha:1.0f];
-            [self transitionToOrientation:(UIInterfaceOrientation)[UIDevice currentDevice].orientation animated:NO];
+        [UIView animateWithDuration:self.showAnimationDuration animations:^{
+            [self performShowAnimation];
         } completion:^(BOOL finished) {
             _state = RUFullscreenRotatingViewStateShowing;
             [self setOrientationNotificationsEnabled:YES];
             if (completion)
-                completion();
+                completion(YES);
         }];
     }
+    else
+    {
+        if (completion)
+            completion(NO);
+    }
+}
+
+-(void)willPerformShowAnimation
+{
+    [self updateFrame];
+    
+    [_shadowView setAlpha:0.0f];
+    [self.presenterView addSubview:self];
+
+    [self layoutIfNeeded];
+
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+}
+
+-(void)performShowAnimation
+{
+    if (self.state != RUFullscreenRotatingViewStateMovingToShow)
+    {
+        [NSException raise:NSInternalInconsistencyException format:@"Shouldn't be called directly"];
+    }
+
+    [_shadowView setAlpha:1.0f];
+    [self transitionToOrientation:(UIInterfaceOrientation)[UIDevice currentDevice].orientation animated:NO];
 }
 
 -(void)hide
@@ -150,20 +182,16 @@
     [self hideAnimated:YES completion:nil];
 }
 
--(void)performSharedHideAnimationBlock
-{
-    [_shadowView setAlpha:0.0f];
-    [self transitionToOrientation:UIInterfaceOrientationPortrait animated:NO];
-}
-
--(void)performSharedHideCompletionBlock
-{
-    _state = RUFullscreenRotatingViewStateHiding;
-    [self removeFromSuperview];
-}
-
 -(void)hideAnimated:(BOOL)animated completion:(void(^)(BOOL didHide))completion
 {
+    void (^finishHide)() = ^{
+        [self didHide];
+        _state = RUFullscreenRotatingViewStateHiding;
+        
+        if (completion)
+            completion(YES);
+    };
+
     if (self.readyToHide)
     {
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
@@ -172,22 +200,18 @@
         if (animated)
         {
             _state = RUFullscreenRotatingViewStateMovingToHide;
-            [_shadowView setAlpha:1.0f];
-            [UIView animateWithDuration:0.25f animations:^{
+            [self willPerformHideAnimation];
+            [UIView animateWithDuration:self.hideAnimationDuration animations:^{
                 [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-                [self performSharedHideAnimationBlock];
+                [self performHideAnimation];
             } completion:^(BOOL finished) {
-                [self performSharedHideCompletionBlock];
-                if (completion)
-                    completion(YES);
+                finishHide();
             }];
         }
         else
         {
-            [self performSharedHideAnimationBlock];
-            [self performSharedHideCompletionBlock];
-            if (completion)
-                completion(YES);
+            [self performHideAnimation];
+            finishHide();
         }
     }
     else
@@ -197,13 +221,28 @@
     }
 }
 
+-(void)willPerformHideAnimation
+{
+    [_shadowView setAlpha:1.0f];
+}
+
+-(void)performHideAnimation
+{
+    [_shadowView setAlpha:0.0f];
+    [self transitionToOrientation:UIInterfaceOrientationPortrait animated:NO];
+}
+
+-(void)didHide
+{
+    [self removeFromSuperview];
+}
 
 #pragma mark - Orientation methods
 -(void)transitionToOrientation:(UIInterfaceOrientation)orientation animated:(BOOL)animated
 {
     if (animated)
     {
-        [UIView animateWithDuration:0.25f animations:^{
+        [UIView animateWithDuration:self.rotationAnimationDuration animations:^{
             [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
             [self transitionToOrientation:orientation animated:NO];
         }];
@@ -211,7 +250,14 @@
     else
     {
         CGAffineTransform newTransform = [self contentViewTransformationForOrientation:orientation];
-        if (!CGAffineTransformEqualToTransform(_contentView.transform, newTransform))
+        if (CGAffineTransformEqualToTransform(_contentView.transform, newTransform))
+        {
+            if (self.forceLayoutSubviewsOnTransition)
+            {
+                [self layoutSubviews];
+            }
+        }
+        else
         {
             [_contentView setTransform:newTransform];
         }
