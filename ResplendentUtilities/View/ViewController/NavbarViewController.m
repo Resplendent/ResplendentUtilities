@@ -28,9 +28,7 @@ static NSTimeInterval popPushAnimationDuration;
 
 -(void)bringNavbarToFont;
 
--(void)prepareForNavbarPushTransitionToViewController:(NavbarViewController*)navbarViewController;
 -(void)performNavbarPushTransitionToViewController:(NavbarViewController*)navbarViewController;
--(void)performNavbarPushTransitionCompletionToViewController:(NavbarViewController*)navbarViewController;
 
 -(void)prepareForNavbarPopTransition;
 -(void)performNavbarPopTransition;
@@ -270,8 +268,6 @@ static NSTimeInterval popPushAnimationDuration;
                 break;
         }
 
-        [navbarViewController.view setFrame:(CGRect){startChildOrigin, navbarViewController.view.frame.size}];
-
         switch (self.pushTransitionStyle)
         {
             case NavbarViewControllerTransitionToStyleToLeft:
@@ -302,7 +298,7 @@ static NSTimeInterval popPushAnimationDuration;
         //Move navbar to superview
         [self.view addSubview:navbarViewController.view];
 
-        [self prepareForNavbarPushTransitionToViewController:navbarViewController];
+        [self prepareForNavbarPushTransitionToViewController:navbarViewController withStartChildOrigin:startChildOrigin];
 
         [UIView animateWithDuration:animationDuration animations:^{
             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -546,8 +542,9 @@ static NSTimeInterval popPushAnimationDuration;
     }
 }
 
--(void)prepareForNavbarPushTransitionToViewController:(NavbarViewController*)navbarViewController
+-(void)prepareForNavbarPushTransitionToViewController:(NavbarViewController*)navbarViewController withStartChildOrigin:(CGPoint)startChildOrigin
 {
+    [navbarViewController.view setFrame:(CGRect){startChildOrigin, navbarViewController.view.frame.size}];
 //    [self recursivelyAddChildNavbarsToNavbarForPush];
 
     [self moveNavbarToParentForPushTransitionPreperation];
