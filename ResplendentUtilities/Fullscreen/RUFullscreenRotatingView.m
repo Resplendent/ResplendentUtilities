@@ -191,9 +191,17 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 
 -(void)hideAnimated:(BOOL)animated completion:(void(^)(BOOL didHide))completion
 {
+    void (^hideAnimation)() = ^{
+        [_shadowView setAlpha:0.0f];
+        [self transitionToOrientation:UIInterfaceOrientationPortrait animated:NO];
+        [self performHideAnimation];
+    };
+
     void (^finishHide)() = ^{
-        [self didHide];
+        [self removeFromSuperview];
         _state = RUFullscreenRotatingViewStateHiding;
+
+        [self didHide];
         
         if (completion)
             completion(YES);
@@ -201,8 +209,11 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 
     if (self.readyToHide)
     {
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
         [self setOrientationNotificationsEnabled:NO];
+
+        [self.hideDelegate fullscreenRotatingView:self willHide:animated];
+
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 
         if (animated)
         {
@@ -210,14 +221,14 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
             [self willPerformHideAnimation];
             [UIView animateWithDuration:self.hideAnimationDuration animations:^{
                 [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-                [self performHideAnimation];
+                hideAnimation();
             } completion:^(BOOL finished) {
                 finishHide();
             }];
         }
         else
         {
-            [self performHideAnimation];
+            hideAnimation();
             finishHide();
         }
     }
@@ -235,13 +246,12 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 
 -(void)performHideAnimation
 {
-    [_shadowView setAlpha:0.0f];
-    [self transitionToOrientation:UIInterfaceOrientationPortrait animated:NO];
+
 }
 
 -(void)didHide
 {
-    [self removeFromSuperview];
+
 }
 
 #pragma mark - Orientation methods

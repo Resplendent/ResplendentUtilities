@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RUFullscreenRotatingViewProtocols.h"
 
 typedef enum{
     RUFullscreenRotatingViewStateHiding = 0,
@@ -20,6 +21,8 @@ typedef enum{
     UIView* _contentView;
     UIView* _shadowView;
 }
+
+@property (nonatomic, assign) id<RUFullscreenRotatingViewHideDelegate> hideDelegate;
 
 @property (nonatomic, assign) UIView* presenterView;
 @property (nonatomic, assign) BOOL forceLayoutSubviewsOnTransition;
