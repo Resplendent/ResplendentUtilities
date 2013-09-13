@@ -342,18 +342,7 @@
 {
     CGRect scrollViewFrameFromPageWidth = [self scrollViewFrameWithSelfSize:selfSize];
     CGFloat newContentOffsetX = page * CGRectGetWidth(scrollViewFrameFromPageWidth);
-//    if (preserveDistanceScrolledFromPage && CGRectGetWidth(self.frame))
-//    {
-//        NSInteger currentPage = self.closestScrolledPage;
-//        CGFloat distanceFromPage = _scrollView.contentOffset.x - (CGRectGetWidth(_scrollView.frame) * currentPage);
-//        RUDLog(@"distanceFromPage: %f",distanceFromPage);
-//
-////        newContentOffsetX -= distanceFromEnd;
-////        [self insertViewAtPage:page preserveDistanceScrolledFromRight:NO];
-//        
-//    }
 
-//    NSLog(@"newContentOffsetX: %f",newContentOffsetX);
     [_scrollView setContentOffset:(CGPoint){newContentOffsetX,_scrollView.contentOffset.y}];
 }
 
