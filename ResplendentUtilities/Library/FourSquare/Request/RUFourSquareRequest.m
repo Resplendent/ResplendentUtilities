@@ -27,7 +27,7 @@
 #pragma mark - Getters
 +(Class)responseClass
 {
-    RU_METHOD_IMPLEMENTATION_NEEDED_EXCEPTION;
+    RU_METHOD_OVERLOADED_IMPLEMENTATION_NEEDED_EXCEPTION;
 }
 
 @end
