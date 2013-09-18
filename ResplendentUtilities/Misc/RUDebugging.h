@@ -9,9 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "RUConstants.h"
 
+#define RUDebugTimerBeginWithTimerVarName(timerVarName) \
+NSDate* timerVarName = [NSDate date];
+
+#define RUDebugTimerLogWithTimerVarName(timerVarName) \
+RUDLog(@"total time: %f",[[NSDate date]timeIntervalSinceDate:timerVarName]);
+
 #define RUDebugTimerBegin \
-NSDate* __durationDebugger__ = [NSDate date];
+RUDebugTimerBeginWithTimerVarName(__durationDebugger__)
 
 #define RUDebugTimerLog \
-RUDLog(@"total time: %f",[[NSDate date]timeIntervalSinceDate:__durationDebugger__]);
+RUDebugTimerLogWithTimerVarName(__durationDebugger__)
 
