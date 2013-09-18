@@ -18,7 +18,7 @@
     {
         if (self.successfulResponse)
         {
-            _venuePhotos = [RUFourSquareVenuePhoto fourSquareVenuePhotosForResponseDict:[self.responseDictionary objectForKey:@"response"] withLimit:kRUFourSquareVenuePhotosRequestLimit];
+            _venuePhotos = [NSArray arrayWithArray:[RUFourSquareVenuePhoto fourSquareVenuePhotosForResponseDict:[self.responseDictionary objectForKey:@"response"] withLimit:kRUFourSquareVenuePhotosRequestLimit]];
         }
     }
     
