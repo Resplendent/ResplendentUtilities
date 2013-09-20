@@ -45,11 +45,7 @@ UIActivityIndicatorViewStyle const kUIImageViewRUAsynchronousImageFetchingDefaul
 {
     [self setRuAsynchronousImageFetchingPrivateDeallocHook:nil];
 
-    if (self.ruAsynchronousImageFetchingPrivateImageRequest)
-    {
-        [self.ruAsynchronousImageFetchingPrivateImageRequest cancelFetch];
-        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
-    }
+    [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
 }
 
 -(void)ruFetchImageAsynchronouslyAtUrlString:(NSString*)urlString
@@ -194,7 +190,11 @@ UIActivityIndicatorViewStyle const kUIImageViewRUAsynchronousImageFetchingDefaul
         [self setRuAsynchronousImageFetchingSpinnerVisibility:NO];
         
         [self setImage:image];
-        
+
+        [self.ruAsynchronousImageFetchingDelegate ruAsynchronousFetchingImageView:self finishedFetchingImage:image];
+        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
+        [self setRuAsynchronousImageFetchingPrivateDeallocHook:nil];
+
         if (self.ruFadeInDuration)
         {
             [self setAlpha:0.0f];
@@ -202,10 +202,6 @@ UIActivityIndicatorViewStyle const kUIImageViewRUAsynchronousImageFetchingDefaul
                 [self setAlpha:1.0f];
             }];
         }
-        
-        [self.ruAsynchronousImageFetchingDelegate ruAsynchronousFetchingImageView:self finishedFetchingImage:image];
-        [self setRuAsynchronousImageFetchingPrivateImageRequest:nil];
-        [self setRuAsynchronousImageFetchingPrivateDeallocHook:nil];
     }
     else
     {
@@ -283,6 +279,12 @@ UIActivityIndicatorViewStyle const kUIImageViewRUAsynchronousImageFetchingDefaul
 
 -(void)setRuAsynchronousImageFetchingPrivateImageRequest:(RUAsynchronousUIImageRequest *)ruAsynchronousImageFetchingPrivateImageRequest
 {
+    RUAsynchronousUIImageRequest* oldRequest = self.ruAsynchronousImageFetchingPrivateImageRequest;
+    if (oldRequest)
+    {
+        [oldRequest cancelFetch];
+    }
+
     objc_setAssociatedObject(self, &kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest,
                              ruAsynchronousImageFetchingPrivateImageRequest,
                              OBJC_ASSOCIATION_RETAIN_NONATOMIC);

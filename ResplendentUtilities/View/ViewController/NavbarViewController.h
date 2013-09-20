@@ -12,13 +12,15 @@ typedef enum {
     NavbarViewControllerTransitionFromStyleNone,
     NavbarViewControllerTransitionFromStyleFromRight,
     NavbarViewControllerTransitionFromStyleFromLeft,
+    NavbarViewControllerTransitionFromStyleFromLeftQuarterDistance,
 }NavbarViewControllerTransitionFromStyle;
 
 typedef enum {
     NavbarViewControllerTransitionToStyleNone,
     NavbarViewControllerTransitionToStyleToRight,
     NavbarViewControllerTransitionToStyleToLeft,
-    NavbarViewControllerTransitionToStyleToBottom
+    NavbarViewControllerTransitionToStyleToLeftQuarterDistance,
+    NavbarViewControllerTransitionToStyleToBottom,
 }NavbarViewControllerTransitionToStyle;
 
 extern NSString* const kNavbarViewControllerNotificationCenterWillPop;
@@ -30,7 +32,10 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 
 @interface NavbarViewController : UIViewController
 
+@property (nonatomic, assign) BOOL ignoreNavbarSetFrameOnLayout;
+
 @property (nonatomic, strong) Navbar* navbar;
+@property (nonatomic, readonly) CGRect navbarFrame;
 @property (nonatomic, readonly) CGRect contentFrame;
 
 @property (nonatomic, assign) NavbarViewController* parentNBViewController;
@@ -65,8 +70,12 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 -(void)navbarChildWillPerformPopAnimationToOrigin:(CGPoint)startParentOrigin;
 -(void)navbarChildIsPerformingAnimationToOrigin:(CGPoint)animateToParentOrigin;
 
+-(void)prepareForNavbarPushTransitionToViewController:(NavbarViewController*)navbarViewController withStartChildOrigin:(CGPoint)startChildOrigin;
 -(void)performPushTransitionAnimationsWithChildOrigin:(CGPoint)animateToChildOrigin parentOrigin:(CGPoint)animateToParentOrigin;
+-(void)performNavbarPushTransitionCompletionToViewController:(NavbarViewController*)navbarViewController;
+
 -(void)performPopTransitionAnimationsWithChildOrigin:(CGPoint)animateToChildOrigin parentOrigin:(CGPoint)animateToParentOrigin;
+
 
 +(void)setPushPopTransitionDuration:(NSTimeInterval)duration;
 

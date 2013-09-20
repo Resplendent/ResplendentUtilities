@@ -12,6 +12,12 @@
 
 static NSMutableDictionary* fetchedImages;
 
+@interface RUAsynchronousUIImageRequest ()
+
+-(void)cancelFetchClearDelegate:(BOOL)clearDelegate;
+
+@end
+
 @implementation RUAsynchronousUIImageRequest
 
 +(void)initialize
@@ -76,10 +82,13 @@ static NSMutableDictionary* fetchedImages;
 #pragma mark - Private methods
 -(void)fetchImageWithDelegate:(id<RUAsynchronousUIImageRequestDelegate>)delegate
 {
+    [self cancelFetch];
+    _delegate = delegate;
+    _canceled = NO;
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self cancelFetch];
+        [self cancelFetchClearDelegate:NO];
         _canceled = NO;
-        _delegate = delegate;
         
         UIImage* cachedImage = [RUAsynchronousUIImageRequest cachedImageForCacheName:_cacheName];
         
@@ -105,15 +114,25 @@ static NSMutableDictionary* fetchedImages;
 }
 
 #pragma mark - Public methods
--(void)cancelFetch
+-(void)cancelFetchClearDelegate:(BOOL)clearDelegate
 {
     _canceled = YES;
-
+    
+    if (clearDelegate)
+    {
+        _delegate = nil;
+    }
+    
     if (_connection)
     {
         [_connection cancel];
         _connection = nil;
     }
+}
+
+-(void)cancelFetch
+{
+    [self cancelFetchClearDelegate:YES];
 }
 
 #pragma mark - NSURLConnectionDataDelegate methods
