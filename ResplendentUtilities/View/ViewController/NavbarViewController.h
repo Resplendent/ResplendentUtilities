@@ -70,8 +70,12 @@ extern NSString* const kNavbarViewControllerNotificationCenterDidPush;
 -(void)navbarChildWillPerformPopAnimationToOrigin:(CGPoint)startParentOrigin;
 -(void)navbarChildIsPerformingAnimationToOrigin:(CGPoint)animateToParentOrigin;
 
+-(void)prepareForNavbarPushTransitionToViewController:(NavbarViewController*)navbarViewController withStartChildOrigin:(CGPoint)startChildOrigin;
 -(void)performPushTransitionAnimationsWithChildOrigin:(CGPoint)animateToChildOrigin parentOrigin:(CGPoint)animateToParentOrigin;
+-(void)performNavbarPushTransitionCompletionToViewController:(NavbarViewController*)navbarViewController;
+
 -(void)performPopTransitionAnimationsWithChildOrigin:(CGPoint)animateToChildOrigin parentOrigin:(CGPoint)animateToParentOrigin;
+
 
 +(void)setPushPopTransitionDuration:(NSTimeInterval)duration;
 

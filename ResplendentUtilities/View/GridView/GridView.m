@@ -59,7 +59,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     if (self = [super initWithFrame:frame])
     {
         _cellsDictionary = [NSMutableDictionary dictionary];
-
+        
         _scrollView = [UIScrollView new];
         [_scrollView setBackgroundColor:[UIColor clearColor]];
         [_scrollView setDelegate:self];
@@ -79,7 +79,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 -(void)layoutScrollViewComponents
 {
     [_scrollView setFrame:self.bounds];
-
+    
     if (_topSpinner)
     {
         [_topSpinner setFrame:self.topSpinnerFrame];
@@ -123,7 +123,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 {
     if (self.topSpinnerVisibility == topSpinnerVisibility)
         return;
-
+    
     if (topSpinnerVisibility)
     {
         if (!_topSpinner)
@@ -158,21 +158,21 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
         [_pullToLoadMoreSpinner setCenter:(CGPoint){CGRectGetWidth(_scrollView.frame) / 2.0f,contentHeight + (kGridViewPullToLoadMoreDefaultHeight / 2.0f)}];
         contentHeight += kGridViewPullToLoadMoreDefaultHeight;
     }
-
+    
     return (CGSize){CGRectGetWidth(self.frame), contentHeight};
 }
 
 -(NSUInteger)numberOfVisibleRowsFromFirstVisibleRow:(NSInteger)firstVisibleRow
 {
     CGFloat contentHeight = CGRectGetHeight(_scrollView.frame);
-
+    
     //visible Top Cutoff Height
     contentHeight -= MAX(0, _contentInsets.top - _scrollView.contentOffset.y);
-
+    
     CGFloat cellWidthAndSpacing = (_cellWidth + _modifiedSpaceBetweenCells);
     CGFloat topRowVisibleHeight = cellWidthAndSpacing - MAX(0, _scrollView.contentOffset.y - cellWidthAndSpacing * firstVisibleRow + _contentInsets.top);
     contentHeight -= topRowVisibleHeight;
-
+    
     return ceilf(contentHeight / cellWidthAndSpacing) + 1;
 }
 
@@ -202,7 +202,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
         [_pullToLoadMoreSpinner removeFromSuperview];
         _pullToLoadMoreSpinner = nil;
     }
-
+    
     [self updateScrollViewContentSize];
 }
 
@@ -225,7 +225,13 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
             }
             else
             {
-                [_scrollView addPullToRefreshWithDelegate:self];
+                __unsafe_unretained GridView* selfPointer = self;
+                [_scrollView addPullToRefreshWithActionHandler:^{
+                    if (selfPointer.pullToLoadDelegate)
+                    {
+                        [selfPointer.pullToLoadDelegate gridViewPullToReload:selfPointer];
+                    }
+                }];
             }
         }
         else if (!pullToRefresh && self.pullToRefresh)
@@ -233,12 +239,6 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
             [_scrollView setShowsPullToRefresh:NO];
         }
     }
-}
-
-#pragma mark - SVPullToRefreshViewDelegate methods
--(void)pullToRefreshWasPulled:(SVPullToRefreshView *)pullToRefreshView
-{
-    [_pullToLoadDelegate gridViewPullToReload:self];
 }
 
 #pragma mark - Action methods
@@ -328,13 +328,13 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     else
     {
         UIView* tile = [_dataSource gridView:self newTileForIndex:index];
-
+        
         [_cellsDictionary setObject:tile forKey:indexStringForKey(index)];
-
+        
         [_tileContentView addSubview:tile];
         [self layoutTile:tile tileIndex:index onScreen:YES animated:NO withDelay:0 completion:nil];
-//        [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
-//        [self layoutTile:tile tileIndex:index onScreen:YES animated:YES withDelay:0 completion:nil];
+        //        [self layoutTile:tile tileIndex:index onScreen:NO animated:NO withDelay:0 completion:nil];
+        //        [self layoutTile:tile tileIndex:index onScreen:YES animated:YES withDelay:0 completion:nil];
         
         return YES;
     }
@@ -423,7 +423,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
     NSUInteger firstVisibleCell = firstVisibleRow * _numberOfColumns;
     NSUInteger currentNumberOfVisibleRows = [self numberOfVisibleRowsFromFirstVisibleRow:firstVisibleRow];;
     NSUInteger lastVisibleCell = (firstVisibleRow + currentNumberOfVisibleRows) * _numberOfColumns;
-
+    
     if (firstVisibleCell)
     {
         //Check for old cells to throw out
@@ -432,7 +432,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
             [self deleteCellAtIndex:index stepBack:NO];
         }
     }
-
+    
     for (int index = firstVisibleCell; index < lastVisibleCell; index++)
     {
         if (index < _numberOfCells)
@@ -440,7 +440,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
             [self addCellAtIndex:index];
         }
     }
-
+    
     if (lastVisibleCell < _numberOfCells)
     {
         //Check for old cells to throw out
@@ -587,7 +587,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self updateTiles];
-
+    
     if (self.pullToLoadMore && _pullToLoadDelegate && !_pullToLoadMoreSpinner.isAnimating)
     {
         if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.frame) > scrollView.contentSize.height - kGridViewPullToLoadMoreDefaultHeight + kGridViewPullToLoadMorePullDistance)
@@ -596,12 +596,12 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
             [_pullToLoadDelegate gridViewPullToLoadMore:self];
         }
     }
-
+    
     if (self.scrollDelegate)
     {
         [self.scrollDelegate gridView:self didScrollWithContentOffset:scrollView.contentOffset];
     }
-
+    
     if (_lastScrollOffset != scrollView.contentOffset.y)
     {
         if (self.scrollDirectionDelegate && scrollView.contentOffset.y + CGRectGetHeight(scrollView.frame) < scrollView.contentSize.height && scrollView.contentOffset.y >= 0)
