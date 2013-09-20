@@ -21,7 +21,7 @@
 -(NSString*)urlWithSizeComponent:(NSString*)urlSizeComponent;
 
 +(instancetype)fourSquareVenuePhotoForJsonDict:(NSDictionary*)jsonDict;
-+(NSMutableArray*)fourSquareVenuePhotosForResponseDict:(NSDictionary*)responseDict withLimit:(NSInteger)limit;
++(NSMutableArray*)fourSquareVenuePhotosForResponseDict:(NSDictionary*)responseDict;
 
 +(NSString*)urlSizeComponentCappedWidth:(NSInteger)width;
 

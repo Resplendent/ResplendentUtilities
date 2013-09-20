@@ -10,19 +10,17 @@
 #import "RUFourSquareVenueRequestUtil.h"
 #import "RUFourSquareVenuePhotosResponse.h"
 
-NSInteger const kRUFourSquareVenuePhotosRequestLimit = 10;
-
 @implementation RUFourSquareVenuePhotosRequest
 
 #pragma mark - Public methods
--(void)fetchWithFourSquareVenueId:(NSString*)fourSquareVenueId
+-(void)fetchWithFourSquareVenueId:(NSString*)fourSquareVenueId limit:(NSInteger)limit
 {
     if (!fourSquareVenueId.length)
         [NSException raise:NSInvalidArgumentException format:@"Need a non nil fourSquareVenueId"];
 
     _fourSquareVenueId = fourSquareVenueId;
 
-    [self fetchWithUrl:[NSURL URLWithString:[RUFourSquareVenueRequestUtil photosUrlWithVenueId:fourSquareVenueId limit:kRUFourSquareVenuePhotosRequestLimit]]];
+    [self fetchWithUrl:[NSURL URLWithString:[RUFourSquareVenueRequestUtil photosUrlWithVenueId:fourSquareVenueId limit:limit]]];
 }
 
 #pragma mark - Overloaded

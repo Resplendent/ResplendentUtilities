@@ -50,6 +50,11 @@
 #pragma mark - Static
 +(NSString*)urlFromFormatString:(NSString*)urlFormatString withSizeComponent:(NSString*)sizeComponent
 {
+    if (!urlFormatString)
+    {
+        [NSException raise:NSInternalInconsistencyException format:@"Must pass non-nil urlFormatString"];
+    }
+
     if (!sizeComponent.length)
     {
         sizeComponent = @"original";
@@ -70,25 +75,31 @@ NSInteger PAFourSquareVenuePhotoDistanceOfClosestDimension(CGSize size1,CGSize s
 }
 
 #pragma mark - Static Constructor methods
-+(NSMutableArray*)fourSquareVenuePhotosForResponseDict:(NSDictionary*)responseDict withLimit:(NSInteger)limit
++(NSMutableArray*)fourSquareVenuePhotosForResponseDict:(NSDictionary*)responseDict
 {
     NSDictionary* photosJsonDict = [responseDict objectForKey:@"photos"];
     //    NSNumber* photosCount = [photosJsonDict objectForKey:@"count"];
     NSArray* photoItemsJsonArray = [photosJsonDict objectForKey:@"items"];
     //    PAFourSquareVenuePhotosResponseObjectPhotoItem* photosGroup = PAFourSquareVenuePhotoGroupForPhotosFromPhotoItemsJsonArray(photoItemsJsonArray);
-    
-    NSMutableArray* fourSquareVenuePhotos = [NSMutableArray arrayWithCapacity:limit];
-    
-    limit = MIN(limit, photoItemsJsonArray.count);
-    
-    for (int index = 0; index < limit; index++)
-    {
-        NSDictionary* photoItemJsonDict = [photoItemsJsonArray objectAtIndex:index];
 
+    NSMutableArray* fourSquareVenuePhotos = [NSMutableArray arrayWithCapacity:photoItemsJsonArray.count];
+    
+//    limit = MIN(limit, photoItemsJsonArray.count);
+
+    for (NSDictionary* photoItemJsonDict in photoItemsJsonArray)
+    {
         RUFourSquareVenuePhoto* fsPhoto = [RUFourSquareVenuePhoto fourSquareVenuePhotoForJsonDict:photoItemJsonDict];
         if (fsPhoto)
             [fourSquareVenuePhotos addObject:fsPhoto];
     }
+//    for (int index = 0; index < limit; index++)
+//    {
+//        NSDictionary* photoItemJsonDict = [photoItemsJsonArray objectAtIndex:index];
+//
+//        RUFourSquareVenuePhoto* fsPhoto = [RUFourSquareVenuePhoto fourSquareVenuePhotoForJsonDict:photoItemJsonDict];
+//        if (fsPhoto)
+//            [fourSquareVenuePhotos addObject:fsPhoto];
+//    }
     
     return fourSquareVenuePhotos;
 }

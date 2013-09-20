@@ -100,7 +100,7 @@
 
 -(CGSize)sizeThatFits:(CGSize)size
 {
-    return (CGSize){CGRectGetWidth([UIScreen mainScreen].bounds), 44.0f};
+    return (CGSize){CGRectGetWidth([UIScreen mainScreen].bounds), self.height};
 }
 
 #pragma mark - Setters

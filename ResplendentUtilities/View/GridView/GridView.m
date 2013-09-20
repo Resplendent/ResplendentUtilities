@@ -458,7 +458,7 @@ CGFloat const kGridViewPullToLoadMorePullDistance = 30.0f;
 
 -(void)updateTileWidth
 {
-    CGFloat newCellWidth = [GridView cellWidthForGridWidth:CGRectGetWidth(_scrollView.frame) numberOfColumns:_numberOfColumns cellSpacing:_cellSpacing leftPadding:_contentInsets.left rightPadding:_contentInsets.right];
+    CGFloat newCellWidth = [[self class] cellWidthForGridWidth:CGRectGetWidth(_scrollView.frame) numberOfColumns:_numberOfColumns cellSpacing:_cellSpacing leftPadding:_contentInsets.left rightPadding:_contentInsets.right];
     if (_cellWidth != newCellWidth)
     {
         _cellWidth = newCellWidth;

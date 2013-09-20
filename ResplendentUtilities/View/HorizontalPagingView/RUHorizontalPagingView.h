@@ -22,6 +22,8 @@
 
 @property (nonatomic, readonly) NSInteger delegateNumberOfPages;
 
+@property (nonatomic, readonly) CGSize cellFrameSize;
+
 @property (nonatomic, assign) UIEdgeInsets scrollViewFrameInsets;
 @property (nonatomic, assign) UIEdgeInsets cellFrameInsets;
 @property (nonatomic, assign) CGFloat cellMinAdjustedTransformScale; //1.0f by default
@@ -44,6 +46,8 @@
 
 -(void)addViewAtEnd;
 -(void)insertViewAtPage:(NSInteger)page preserveDistanceScrolledFromRight:(BOOL)preserveDistanceScrolledFromRight;
+
+-(void)scrollToPage:(NSInteger)page selfSize:(CGSize)selfSize animated:(BOOL)animated;
 
 // ++++++
 // Only to be overloaded, not called directly
