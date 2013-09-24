@@ -10,9 +10,15 @@
 #import "UIView+Utility.h"
 #import "RUConstants.h"
 
+@interface Navbar ()
+
+-(CGRect)leftButtonFrameWithAnimatableContentViewFrame:(CGRect)animatableContentViewFrame;
+-(CGRect)rightButtonFrameWithAnimatableContentViewFrame:(CGRect)animatableContentViewFrame;
+
+@end
+
 @implementation Navbar
 
-@synthesize autoAdjustButtons = _autoAdjustButtons;
 @synthesize leftButton = _leftButton;
 @synthesize rightButton = _rightButton;
 
@@ -20,7 +26,7 @@
 
 -(id)init
 {
-    return ([self initWithFrame:(CGRect){0, 0, [self sizeThatFits:CGSizeZero]} autoAdjustButtons:YES]);
+    return ([self initWithFrame:(CGRect){0, 0, [self sizeThatFits:CGSizeZero]}]);
 }
 
 -(id)initWithFrame:(CGRect)frame
@@ -36,33 +42,21 @@
     return self;
 }
 
--(id)initWithFrame:(CGRect)frame autoAdjustButtons:(BOOL)autoAdjustButtons
-{
-    _autoAdjustButtons = autoAdjustButtons;
-    return [self initWithFrame:frame];
-}
-
 -(void)layoutSubviews
 {
     [super layoutSubviews];
 
-    [_animatableContentView setFrame:self.animatableContentViewFrame];
+    CGRect animatableContentViewFrame = self.animatableContentViewFrame;
+    [_animatableContentView setFrame:animatableContentViewFrame];
 
-    if (_autoAdjustButtons)
+    if (_leftButton)
     {
-        if (_leftButton)
-        {
-            CGSize size = _leftButton.frame.size;
-            CGFloat yCoord = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(size.height, CGRectGetHeight(self.frame) - self.animatableContentViewLowerPadding);
-            [_leftButton setFrame:(CGRect){(self.leftButtonLeftPadding ? self.leftButtonLeftPadding.floatValue : yCoord),yCoord,size}];
-        }
-
-        if (_rightButton)
-        {
-            CGSize size = _rightButton.frame.size;
-            CGFloat yCoord = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(size.height, CGRectGetHeight(self.frame) - self.animatableContentViewLowerPadding);
-            [_rightButton setFrame:(CGRect){ceil(CGRectGetWidth(self.frame) - size.width - (self.rightButtonRightPadding ? self.rightButtonRightPadding.floatValue : yCoord)),yCoord,size}];
-        }
+        [_leftButton setFrame:[self leftButtonFrameWithAnimatableContentViewFrame:animatableContentViewFrame]];
+    }
+    
+    if (_rightButton)
+    {
+        [_rightButton setFrame:[self rightButtonFrameWithAnimatableContentViewFrame:animatableContentViewFrame]];
     }
 
     if (_titleLabel)
@@ -128,6 +122,20 @@
 }
 
 #pragma mark - Frames
+-(CGRect)leftButtonFrameWithAnimatableContentViewFrame:(CGRect)animatableContentViewFrame
+{
+    CGSize size = _leftButton.frame.size;
+    CGFloat yCoord = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(size.height, CGRectGetHeight(animatableContentViewFrame));
+    return (CGRect){(self.leftButtonLeftPadding ? self.leftButtonLeftPadding.floatValue : yCoord),yCoord,size};
+}
+
+-(CGRect)rightButtonFrameWithAnimatableContentViewFrame:(CGRect)animatableContentViewFrame
+{
+    CGSize size = _rightButton.frame.size;
+    CGFloat yCoord = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(size.height, CGRectGetHeight(animatableContentViewFrame));
+    return (CGRect){ceil(CGRectGetWidth(animatableContentViewFrame) - size.width - (self.rightButtonRightPadding ? self.rightButtonRightPadding.floatValue : yCoord)),yCoord,size};
+}
+
 -(CGFloat)animatableContentViewHeight
 {
     return (CGRectGetHeight(self.frame) - self.animatableContentViewLowerPadding);
