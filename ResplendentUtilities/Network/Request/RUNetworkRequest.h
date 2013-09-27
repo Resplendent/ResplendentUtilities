@@ -18,6 +18,7 @@
 @property (nonatomic, readonly) NSTimeInterval timeoutInterval;
 
 -(void)fetchWithUrl:(NSURL*)url;
+-(void)fetchWithUrlRequest:(NSURLRequest*)urlRequest;
 -(void)cancel;
 
 //For subclasses

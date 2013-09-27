@@ -41,7 +41,19 @@
 
 -(NSString *)description
 {
-    return RUStringWithFormat(@"%@ with request %@ response object %@",[super description],self.request,self.responseObject);
+    NSString* description = RUStringWithFormat(@"%@ with request %@",[super description],self.request);
+
+    if (self.responseObject)
+    {
+        description = [description stringByAppendingFormat:@"\nResponse object: %@",self.responseObject];
+    }
+
+    if (self.error)
+    {
+        description = [description stringByAppendingFormat:@"\nError: %@",self.error];
+    }
+
+    return description;
 }
 
 @end
