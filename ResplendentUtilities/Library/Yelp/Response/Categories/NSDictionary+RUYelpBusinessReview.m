@@ -1,0 +1,23 @@
+//
+//  NSDictionary+RUYelpBusinessReview.m
+//  Pineapple
+//
+//  Created by Benjamin Maer on 9/27/13.
+//  Copyright (c) 2013 Pineapple. All rights reserved.
+//
+
+#import "NSDictionary+RUYelpBusinessReview.h"
+
+@implementation NSDictionary (RUYelpBusinessReview)
+
+-(NSNumber *)ruYelpBusinessReviewRating
+{
+    return [self objectForKey:@"rating"];
+}
+
+-(NSString *)ruYelpBusinessReviewExcerpt
+{
+    return [self objectForKey:@"excerpt"];
+}
+
+@end

@@ -28,6 +28,8 @@ extern NSString* const kRUYelpRequestUtilYelpApiBase;
 //@params searchTerm,url are required
 +(NSString*)addSearchTermParam:(NSString*)searchTerm toUrl:(NSString*)url;
 
++(NSString*)searchBusinessUrlStringForYelpBusinessId:(NSString*)yelpBusinessId;
+
 //------
 
 +(void)setConsumerKey:(NSString*)consumerKey;

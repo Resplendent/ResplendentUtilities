@@ -16,4 +16,7 @@
 @property (nonatomic, readonly) NSString* ruYelpBusinessImageUrl;
 @property (nonatomic, readonly) NSString* ruYelpBusinessReviewCount;
 
+//Only on full
+@property (nonatomic, readonly) NSArray* ruYelpBusinessReviews;
+
 @end

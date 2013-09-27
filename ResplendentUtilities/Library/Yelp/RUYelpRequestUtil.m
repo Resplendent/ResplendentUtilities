@@ -11,6 +11,7 @@
 #import "RUConstants.h"
 
 NSString* const kRUYelpRequestUtilYelpApiBase = @"http://api.yelp.com/v2/search";
+NSString* const kRUYelpRequestUtilYelpBusinessSearchApiBase = @"http://api.yelp.com/v2/business/";
 
 static NSString* __consumerKey;
 static NSString* __consumerSecret;
@@ -100,6 +101,20 @@ static NSString* __tokenSecret;
     else
     {
         RUDLog(@"need non-nil search term to add to url %@",url);
+        return nil;
+    }
+}
+
+#pragma mark - Search Business by Uid
++(NSString*)searchBusinessUrlStringForYelpBusinessId:(NSString*)yelpBusinessId
+{
+    if (yelpBusinessId.length)
+    {
+        return RUStringWithFormat(@"%@%@",kRUYelpRequestUtilYelpBusinessSearchApiBase,yelpBusinessId);
+    }
+    else
+    {
+        RUDLog(@"need non-nil yelpBusinessId");
         return nil;
     }
 }

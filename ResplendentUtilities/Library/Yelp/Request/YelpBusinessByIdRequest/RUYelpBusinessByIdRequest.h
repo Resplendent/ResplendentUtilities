@@ -6,8 +6,13 @@
 //  Copyright (c) 2013 Pineapple. All rights reserved.
 //
 
-#import "RUNetworkDictionaryResponse.h"
+#import "RUJsonRequest.h"
+#import "RUYelpBusinessByIdRequestProtocols.h"
 
-@interface RUYelpBusinessByIdRequest : RUNetworkDictionaryResponse
+@interface RUYelpBusinessByIdRequest : RUJsonRequest
+
+@property (nonatomic, assign) id<RUYelpBusinessByIdRequestDelegate> delegate;
+
+-(void)fetchWithId:(NSString*)yelpBusinessId;
 
 @end

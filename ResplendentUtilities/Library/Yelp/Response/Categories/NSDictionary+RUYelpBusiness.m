@@ -36,4 +36,10 @@
     return [self objectForKey:@"review_count"];
 }
 
+#pragma mark - Only on full business dictionary
+-(NSArray *)ruYelpBusinessReviews
+{
+    return [self objectForKey:@"reviews"];
+}
+
 @end
