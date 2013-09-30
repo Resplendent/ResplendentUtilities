@@ -20,4 +20,9 @@
     return [self objectForKey:@"excerpt"];
 }
 
+-(NSDictionary *)ruYelpBusinessReviewUser
+{
+    return [self objectForKey:@"user"];
+}
+
 @end
