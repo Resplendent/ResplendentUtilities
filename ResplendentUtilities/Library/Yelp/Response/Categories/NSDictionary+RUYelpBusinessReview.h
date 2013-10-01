@@ -13,5 +13,6 @@
 @property (nonatomic, readonly) NSNumber* ruYelpBusinessReviewRating;
 @property (nonatomic, readonly) NSString* ruYelpBusinessReviewExcerpt;
 @property (nonatomic, readonly) NSDictionary* ruYelpBusinessReviewUser;
+@property (nonatomic, readonly) NSString* ruYelpBusinessReviewTimeStamp;
 
 @end

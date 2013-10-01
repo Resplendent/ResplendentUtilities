@@ -25,4 +25,9 @@
     return [self objectForKey:@"user"];
 }
 
+-(NSNumber*)ruYelpBusinessReviewTimeStamp
+{
+    return [self objectForKey:@"time_created"];
+}
+
 @end

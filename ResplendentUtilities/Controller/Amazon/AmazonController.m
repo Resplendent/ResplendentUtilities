@@ -43,7 +43,6 @@ static dispatch_queue_t ImageToDataQueue;
 
 -(void)uploadImage:(UIImage*)image imageName:(NSString*)imageName
 {
-    RUDLog(@"imageName: %@",imageName);
     dispatch_async(ImageToDataQueue, ^{
         __block S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:imageName inBucket:self.bucketName];
         por.contentType = @"image/jpeg";
