@@ -31,7 +31,7 @@
     return [self objectForKey:@"image_url"];
 }
 
--(NSString *)ruYelpBusinessReviewCount
+-(NSNumber *)ruYelpBusinessReviewCount
 {
     return [self objectForKey:@"review_count"];
 }
