@@ -7,8 +7,19 @@
 //
 
 #import "RUClassOrNilUtil.h"
+#import <objc/runtime.h>
 
 id __RUClassOrNilUtilFunction(id val, Class valClass)
 {
-    return (val && [val isKindOfClass:valClass] ? val : nil);
+    //Test if val object is is an instance or a class.
+    if(class_isMetaClass(object_getClass(val)))
+    {
+        //Is a class
+        return (val && (val == valClass || [val isSubclassOfClass:valClass]) ? val : nil);
+    }
+    else
+    {
+        //Is an instance
+        return (val && [val isKindOfClass:valClass] ? val : nil);
+    }
 }
