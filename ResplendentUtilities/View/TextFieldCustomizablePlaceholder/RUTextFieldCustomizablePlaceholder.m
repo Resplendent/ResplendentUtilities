@@ -8,6 +8,9 @@
 
 #import "RUTextFieldCustomizablePlaceholder.h"
 #import "UIView+Utility.h"
+#import "PASystemVersionUtils.h"
+
+#import "RUConstants.h"
 
 @implementation RUTextFieldCustomizablePlaceholder
 
@@ -20,24 +23,44 @@
 
     if (self.placeholderFont && self.placeholder.length)
     {
-        CGFloat fontHeight = self.placeholderFont.pointSize;
-        CGFloat yCoord = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(fontHeight, CGRectGetHeight(rect));
-        CGRect placeholderRect = (CGRect){0, yCoord, CGRectGetWidth(rect), fontHeight};
-        [self.placeholder drawInRect:placeholderRect withFont:self.placeholderFont];
+        [[self placeholder] drawInRect:rect withFont:self.placeholderFont];
     }
 }
 
--(void)layoutSubviews
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
-    [super layoutSubviews];
-    for (UIView* subview in self.subviews)
+    CGRect editingRect = [super editingRectForBounds:bounds];
+    editingRect.origin.x += self.placeholderLeftPadding;
+    editingRect.size.width -= self.placeholderLeftPadding;
+    return editingRect;
+}
+
+-(CGRect)textRectForBounds:(CGRect)bounds
+{
+    CGRect textRect = [super textRectForBounds:bounds];
+    textRect.origin.x += self.placeholderLeftPadding;
+    textRect.size.width -= self.placeholderLeftPadding;
+    return textRect;
+}
+
+-(CGRect)placeholderRectForBounds:(CGRect)bounds
+{
+    CGRect placeholderRect = [super placeholderRectForBounds:bounds];
+
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
     {
-        CGRect rect = subview.frame;
-        CGFloat placeholderLeftPadding = self.placeholderLeftPadding;
-        rect.origin.x += placeholderLeftPadding;
-        rect.size.width -= placeholderLeftPadding;
-        [subview setFrame:rect];
+        switch (self.contentVerticalAlignment)
+        {
+            case UIControlContentVerticalAlignmentCenter:
+                placeholderRect.origin.y = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(self.placeholderFont.pointSize, CGRectGetHeight(self.bounds));
+                break;
+                
+            default:
+                break;
+        }
     }
+
+    return placeholderRect;
 }
 
 #pragma mark - Setters

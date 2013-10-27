@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface RUTextFieldCustomizablePlaceholder : UITextField
+{
+//    NSUInteger _addLeftPaddingInLayout;
+//    BOOL _addLeftPaddingInLayout2;
+}
 
 @property (nonatomic, strong) UIColor* placeholderColor;
 @property (nonatomic, strong) UIFont* placeholderFont;
