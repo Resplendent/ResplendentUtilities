@@ -10,8 +10,6 @@
 #import <objc/runtime.h>
 #import "RUClassOrNilUtil.h"
 
-//++++++++
-//Implementation
 
 //++++
 //Setters
@@ -28,12 +26,15 @@
 }
 //----
 
+
+
+
 //++++
-//Setters
+//Getters
 #define RU_Synthesize_AssociatedObject_Getter_Implementation(varName,varType,constVoidKey) \
 -(varType)varName \
 { \
-objc_getAssociatedObject(self, constVoidKey) \
+    return objc_getAssociatedObject(self, constVoidKey); \
 }
 
 #define RU_Synthesize_AssociatedObject_GetterNumberFromPrimative_Implementation(varName,primativeType,NSNumberGetter,constVoidKey) \
@@ -42,6 +43,9 @@ objc_getAssociatedObject(self, constVoidKey) \
     return kRUNumberOrNil(objc_getAssociatedObject(self, constVoidKey)).NSNumberGetter; \
 }
 //----
+
+
+
 
 //++++
 //GetterAndSetter

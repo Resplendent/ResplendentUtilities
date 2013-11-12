@@ -4,6 +4,7 @@
 //
 
 #import "UIView+Utility.h"
+
 #import <QuartzCore/CALayer.h>
 #import <QuartzCore/CAShapeLayer.h>
 
@@ -232,26 +233,6 @@
 -(void)setSize:(CGSize)size
 {
     [self setWidth:size.width height:size.height];
-}
-
-#pragma mark - First Responder
--(UIView*)selfOrSubviewFirstResponder
-{
-    if (self.isFirstResponder)
-    {
-        return self;
-    }
-    
-    for (UIView* subview in self.subviews)
-    {
-        UIView* subviewFirstResponder = subview.selfOrSubviewFirstResponder;
-        if (subviewFirstResponder)
-        {
-            return subviewFirstResponder;
-        }
-    }
-    
-    return nil;
 }
 
 @end

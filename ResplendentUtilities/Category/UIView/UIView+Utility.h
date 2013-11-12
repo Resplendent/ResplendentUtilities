@@ -152,6 +152,4 @@ CG_INLINE void increaseHeight(UIView* view,CGFloat heightIncrease)
 -(void)increaseHeight:(CGFloat)height;
 -(void)increaseWidth:(CGFloat)width height:(CGFloat)height;
 
--(UIView*)selfOrSubviewFirstResponder;
-
 @end
