@@ -6,18 +6,17 @@
 //  Copyright (c) 2013 Pineapple. All rights reserved.
 //
 
-#import "AmazonController.h"
-#import "RUConstants.h"
+#import "RUAmazonController.h"
 
-static const char* ImageToDataQueueName = "AmazonController.ImageToDataQueue";
+static const char* ImageToDataQueueName = "RUAmazonController.ImageToDataQueue";
 
 static dispatch_queue_t ImageToDataQueue;
 
-@implementation AmazonController
+@implementation RUAmazonController
 
 +(void)initialize
 {
-    if (self == [AmazonController class])
+    if (self == [RUAmazonController class])
     {
         ImageToDataQueue = dispatch_queue_create(ImageToDataQueueName, 0);
     }
@@ -89,6 +88,12 @@ static dispatch_queue_t ImageToDataQueue;
 -(void)request:(AmazonServiceRequest *)request didCompleteWithResponse:(AmazonServiceResponse *)response
 {
     RUDLog(@"finished uploading image with response %@ body %@",response,response.body);
+    [self.delegate amazonController:self didFinishWithResponse:response];
+}
+
+-(void)request:(AmazonServiceRequest *)request didFailWithError:(NSError *)error
+{
+    [self.delegate amazonController:self didFailWithError:error];
 }
 
 @end

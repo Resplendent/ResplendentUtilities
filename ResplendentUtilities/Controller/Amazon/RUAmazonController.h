@@ -7,12 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RUAmazonControllerProtocols.h"
 #import <AWSiOSSDK/S3/AmazonS3Client.h>
 
-@interface AmazonController : NSObject <AmazonServiceRequestDelegate>
+@interface RUAmazonController : NSObject <AmazonServiceRequestDelegate>
 {
     AmazonS3Client* _amazonS3Client;
 }
+
+@property (nonatomic, assign) id<RUAmazonControllerDelegate> delegate;
 
 //Must be overloaded by a subclass
 @property (nonatomic, readonly) NSString* accessKey;
