@@ -9,6 +9,7 @@
 #import "RUYelpRequestUtil.h"
 #import "OAMutableURLRequest.h"
 #import "RUConstants.h"
+#import "NSString+RUMutableURLRequest.h"
 
 NSString* const kRUYelpRequestUtilYelpApiBase = @"http://api.yelp.com/v2/search";
 NSString* const kRUYelpRequestUtilYelpBusinessSearchApiBase = @"http://api.yelp.com/v2/business/";
@@ -92,11 +93,10 @@ static NSString* __tokenSecret;
 
 +(NSString*)addSearchTermParam:(NSString*)searchTerm toUrl:(NSString*)url
 {
-    NSString* escapedSearchTerm = [searchTerm stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    if (escapedSearchTerm.length)
+    NSString* encodedStringForURLParamTerm = [searchTerm ruEncodedStringForURLParamTerm];
+    if (encodedStringForURLParamTerm.length)
     {
-        NSString* prefix = [self urlSearchParamPrefixForUrl:url];
-        return RUStringWithFormat(@"%@%@term=%@",url,prefix,escapedSearchTerm);
+        return RUStringWithFormat(@"%@%@term=%@",url,[self urlSearchParamPrefixForUrl:url],encodedStringForURLParamTerm);
     }
     else
     {
