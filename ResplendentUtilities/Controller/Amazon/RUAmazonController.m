@@ -22,43 +22,51 @@ static dispatch_queue_t ImageToDataQueue;
     }
 }
 
-//-(id)initWithAccessKey:(NSString*)accessKey secretKey:(NSString*)secretKey bucketName:(NSString*)bucketName
-//{
-//    _amazonS3Client = [[AmazonS3Client alloc] initWithAccessKey:accessKey withSecretKey:secretKey];
-//    [_amazonS3Client createBucket:[[S3CreateBucketRequest alloc] initWithName:bucketName]];
-//    return (self = [super init]);
-//}
-
 -(id)init
 {
     if (self = [super init])
     {
         _amazonS3Client = [[AmazonS3Client alloc] initWithAccessKey:self.accessKey withSecretKey:self.secretKey];
-        [_amazonS3Client createBucket:[[S3CreateBucketRequest alloc] initWithName:self.bucketName]];
+//        [_amazonS3Client createBucket:[[S3CreateBucketRequest alloc] initWithName:self.bucketName]];
     }
 
     return self;
 }
 
--(S3PutObjectRequest*)uploadImage:(UIImage*)image imageName:(NSString*)imageName
+-(S3PutObjectRequest*)newImagePutRequestWithImageName:(NSString*)imageName
 {
     S3PutObjectRequest* request = [[S3PutObjectRequest alloc] initWithKey:imageName inBucket:self.bucketName];
     [request setContentType:@"image/jpeg"];
     [request setDelegate:self];
+    return request;
+}
+
+-(S3PutObjectRequest*)uploadImage:(UIImage*)image imageName:(NSString*)imageName
+{
+    S3PutObjectRequest* request = [self newImagePutRequestWithImageName:imageName];
 
     dispatch_async(ImageToDataQueue, ^{
         [request setData:UIImagePNGRepresentation(image)];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self sendRequest:request];
-        });
+        [self sendRequest:request];
     });
+    
+    return request;
+}
+
+-(S3PutObjectRequest*)uploadImageWithData:(NSData*)imageData imageName:(NSString*)imageName
+{
+    S3PutObjectRequest* request = [self newImagePutRequestWithImageName:imageName];
+    [request setData:imageData];
+    [self sendRequest:request];
 
     return request;
 }
 
 -(void)sendRequest:(S3PutObjectRequest*)request
 {
-    [_amazonS3Client putObject:request];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_amazonS3Client putObject:request];
+    });
 }
 
 -(NSURL*)imageURLForImageName:(NSString*)imageName

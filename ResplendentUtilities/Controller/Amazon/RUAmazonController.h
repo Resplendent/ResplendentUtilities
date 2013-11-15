@@ -25,6 +25,7 @@
 -(void)sendRequest:(S3PutObjectRequest*)request;
 
 -(S3PutObjectRequest*)uploadImage:(UIImage*)image imageName:(NSString*)imageName;
+-(S3PutObjectRequest*)uploadImageWithData:(NSData*)imageData imageName:(NSString*)imageName;
 
 //returns name of photo in amazon bucket
 -(NSURL*)imageURLForImageName:(NSString*)imageName;
