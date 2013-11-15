@@ -22,6 +22,8 @@
 @property (nonatomic, readonly) NSString* secretKey;
 @property (nonatomic, readonly) NSString* bucketName;
 
+-(void)sendRequest:(S3PutObjectRequest*)request;
+
 -(S3PutObjectRequest*)uploadImage:(UIImage*)image imageName:(NSString*)imageName;
 
 //returns name of photo in amazon bucket

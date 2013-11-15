@@ -49,11 +49,16 @@ static dispatch_queue_t ImageToDataQueue;
     dispatch_async(ImageToDataQueue, ^{
         [request setData:UIImagePNGRepresentation(image)];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [_amazonS3Client putObject:request];
+            [self sendRequest:request];
         });
     });
 
     return request;
+}
+
+-(void)sendRequest:(S3PutObjectRequest*)request
+{
+    [_amazonS3Client putObject:request];
 }
 
 -(NSURL*)imageURLForImageName:(NSString*)imageName
