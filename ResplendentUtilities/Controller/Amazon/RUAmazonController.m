@@ -40,17 +40,20 @@ static dispatch_queue_t ImageToDataQueue;
     return self;
 }
 
--(void)uploadImage:(UIImage*)image imageName:(NSString*)imageName
+-(S3PutObjectRequest*)uploadImage:(UIImage*)image imageName:(NSString*)imageName
 {
+    S3PutObjectRequest* request = [[S3PutObjectRequest alloc] initWithKey:imageName inBucket:self.bucketName];
+    [request setContentType:@"image/jpeg"];
+    [request setDelegate:self];
+
     dispatch_async(ImageToDataQueue, ^{
-        __block S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:imageName inBucket:self.bucketName];
-        por.contentType = @"image/jpeg";
-        por.data = UIImagePNGRepresentation(image);
-        [por setDelegate:self];
+        [request setData:UIImagePNGRepresentation(image)];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [_amazonS3Client putObject:por];
+            [_amazonS3Client putObject:request];
         });
     });
+
+    return request;
 }
 
 -(NSURL*)imageURLForImageName:(NSString*)imageName
