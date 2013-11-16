@@ -12,13 +12,15 @@
 
 -(void)scrollRectToVisible:(CGRect)rect animated:(BOOL)animated
 {
-    if (!_disableAutoScrollToSubview)
+    if (!self.disableAutoScrollToSubview)
+    {
         [super scrollRectToVisible:rect animated:animated];
+    }
 }
 
 -(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
 {
-    if (_disableTouchesOutsideOfSubviews)
+    if (self.enableTouchesOutsideOfSubviews)
     {
         for (UIView* subview in self.subviews)
         {
