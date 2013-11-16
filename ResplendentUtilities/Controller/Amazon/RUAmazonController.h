@@ -7,22 +7,27 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RUAmazonControllerProtocols.h"
 #import <AWSiOSSDK/S3/AmazonS3Client.h>
 
-@interface AmazonController : NSObject <AmazonServiceRequestDelegate>
+@interface RUAmazonController : NSObject <AmazonServiceRequestDelegate>
 {
     AmazonS3Client* _amazonS3Client;
 }
+
+@property (nonatomic, assign) id<RUAmazonControllerDelegate> delegate;
 
 //Must be overloaded by a subclass
 @property (nonatomic, readonly) NSString* accessKey;
 @property (nonatomic, readonly) NSString* secretKey;
 @property (nonatomic, readonly) NSString* bucketName;
 
-//-(id)initWithAccessKey:(NSString*)accessKey secretKey:(NSString*)secretKey bucketName:(NSString*)bucketName;
+-(void)sendRequest:(S3PutObjectRequest*)request;
+
+-(S3PutObjectRequest*)uploadImage:(UIImage*)image imageName:(NSString*)imageName;
+-(S3PutObjectRequest*)uploadImageWithData:(NSData*)imageData imageName:(NSString*)imageName;
 
 //returns name of photo in amazon bucket
--(void)uploadImage:(UIImage*)image imageName:(NSString*)imageName;
 -(NSURL*)imageURLForImageName:(NSString*)imageName;
 
 @end

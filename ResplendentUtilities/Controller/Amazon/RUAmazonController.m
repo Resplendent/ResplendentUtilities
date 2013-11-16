@@ -6,52 +6,66 @@
 //  Copyright (c) 2013 Pineapple. All rights reserved.
 //
 
-#import "AmazonController.h"
-#import "RUConstants.h"
+#import "RUAmazonController.h"
 
-static const char* ImageToDataQueueName = "AmazonController.ImageToDataQueue";
+static const char* ImageToDataQueueName = "RUAmazonController.ImageToDataQueue";
 
 static dispatch_queue_t ImageToDataQueue;
 
-@implementation AmazonController
+@implementation RUAmazonController
 
 +(void)initialize
 {
-    if (self == [AmazonController class])
+    if (self == [RUAmazonController class])
     {
         ImageToDataQueue = dispatch_queue_create(ImageToDataQueueName, 0);
     }
 }
-
-//-(id)initWithAccessKey:(NSString*)accessKey secretKey:(NSString*)secretKey bucketName:(NSString*)bucketName
-//{
-//    _amazonS3Client = [[AmazonS3Client alloc] initWithAccessKey:accessKey withSecretKey:secretKey];
-//    [_amazonS3Client createBucket:[[S3CreateBucketRequest alloc] initWithName:bucketName]];
-//    return (self = [super init]);
-//}
 
 -(id)init
 {
     if (self = [super init])
     {
         _amazonS3Client = [[AmazonS3Client alloc] initWithAccessKey:self.accessKey withSecretKey:self.secretKey];
-        [_amazonS3Client createBucket:[[S3CreateBucketRequest alloc] initWithName:self.bucketName]];
+//        [_amazonS3Client createBucket:[[S3CreateBucketRequest alloc] initWithName:self.bucketName]];
     }
 
     return self;
 }
 
--(void)uploadImage:(UIImage*)image imageName:(NSString*)imageName
+-(S3PutObjectRequest*)newImagePutRequestWithImageName:(NSString*)imageName
 {
-    RUDLog(@"imageName: %@",imageName);
+    S3PutObjectRequest* request = [[S3PutObjectRequest alloc] initWithKey:imageName inBucket:self.bucketName];
+    [request setContentType:@"image/jpeg"];
+    [request setDelegate:self];
+    return request;
+}
+
+-(S3PutObjectRequest*)uploadImage:(UIImage*)image imageName:(NSString*)imageName
+{
+    S3PutObjectRequest* request = [self newImagePutRequestWithImageName:imageName];
+
     dispatch_async(ImageToDataQueue, ^{
-        __block S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:imageName inBucket:self.bucketName];
-        por.contentType = @"image/jpeg";
-        por.data = UIImagePNGRepresentation(image);
-        [por setDelegate:self];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [_amazonS3Client putObject:por];
-        });
+        [request setData:UIImagePNGRepresentation(image)];
+        [self sendRequest:request];
+    });
+    
+    return request;
+}
+
+-(S3PutObjectRequest*)uploadImageWithData:(NSData*)imageData imageName:(NSString*)imageName
+{
+    S3PutObjectRequest* request = [self newImagePutRequestWithImageName:imageName];
+    [request setData:imageData];
+    [self sendRequest:request];
+
+    return request;
+}
+
+-(void)sendRequest:(S3PutObjectRequest*)request
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_amazonS3Client putObject:request];
     });
 }
 
@@ -90,6 +104,12 @@ static dispatch_queue_t ImageToDataQueue;
 -(void)request:(AmazonServiceRequest *)request didCompleteWithResponse:(AmazonServiceResponse *)response
 {
     RUDLog(@"finished uploading image with response %@ body %@",response,response.body);
+    [self.delegate amazonController:self didFinishWithResponse:response];
+}
+
+-(void)request:(AmazonServiceRequest *)request didFailWithError:(NSError *)error
+{
+    [self.delegate amazonController:self didFailWithError:error];
 }
 
 @end

@@ -11,6 +11,11 @@
 
 @implementation RUNetworkRequest
 
+-(NSString *)description
+{
+    return RUStringWithFormat(@"%@ _connection: %@\nCurrent data: %@",[super description],_connection,_data);
+}
+
 -(void)dealloc
 {
     [self cancel];
@@ -28,14 +33,26 @@
 }
 
 #pragma mark - Public methods
+-(void)fetchWithUrlRequest:(NSURLRequest*)urlRequest
+{
+    if (urlRequest)
+    {
+        _data = [NSMutableData data];
+        _connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:NO];
+        [_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+        [_connection start];
+    }
+    else
+    {
+        [NSException raise:NSInvalidArgumentException format:@"must pass a non nil url"];
+    }
+}
+
 -(void)fetchWithUrl:(NSURL*)url
 {
     if (url)
     {
-        _data = [NSMutableData data];
-        _connection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:url cachePolicy:self.cachePolicy timeoutInterval:self.timeoutInterval] delegate:self startImmediately:NO];
-        [_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-        [_connection start];
+        [self fetchWithUrlRequest:[NSURLRequest requestWithURL:url cachePolicy:self.cachePolicy timeoutInterval:self.timeoutInterval]];
     }
     else
     {
