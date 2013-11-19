@@ -22,10 +22,16 @@
 @property (nonatomic, readonly) NSString* secretKey;
 @property (nonatomic, readonly) NSString* bucketName;
 
--(void)sendRequest:(S3PutObjectRequest*)request;
+//Can be overloaded, by default will be image/png
+@property (nonatomic, readonly) NSString* imageRequestContentType;
+
+-(S3PutObjectRequest*)newImagePutRequestWithImageName:(NSString*)imageName;
+-(void)sendRequest:(S3PutObjectRequest *)request withCurrentSettingsAppliedToImage:(UIImage*)image;
 
 -(S3PutObjectRequest*)uploadImage:(UIImage*)image imageName:(NSString*)imageName;
 -(S3PutObjectRequest*)uploadImageWithData:(NSData*)imageData imageName:(NSString*)imageName;
+
+-(void)sendRequest:(S3PutObjectRequest*)request;
 
 //returns name of photo in amazon bucket
 -(NSURL*)imageURLForImageName:(NSString*)imageName;
