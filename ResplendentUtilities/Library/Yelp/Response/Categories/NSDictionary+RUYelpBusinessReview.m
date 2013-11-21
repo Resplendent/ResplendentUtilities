@@ -10,6 +10,11 @@
 
 @implementation NSDictionary (RUYelpBusinessReview)
 
+-(NSString *)ruYelpBusinessReviewID
+{
+    return [self objectForKey:@"id"];
+}
+
 -(NSNumber *)ruYelpBusinessReviewRating
 {
     return [self objectForKey:@"rating"];

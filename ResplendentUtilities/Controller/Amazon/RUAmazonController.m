@@ -12,6 +12,12 @@ static const char* ImageToDataQueueName = "RUAmazonController.ImageToDataQueue";
 
 static dispatch_queue_t ImageToDataQueue;
 
+@interface RUAmazonController ()
+
+@property (nonatomic, readonly) NSString* _imageRequestContentType;
+
+@end
+
 @implementation RUAmazonController
 
 +(void)initialize
@@ -36,7 +42,7 @@ static dispatch_queue_t ImageToDataQueue;
 -(S3PutObjectRequest*)newImagePutRequestWithImageName:(NSString*)imageName
 {
     S3PutObjectRequest* request = [[S3PutObjectRequest alloc] initWithKey:imageName inBucket:self.bucketName];
-    [request setContentType:@"image/jpeg"];
+    [request setContentType:self._imageRequestContentType];
     [request setDelegate:self];
     return request;
 }
@@ -45,12 +51,17 @@ static dispatch_queue_t ImageToDataQueue;
 {
     S3PutObjectRequest* request = [self newImagePutRequestWithImageName:imageName];
 
+    [self sendRequest:request withCurrentSettingsAppliedToImage:image];
+
+    return request;
+}
+
+-(void)sendRequest:(S3PutObjectRequest *)request withCurrentSettingsAppliedToImage:(UIImage*)image
+{
     dispatch_async(ImageToDataQueue, ^{
         [request setData:UIImagePNGRepresentation(image)];
         [self sendRequest:request];
     });
-    
-    return request;
 }
 
 -(S3PutObjectRequest*)uploadImageWithData:(NSData*)imageData imageName:(NSString*)imageName
@@ -77,7 +88,7 @@ static dispatch_queue_t ImageToDataQueue;
     gpsur.expires = [NSDate dateWithTimeIntervalSinceNow:(NSTimeInterval) 3600];  // Added an hour's worth of seconds to the current time.
 
     S3ResponseHeaderOverrides *override = [S3ResponseHeaderOverrides new];
-    override.contentType = @"image/jpeg";
+    [override setContentType:self._imageRequestContentType];
     gpsur.responseHeaderOverrides = override;
 
     NSURL* url = [_amazonS3Client getPreSignedURL:gpsur];
@@ -110,6 +121,20 @@ static dispatch_queue_t ImageToDataQueue;
 -(void)request:(AmazonServiceRequest *)request didFailWithError:(NSError *)error
 {
     [self.delegate amazonController:self didFailWithError:error];
+}
+
+#pragma mark - imageRequestContentType
+-(NSString *)_imageRequestContentType
+{
+    NSString* imageRequestContentType = self.imageRequestContentType;
+    if (imageRequestContentType.length)
+    {
+        return imageRequestContentType;
+    }
+    else
+    {
+        return @"image/png";
+    }
 }
 
 @end

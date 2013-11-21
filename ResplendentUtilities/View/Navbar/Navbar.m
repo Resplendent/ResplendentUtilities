@@ -10,17 +10,10 @@
 #import "UIView+Utility.h"
 #import "RUConstants.h"
 
-@interface Navbar ()
 
--(CGRect)leftButtonFrameWithAnimatableContentViewFrame:(CGRect)animatableContentViewFrame;
--(CGRect)rightButtonFrameWithAnimatableContentViewFrame:(CGRect)animatableContentViewFrame;
 
-@end
 
 @implementation Navbar
-
-@synthesize leftButton = _leftButton;
-@synthesize rightButton = _rightButton;
 
 @synthesize titleLabel = _titleLabel;
 

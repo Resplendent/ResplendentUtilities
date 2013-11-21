@@ -33,4 +33,7 @@
 
 //-(void)setAlphaForComponents:(CGFloat)alpha;
 
+-(CGRect)leftButtonFrameWithAnimatableContentViewFrame:(CGRect)animatableContentViewFrame;
+-(CGRect)rightButtonFrameWithAnimatableContentViewFrame:(CGRect)animatableContentViewFrame;
+
 @end
