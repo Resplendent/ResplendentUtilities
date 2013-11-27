@@ -3,7 +3,7 @@
 //  Copyright (c) 2012 Resplendent G.P.. All rights reserved.
 //
 
-#import "UIView+Utility.h"
+#import "UIView+RUUtility.h"
 
 #import <QuartzCore/CALayer.h>
 #import <QuartzCore/CAShapeLayer.h>
@@ -21,7 +21,7 @@
 
 
 
-@implementation UIView (Utility)
+@implementation UIView (RUUtility)
 
 #pragma mark - Underline methods
 +(UIView*)makeDividerWithColorFloat:(float)colorFloat atXCoord:(float)xCoord atYCoord:(float)yCoord withWidth:(float)width height:(float)height

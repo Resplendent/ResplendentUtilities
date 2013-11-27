@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "UIView+Utility.h"
+#import "UIView+RUUtility.h"
 
 #define RUSynthesizeShowFunctionDeclarationForView(methodName) \
 -(void)show##methodName:(BOOL)show animated:(BOOL)animated

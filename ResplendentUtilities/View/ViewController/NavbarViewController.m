@@ -9,7 +9,7 @@
 #import "NavbarViewController.h"
 #import "Navbar.h"
 #import "RUConstants.h"
-#import "UIView+Utility.h"
+#import "UIView+RUUtility.h"
 #import <CoreFoundation/CFBase.h>
 
 NSTimeInterval const kNavbarViewControllerPushPopAnimationDefaultDuration = 0.25f;

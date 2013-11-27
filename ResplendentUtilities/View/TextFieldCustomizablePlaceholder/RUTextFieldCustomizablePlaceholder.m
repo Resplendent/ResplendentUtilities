@@ -7,7 +7,7 @@
 //
 
 #import "RUTextFieldCustomizablePlaceholder.h"
-#import "UIView+Utility.h"
+#import "UIView+RUUtility.h"
 #import "RUSystemVersionUtils.h"
 
 #import "RUConstants.h"

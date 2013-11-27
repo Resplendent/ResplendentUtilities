@@ -7,7 +7,7 @@
 //
 
 #import "Navbar.h"
-#import "UIView+Utility.h"
+#import "UIView+RUUtility.h"
 #import "RUConstants.h"
 
 

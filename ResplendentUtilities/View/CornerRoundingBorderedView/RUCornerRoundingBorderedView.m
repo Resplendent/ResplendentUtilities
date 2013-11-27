@@ -7,7 +7,7 @@
 //
 
 #import "RUCornerRoundingBorderedView.h"
-#import "UIView+Utility.h"
+#import "UIView+RUUtility.h"
 #import "CALayer+Mask.h"
 #import "RUConstants.h"
 #import <objc/runtime.h>

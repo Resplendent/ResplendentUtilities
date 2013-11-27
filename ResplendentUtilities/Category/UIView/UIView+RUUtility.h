@@ -123,7 +123,7 @@ CG_INLINE void increaseHeight(UIView* view,CGFloat heightIncrease)
 
 
 
-@interface UIView (Utility)
+@interface UIView (RUUtility)
 
 -(UIView*)addUnderline;
 -(UIView*)addUnderlineWithColor:(UIColor*)color;

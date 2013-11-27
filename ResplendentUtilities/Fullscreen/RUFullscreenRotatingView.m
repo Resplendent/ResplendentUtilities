@@ -8,7 +8,7 @@
 
 #import "RUFullscreenRotatingView.h"
 
-#import "UIView+Utility.h"
+#import "UIView+RUUtility.h"
 #import "RUConstants.h"
 
 CGFloat const kRUFullscreenRotatingViewDefaultShowAnimationDuration = 0.25;
