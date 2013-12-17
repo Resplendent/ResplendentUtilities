@@ -31,3 +31,7 @@ return;\
 \
 } \
 RU_Synthesize_AssociatedObject_GetterSetterNumberFromPrimative_Implementation(v, V, arName, BOOL, boolValue, constVoidKey, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+#define kRUNotifications_Synthesize_NotificationGetterSetterNumberFromPrimative_Implementation_AssociatedKey(v,V,arName,notificationName,notificationObject) \
+NSString* const __kNotificationAssociatedKey##notificationName; \
+kRUNotifications_Synthesize_NotificationGetterSetterNumberFromPrimative_Implementation(v,V,arName,&__kNotificationAssociatedKey##notificationName,notificationName,notificationObject)
