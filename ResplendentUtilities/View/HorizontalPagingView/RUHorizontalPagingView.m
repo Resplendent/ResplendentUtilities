@@ -8,7 +8,7 @@
 
 #import "RUHorizontalPagingView.h"
 #import "RUConstants.h"
-#import "UIView+Utility.h"
+#import "UIView+RUUtility.h"
 #import "RUCreateDestroyViewSynthesization.h"
 #import <QuartzCore/QuartzCore.h>
 

@@ -7,7 +7,7 @@
 //
 
 #import "UILabel+Utility.h"
-#import "UIView+Utility.h"
+#import "UIView+RUUtility.h"
 
 extern void setButtonSizeToImageAndCoordinates(UIButton* button, CGFloat xCoord, CGFloat yCoord);
 
