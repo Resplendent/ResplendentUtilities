@@ -42,9 +42,7 @@
 		430C9E441868D840002AEB0B /* UIView+RUUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D0E1868D840002AEB0B /* UIView+RUUtility.m */; };
 		430C9E451868D840002AEB0B /* RUAmazonController.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D121868D840002AEB0B /* RUAmazonController.m */; };
 		430C9E461868D840002AEB0B /* RUFacebookController.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D161868D840002AEB0B /* RUFacebookController.m */; };
-		430C9E471868D840002AEB0B /* HTTPClientJSONAPIController.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D191868D840002AEB0B /* HTTPClientJSONAPIController.m */; };
-		430C9E481868D840002AEB0B /* HTTPSClientJSONAPIController.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D1B1868D840002AEB0B /* HTTPSClientJSONAPIController.m */; };
-		430C9E491868D840002AEB0B /* ScrollToTopManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D1D1868D840002AEB0B /* ScrollToTopManager.m */; };
+		430C9E491868D840002AEB0B /* RUScrollToTopManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D1D1868D840002AEB0B /* RUScrollToTopManager.m */; };
 		430C9E4A1868D840002AEB0B /* RUFullscreenRotatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D201868D840002AEB0B /* RUFullscreenRotatingView.m */; };
 		430C9E4B1868D840002AEB0B /* RUImageViewFullscreenRotatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D231868D840002AEB0B /* RUImageViewFullscreenRotatingView.m */; };
 		430C9E4C1868D840002AEB0B /* NSDictionary+RUFourSquareVenueCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D281868D840002AEB0B /* NSDictionary+RUFourSquareVenueCategory.m */; };
@@ -67,17 +65,17 @@
 		430C9E5D1868D840002AEB0B /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D4F1868D840002AEB0B /* Base64Transcoder.c */; };
 		430C9E5E1868D840002AEB0B /* hmac.c in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D511868D840002AEB0B /* hmac.c */; };
 		430C9E5F1868D840002AEB0B /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D531868D840002AEB0B /* sha1.c */; };
-		430C9E601868D840002AEB0B /* OACall.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D561868D840002AEB0B /* OACall.m */; };
-		430C9E611868D840002AEB0B /* OAConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D581868D840002AEB0B /* OAConsumer.m */; };
-		430C9E621868D840002AEB0B /* OADataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D5A1868D840002AEB0B /* OADataFetcher.m */; };
-		430C9E631868D840002AEB0B /* OAHMAC_SHA1SignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D5C1868D840002AEB0B /* OAHMAC_SHA1SignatureProvider.m */; };
-		430C9E641868D840002AEB0B /* OAMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D5E1868D840002AEB0B /* OAMutableURLRequest.m */; };
-		430C9E651868D840002AEB0B /* OAPlaintextSignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D601868D840002AEB0B /* OAPlaintextSignatureProvider.m */; };
-		430C9E661868D840002AEB0B /* OAProblem.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D621868D840002AEB0B /* OAProblem.m */; };
-		430C9E671868D840002AEB0B /* OARequestParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D641868D840002AEB0B /* OARequestParameter.m */; };
-		430C9E681868D840002AEB0B /* OAServiceTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D661868D840002AEB0B /* OAServiceTicket.m */; };
-		430C9E691868D840002AEB0B /* OAToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D691868D840002AEB0B /* OAToken.m */; };
-		430C9E6A1868D840002AEB0B /* OATokenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D6B1868D840002AEB0B /* OATokenManager.m */; };
+		430C9E601868D840002AEB0B /* OACall.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D561868D840002AEB0B /* OACall.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		430C9E611868D840002AEB0B /* OAConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D581868D840002AEB0B /* OAConsumer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		430C9E621868D840002AEB0B /* OADataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D5A1868D840002AEB0B /* OADataFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		430C9E631868D840002AEB0B /* OAHMAC_SHA1SignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D5C1868D840002AEB0B /* OAHMAC_SHA1SignatureProvider.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		430C9E641868D840002AEB0B /* OAMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D5E1868D840002AEB0B /* OAMutableURLRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		430C9E651868D840002AEB0B /* OAPlaintextSignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D601868D840002AEB0B /* OAPlaintextSignatureProvider.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		430C9E661868D840002AEB0B /* OAProblem.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D621868D840002AEB0B /* OAProblem.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		430C9E671868D840002AEB0B /* OARequestParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D641868D840002AEB0B /* OARequestParameter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		430C9E681868D840002AEB0B /* OAServiceTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D661868D840002AEB0B /* OAServiceTicket.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		430C9E691868D840002AEB0B /* OAToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D691868D840002AEB0B /* OAToken.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		430C9E6A1868D840002AEB0B /* OATokenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D6B1868D840002AEB0B /* OATokenManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		430C9E6B1868D840002AEB0B /* RUYelpBusinessByIdRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D711868D840002AEB0B /* RUYelpBusinessByIdRequest.m */; };
 		430C9E6C1868D840002AEB0B /* RUYelpSearchBusinessesRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D751868D840002AEB0B /* RUYelpSearchBusinessesRequest.m */; };
 		430C9E6D1868D840002AEB0B /* NSDictionary+RUYelpBusiness.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D7A1868D840002AEB0B /* NSDictionary+RUYelpBusiness.m */; };
@@ -216,12 +214,8 @@
 		430C9D151868D840002AEB0B /* RUFacebookController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFacebookController.h; sourceTree = "<group>"; };
 		430C9D161868D840002AEB0B /* RUFacebookController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFacebookController.m; sourceTree = "<group>"; };
 		430C9D171868D840002AEB0B /* RUFacebookControllerProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFacebookControllerProtocols.h; sourceTree = "<group>"; };
-		430C9D181868D840002AEB0B /* HTTPClientJSONAPIController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPClientJSONAPIController.h; sourceTree = "<group>"; };
-		430C9D191868D840002AEB0B /* HTTPClientJSONAPIController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPClientJSONAPIController.m; sourceTree = "<group>"; };
-		430C9D1A1868D840002AEB0B /* HTTPSClientJSONAPIController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPSClientJSONAPIController.h; sourceTree = "<group>"; };
-		430C9D1B1868D840002AEB0B /* HTTPSClientJSONAPIController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPSClientJSONAPIController.m; sourceTree = "<group>"; };
-		430C9D1C1868D840002AEB0B /* ScrollToTopManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollToTopManager.h; sourceTree = "<group>"; };
-		430C9D1D1868D840002AEB0B /* ScrollToTopManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollToTopManager.m; sourceTree = "<group>"; };
+		430C9D1C1868D840002AEB0B /* RUScrollToTopManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUScrollToTopManager.h; sourceTree = "<group>"; };
+		430C9D1D1868D840002AEB0B /* RUScrollToTopManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUScrollToTopManager.m; sourceTree = "<group>"; };
 		430C9D1F1868D840002AEB0B /* RUFullscreenRotatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFullscreenRotatingView.h; sourceTree = "<group>"; };
 		430C9D201868D840002AEB0B /* RUFullscreenRotatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFullscreenRotatingView.m; sourceTree = "<group>"; };
 		430C9D211868D840002AEB0B /* RUFullscreenRotatingViewProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFullscreenRotatingViewProtocols.h; sourceTree = "<group>"; };
@@ -641,12 +635,8 @@
 			children = (
 				430C9D101868D840002AEB0B /* Amazon */,
 				430C9D141868D840002AEB0B /* Facebook */,
-				430C9D181868D840002AEB0B /* HTTPClientJSONAPIController.h */,
-				430C9D191868D840002AEB0B /* HTTPClientJSONAPIController.m */,
-				430C9D1A1868D840002AEB0B /* HTTPSClientJSONAPIController.h */,
-				430C9D1B1868D840002AEB0B /* HTTPSClientJSONAPIController.m */,
-				430C9D1C1868D840002AEB0B /* ScrollToTopManager.h */,
-				430C9D1D1868D840002AEB0B /* ScrollToTopManager.m */,
+				430C9D1C1868D840002AEB0B /* RUScrollToTopManager.h */,
+				430C9D1D1868D840002AEB0B /* RUScrollToTopManager.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1367,7 +1357,7 @@
 				430C9E9C1868D840002AEB0B /* RUAsynchronousUIImageRequest.m in Sources */,
 				430C9E321868D840002AEB0B /* NSDictionary+RUFBUserResponseObject.m in Sources */,
 				430C9E551868D840002AEB0B /* RUFourSquareResponse.m in Sources */,
-				430C9E491868D840002AEB0B /* ScrollToTopManager.m in Sources */,
+				430C9E491868D840002AEB0B /* RUScrollToTopManager.m in Sources */,
 				430C9E4F1868D840002AEB0B /* RUFourSquareRequest.m in Sources */,
 				430C9E5C1868D840002AEB0B /* NSURL+Base.m in Sources */,
 				430C9E4D1868D840002AEB0B /* RUFourSquareVenue.m in Sources */,
@@ -1393,7 +1383,6 @@
 				430C9E9E1868D840002AEB0B /* UIImageView+RUAsynchronousImageFetching.m in Sources */,
 				430C9E8A1868D840002AEB0B /* NIOperations.m in Sources */,
 				430C9E881868D840002AEB0B /* NINonEmptyCollectionTesting.m in Sources */,
-				430C9E471868D840002AEB0B /* HTTPClientJSONAPIController.m in Sources */,
 				430C9E411868D840002AEB0B /* UIView+CoreGraphics.m in Sources */,
 				430C9E3C1868D840002AEB0B /* UIColor+Utility.m in Sources */,
 				430C9E681868D840002AEB0B /* OAServiceTicket.m in Sources */,
@@ -1404,7 +1393,6 @@
 				430C9E851868D840002AEB0B /* NIInMemoryCache.m in Sources */,
 				430C9E3F1868D840002AEB0B /* UIImage+Rotation.m in Sources */,
 				430C9EA91868D840002AEB0B /* NavbarViewController.m in Sources */,
-				430C9E481868D840002AEB0B /* HTTPSClientJSONAPIController.m in Sources */,
 				430C9E9B1868D840002AEB0B /* AsynchronousImageView.m in Sources */,
 				430C9E5B1868D840002AEB0B /* NSString+URLEncoding.m in Sources */,
 				430C9E911868D840002AEB0B /* NSString+NimbusCore.m in Sources */,
