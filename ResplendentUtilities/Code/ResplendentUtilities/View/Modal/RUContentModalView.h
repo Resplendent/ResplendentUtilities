@@ -8,9 +8,21 @@
 
 #import "RUModalView.h"
 
+
+
+
+
 @class RUGradientButton;
 
+
+
+
+
 extern CGFloat const kPAContentModalViewTopBarButtonHeight;
+
+
+
+
 
 @interface RUContentModalView : RUModalView <UIGestureRecognizerDelegate>
 

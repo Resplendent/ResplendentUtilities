@@ -7,10 +7,16 @@
 //
 
 #import "RUContentModalView.h"
-
-#import "RUGradientButton+Pineapple.h"
+#import "UIView+RUUtility.h"
 #import "UIFont+RUConstants.h"
+#import "RUConstants.h"
+#import "RUGradientButton.h"
+
 #import <QuartzCore/CALayer.h>
+
+
+
+
 
 CGFloat const kPAContentModalViewContentViewWidth = 300.0f;
 
@@ -21,6 +27,9 @@ CGFloat const kPAContentModalViewBottomBarHeight = 50.0f;
 CGFloat const kPAContentModalViewBottomBarButtonHeight = 30.0f;
 
 CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
+
+
+
 
 
 @implementation RUContentModalView
@@ -92,13 +101,7 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
     
     CGRect contentViewFrame = self.contentViewFrame;
     CGFloat height = (_bottomBar ? CGRectGetMinY(self.bottomBarFrame) : CGRectGetHeight(contentViewFrame)) - yCoord;
-    
-    //    if (_bottomBar)
-    //    {
-    //        height -=
-    //    }
-    ////    CGRect topBarUnderLineFrame = self.topBarUnderLineFrame;
-    //    CGFloat yCoord = CGRectGetMaxY(topBarUnderLineFrame);
+
     return (CGRect){0,yCoord,CGRectGetWidth(contentViewFrame),height};
 }
 
@@ -121,7 +124,6 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         if (!_topBar)
         {
             _topBar = [UIView new];
-            [_topBar setBackgroundColor:[UIColor paTopBarGrayColor]];
             [_contentView addSubview:_topBar];
             [self setNeedsLayout];
         }
@@ -138,7 +140,7 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         
         if (!_topBarButton)
         {
-            _topBarButton = [RUGradientButton paGrayGradientButton];
+            _topBarButton = [RUGradientButton buttonWithType:UIButtonTypeCustom];
             [_topBarButton setFrame:self.topBarButtonFrame];
             [_topBarButton addTarget:self action:@selector(pressedTopBarButton:) forControlEvents:UIControlEventTouchUpInside];
             [_topBar addSubview:_topBarButton];
@@ -147,7 +149,6 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         if (!_topBarUnderline)
         {
             _topBarUnderline = [[UIView alloc] initWithFrame:self.topBarUnderLineFrame];
-            [_topBarUnderline setBackgroundColor:[UIColor paTopBarUnderlineGrayColor]];
             [_topBar addSubview:_topBarUnderline];
         }
     }
@@ -208,8 +209,6 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 -(CGRect)topBarButtonFrame
 {
     CGFloat topBarButtonWidth = self.topBarButtonWidth;
-    //    CGFloat contentViewHeight = self.contentViewHeight;
-    //    CGFloat contentViewInnerPadding = self.contentViewInnerPadding;
     return (CGRect){
         CGRectGetWidth(self.contentViewFrame) - topBarButtonWidth - self.contentViewInnerPadding,
         CGRectGetVerticallyAlignedYCoordForHeightOnHeight(kPAContentModalViewTopBarButtonHeight, self.topBarHeight),
@@ -252,7 +251,6 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         if (!_bottomBar)
         {
             _bottomBar = [UIView new];
-            [_bottomBar setBackgroundColor:[UIColor paTopBarGrayColor]];
             [_contentView addSubview:_bottomBar];
             [self setNeedsLayout];
         }
@@ -269,7 +267,7 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         
         if (!_bottomBarButton)
         {
-            _bottomBarButton = [RUGradientButton paTealGradientButton];
+            _bottomBarButton = [RUGradientButton buttonWithType:UIButtonTypeCustom];
             [_bottomBarButton setFrame:self.bottomBarButtonFrame];
             [_bottomBarButton addTarget:self action:@selector(pressedBottomBarButton:) forControlEvents:UIControlEventTouchUpInside];
             [_bottomBar addSubview:_bottomBarButton];
@@ -278,7 +276,6 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         if (!_bottomBarOverline)
         {
             _bottomBarOverline = [[UIView alloc] initWithFrame:self.bottomBarOverlineFrame];
-            [_bottomBarOverline setBackgroundColor:[UIColor paTopBarUnderlineGrayColor]];
             [_bottomBar addSubview:_bottomBarOverline];
         }
     }
