@@ -41,7 +41,6 @@
 		430C9E431868D840002AEB0B /* UIView+RUMaskRoundCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D0C1868D840002AEB0B /* UIView+RUMaskRoundCorners.m */; };
 		430C9E441868D840002AEB0B /* UIView+RUUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D0E1868D840002AEB0B /* UIView+RUUtility.m */; };
 		430C9E451868D840002AEB0B /* RUAmazonController.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D121868D840002AEB0B /* RUAmazonController.m */; };
-		430C9E461868D840002AEB0B /* RUFacebookController.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D161868D840002AEB0B /* RUFacebookController.m */; };
 		430C9E491868D840002AEB0B /* RUScrollToTopManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D1D1868D840002AEB0B /* RUScrollToTopManager.m */; };
 		430C9E4A1868D840002AEB0B /* RUFullscreenRotatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D201868D840002AEB0B /* RUFullscreenRotatingView.m */; };
 		430C9E4B1868D840002AEB0B /* RUImageViewFullscreenRotatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D231868D840002AEB0B /* RUImageViewFullscreenRotatingView.m */; };
@@ -211,9 +210,6 @@
 		430C9D111868D840002AEB0B /* RUAmazonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAmazonController.h; sourceTree = "<group>"; };
 		430C9D121868D840002AEB0B /* RUAmazonController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAmazonController.m; sourceTree = "<group>"; };
 		430C9D131868D840002AEB0B /* RUAmazonControllerProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAmazonControllerProtocols.h; sourceTree = "<group>"; };
-		430C9D151868D840002AEB0B /* RUFacebookController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFacebookController.h; sourceTree = "<group>"; };
-		430C9D161868D840002AEB0B /* RUFacebookController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFacebookController.m; sourceTree = "<group>"; };
-		430C9D171868D840002AEB0B /* RUFacebookControllerProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFacebookControllerProtocols.h; sourceTree = "<group>"; };
 		430C9D1C1868D840002AEB0B /* RUScrollToTopManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUScrollToTopManager.h; sourceTree = "<group>"; };
 		430C9D1D1868D840002AEB0B /* RUScrollToTopManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUScrollToTopManager.m; sourceTree = "<group>"; };
 		430C9D1F1868D840002AEB0B /* RUFullscreenRotatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFullscreenRotatingView.h; sourceTree = "<group>"; };
@@ -435,6 +431,7 @@
 		430C9E2C1868D840002AEB0B /* RUAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAlertView.m; sourceTree = "<group>"; };
 		430C9E2E1868D840002AEB0B /* NavbarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavbarViewController.h; sourceTree = "<group>"; };
 		430C9E2F1868D840002AEB0B /* NavbarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavbarViewController.m; sourceTree = "<group>"; };
+		43E96FE71868DEBE008E0CDD /* RUDLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RUDLog.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -634,7 +631,6 @@
 			isa = PBXGroup;
 			children = (
 				430C9D101868D840002AEB0B /* Amazon */,
-				430C9D141868D840002AEB0B /* Facebook */,
 				430C9D1C1868D840002AEB0B /* RUScrollToTopManager.h */,
 				430C9D1D1868D840002AEB0B /* RUScrollToTopManager.m */,
 			);
@@ -649,16 +645,6 @@
 				430C9D131868D840002AEB0B /* RUAmazonControllerProtocols.h */,
 			);
 			path = Amazon;
-			sourceTree = "<group>";
-		};
-		430C9D141868D840002AEB0B /* Facebook */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D151868D840002AEB0B /* RUFacebookController.h */,
-				430C9D161868D840002AEB0B /* RUFacebookController.m */,
-				430C9D171868D840002AEB0B /* RUFacebookControllerProtocols.h */,
-			);
-			path = Facebook;
 			sourceTree = "<group>";
 		};
 		430C9D1E1868D840002AEB0B /* Fullscreen */ = {
@@ -907,6 +893,7 @@
 				430C9D971868D840002AEB0B /* RUDeallocHook.m */,
 				430C9D981868D840002AEB0B /* RUDebug.h */,
 				430C9D991868D840002AEB0B /* RUDebugging.h */,
+				43E96FE71868DEBE008E0CDD /* RUDLog.h */,
 				430C9D9A1868D840002AEB0B /* RUExceptions.h */,
 				430C9D9B1868D840002AEB0B /* RUNotifications.h */,
 				430C9D9C1868D840002AEB0B /* RUOrderedMutableDictionary.h */,
@@ -1371,7 +1358,6 @@
 				430C9E8B1868D840002AEB0B /* NIPaths.m in Sources */,
 				430C9E631868D840002AEB0B /* OAHMAC_SHA1SignatureProvider.m in Sources */,
 				430C9E721868D840002AEB0B /* RUYelpRequestUtil.m in Sources */,
-				430C9E461868D840002AEB0B /* RUFacebookController.m in Sources */,
 				430C9CBC1868D80B002AEB0B /* main.m in Sources */,
 				430C9E5D1868D840002AEB0B /* Base64Transcoder.c in Sources */,
 				430C9E8C1868D840002AEB0B /* NIRuntimeClassModifications.m in Sources */,
