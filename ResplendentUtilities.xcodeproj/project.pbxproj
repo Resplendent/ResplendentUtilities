@@ -122,9 +122,6 @@
 		430C9E941868D840002AEB0B /* RUTriangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9DF01868D840002AEB0B /* RUTriangle.m */; };
 		430C9E951868D840002AEB0B /* RUGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9DF31868D840002AEB0B /* RUGradientView.m */; };
 		430C9E961868D840002AEB0B /* GridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9DF61868D840002AEB0B /* GridView.m */; };
-		430C9E971868D840002AEB0B /* HorizontalViewScroller+ImageFromUrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9DFA1868D840002AEB0B /* HorizontalViewScroller+ImageFromUrl.m */; };
-		430C9E981868D840002AEB0B /* HorizontalViewScroller+Images.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9DFC1868D840002AEB0B /* HorizontalViewScroller+Images.m */; };
-		430C9E991868D840002AEB0B /* HorizontalViewScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9DFE1868D840002AEB0B /* HorizontalViewScroller.m */; };
 		430C9E9A1868D840002AEB0B /* RUHorizontalPagingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9E021868D840002AEB0B /* RUHorizontalPagingView.m */; };
 		430C9E9B1868D840002AEB0B /* AsynchronousImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9E061868D840002AEB0B /* AsynchronousImageView.m */; };
 		430C9E9C1868D840002AEB0B /* RUAsynchronousUIImageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9E081868D840002AEB0B /* RUAsynchronousUIImageRequest.m */; };
@@ -408,13 +405,6 @@
 		430C9DF51868D840002AEB0B /* GridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridView.h; sourceTree = "<group>"; };
 		430C9DF61868D840002AEB0B /* GridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridView.m; sourceTree = "<group>"; };
 		430C9DF71868D840002AEB0B /* GridViewProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridViewProtocols.h; sourceTree = "<group>"; };
-		430C9DF91868D840002AEB0B /* HorizontalViewScroller+ImageFromUrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HorizontalViewScroller+ImageFromUrl.h"; sourceTree = "<group>"; };
-		430C9DFA1868D840002AEB0B /* HorizontalViewScroller+ImageFromUrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "HorizontalViewScroller+ImageFromUrl.m"; sourceTree = "<group>"; };
-		430C9DFB1868D840002AEB0B /* HorizontalViewScroller+Images.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HorizontalViewScroller+Images.h"; sourceTree = "<group>"; };
-		430C9DFC1868D840002AEB0B /* HorizontalViewScroller+Images.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "HorizontalViewScroller+Images.m"; sourceTree = "<group>"; };
-		430C9DFD1868D840002AEB0B /* HorizontalViewScroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HorizontalViewScroller.h; sourceTree = "<group>"; };
-		430C9DFE1868D840002AEB0B /* HorizontalViewScroller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HorizontalViewScroller.m; sourceTree = "<group>"; };
-		430C9DFF1868D840002AEB0B /* HorizontalViewScrollerProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HorizontalViewScrollerProtocols.h; sourceTree = "<group>"; };
 		430C9E011868D840002AEB0B /* RUHorizontalPagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUHorizontalPagingView.h; sourceTree = "<group>"; };
 		430C9E021868D840002AEB0B /* RUHorizontalPagingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUHorizontalPagingView.m; sourceTree = "<group>"; };
 		430C9E031868D840002AEB0B /* RUHorizontalPagingViewProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUHorizontalPagingViewProtocols.h; sourceTree = "<group>"; };
@@ -1087,7 +1077,6 @@
 				430C9DEE1868D840002AEB0B /* Geometry */,
 				430C9DF11868D840002AEB0B /* Gradients */,
 				430C9DF41868D840002AEB0B /* GridView */,
-				430C9DF81868D840002AEB0B /* HorizontalImageScroller */,
 				430C9E001868D840002AEB0B /* HorizontalPagingView */,
 				430C9E041868D840002AEB0B /* Image */,
 				430C9E0A1868D840002AEB0B /* ImageFetching */,
@@ -1148,20 +1137,6 @@
 				430C9DF71868D840002AEB0B /* GridViewProtocols.h */,
 			);
 			path = GridView;
-			sourceTree = "<group>";
-		};
-		430C9DF81868D840002AEB0B /* HorizontalImageScroller */ = {
-			isa = PBXGroup;
-			children = (
-				430C9DF91868D840002AEB0B /* HorizontalViewScroller+ImageFromUrl.h */,
-				430C9DFA1868D840002AEB0B /* HorizontalViewScroller+ImageFromUrl.m */,
-				430C9DFB1868D840002AEB0B /* HorizontalViewScroller+Images.h */,
-				430C9DFC1868D840002AEB0B /* HorizontalViewScroller+Images.m */,
-				430C9DFD1868D840002AEB0B /* HorizontalViewScroller.h */,
-				430C9DFE1868D840002AEB0B /* HorizontalViewScroller.m */,
-				430C9DFF1868D840002AEB0B /* HorizontalViewScrollerProtocols.h */,
-			);
-			path = HorizontalImageScroller;
 			sourceTree = "<group>";
 		};
 		430C9E001868D840002AEB0B /* HorizontalPagingView */ = {
@@ -1398,7 +1373,6 @@
 				430C9E4D1868D840002AEB0B /* RUFourSquareVenue.m in Sources */,
 				430C9E4A1868D840002AEB0B /* RUFullscreenRotatingView.m in Sources */,
 				430C9E831868D840002AEB0B /* NIError.m in Sources */,
-				430C9E981868D840002AEB0B /* HorizontalViewScroller+Images.m in Sources */,
 				430C9E7D1868D840002AEB0B /* NIAttributedLabel.m in Sources */,
 				430C9EA81868D840002AEB0B /* RUAlertView.m in Sources */,
 				430C9E3D1868D840002AEB0B /* UIFont+RUConstants.m in Sources */,
@@ -1421,7 +1395,6 @@
 				430C9E881868D840002AEB0B /* NINonEmptyCollectionTesting.m in Sources */,
 				430C9E471868D840002AEB0B /* HTTPClientJSONAPIController.m in Sources */,
 				430C9E411868D840002AEB0B /* UIView+CoreGraphics.m in Sources */,
-				430C9E991868D840002AEB0B /* HorizontalViewScroller.m in Sources */,
 				430C9E3C1868D840002AEB0B /* UIColor+Utility.m in Sources */,
 				430C9E681868D840002AEB0B /* OAServiceTicket.m in Sources */,
 				430C9E691868D840002AEB0B /* OAToken.m in Sources */,
@@ -1494,7 +1467,6 @@
 				430C9E3A1868D840002AEB0B /* UIButton+Utility.m in Sources */,
 				430C9E771868D840002AEB0B /* RUDeallocHook.m in Sources */,
 				430C9E6E1868D840002AEB0B /* NSDictionary+RUYelpBusinessReview.m in Sources */,
-				430C9E971868D840002AEB0B /* HorizontalViewScroller+ImageFromUrl.m in Sources */,
 				430C9E351868D840002AEB0B /* NSString+MKCoordinateRegion.m in Sources */,
 				430C9E4E1868D840002AEB0B /* RUFourSquareVenuePhoto.m in Sources */,
 				430C9E421868D840002AEB0B /* UIView+RUEnableTapToResignFirstResponder.m in Sources */,
@@ -1706,6 +1678,7 @@
 				430C9CDA1868D80B002AEB0B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		430C9CDB1868D80B002AEB0B /* Build configuration list for PBXNativeTarget "ResplendentUtilitiesTests" */ = {
 			isa = XCConfigurationList;
@@ -1714,6 +1687,7 @@
 				430C9CDD1868D80B002AEB0B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
