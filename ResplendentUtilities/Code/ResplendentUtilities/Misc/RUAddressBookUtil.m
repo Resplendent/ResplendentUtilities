@@ -8,7 +8,12 @@
 
 #import "RUAddressBookUtil.h"
 #import <AddressBook/AddressBook.h>
+#import "RUDLog.h"
 #import "RUConstants.h"
+
+
+
+
 
 typedef enum {
     RUAddressBookUtilABMultiValueRefTypeUnknown,
@@ -17,12 +22,20 @@ typedef enum {
     RUAddressBookUtilABMultiValueRefTypeData
 }RUAddressBookUtilABMultiValueRefType;
 
+
+
+
+
 NSString* const kRUAddressBookUtilHasAskedUserForContacts = @"kRUAddressBookUtilHasAskedUserForContacts";
 
 //++++ RUAddressBookUtilImageRequestQueue
 const char * kRUAddressBookUtilGetImageDataQueueLabel = "RUAddressBookUtil.RUAddressBookUtilImageRequestQueue.getImageDataQueueLabel";
 const char * kRUAddressBookUtilManageQueueArrayLabel = "RUAddressBookUtil.RUAddressBookUtilImageRequestQueue.manageQueueArrayLabel";
 //static dispatch_queue_t getImageDataQueue;
+
+
+
+
 
 @interface RUAddressBookUtilImageRequestQueue : NSObject
 {
@@ -42,6 +55,10 @@ const char * kRUAddressBookUtilManageQueueArrayLabel = "RUAddressBookUtil.RUAddr
 @end
 //-----
 
+
+
+
+
 @interface RUAddressBookUtilImageRequest ()
 
 @property (nonatomic, assign) RUAddressBookUtilImageRequestQueue* queue;
@@ -53,6 +70,10 @@ const char * kRUAddressBookUtilManageQueueArrayLabel = "RUAddressBookUtil.RUAddr
 
 @end
 
+
+
+
+
 static RUAddressBookUtilImageRequestQueue* getImageDataRequestQueue;
 
 //void kRUAddressBookUtilAddPersonPropertiesArrayToPersonPropertiesDictionary(CFTypeRef personPropertiesRecord, NSMutableDictionary* personPropertyDictionary,NSString* phoneProperty);
@@ -63,6 +84,10 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
 RUAddressBookUtilABMultiValueRefType abMultiValueRefTypeForPersonWithPropertyType(kRUAddressBookUtilPhonePropertyType propertyType);
 
 static NSMutableArray* sharedInstances;
+
+
+
+
 
 @interface RUAddressBookUtil () <UIAlertViewDelegate>
 
@@ -76,10 +101,7 @@ static NSMutableArray* sharedInstances;
 
 @end
 
-//@interface RUAddressBookUtil (ImageDataRequestQueue)
-//
-//
-//@end
+
 
 
 
@@ -89,6 +111,7 @@ static NSMutableArray* sharedInstances;
 +(void)setCachedHasAskedUserForContacts:(NSNumber*)number;
 
 @end
+
 
 
 

@@ -10,6 +10,7 @@
 #import "RUConstants.h"
 #import "UIView+RUUtility.h"
 #import "RUCreateDestroyViewSynthesization.h"
+#import "RUDLog.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface RUHorizontalPagingView ()

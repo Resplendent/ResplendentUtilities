@@ -8,7 +8,7 @@
 
 #import "RUDeallocHook.h"
 
-#import "RUConstants.h"
+#import "RUDLog.h"
 
 @implementation RUDeallocHook
 

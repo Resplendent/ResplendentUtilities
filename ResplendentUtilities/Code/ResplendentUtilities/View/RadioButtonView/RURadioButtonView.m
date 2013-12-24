@@ -9,6 +9,7 @@
 #import "RURadioButtonView.h"
 #import "RUCompatability.h"
 #import "RUDLog.h"
+#import "RUConstants.h"
 
 
 
@@ -74,7 +75,7 @@
 
 -(NSString *)description
 {
-    return RUStringWithFormat(@"%@ button titles: %@",[super description],self.buttonTitles);
+    return RUStringWithFormat(@"%@ %@",[super description],@{@"Button titles": self.buttonTitles});
 }
 
 #pragma mark - New Button
