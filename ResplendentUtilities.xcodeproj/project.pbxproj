@@ -58,41 +58,12 @@
 		430C9E571868D840002AEB0B /* RUFourSquareVenuePhotosResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D411868D840002AEB0B /* RUFourSquareVenuePhotosResponse.m */; };
 		430C9E581868D840002AEB0B /* RUFourSquareVenueResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D431868D840002AEB0B /* RUFourSquareVenueResponse.m */; };
 		430C9E591868D840002AEB0B /* RUFourSquareVenueSearchResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D451868D840002AEB0B /* RUFourSquareVenueSearchResponse.m */; };
-		430C9E5A1868D840002AEB0B /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D491868D840002AEB0B /* NSMutableURLRequest+Parameters.m */; };
-		430C9E5B1868D840002AEB0B /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D4B1868D840002AEB0B /* NSString+URLEncoding.m */; };
-		430C9E5C1868D840002AEB0B /* NSURL+Base.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D4D1868D840002AEB0B /* NSURL+Base.m */; };
-		430C9E5D1868D840002AEB0B /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D4F1868D840002AEB0B /* Base64Transcoder.c */; };
-		430C9E5E1868D840002AEB0B /* hmac.c in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D511868D840002AEB0B /* hmac.c */; };
-		430C9E5F1868D840002AEB0B /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D531868D840002AEB0B /* sha1.c */; };
-		430C9E601868D840002AEB0B /* OACall.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D561868D840002AEB0B /* OACall.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		430C9E611868D840002AEB0B /* OAConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D581868D840002AEB0B /* OAConsumer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		430C9E621868D840002AEB0B /* OADataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D5A1868D840002AEB0B /* OADataFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		430C9E631868D840002AEB0B /* OAHMAC_SHA1SignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D5C1868D840002AEB0B /* OAHMAC_SHA1SignatureProvider.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		430C9E641868D840002AEB0B /* OAMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D5E1868D840002AEB0B /* OAMutableURLRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		430C9E651868D840002AEB0B /* OAPlaintextSignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D601868D840002AEB0B /* OAPlaintextSignatureProvider.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		430C9E661868D840002AEB0B /* OAProblem.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D621868D840002AEB0B /* OAProblem.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		430C9E671868D840002AEB0B /* OARequestParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D641868D840002AEB0B /* OARequestParameter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		430C9E681868D840002AEB0B /* OAServiceTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D661868D840002AEB0B /* OAServiceTicket.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		430C9E691868D840002AEB0B /* OAToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D691868D840002AEB0B /* OAToken.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		430C9E6A1868D840002AEB0B /* OATokenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D6B1868D840002AEB0B /* OATokenManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		430C9E6B1868D840002AEB0B /* RUYelpBusinessByIdRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D711868D840002AEB0B /* RUYelpBusinessByIdRequest.m */; };
-		430C9E6C1868D840002AEB0B /* RUYelpSearchBusinessesRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D751868D840002AEB0B /* RUYelpSearchBusinessesRequest.m */; };
-		430C9E6D1868D840002AEB0B /* NSDictionary+RUYelpBusiness.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D7A1868D840002AEB0B /* NSDictionary+RUYelpBusiness.m */; };
-		430C9E6E1868D840002AEB0B /* NSDictionary+RUYelpBusinessReview.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D7C1868D840002AEB0B /* NSDictionary+RUYelpBusinessReview.m */; };
-		430C9E6F1868D840002AEB0B /* NSDictionary+RUYelpUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D7E1868D840002AEB0B /* NSDictionary+RUYelpUser.m */; };
-		430C9E701868D840002AEB0B /* RUYelpBusinessByIdResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D811868D840002AEB0B /* RUYelpBusinessByIdResponse.m */; };
-		430C9E711868D840002AEB0B /* RUYelpSearchBusinessesResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D841868D840002AEB0B /* RUYelpSearchBusinessesResponse.m */; };
-		430C9E721868D840002AEB0B /* RUYelpRequestUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D861868D840002AEB0B /* RUYelpRequestUtil.m */; };
 		430C9E731868D840002AEB0B /* RUKeyboardAdjustmentHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D8C1868D840002AEB0B /* RUKeyboardAdjustmentHelper.m */; };
 		430C9E741868D840002AEB0B /* RUAddressBookUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D8F1868D840002AEB0B /* RUAddressBookUtil.m */; };
 		430C9E751868D840002AEB0B /* RUClassOrNilUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D911868D840002AEB0B /* RUClassOrNilUtil.m */; };
 		430C9E761868D840002AEB0B /* RUCompatability.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D931868D840002AEB0B /* RUCompatability.m */; };
 		430C9E771868D840002AEB0B /* RUDeallocHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D971868D840002AEB0B /* RUDeallocHook.m */; };
 		430C9E781868D840002AEB0B /* RUOrderedMutableDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D9D1868D840002AEB0B /* RUOrderedMutableDictionary.m */; };
-		430C9E791868D840002AEB0B /* RUJsonRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9DA81868D840002AEB0B /* RUJsonRequest.m */; };
-		430C9E7A1868D840002AEB0B /* RUNetworkRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9DAA1868D840002AEB0B /* RUNetworkRequest.m */; };
-		430C9E7B1868D840002AEB0B /* RUNetworkDictionaryResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9DAD1868D840002AEB0B /* RUNetworkDictionaryResponse.m */; };
-		430C9E7C1868D840002AEB0B /* RUNetworkResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9DAF1868D840002AEB0B /* RUNetworkResponse.m */; };
 		430C9E7D1868D840002AEB0B /* NIAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9DB51868D840002AEB0B /* NIAttributedLabel.m */; };
 		430C9E7E1868D840002AEB0B /* NSMutableAttributedString+NimbusAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9DB91868D840002AEB0B /* NSMutableAttributedString+NimbusAttributedLabel.m */; };
 		430C9E7F1868D840002AEB0B /* NICommonMetrics.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9DBD1868D840002AEB0B /* NICommonMetrics.m */; };
@@ -246,60 +217,6 @@
 		430C9D431868D840002AEB0B /* RUFourSquareVenueResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFourSquareVenueResponse.m; sourceTree = "<group>"; };
 		430C9D441868D840002AEB0B /* RUFourSquareVenueSearchResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFourSquareVenueSearchResponse.h; sourceTree = "<group>"; };
 		430C9D451868D840002AEB0B /* RUFourSquareVenueSearchResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFourSquareVenueSearchResponse.m; sourceTree = "<group>"; };
-		430C9D481868D840002AEB0B /* NSMutableURLRequest+Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+Parameters.h"; sourceTree = "<group>"; };
-		430C9D491868D840002AEB0B /* NSMutableURLRequest+Parameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+Parameters.m"; sourceTree = "<group>"; };
-		430C9D4A1868D840002AEB0B /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncoding.h"; sourceTree = "<group>"; };
-		430C9D4B1868D840002AEB0B /* NSString+URLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+URLEncoding.m"; sourceTree = "<group>"; };
-		430C9D4C1868D840002AEB0B /* NSURL+Base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Base.h"; sourceTree = "<group>"; };
-		430C9D4D1868D840002AEB0B /* NSURL+Base.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Base.m"; sourceTree = "<group>"; };
-		430C9D4F1868D840002AEB0B /* Base64Transcoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Base64Transcoder.c; sourceTree = "<group>"; };
-		430C9D501868D840002AEB0B /* Base64Transcoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64Transcoder.h; sourceTree = "<group>"; };
-		430C9D511868D840002AEB0B /* hmac.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hmac.c; sourceTree = "<group>"; };
-		430C9D521868D840002AEB0B /* hmac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hmac.h; sourceTree = "<group>"; };
-		430C9D531868D840002AEB0B /* sha1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sha1.c; sourceTree = "<group>"; };
-		430C9D541868D840002AEB0B /* sha1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sha1.h; sourceTree = "<group>"; };
-		430C9D551868D840002AEB0B /* OACall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OACall.h; sourceTree = "<group>"; };
-		430C9D561868D840002AEB0B /* OACall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OACall.m; sourceTree = "<group>"; };
-		430C9D571868D840002AEB0B /* OAConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAConsumer.h; sourceTree = "<group>"; };
-		430C9D581868D840002AEB0B /* OAConsumer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAConsumer.m; sourceTree = "<group>"; };
-		430C9D591868D840002AEB0B /* OADataFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OADataFetcher.h; sourceTree = "<group>"; };
-		430C9D5A1868D840002AEB0B /* OADataFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OADataFetcher.m; sourceTree = "<group>"; };
-		430C9D5B1868D840002AEB0B /* OAHMAC_SHA1SignatureProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAHMAC_SHA1SignatureProvider.h; sourceTree = "<group>"; };
-		430C9D5C1868D840002AEB0B /* OAHMAC_SHA1SignatureProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAHMAC_SHA1SignatureProvider.m; sourceTree = "<group>"; };
-		430C9D5D1868D840002AEB0B /* OAMutableURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAMutableURLRequest.h; sourceTree = "<group>"; };
-		430C9D5E1868D840002AEB0B /* OAMutableURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAMutableURLRequest.m; sourceTree = "<group>"; };
-		430C9D5F1868D840002AEB0B /* OAPlaintextSignatureProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAPlaintextSignatureProvider.h; sourceTree = "<group>"; };
-		430C9D601868D840002AEB0B /* OAPlaintextSignatureProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAPlaintextSignatureProvider.m; sourceTree = "<group>"; };
-		430C9D611868D840002AEB0B /* OAProblem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAProblem.h; sourceTree = "<group>"; };
-		430C9D621868D840002AEB0B /* OAProblem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAProblem.m; sourceTree = "<group>"; };
-		430C9D631868D840002AEB0B /* OARequestParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OARequestParameter.h; sourceTree = "<group>"; };
-		430C9D641868D840002AEB0B /* OARequestParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OARequestParameter.m; sourceTree = "<group>"; };
-		430C9D651868D840002AEB0B /* OAServiceTicket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAServiceTicket.h; sourceTree = "<group>"; };
-		430C9D661868D840002AEB0B /* OAServiceTicket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAServiceTicket.m; sourceTree = "<group>"; };
-		430C9D671868D840002AEB0B /* OASignatureProviding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OASignatureProviding.h; sourceTree = "<group>"; };
-		430C9D681868D840002AEB0B /* OAToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAToken.h; sourceTree = "<group>"; };
-		430C9D691868D840002AEB0B /* OAToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAToken.m; sourceTree = "<group>"; };
-		430C9D6A1868D840002AEB0B /* OATokenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OATokenManager.h; sourceTree = "<group>"; };
-		430C9D6B1868D840002AEB0B /* OATokenManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OATokenManager.m; sourceTree = "<group>"; };
-		430C9D6C1868D840002AEB0B /* OAuthConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthConsumer.h; sourceTree = "<group>"; };
-		430C9D701868D840002AEB0B /* RUYelpBusinessByIdRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUYelpBusinessByIdRequest.h; sourceTree = "<group>"; };
-		430C9D711868D840002AEB0B /* RUYelpBusinessByIdRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUYelpBusinessByIdRequest.m; sourceTree = "<group>"; };
-		430C9D721868D840002AEB0B /* RUYelpBusinessByIdRequestProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUYelpBusinessByIdRequestProtocols.h; sourceTree = "<group>"; };
-		430C9D741868D840002AEB0B /* RUYelpSearchBusinessesRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUYelpSearchBusinessesRequest.h; sourceTree = "<group>"; };
-		430C9D751868D840002AEB0B /* RUYelpSearchBusinessesRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUYelpSearchBusinessesRequest.m; sourceTree = "<group>"; };
-		430C9D761868D840002AEB0B /* RUYelpSearchBusinessesRequestProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUYelpSearchBusinessesRequestProtocols.h; sourceTree = "<group>"; };
-		430C9D791868D840002AEB0B /* NSDictionary+RUYelpBusiness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+RUYelpBusiness.h"; sourceTree = "<group>"; };
-		430C9D7A1868D840002AEB0B /* NSDictionary+RUYelpBusiness.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+RUYelpBusiness.m"; sourceTree = "<group>"; };
-		430C9D7B1868D840002AEB0B /* NSDictionary+RUYelpBusinessReview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+RUYelpBusinessReview.h"; sourceTree = "<group>"; };
-		430C9D7C1868D840002AEB0B /* NSDictionary+RUYelpBusinessReview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+RUYelpBusinessReview.m"; sourceTree = "<group>"; };
-		430C9D7D1868D840002AEB0B /* NSDictionary+RUYelpUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+RUYelpUser.h"; sourceTree = "<group>"; };
-		430C9D7E1868D840002AEB0B /* NSDictionary+RUYelpUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+RUYelpUser.m"; sourceTree = "<group>"; };
-		430C9D801868D840002AEB0B /* RUYelpBusinessByIdResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUYelpBusinessByIdResponse.h; sourceTree = "<group>"; };
-		430C9D811868D840002AEB0B /* RUYelpBusinessByIdResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUYelpBusinessByIdResponse.m; sourceTree = "<group>"; };
-		430C9D831868D840002AEB0B /* RUYelpSearchBusinessesResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUYelpSearchBusinessesResponse.h; sourceTree = "<group>"; };
-		430C9D841868D840002AEB0B /* RUYelpSearchBusinessesResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUYelpSearchBusinessesResponse.m; sourceTree = "<group>"; };
-		430C9D851868D840002AEB0B /* RUYelpRequestUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUYelpRequestUtil.h; sourceTree = "<group>"; };
-		430C9D861868D840002AEB0B /* RUYelpRequestUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUYelpRequestUtil.m; sourceTree = "<group>"; };
 		430C9D881868D840002AEB0B /* RUActionSheetManagement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUActionSheetManagement.h; sourceTree = "<group>"; };
 		430C9D8B1868D840002AEB0B /* RUKeyboardAdjustmentHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUKeyboardAdjustmentHelper.h; sourceTree = "<group>"; };
 		430C9D8C1868D840002AEB0B /* RUKeyboardAdjustmentHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUKeyboardAdjustmentHelper.m; sourceTree = "<group>"; };
@@ -327,14 +244,6 @@
 		430C9DA21868D840002AEB0B /* RUSynthesizeAssociatedObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSynthesizeAssociatedObjects.h; sourceTree = "<group>"; };
 		430C9DA31868D840002AEB0B /* RUSynthesizeUserDefaultMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSynthesizeUserDefaultMethods.h; sourceTree = "<group>"; };
 		430C9DA41868D840002AEB0B /* RUSystemVersionUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSystemVersionUtils.h; sourceTree = "<group>"; };
-		430C9DA71868D840002AEB0B /* RUJsonRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUJsonRequest.h; sourceTree = "<group>"; };
-		430C9DA81868D840002AEB0B /* RUJsonRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUJsonRequest.m; sourceTree = "<group>"; };
-		430C9DA91868D840002AEB0B /* RUNetworkRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUNetworkRequest.h; sourceTree = "<group>"; };
-		430C9DAA1868D840002AEB0B /* RUNetworkRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUNetworkRequest.m; sourceTree = "<group>"; };
-		430C9DAC1868D840002AEB0B /* RUNetworkDictionaryResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUNetworkDictionaryResponse.h; sourceTree = "<group>"; };
-		430C9DAD1868D840002AEB0B /* RUNetworkDictionaryResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUNetworkDictionaryResponse.m; sourceTree = "<group>"; };
-		430C9DAE1868D840002AEB0B /* RUNetworkResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUNetworkResponse.h; sourceTree = "<group>"; };
-		430C9DAF1868D840002AEB0B /* RUNetworkResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUNetworkResponse.m; sourceTree = "<group>"; };
 		430C9DB41868D840002AEB0B /* NIAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIAttributedLabel.h; sourceTree = "<group>"; };
 		430C9DB51868D840002AEB0B /* NIAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIAttributedLabel.m; sourceTree = "<group>"; };
 		430C9DB61868D840002AEB0B /* NimbusAttributedLabel+Namespace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NimbusAttributedLabel+Namespace.h"; sourceTree = "<group>"; };
@@ -546,7 +455,6 @@
 				430C9D241868D840002AEB0B /* Library */,
 				430C9D871868D840002AEB0B /* Macros */,
 				430C9D891868D840002AEB0B /* Misc */,
-				430C9DA51868D840002AEB0B /* Network */,
 				430C9DB01868D840002AEB0B /* Resources */,
 				430C9DE71868D840002AEB0B /* View */,
 			);
@@ -663,8 +571,6 @@
 			isa = PBXGroup;
 			children = (
 				430C9D251868D840002AEB0B /* FourSquare */,
-				430C9D461868D840002AEB0B /* OAuthConsumer */,
-				430C9D6D1868D840002AEB0B /* Yelp */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -729,146 +635,6 @@
 			path = Response;
 			sourceTree = "<group>";
 		};
-		430C9D461868D840002AEB0B /* OAuthConsumer */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D471868D840002AEB0B /* Categories */,
-				430C9D4E1868D840002AEB0B /* Crytpo */,
-				430C9D551868D840002AEB0B /* OACall.h */,
-				430C9D561868D840002AEB0B /* OACall.m */,
-				430C9D571868D840002AEB0B /* OAConsumer.h */,
-				430C9D581868D840002AEB0B /* OAConsumer.m */,
-				430C9D591868D840002AEB0B /* OADataFetcher.h */,
-				430C9D5A1868D840002AEB0B /* OADataFetcher.m */,
-				430C9D5B1868D840002AEB0B /* OAHMAC_SHA1SignatureProvider.h */,
-				430C9D5C1868D840002AEB0B /* OAHMAC_SHA1SignatureProvider.m */,
-				430C9D5D1868D840002AEB0B /* OAMutableURLRequest.h */,
-				430C9D5E1868D840002AEB0B /* OAMutableURLRequest.m */,
-				430C9D5F1868D840002AEB0B /* OAPlaintextSignatureProvider.h */,
-				430C9D601868D840002AEB0B /* OAPlaintextSignatureProvider.m */,
-				430C9D611868D840002AEB0B /* OAProblem.h */,
-				430C9D621868D840002AEB0B /* OAProblem.m */,
-				430C9D631868D840002AEB0B /* OARequestParameter.h */,
-				430C9D641868D840002AEB0B /* OARequestParameter.m */,
-				430C9D651868D840002AEB0B /* OAServiceTicket.h */,
-				430C9D661868D840002AEB0B /* OAServiceTicket.m */,
-				430C9D671868D840002AEB0B /* OASignatureProviding.h */,
-				430C9D681868D840002AEB0B /* OAToken.h */,
-				430C9D691868D840002AEB0B /* OAToken.m */,
-				430C9D6A1868D840002AEB0B /* OATokenManager.h */,
-				430C9D6B1868D840002AEB0B /* OATokenManager.m */,
-				430C9D6C1868D840002AEB0B /* OAuthConsumer.h */,
-			);
-			path = OAuthConsumer;
-			sourceTree = "<group>";
-		};
-		430C9D471868D840002AEB0B /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D481868D840002AEB0B /* NSMutableURLRequest+Parameters.h */,
-				430C9D491868D840002AEB0B /* NSMutableURLRequest+Parameters.m */,
-				430C9D4A1868D840002AEB0B /* NSString+URLEncoding.h */,
-				430C9D4B1868D840002AEB0B /* NSString+URLEncoding.m */,
-				430C9D4C1868D840002AEB0B /* NSURL+Base.h */,
-				430C9D4D1868D840002AEB0B /* NSURL+Base.m */,
-			);
-			path = Categories;
-			sourceTree = "<group>";
-		};
-		430C9D4E1868D840002AEB0B /* Crytpo */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D4F1868D840002AEB0B /* Base64Transcoder.c */,
-				430C9D501868D840002AEB0B /* Base64Transcoder.h */,
-				430C9D511868D840002AEB0B /* hmac.c */,
-				430C9D521868D840002AEB0B /* hmac.h */,
-				430C9D531868D840002AEB0B /* sha1.c */,
-				430C9D541868D840002AEB0B /* sha1.h */,
-			);
-			path = Crytpo;
-			sourceTree = "<group>";
-		};
-		430C9D6D1868D840002AEB0B /* Yelp */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D6E1868D840002AEB0B /* Request */,
-				430C9D771868D840002AEB0B /* Response */,
-				430C9D851868D840002AEB0B /* RUYelpRequestUtil.h */,
-				430C9D861868D840002AEB0B /* RUYelpRequestUtil.m */,
-			);
-			path = Yelp;
-			sourceTree = "<group>";
-		};
-		430C9D6E1868D840002AEB0B /* Request */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D6F1868D840002AEB0B /* YelpBusinessByIdRequest */,
-				430C9D731868D840002AEB0B /* YelpSearchBusinessesRequest */,
-			);
-			path = Request;
-			sourceTree = "<group>";
-		};
-		430C9D6F1868D840002AEB0B /* YelpBusinessByIdRequest */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D701868D840002AEB0B /* RUYelpBusinessByIdRequest.h */,
-				430C9D711868D840002AEB0B /* RUYelpBusinessByIdRequest.m */,
-				430C9D721868D840002AEB0B /* RUYelpBusinessByIdRequestProtocols.h */,
-			);
-			path = YelpBusinessByIdRequest;
-			sourceTree = "<group>";
-		};
-		430C9D731868D840002AEB0B /* YelpSearchBusinessesRequest */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D741868D840002AEB0B /* RUYelpSearchBusinessesRequest.h */,
-				430C9D751868D840002AEB0B /* RUYelpSearchBusinessesRequest.m */,
-				430C9D761868D840002AEB0B /* RUYelpSearchBusinessesRequestProtocols.h */,
-			);
-			path = YelpSearchBusinessesRequest;
-			sourceTree = "<group>";
-		};
-		430C9D771868D840002AEB0B /* Response */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D781868D840002AEB0B /* Categories */,
-				430C9D7F1868D840002AEB0B /* YelpBusinessByIdResponse */,
-				430C9D821868D840002AEB0B /* YelpSearchBusinessesResponse */,
-			);
-			path = Response;
-			sourceTree = "<group>";
-		};
-		430C9D781868D840002AEB0B /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D791868D840002AEB0B /* NSDictionary+RUYelpBusiness.h */,
-				430C9D7A1868D840002AEB0B /* NSDictionary+RUYelpBusiness.m */,
-				430C9D7B1868D840002AEB0B /* NSDictionary+RUYelpBusinessReview.h */,
-				430C9D7C1868D840002AEB0B /* NSDictionary+RUYelpBusinessReview.m */,
-				430C9D7D1868D840002AEB0B /* NSDictionary+RUYelpUser.h */,
-				430C9D7E1868D840002AEB0B /* NSDictionary+RUYelpUser.m */,
-			);
-			path = Categories;
-			sourceTree = "<group>";
-		};
-		430C9D7F1868D840002AEB0B /* YelpBusinessByIdResponse */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D801868D840002AEB0B /* RUYelpBusinessByIdResponse.h */,
-				430C9D811868D840002AEB0B /* RUYelpBusinessByIdResponse.m */,
-			);
-			path = YelpBusinessByIdResponse;
-			sourceTree = "<group>";
-		};
-		430C9D821868D840002AEB0B /* YelpSearchBusinessesResponse */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D831868D840002AEB0B /* RUYelpSearchBusinessesResponse.h */,
-				430C9D841868D840002AEB0B /* RUYelpSearchBusinessesResponse.m */,
-			);
-			path = YelpSearchBusinessesResponse;
-			sourceTree = "<group>";
-		};
 		430C9D871868D840002AEB0B /* Macros */ = {
 			isa = PBXGroup;
 			children = (
@@ -917,37 +683,6 @@
 				430C9D8D1868D840002AEB0B /* RUKeyboardAdjustmentHelperProtocols.h */,
 			);
 			path = KeyboardAdjustmentHelper;
-			sourceTree = "<group>";
-		};
-		430C9DA51868D840002AEB0B /* Network */ = {
-			isa = PBXGroup;
-			children = (
-				430C9DA61868D840002AEB0B /* Request */,
-				430C9DAB1868D840002AEB0B /* Response */,
-			);
-			path = Network;
-			sourceTree = "<group>";
-		};
-		430C9DA61868D840002AEB0B /* Request */ = {
-			isa = PBXGroup;
-			children = (
-				430C9DA71868D840002AEB0B /* RUJsonRequest.h */,
-				430C9DA81868D840002AEB0B /* RUJsonRequest.m */,
-				430C9DA91868D840002AEB0B /* RUNetworkRequest.h */,
-				430C9DAA1868D840002AEB0B /* RUNetworkRequest.m */,
-			);
-			path = Request;
-			sourceTree = "<group>";
-		};
-		430C9DAB1868D840002AEB0B /* Response */ = {
-			isa = PBXGroup;
-			children = (
-				430C9DAC1868D840002AEB0B /* RUNetworkDictionaryResponse.h */,
-				430C9DAD1868D840002AEB0B /* RUNetworkDictionaryResponse.m */,
-				430C9DAE1868D840002AEB0B /* RUNetworkResponse.h */,
-				430C9DAF1868D840002AEB0B /* RUNetworkResponse.m */,
-			);
-			path = Response;
 			sourceTree = "<group>";
 		};
 		430C9DB01868D840002AEB0B /* Resources */ = {
@@ -1335,18 +1070,14 @@
 				430C9E371868D840002AEB0B /* NSString+RUUtil.m in Sources */,
 				430C9EA11868D840002AEB0B /* RUContentModalView.m in Sources */,
 				430C9E361868D840002AEB0B /* NSString+RUMutableURLRequest.m in Sources */,
-				430C9E6F1868D840002AEB0B /* NSDictionary+RUYelpUser.m in Sources */,
 				430C9E8E1868D840002AEB0B /* NISnapshotRotation.m in Sources */,
 				430C9E861868D840002AEB0B /* NINavigationAppearance.m in Sources */,
 				430C9E4C1868D840002AEB0B /* NSDictionary+RUFourSquareVenueCategory.m in Sources */,
-				430C9E6C1868D840002AEB0B /* RUYelpSearchBusinessesRequest.m in Sources */,
-				430C9E701868D840002AEB0B /* RUYelpBusinessByIdResponse.m in Sources */,
 				430C9E9C1868D840002AEB0B /* RUAsynchronousUIImageRequest.m in Sources */,
 				430C9E321868D840002AEB0B /* NSDictionary+RUFBUserResponseObject.m in Sources */,
 				430C9E551868D840002AEB0B /* RUFourSquareResponse.m in Sources */,
 				430C9E491868D840002AEB0B /* RUScrollToTopManager.m in Sources */,
 				430C9E4F1868D840002AEB0B /* RUFourSquareRequest.m in Sources */,
-				430C9E5C1868D840002AEB0B /* NSURL+Base.m in Sources */,
 				430C9E4D1868D840002AEB0B /* RUFourSquareVenue.m in Sources */,
 				430C9E4A1868D840002AEB0B /* RUFullscreenRotatingView.m in Sources */,
 				430C9E831868D840002AEB0B /* NIError.m in Sources */,
@@ -1356,10 +1087,7 @@
 				430C9E9D1868D840002AEB0B /* UIButton+RUAsynchronousImageFetching.m in Sources */,
 				430C9EA21868D840002AEB0B /* RUModalView.m in Sources */,
 				430C9E8B1868D840002AEB0B /* NIPaths.m in Sources */,
-				430C9E631868D840002AEB0B /* OAHMAC_SHA1SignatureProvider.m in Sources */,
-				430C9E721868D840002AEB0B /* RUYelpRequestUtil.m in Sources */,
 				430C9CBC1868D80B002AEB0B /* main.m in Sources */,
-				430C9E5D1868D840002AEB0B /* Base64Transcoder.c in Sources */,
 				430C9E8C1868D840002AEB0B /* NIRuntimeClassModifications.m in Sources */,
 				430C9EA71868D840002AEB0B /* RUTextFieldCustomizablePlaceholder.m in Sources */,
 				430C9E931868D840002AEB0B /* RUCornerRoundingBorderedView.m in Sources */,
@@ -1371,8 +1099,6 @@
 				430C9E881868D840002AEB0B /* NINonEmptyCollectionTesting.m in Sources */,
 				430C9E411868D840002AEB0B /* UIView+CoreGraphics.m in Sources */,
 				430C9E3C1868D840002AEB0B /* UIColor+Utility.m in Sources */,
-				430C9E681868D840002AEB0B /* OAServiceTicket.m in Sources */,
-				430C9E691868D840002AEB0B /* OAToken.m in Sources */,
 				430C9E441868D840002AEB0B /* UIView+RUUtility.m in Sources */,
 				430C9E891868D840002AEB0B /* NINonRetainingCollections.m in Sources */,
 				430C9E7F1868D840002AEB0B /* NICommonMetrics.m in Sources */,
@@ -1380,47 +1106,34 @@
 				430C9E3F1868D840002AEB0B /* UIImage+Rotation.m in Sources */,
 				430C9EA91868D840002AEB0B /* NavbarViewController.m in Sources */,
 				430C9E9B1868D840002AEB0B /* AsynchronousImageView.m in Sources */,
-				430C9E5B1868D840002AEB0B /* NSString+URLEncoding.m in Sources */,
 				430C9E911868D840002AEB0B /* NSString+NimbusCore.m in Sources */,
 				430C9E811868D840002AEB0B /* NIDebuggingTools.m in Sources */,
 				430C9E801868D840002AEB0B /* NIDataStructures.m in Sources */,
-				430C9E611868D840002AEB0B /* OAConsumer.m in Sources */,
 				430C9E591868D840002AEB0B /* RUFourSquareVenueSearchResponse.m in Sources */,
 				430C9E8F1868D840002AEB0B /* NIState.m in Sources */,
 				430C9E4B1868D840002AEB0B /* RUImageViewFullscreenRotatingView.m in Sources */,
 				430C9E511868D840002AEB0B /* RUFourSquareVenuePhotosRequest.m in Sources */,
 				430C9EA41868D840002AEB0B /* RURadioButtonView.m in Sources */,
-				430C9E621868D840002AEB0B /* OADataFetcher.m in Sources */,
 				430C9E561868D840002AEB0B /* RUFourSquareVenueCategoriesResponse.m in Sources */,
 				430C9E731868D840002AEB0B /* RUKeyboardAdjustmentHelper.m in Sources */,
 				430C9E431868D840002AEB0B /* UIView+RUMaskRoundCorners.m in Sources */,
 				430C9E3B1868D840002AEB0B /* UIColor+HexString.m in Sources */,
 				430C9E821868D840002AEB0B /* NIDeviceOrientation.m in Sources */,
-				430C9E5E1868D840002AEB0B /* hmac.c in Sources */,
 				430C9E961868D840002AEB0B /* GridView.m in Sources */,
-				430C9E711868D840002AEB0B /* RUYelpSearchBusinessesResponse.m in Sources */,
 				430C9E941868D840002AEB0B /* RUTriangle.m in Sources */,
 				430C9E761868D840002AEB0B /* RUCompatability.m in Sources */,
 				430C9E841868D840002AEB0B /* NIFoundationMethods.m in Sources */,
-				430C9E671868D840002AEB0B /* OARequestParameter.m in Sources */,
-				430C9E5F1868D840002AEB0B /* sha1.c in Sources */,
 				430C9E331868D840002AEB0B /* NSManagedObject+Utility.m in Sources */,
 				430C9E901868D840002AEB0B /* NIViewRecycler.m in Sources */,
-				430C9E7B1868D840002AEB0B /* RUNetworkDictionaryResponse.m in Sources */,
 				430C9E751868D840002AEB0B /* RUClassOrNilUtil.m in Sources */,
-				430C9E6D1868D840002AEB0B /* NSDictionary+RUYelpBusiness.m in Sources */,
-				430C9E791868D840002AEB0B /* RUJsonRequest.m in Sources */,
-				430C9E7C1868D840002AEB0B /* RUNetworkResponse.m in Sources */,
 				430C9EA01868D840002AEB0B /* RUScrollWithKeyboardAdjustmentView.m in Sources */,
 				430C9EA51868D840002AEB0B /* RUScrollView.m in Sources */,
 				430C9EA61868D840002AEB0B /* RUTableView.m in Sources */,
 				430C9E521868D840002AEB0B /* RUFourSquareVenueRequest.m in Sources */,
 				430C9E8D1868D840002AEB0B /* NISDKAvailability.m in Sources */,
-				430C9E5A1868D840002AEB0B /* NSMutableURLRequest+Parameters.m in Sources */,
 				430C9E531868D840002AEB0B /* RUFourSquareVenueRequestUtil.m in Sources */,
 				430C9E391868D840002AEB0B /* UIAlertView+RUShowUtil.m in Sources */,
 				430C9E9F1868D840002AEB0B /* UIImageView+RUFacebookAsynchronousImageFetching.m in Sources */,
-				430C9E641868D840002AEB0B /* OAMutableURLRequest.m in Sources */,
 				430C9E401868D840002AEB0B /* UIImage+RUDebug.m in Sources */,
 				430C9E311868D840002AEB0B /* NSDate+Utility.m in Sources */,
 				430C9E451868D840002AEB0B /* RUAmazonController.m in Sources */,
@@ -1432,22 +1145,15 @@
 				430C9CC01868D80B002AEB0B /* RUAppDelegate.m in Sources */,
 				430C9E581868D840002AEB0B /* RUFourSquareVenueResponse.m in Sources */,
 				430C9E921868D840002AEB0B /* RUGradientButton.m in Sources */,
-				430C9E601868D840002AEB0B /* OACall.m in Sources */,
 				430C9E381868D840002AEB0B /* UIActionSheet+RUShowUtil.m in Sources */,
-				430C9E7A1868D840002AEB0B /* RUNetworkRequest.m in Sources */,
 				430C9E951868D840002AEB0B /* RUGradientView.m in Sources */,
-				430C9E661868D840002AEB0B /* OAProblem.m in Sources */,
-				430C9E6B1868D840002AEB0B /* RUYelpBusinessByIdRequest.m in Sources */,
 				430C9E3A1868D840002AEB0B /* UIButton+Utility.m in Sources */,
 				430C9E771868D840002AEB0B /* RUDeallocHook.m in Sources */,
-				430C9E6E1868D840002AEB0B /* NSDictionary+RUYelpBusinessReview.m in Sources */,
 				430C9E351868D840002AEB0B /* NSString+MKCoordinateRegion.m in Sources */,
 				430C9E4E1868D840002AEB0B /* RUFourSquareVenuePhoto.m in Sources */,
 				430C9E421868D840002AEB0B /* UIView+RUEnableTapToResignFirstResponder.m in Sources */,
 				430C9E871868D840002AEB0B /* NINetworkActivity.m in Sources */,
 				430C9E571868D840002AEB0B /* RUFourSquareVenuePhotosResponse.m in Sources */,
-				430C9E651868D840002AEB0B /* OAPlaintextSignatureProvider.m in Sources */,
-				430C9E6A1868D840002AEB0B /* OATokenManager.m in Sources */,
 				430C9E9A1868D840002AEB0B /* RUHorizontalPagingView.m in Sources */,
 				430C9EA31868D840002AEB0B /* Navbar.m in Sources */,
 			);
