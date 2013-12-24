@@ -44,20 +44,6 @@
 		430C9E491868D840002AEB0B /* RUScrollToTopManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D1D1868D840002AEB0B /* RUScrollToTopManager.m */; };
 		430C9E4A1868D840002AEB0B /* RUFullscreenRotatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D201868D840002AEB0B /* RUFullscreenRotatingView.m */; };
 		430C9E4B1868D840002AEB0B /* RUImageViewFullscreenRotatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D231868D840002AEB0B /* RUImageViewFullscreenRotatingView.m */; };
-		430C9E4C1868D840002AEB0B /* NSDictionary+RUFourSquareVenueCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D281868D840002AEB0B /* NSDictionary+RUFourSquareVenueCategory.m */; };
-		430C9E4D1868D840002AEB0B /* RUFourSquareVenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D2A1868D840002AEB0B /* RUFourSquareVenue.m */; };
-		430C9E4E1868D840002AEB0B /* RUFourSquareVenuePhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D2C1868D840002AEB0B /* RUFourSquareVenuePhoto.m */; };
-		430C9E4F1868D840002AEB0B /* RUFourSquareRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D2F1868D840002AEB0B /* RUFourSquareRequest.m */; };
-		430C9E501868D840002AEB0B /* RUFourSquareVenueCategoriesRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D321868D840002AEB0B /* RUFourSquareVenueCategoriesRequest.m */; };
-		430C9E511868D840002AEB0B /* RUFourSquareVenuePhotosRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D341868D840002AEB0B /* RUFourSquareVenuePhotosRequest.m */; };
-		430C9E521868D840002AEB0B /* RUFourSquareVenueRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D361868D840002AEB0B /* RUFourSquareVenueRequest.m */; };
-		430C9E531868D840002AEB0B /* RUFourSquareVenueRequestUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D381868D840002AEB0B /* RUFourSquareVenueRequestUtil.m */; };
-		430C9E541868D840002AEB0B /* RUFourSquareVenueSearchRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D3A1868D840002AEB0B /* RUFourSquareVenueSearchRequest.m */; };
-		430C9E551868D840002AEB0B /* RUFourSquareResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D3D1868D840002AEB0B /* RUFourSquareResponse.m */; };
-		430C9E561868D840002AEB0B /* RUFourSquareVenueCategoriesResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D3F1868D840002AEB0B /* RUFourSquareVenueCategoriesResponse.m */; };
-		430C9E571868D840002AEB0B /* RUFourSquareVenuePhotosResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D411868D840002AEB0B /* RUFourSquareVenuePhotosResponse.m */; };
-		430C9E581868D840002AEB0B /* RUFourSquareVenueResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D431868D840002AEB0B /* RUFourSquareVenueResponse.m */; };
-		430C9E591868D840002AEB0B /* RUFourSquareVenueSearchResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D451868D840002AEB0B /* RUFourSquareVenueSearchResponse.m */; };
 		430C9E731868D840002AEB0B /* RUKeyboardAdjustmentHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D8C1868D840002AEB0B /* RUKeyboardAdjustmentHelper.m */; };
 		430C9E741868D840002AEB0B /* RUAddressBookUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D8F1868D840002AEB0B /* RUAddressBookUtil.m */; };
 		430C9E751868D840002AEB0B /* RUClassOrNilUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9D911868D840002AEB0B /* RUClassOrNilUtil.m */; };
@@ -188,35 +174,6 @@
 		430C9D211868D840002AEB0B /* RUFullscreenRotatingViewProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFullscreenRotatingViewProtocols.h; sourceTree = "<group>"; };
 		430C9D221868D840002AEB0B /* RUImageViewFullscreenRotatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUImageViewFullscreenRotatingView.h; sourceTree = "<group>"; };
 		430C9D231868D840002AEB0B /* RUImageViewFullscreenRotatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUImageViewFullscreenRotatingView.m; sourceTree = "<group>"; };
-		430C9D271868D840002AEB0B /* NSDictionary+RUFourSquareVenueCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+RUFourSquareVenueCategory.h"; sourceTree = "<group>"; };
-		430C9D281868D840002AEB0B /* NSDictionary+RUFourSquareVenueCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+RUFourSquareVenueCategory.m"; sourceTree = "<group>"; };
-		430C9D291868D840002AEB0B /* RUFourSquareVenue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFourSquareVenue.h; sourceTree = "<group>"; };
-		430C9D2A1868D840002AEB0B /* RUFourSquareVenue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFourSquareVenue.m; sourceTree = "<group>"; };
-		430C9D2B1868D840002AEB0B /* RUFourSquareVenuePhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFourSquareVenuePhoto.h; sourceTree = "<group>"; };
-		430C9D2C1868D840002AEB0B /* RUFourSquareVenuePhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFourSquareVenuePhoto.m; sourceTree = "<group>"; };
-		430C9D2E1868D840002AEB0B /* RUFourSquareRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFourSquareRequest.h; sourceTree = "<group>"; };
-		430C9D2F1868D840002AEB0B /* RUFourSquareRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFourSquareRequest.m; sourceTree = "<group>"; };
-		430C9D301868D840002AEB0B /* RUFourSquareRequestProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFourSquareRequestProtocols.h; sourceTree = "<group>"; };
-		430C9D311868D840002AEB0B /* RUFourSquareVenueCategoriesRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFourSquareVenueCategoriesRequest.h; sourceTree = "<group>"; };
-		430C9D321868D840002AEB0B /* RUFourSquareVenueCategoriesRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFourSquareVenueCategoriesRequest.m; sourceTree = "<group>"; };
-		430C9D331868D840002AEB0B /* RUFourSquareVenuePhotosRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFourSquareVenuePhotosRequest.h; sourceTree = "<group>"; };
-		430C9D341868D840002AEB0B /* RUFourSquareVenuePhotosRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFourSquareVenuePhotosRequest.m; sourceTree = "<group>"; };
-		430C9D351868D840002AEB0B /* RUFourSquareVenueRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFourSquareVenueRequest.h; sourceTree = "<group>"; };
-		430C9D361868D840002AEB0B /* RUFourSquareVenueRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFourSquareVenueRequest.m; sourceTree = "<group>"; };
-		430C9D371868D840002AEB0B /* RUFourSquareVenueRequestUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFourSquareVenueRequestUtil.h; sourceTree = "<group>"; };
-		430C9D381868D840002AEB0B /* RUFourSquareVenueRequestUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFourSquareVenueRequestUtil.m; sourceTree = "<group>"; };
-		430C9D391868D840002AEB0B /* RUFourSquareVenueSearchRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFourSquareVenueSearchRequest.h; sourceTree = "<group>"; };
-		430C9D3A1868D840002AEB0B /* RUFourSquareVenueSearchRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFourSquareVenueSearchRequest.m; sourceTree = "<group>"; };
-		430C9D3C1868D840002AEB0B /* RUFourSquareResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFourSquareResponse.h; sourceTree = "<group>"; };
-		430C9D3D1868D840002AEB0B /* RUFourSquareResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFourSquareResponse.m; sourceTree = "<group>"; };
-		430C9D3E1868D840002AEB0B /* RUFourSquareVenueCategoriesResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFourSquareVenueCategoriesResponse.h; sourceTree = "<group>"; };
-		430C9D3F1868D840002AEB0B /* RUFourSquareVenueCategoriesResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFourSquareVenueCategoriesResponse.m; sourceTree = "<group>"; };
-		430C9D401868D840002AEB0B /* RUFourSquareVenuePhotosResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFourSquareVenuePhotosResponse.h; sourceTree = "<group>"; };
-		430C9D411868D840002AEB0B /* RUFourSquareVenuePhotosResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFourSquareVenuePhotosResponse.m; sourceTree = "<group>"; };
-		430C9D421868D840002AEB0B /* RUFourSquareVenueResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFourSquareVenueResponse.h; sourceTree = "<group>"; };
-		430C9D431868D840002AEB0B /* RUFourSquareVenueResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFourSquareVenueResponse.m; sourceTree = "<group>"; };
-		430C9D441868D840002AEB0B /* RUFourSquareVenueSearchResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUFourSquareVenueSearchResponse.h; sourceTree = "<group>"; };
-		430C9D451868D840002AEB0B /* RUFourSquareVenueSearchResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUFourSquareVenueSearchResponse.m; sourceTree = "<group>"; };
 		430C9D881868D840002AEB0B /* RUActionSheetManagement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUActionSheetManagement.h; sourceTree = "<group>"; };
 		430C9D8B1868D840002AEB0B /* RUKeyboardAdjustmentHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUKeyboardAdjustmentHelper.h; sourceTree = "<group>"; };
 		430C9D8C1868D840002AEB0B /* RUKeyboardAdjustmentHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUKeyboardAdjustmentHelper.m; sourceTree = "<group>"; };
@@ -452,7 +409,6 @@
 				430C9CE01868D840002AEB0B /* Category */,
 				430C9D0F1868D840002AEB0B /* Controller */,
 				430C9D1E1868D840002AEB0B /* Fullscreen */,
-				430C9D241868D840002AEB0B /* Library */,
 				430C9D871868D840002AEB0B /* Macros */,
 				430C9D891868D840002AEB0B /* Misc */,
 				430C9DB01868D840002AEB0B /* Resources */,
@@ -565,74 +521,6 @@
 				430C9D231868D840002AEB0B /* RUImageViewFullscreenRotatingView.m */,
 			);
 			path = Fullscreen;
-			sourceTree = "<group>";
-		};
-		430C9D241868D840002AEB0B /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D251868D840002AEB0B /* FourSquare */,
-			);
-			path = Library;
-			sourceTree = "<group>";
-		};
-		430C9D251868D840002AEB0B /* FourSquare */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D261868D840002AEB0B /* Model */,
-				430C9D2D1868D840002AEB0B /* Request */,
-				430C9D3B1868D840002AEB0B /* Response */,
-			);
-			path = FourSquare;
-			sourceTree = "<group>";
-		};
-		430C9D261868D840002AEB0B /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D271868D840002AEB0B /* NSDictionary+RUFourSquareVenueCategory.h */,
-				430C9D281868D840002AEB0B /* NSDictionary+RUFourSquareVenueCategory.m */,
-				430C9D291868D840002AEB0B /* RUFourSquareVenue.h */,
-				430C9D2A1868D840002AEB0B /* RUFourSquareVenue.m */,
-				430C9D2B1868D840002AEB0B /* RUFourSquareVenuePhoto.h */,
-				430C9D2C1868D840002AEB0B /* RUFourSquareVenuePhoto.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		430C9D2D1868D840002AEB0B /* Request */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D2E1868D840002AEB0B /* RUFourSquareRequest.h */,
-				430C9D2F1868D840002AEB0B /* RUFourSquareRequest.m */,
-				430C9D301868D840002AEB0B /* RUFourSquareRequestProtocols.h */,
-				430C9D311868D840002AEB0B /* RUFourSquareVenueCategoriesRequest.h */,
-				430C9D321868D840002AEB0B /* RUFourSquareVenueCategoriesRequest.m */,
-				430C9D331868D840002AEB0B /* RUFourSquareVenuePhotosRequest.h */,
-				430C9D341868D840002AEB0B /* RUFourSquareVenuePhotosRequest.m */,
-				430C9D351868D840002AEB0B /* RUFourSquareVenueRequest.h */,
-				430C9D361868D840002AEB0B /* RUFourSquareVenueRequest.m */,
-				430C9D371868D840002AEB0B /* RUFourSquareVenueRequestUtil.h */,
-				430C9D381868D840002AEB0B /* RUFourSquareVenueRequestUtil.m */,
-				430C9D391868D840002AEB0B /* RUFourSquareVenueSearchRequest.h */,
-				430C9D3A1868D840002AEB0B /* RUFourSquareVenueSearchRequest.m */,
-			);
-			path = Request;
-			sourceTree = "<group>";
-		};
-		430C9D3B1868D840002AEB0B /* Response */ = {
-			isa = PBXGroup;
-			children = (
-				430C9D3C1868D840002AEB0B /* RUFourSquareResponse.h */,
-				430C9D3D1868D840002AEB0B /* RUFourSquareResponse.m */,
-				430C9D3E1868D840002AEB0B /* RUFourSquareVenueCategoriesResponse.h */,
-				430C9D3F1868D840002AEB0B /* RUFourSquareVenueCategoriesResponse.m */,
-				430C9D401868D840002AEB0B /* RUFourSquareVenuePhotosResponse.h */,
-				430C9D411868D840002AEB0B /* RUFourSquareVenuePhotosResponse.m */,
-				430C9D421868D840002AEB0B /* RUFourSquareVenueResponse.h */,
-				430C9D431868D840002AEB0B /* RUFourSquareVenueResponse.m */,
-				430C9D441868D840002AEB0B /* RUFourSquareVenueSearchResponse.h */,
-				430C9D451868D840002AEB0B /* RUFourSquareVenueSearchResponse.m */,
-			);
-			path = Response;
 			sourceTree = "<group>";
 		};
 		430C9D871868D840002AEB0B /* Macros */ = {
@@ -1072,13 +960,9 @@
 				430C9E361868D840002AEB0B /* NSString+RUMutableURLRequest.m in Sources */,
 				430C9E8E1868D840002AEB0B /* NISnapshotRotation.m in Sources */,
 				430C9E861868D840002AEB0B /* NINavigationAppearance.m in Sources */,
-				430C9E4C1868D840002AEB0B /* NSDictionary+RUFourSquareVenueCategory.m in Sources */,
 				430C9E9C1868D840002AEB0B /* RUAsynchronousUIImageRequest.m in Sources */,
 				430C9E321868D840002AEB0B /* NSDictionary+RUFBUserResponseObject.m in Sources */,
-				430C9E551868D840002AEB0B /* RUFourSquareResponse.m in Sources */,
 				430C9E491868D840002AEB0B /* RUScrollToTopManager.m in Sources */,
-				430C9E4F1868D840002AEB0B /* RUFourSquareRequest.m in Sources */,
-				430C9E4D1868D840002AEB0B /* RUFourSquareVenue.m in Sources */,
 				430C9E4A1868D840002AEB0B /* RUFullscreenRotatingView.m in Sources */,
 				430C9E831868D840002AEB0B /* NIError.m in Sources */,
 				430C9E7D1868D840002AEB0B /* NIAttributedLabel.m in Sources */,
@@ -1092,7 +976,6 @@
 				430C9EA71868D840002AEB0B /* RUTextFieldCustomizablePlaceholder.m in Sources */,
 				430C9E931868D840002AEB0B /* RUCornerRoundingBorderedView.m in Sources */,
 				430C9E781868D840002AEB0B /* RUOrderedMutableDictionary.m in Sources */,
-				430C9E501868D840002AEB0B /* RUFourSquareVenueCategoriesRequest.m in Sources */,
 				430C9E3E1868D840002AEB0B /* UIImage+Resizing.m in Sources */,
 				430C9E9E1868D840002AEB0B /* UIImageView+RUAsynchronousImageFetching.m in Sources */,
 				430C9E8A1868D840002AEB0B /* NIOperations.m in Sources */,
@@ -1109,12 +992,9 @@
 				430C9E911868D840002AEB0B /* NSString+NimbusCore.m in Sources */,
 				430C9E811868D840002AEB0B /* NIDebuggingTools.m in Sources */,
 				430C9E801868D840002AEB0B /* NIDataStructures.m in Sources */,
-				430C9E591868D840002AEB0B /* RUFourSquareVenueSearchResponse.m in Sources */,
 				430C9E8F1868D840002AEB0B /* NIState.m in Sources */,
 				430C9E4B1868D840002AEB0B /* RUImageViewFullscreenRotatingView.m in Sources */,
-				430C9E511868D840002AEB0B /* RUFourSquareVenuePhotosRequest.m in Sources */,
 				430C9EA41868D840002AEB0B /* RURadioButtonView.m in Sources */,
-				430C9E561868D840002AEB0B /* RUFourSquareVenueCategoriesResponse.m in Sources */,
 				430C9E731868D840002AEB0B /* RUKeyboardAdjustmentHelper.m in Sources */,
 				430C9E431868D840002AEB0B /* UIView+RUMaskRoundCorners.m in Sources */,
 				430C9E3B1868D840002AEB0B /* UIColor+HexString.m in Sources */,
@@ -1129,31 +1009,25 @@
 				430C9EA01868D840002AEB0B /* RUScrollWithKeyboardAdjustmentView.m in Sources */,
 				430C9EA51868D840002AEB0B /* RUScrollView.m in Sources */,
 				430C9EA61868D840002AEB0B /* RUTableView.m in Sources */,
-				430C9E521868D840002AEB0B /* RUFourSquareVenueRequest.m in Sources */,
 				430C9E8D1868D840002AEB0B /* NISDKAvailability.m in Sources */,
-				430C9E531868D840002AEB0B /* RUFourSquareVenueRequestUtil.m in Sources */,
 				430C9E391868D840002AEB0B /* UIAlertView+RUShowUtil.m in Sources */,
 				430C9E9F1868D840002AEB0B /* UIImageView+RUFacebookAsynchronousImageFetching.m in Sources */,
 				430C9E401868D840002AEB0B /* UIImage+RUDebug.m in Sources */,
 				430C9E311868D840002AEB0B /* NSDate+Utility.m in Sources */,
 				430C9E451868D840002AEB0B /* RUAmazonController.m in Sources */,
-				430C9E541868D840002AEB0B /* RUFourSquareVenueSearchRequest.m in Sources */,
 				430C9E741868D840002AEB0B /* RUAddressBookUtil.m in Sources */,
 				430C9E7E1868D840002AEB0B /* NSMutableAttributedString+NimbusAttributedLabel.m in Sources */,
 				430C9E301868D840002AEB0B /* CALayer+Mask.m in Sources */,
 				430C9E341868D840002AEB0B /* NSNumber+RUUtil.m in Sources */,
 				430C9CC01868D80B002AEB0B /* RUAppDelegate.m in Sources */,
-				430C9E581868D840002AEB0B /* RUFourSquareVenueResponse.m in Sources */,
 				430C9E921868D840002AEB0B /* RUGradientButton.m in Sources */,
 				430C9E381868D840002AEB0B /* UIActionSheet+RUShowUtil.m in Sources */,
 				430C9E951868D840002AEB0B /* RUGradientView.m in Sources */,
 				430C9E3A1868D840002AEB0B /* UIButton+Utility.m in Sources */,
 				430C9E771868D840002AEB0B /* RUDeallocHook.m in Sources */,
 				430C9E351868D840002AEB0B /* NSString+MKCoordinateRegion.m in Sources */,
-				430C9E4E1868D840002AEB0B /* RUFourSquareVenuePhoto.m in Sources */,
 				430C9E421868D840002AEB0B /* UIView+RUEnableTapToResignFirstResponder.m in Sources */,
 				430C9E871868D840002AEB0B /* NINetworkActivity.m in Sources */,
-				430C9E571868D840002AEB0B /* RUFourSquareVenuePhotosResponse.m in Sources */,
 				430C9E9A1868D840002AEB0B /* RUHorizontalPagingView.m in Sources */,
 				430C9EA31868D840002AEB0B /* Navbar.m in Sources */,
 			);
