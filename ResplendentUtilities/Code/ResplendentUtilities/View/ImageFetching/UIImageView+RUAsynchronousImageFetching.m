@@ -9,8 +9,12 @@
 #import "UIImageView+RUAsynchronousImageFetching.h"
 #import "RUDeallocHook.h"
 #import "RUAsynchronousUIImageRequest.h"
-#import "RUConstants.h"
+#import "RUDLog.h"
 #import <objc/runtime.h>
+
+
+
+
 
 NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequest";
 NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequestDeallocHook = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyImageRequestDeallocHook";
@@ -22,6 +26,10 @@ NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyFadeIn
 NSString* const kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelegate = @"kUIImageViewRUAsynchronousImageFetchingAssociatedObjectKeyDelegate";
 
 UIActivityIndicatorViewStyle const kUIImageViewRUAsynchronousImageFetchingDefaultSpinnerStyle = UIActivityIndicatorViewStyleGray;
+
+
+
+
 
 @interface UIImageView (RUAsynchronousImageFetchingPrivate)
 
@@ -35,9 +43,11 @@ UIActivityIndicatorViewStyle const kUIImageViewRUAsynchronousImageFetchingDefaul
 
 -(void)ruCenterSpinner;
 
-//-(void)ruAsynchronousImageFetchingPrivateRemoveSpinner;
-
 @end
+
+
+
+
 
 @implementation UIImageView (RUAsynchronousImageFetching)
 

@@ -3,7 +3,7 @@
 //  Resplendent
 //
 //  Created by Benjamin Maer on 6/24/13.
-//  Copyright (c) 2013 Pineapple. All rights reserved.
+//  Copyright (c) 2013 Resplendent G.P.. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

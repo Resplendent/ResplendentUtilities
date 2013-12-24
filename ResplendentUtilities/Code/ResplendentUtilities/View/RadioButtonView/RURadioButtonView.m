@@ -3,12 +3,16 @@
 //  Resplendent
 //
 //  Created by Benjamin Maer on 7/23/13.
-//  Copyright (c) 2013 Pineapple. All rights reserved.
+//  Copyright (c) 2013 Resplendent G.P.. All rights reserved.
 //
 
 #import "RURadioButtonView.h"
 #import "RUCompatability.h"
-#import "RUConstants.h"
+#import "RUDLog.h"
+
+
+
+
 
 @interface RURadioButtonView ()
 
@@ -16,6 +20,10 @@
 @property (nonatomic, readonly) NSString* reasonUnableToDraw;
 
 @end
+
+
+
+
 
 @implementation RURadioButtonView
 

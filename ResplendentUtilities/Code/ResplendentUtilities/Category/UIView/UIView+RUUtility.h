@@ -1,6 +1,6 @@
 //
 //  UIView+Pineapple.h
-//  Crapple
+//  Resplendent
 //
 //  Created by Benjamin Maer on 5/6/12.
 //  Copyright (c) 2012 Resplendent G.P.. All rights reserved.

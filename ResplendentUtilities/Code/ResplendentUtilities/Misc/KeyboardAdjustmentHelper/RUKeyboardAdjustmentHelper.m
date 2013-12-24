@@ -1,9 +1,9 @@
 //
 //  RUKeyboardAdjustmentHelper.m
-//  LENS
+//  Resplendent
 //
 //  Created by Benjamin Maer on 10/6/13.
-//  Copyright (c) 2013 Novella. All rights reserved.
+//  Copyright (c) 2013 Resplendent G.P.. All rights reserved.
 //
 
 #import "RUKeyboardAdjustmentHelper.h"

@@ -1,15 +1,19 @@
 //
-//  NSManagedObject+Utility.m
-//  Memeni
+//  NSManagedObject+RUUtility.m
+//  Resplendent
 //
 //  Created by Benjamin Maer on 9/29/12.
-//
+//  Copyright (c) 2013 Resplendent G.P.. All rights reserved.
 //
 
-#import "NSManagedObject+Utility.h"
+#import "NSManagedObject+RUUtility.h"
 #include <objc/message.h>
 
-@implementation NSManagedObject (Utility)
+
+
+
+
+@implementation NSManagedObject (RUUtility)
 
 -(void)updateValue:(id)newValue propertyName:(NSString*)propertyName
 {

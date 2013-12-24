@@ -22,7 +22,7 @@
 		430C9E301868D840002AEB0B /* CALayer+RUMask.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CE21868D840002AEB0B /* CALayer+RUMask.m */; };
 		430C9E311868D840002AEB0B /* NSDate+RUUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CE41868D840002AEB0B /* NSDate+RUUtility.m */; };
 		430C9E321868D840002AEB0B /* NSDictionary+RUFBUserResponseObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CE61868D840002AEB0B /* NSDictionary+RUFBUserResponseObject.m */; };
-		430C9E331868D840002AEB0B /* NSManagedObject+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CE81868D840002AEB0B /* NSManagedObject+Utility.m */; };
+		430C9E331868D840002AEB0B /* NSManagedObject+RUUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CE81868D840002AEB0B /* NSManagedObject+RUUtility.m */; };
 		430C9E341868D840002AEB0B /* NSNumber+RUUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CEA1868D840002AEB0B /* NSNumber+RUUtil.m */; };
 		430C9E351868D840002AEB0B /* NSString+MKCoordinateRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CED1868D840002AEB0B /* NSString+MKCoordinateRegion.m */; };
 		430C9E361868D840002AEB0B /* NSString+RUMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CEF1868D840002AEB0B /* NSString+RUMutableURLRequest.m */; };
@@ -54,7 +54,6 @@
 		430C9E941868D840002AEB0B /* RUTriangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9DF01868D840002AEB0B /* RUTriangle.m */; };
 		430C9E951868D840002AEB0B /* RUGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9DF31868D840002AEB0B /* RUGradientView.m */; };
 		430C9E9A1868D840002AEB0B /* RUHorizontalPagingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9E021868D840002AEB0B /* RUHorizontalPagingView.m */; };
-		430C9E9B1868D840002AEB0B /* AsynchronousImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9E061868D840002AEB0B /* AsynchronousImageView.m */; };
 		430C9E9C1868D840002AEB0B /* RUAsynchronousUIImageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9E081868D840002AEB0B /* RUAsynchronousUIImageRequest.m */; };
 		430C9E9D1868D840002AEB0B /* UIButton+RUAsynchronousImageFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9E0D1868D840002AEB0B /* UIButton+RUAsynchronousImageFetching.m */; };
 		430C9E9E1868D840002AEB0B /* UIImageView+RUAsynchronousImageFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9E0F1868D840002AEB0B /* UIImageView+RUAsynchronousImageFetching.m */; };
@@ -102,8 +101,8 @@
 		430C9CE41868D840002AEB0B /* NSDate+RUUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+RUUtility.m"; sourceTree = "<group>"; };
 		430C9CE51868D840002AEB0B /* NSDictionary+RUFBUserResponseObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+RUFBUserResponseObject.h"; sourceTree = "<group>"; };
 		430C9CE61868D840002AEB0B /* NSDictionary+RUFBUserResponseObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+RUFBUserResponseObject.m"; sourceTree = "<group>"; };
-		430C9CE71868D840002AEB0B /* NSManagedObject+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Utility.h"; sourceTree = "<group>"; };
-		430C9CE81868D840002AEB0B /* NSManagedObject+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Utility.m"; sourceTree = "<group>"; };
+		430C9CE71868D840002AEB0B /* NSManagedObject+RUUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+RUUtility.h"; sourceTree = "<group>"; };
+		430C9CE81868D840002AEB0B /* NSManagedObject+RUUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+RUUtility.m"; sourceTree = "<group>"; };
 		430C9CE91868D840002AEB0B /* NSNumber+RUUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+RUUtil.h"; sourceTree = "<group>"; };
 		430C9CEA1868D840002AEB0B /* NSNumber+RUUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+RUUtil.m"; sourceTree = "<group>"; };
 		430C9CEC1868D840002AEB0B /* NSString+MKCoordinateRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MKCoordinateRegion.h"; sourceTree = "<group>"; };
@@ -184,8 +183,6 @@
 		430C9E011868D840002AEB0B /* RUHorizontalPagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUHorizontalPagingView.h; sourceTree = "<group>"; };
 		430C9E021868D840002AEB0B /* RUHorizontalPagingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUHorizontalPagingView.m; sourceTree = "<group>"; };
 		430C9E031868D840002AEB0B /* RUHorizontalPagingViewProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUHorizontalPagingViewProtocols.h; sourceTree = "<group>"; };
-		430C9E051868D840002AEB0B /* AsynchronousImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsynchronousImageView.h; sourceTree = "<group>"; };
-		430C9E061868D840002AEB0B /* AsynchronousImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsynchronousImageView.m; sourceTree = "<group>"; };
 		430C9E071868D840002AEB0B /* RUAsynchronousUIImageRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAsynchronousUIImageRequest.h; sourceTree = "<group>"; };
 		430C9E081868D840002AEB0B /* RUAsynchronousUIImageRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAsynchronousUIImageRequest.m; sourceTree = "<group>"; };
 		430C9E091868D840002AEB0B /* RUAsynchronousUIImageRequestProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAsynchronousUIImageRequestProtocols.h; sourceTree = "<group>"; };
@@ -342,8 +339,8 @@
 				430C9CE41868D840002AEB0B /* NSDate+RUUtility.m */,
 				430C9CE51868D840002AEB0B /* NSDictionary+RUFBUserResponseObject.h */,
 				430C9CE61868D840002AEB0B /* NSDictionary+RUFBUserResponseObject.m */,
-				430C9CE71868D840002AEB0B /* NSManagedObject+Utility.h */,
-				430C9CE81868D840002AEB0B /* NSManagedObject+Utility.m */,
+				430C9CE71868D840002AEB0B /* NSManagedObject+RUUtility.h */,
+				430C9CE81868D840002AEB0B /* NSManagedObject+RUUtility.m */,
 				430C9CE91868D840002AEB0B /* NSNumber+RUUtil.h */,
 				430C9CEA1868D840002AEB0B /* NSNumber+RUUtil.m */,
 				430C9CEB1868D840002AEB0B /* NSString */,
@@ -555,8 +552,6 @@
 		430C9E041868D840002AEB0B /* Image */ = {
 			isa = PBXGroup;
 			children = (
-				430C9E051868D840002AEB0B /* AsynchronousImageView.h */,
-				430C9E061868D840002AEB0B /* AsynchronousImageView.m */,
 				430C9E071868D840002AEB0B /* RUAsynchronousUIImageRequest.h */,
 				430C9E081868D840002AEB0B /* RUAsynchronousUIImageRequest.m */,
 				430C9E091868D840002AEB0B /* RUAsynchronousUIImageRequestProtocols.h */,
@@ -761,7 +756,6 @@
 				430C9E3C1868D840002AEB0B /* UIColor+Utility.m in Sources */,
 				430C9E441868D840002AEB0B /* UIView+RUUtility.m in Sources */,
 				430C9E3F1868D840002AEB0B /* UIImage+Rotation.m in Sources */,
-				430C9E9B1868D840002AEB0B /* AsynchronousImageView.m in Sources */,
 				430C9E4B1868D840002AEB0B /* RUImageViewFullscreenRotatingView.m in Sources */,
 				430C9EA41868D840002AEB0B /* RURadioButtonView.m in Sources */,
 				430C9E731868D840002AEB0B /* RUKeyboardAdjustmentHelper.m in Sources */,
@@ -769,7 +763,7 @@
 				430C9E3B1868D840002AEB0B /* UIColor+HexString.m in Sources */,
 				430C9E941868D840002AEB0B /* RUTriangle.m in Sources */,
 				430C9E761868D840002AEB0B /* RUCompatability.m in Sources */,
-				430C9E331868D840002AEB0B /* NSManagedObject+Utility.m in Sources */,
+				430C9E331868D840002AEB0B /* NSManagedObject+RUUtility.m in Sources */,
 				430C9E751868D840002AEB0B /* RUClassOrNilUtil.m in Sources */,
 				430C9EA01868D840002AEB0B /* RUScrollWithKeyboardAdjustmentView.m in Sources */,
 				430C9EA51868D840002AEB0B /* RUScrollView.m in Sources */,
