@@ -1,12 +1,16 @@
 //
-//  NSDate+Utility.m
-//  Albumatic
+//  NSDate+RUUtility.m
+//  Resplendent
 //
 //  Created by Benjamin Maer on 9/6/12.
 //  Copyright (c) 2012 Resplendent G.P.. All rights reserved.
 //
 
-#import "NSDate+Utility.h"
+#import "NSDate+RUUtility.h"
+
+
+
+
 
 typedef enum{
     kRUNSDateCalendarUnitSecond,
@@ -17,10 +21,18 @@ typedef enum{
     kRUNSDateCalendarUnitYear
 }kRUNSDateCalendarUnit;
 
-static NSCalendar *gregorian;
+
+
+
+
 
 NSInteger const gregorianComponents = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
 
+
+
+
+
+static NSCalendar *gregorian;
 NSCalendar* staticGregorianCalendar();
 NSDateComponents* timoAgoDateComponentsFromDate(NSDate* date);
 
@@ -33,7 +45,11 @@ NSInteger NSDateTimeAgoStringAmount(NSDate* date);
 kRUNSDateCalendarUnit NSDateTimeAgoMinCalendarUnitWithDateCompontents(NSDateComponents* comps);
 
 
-@implementation NSDate (Utility)
+
+
+
+
+@implementation NSDate (RUUtility)
 
 -(NSString*)timeAgoString
 {

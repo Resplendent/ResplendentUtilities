@@ -1,6 +1,6 @@
 //
 //  RUScrollWithKeyboardAdjustmentView.m
-//  Pineapple
+//  Resplendent
 //
 //  Created by Benjamin Maer on 12/21/13.
 //  Copyright (c) 2013 Pineapple. All rights reserved.

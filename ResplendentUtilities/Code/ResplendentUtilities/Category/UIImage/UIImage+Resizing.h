@@ -1,6 +1,6 @@
 //
 //  UIImage+Resizing.h
-//  Albumatic
+//  Resplendent
 //
 //  Created by Sheldon on 10/2/12.
 //

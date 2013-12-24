@@ -1,6 +1,6 @@
 //
 //  RUHorizontalPagingView.m
-//  Pineapple
+//  Resplendent
 //
 //  Created by Benjamin Maer on 8/26/13.
 //  Copyright (c) 2013 Pineapple. All rights reserved.

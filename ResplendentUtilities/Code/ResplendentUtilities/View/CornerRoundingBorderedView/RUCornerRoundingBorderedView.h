@@ -1,12 +1,16 @@
 //
 //  RUCornerRoundingBorderedView.h
-//  Albumatic
+//  Resplendent
 //
 //  Created by Benjamin Maer on 2/3/13.
 //  Copyright (c) 2013 Resplendent G.P. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+
+
+
+
 
 @interface RUCornerRoundingBorderedView : UIView
 {

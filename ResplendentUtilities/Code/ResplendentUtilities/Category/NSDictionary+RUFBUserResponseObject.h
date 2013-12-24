@@ -1,6 +1,6 @@
 //
 //  NSDictionary+RUFBUserResponseObject.h
-//  Pineapple
+//  Resplendent
 //
 //  Created by Benjamin Maer on 6/24/13.
 //  Copyright (c) 2013 Pineapple. All rights reserved.

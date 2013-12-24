@@ -1,6 +1,6 @@
 //
 //  RUAsynchronousImageFetchingProtocols.h
-//  Albumatic
+//  Resplendent
 //
 //  Created by Benjamin Maer on 6/14/13.
 //  Copyright (c) 2013 Albumatic Inc. All rights reserved.

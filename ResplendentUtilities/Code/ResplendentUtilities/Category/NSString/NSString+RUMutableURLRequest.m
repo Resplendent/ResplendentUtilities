@@ -1,6 +1,6 @@
 //
 //  NSString+RUMutableURLRequest.m
-//  Pineapple
+//  Resplendent
 //
 //  Created by Benjamin Maer on 11/15/13.
 //  Copyright (c) 2013 Pineapple. All rights reserved.

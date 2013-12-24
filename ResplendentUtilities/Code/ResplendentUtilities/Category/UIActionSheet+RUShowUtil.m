@@ -1,6 +1,6 @@
 //
 //  UIActionSheet+RUShowUtil.m
-//  Albumatic
+//  Resplendent
 //
 //  Created by Benjamin Maer on 5/3/13.
 //  Copyright (c) 2013 Resplendent G.P. All rights reserved.

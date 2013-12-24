@@ -1,15 +1,19 @@
 //
-//  CALayer+Mask.m
-//  Nickelodeon
+//  CALayer+RUMask.m
+//  Resplendent
 //
 //  Created by Benjamin Maer on 10/14/12.
 //  Copyright (c) 2012 Fi. All rights reserved.
 //
 
-#import "CALayer+Mask.h"
+#import "CALayer+RUMask.h"
 #import <QuartzCore/CAShapeLayer.h>
 
-@implementation CALayer (Mask)
+
+
+
+
+@implementation CALayer (RUMask)
 
 - (UIBezierPath*)applyMaskWithRoundedCorners:(UIRectCorner)corners radius:(CGFloat)radius
 {

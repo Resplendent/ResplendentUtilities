@@ -1,6 +1,6 @@
 //
 //  RUCornerRoundingBorderedView.m
-//  Albumatic
+//  Resplendent
 //
 //  Created by Benjamin Maer on 2/3/13.
 //  Copyright (c) 2013 Resplendent G.P. All rights reserved.
@@ -8,17 +8,30 @@
 
 #import "RUCornerRoundingBorderedView.h"
 #import "UIView+RUUtility.h"
-#import "CALayer+Mask.h"
-#import "RUConstants.h"
+#import "CALayer+RUMask.h"
+#import "RUDLog.h"
+
 #import <objc/runtime.h>
 
+
+
+
+
 NSString* const kRUCornerRoundingBorderedViewTextFieldObservingKey = @"kRUCornerRoundingBorderedViewTextFieldObservingKey";
+
+
+
+
 
 @interface RUCornerRoundingBorderedView ()
 
 -(void)updateBorderConsideringCorners;
 
 @end
+
+
+
+
 
 @implementation RUCornerRoundingBorderedView
 

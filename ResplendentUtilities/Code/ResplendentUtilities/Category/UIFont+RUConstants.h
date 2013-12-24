@@ -1,6 +1,6 @@
 //
 //  UIFont+RUConstants.h
-//  Pineapple
+//  Resplendent
 //
 //  Created by Benjamin Maer on 4/4/13.
 //  Copyright (c) 2013 Pineapple. All rights reserved.

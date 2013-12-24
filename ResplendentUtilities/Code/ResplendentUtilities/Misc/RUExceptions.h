@@ -1,6 +1,6 @@
 //
 //  RUExceptions.h
-//  Albumatic
+//  Resplendent
 //
 //  Created by Benjamin Maer on 4/3/13.
 //  Copyright (c) 2013 Resplendent G.P. All rights reserved.

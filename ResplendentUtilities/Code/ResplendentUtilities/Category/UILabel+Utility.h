@@ -1,6 +1,6 @@
 //
 //  UILabel+Utility.h
-//  Albumatic
+//  Resplendent
 //
 //  Created by Ben Maer on 9/26/12.
 //

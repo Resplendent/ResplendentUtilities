@@ -1,15 +1,23 @@
 //
 //  ScrollToTopManager.m
-//  Albumatic
+//  Resplendent
 //
 //  Created by Benjamin Maer on 1/14/13.
 //  Copyright (c) 2013 Resplendent G.P. All rights reserved.
 //
 
 #import "RUScrollToTopManager.h"
-#import "RUConstants.h"
+#import "RUDLog.h"
+
+
+
+
 
 #define kScrollToTopManagerEnableWhining 0
+
+
+
+
 
 @interface RUScrollToTopManager ()
 {

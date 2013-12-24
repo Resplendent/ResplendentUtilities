@@ -1,6 +1,6 @@
 //
 //  PAContentModalView.m
-//  Pineapple
+//  Resplendent
 //
 //  Created by Benjamin Maer on 7/29/13.
 //  Copyright (c) 2013 Pineapple. All rights reserved.
@@ -11,6 +11,7 @@
 #import "UIFont+RUConstants.h"
 #import "RUConstants.h"
 #import "RUGradientButton.h"
+#import "RUDLog.h"
 
 #import <QuartzCore/CALayer.h>
 

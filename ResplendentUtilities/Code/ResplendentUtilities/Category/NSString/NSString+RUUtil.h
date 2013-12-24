@@ -1,6 +1,6 @@
 //
 //  NSString+RUUtil.h
-//  Albumatic
+//  Resplendent
 //
 //  Created by Benjamin Maer on 5/9/13.
 //  Copyright (c) 2013 Resplendent G.P. All rights reserved.

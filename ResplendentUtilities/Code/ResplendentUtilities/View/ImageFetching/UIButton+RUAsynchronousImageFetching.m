@@ -1,13 +1,13 @@
 //
 //  UIButton+RUAsynchronousImageFetching.m
-//  Albumatic
+//  Resplendent
 //
 //  Created by Benjamin Maer on 4/23/13.
 //  Copyright (c) 2013 Resplendent G.P. All rights reserved.
 //
 
 #import "UIButton+RUAsynchronousImageFetching.h"
-#import "RUConstants.h"
+#import "RUDLog.h"
 #import "RUDeallocHook.h"
 #import "RUAsynchronousUIImageRequest.h"
 

@@ -1,6 +1,6 @@
 //
 //  UIView+RUMaskRoundCorners.h
-//  Pineapple
+//  Resplendent
 //
 //  Created by Benjamin Maer on 5/28/13.
 //  Copyright (c) 2013 Pineapple. All rights reserved.

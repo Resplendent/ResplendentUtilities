@@ -1,6 +1,6 @@
 //
 //  RUSingleton.h
-//  Everycam
+//  Resplendent
 //
 //  Created by Benjamin Maer on 12/9/12.
 //  Copyright (c) 2012 Resplendent G.P. All rights reserved.

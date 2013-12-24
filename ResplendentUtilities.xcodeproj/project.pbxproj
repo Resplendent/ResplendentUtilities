@@ -19,8 +19,8 @@
 		430C9CCB1868D80B002AEB0B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 430C9CB31868D80B002AEB0B /* UIKit.framework */; };
 		430C9CD31868D80B002AEB0B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 430C9CD11868D80B002AEB0B /* InfoPlist.strings */; };
 		430C9CD51868D80B002AEB0B /* ResplendentUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CD41868D80B002AEB0B /* ResplendentUtilitiesTests.m */; };
-		430C9E301868D840002AEB0B /* CALayer+Mask.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CE21868D840002AEB0B /* CALayer+Mask.m */; };
-		430C9E311868D840002AEB0B /* NSDate+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CE41868D840002AEB0B /* NSDate+Utility.m */; };
+		430C9E301868D840002AEB0B /* CALayer+RUMask.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CE21868D840002AEB0B /* CALayer+RUMask.m */; };
+		430C9E311868D840002AEB0B /* NSDate+RUUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CE41868D840002AEB0B /* NSDate+RUUtility.m */; };
 		430C9E321868D840002AEB0B /* NSDictionary+RUFBUserResponseObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CE61868D840002AEB0B /* NSDictionary+RUFBUserResponseObject.m */; };
 		430C9E331868D840002AEB0B /* NSManagedObject+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CE81868D840002AEB0B /* NSManagedObject+Utility.m */; };
 		430C9E341868D840002AEB0B /* NSNumber+RUUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 430C9CEA1868D840002AEB0B /* NSNumber+RUUtil.m */; };
@@ -96,10 +96,10 @@
 		430C9CD01868D80B002AEB0B /* ResplendentUtilitiesTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ResplendentUtilitiesTests-Info.plist"; sourceTree = "<group>"; };
 		430C9CD21868D80B002AEB0B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		430C9CD41868D80B002AEB0B /* ResplendentUtilitiesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResplendentUtilitiesTests.m; sourceTree = "<group>"; };
-		430C9CE11868D840002AEB0B /* CALayer+Mask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+Mask.h"; sourceTree = "<group>"; };
-		430C9CE21868D840002AEB0B /* CALayer+Mask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+Mask.m"; sourceTree = "<group>"; };
-		430C9CE31868D840002AEB0B /* NSDate+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Utility.h"; sourceTree = "<group>"; };
-		430C9CE41868D840002AEB0B /* NSDate+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Utility.m"; sourceTree = "<group>"; };
+		430C9CE11868D840002AEB0B /* CALayer+RUMask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+RUMask.h"; sourceTree = "<group>"; };
+		430C9CE21868D840002AEB0B /* CALayer+RUMask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+RUMask.m"; sourceTree = "<group>"; };
+		430C9CE31868D840002AEB0B /* NSDate+RUUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+RUUtility.h"; sourceTree = "<group>"; };
+		430C9CE41868D840002AEB0B /* NSDate+RUUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+RUUtility.m"; sourceTree = "<group>"; };
 		430C9CE51868D840002AEB0B /* NSDictionary+RUFBUserResponseObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+RUFBUserResponseObject.h"; sourceTree = "<group>"; };
 		430C9CE61868D840002AEB0B /* NSDictionary+RUFBUserResponseObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+RUFBUserResponseObject.m"; sourceTree = "<group>"; };
 		430C9CE71868D840002AEB0B /* NSManagedObject+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Utility.h"; sourceTree = "<group>"; };
@@ -336,10 +336,10 @@
 		430C9CE01868D840002AEB0B /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				430C9CE11868D840002AEB0B /* CALayer+Mask.h */,
-				430C9CE21868D840002AEB0B /* CALayer+Mask.m */,
-				430C9CE31868D840002AEB0B /* NSDate+Utility.h */,
-				430C9CE41868D840002AEB0B /* NSDate+Utility.m */,
+				430C9CE11868D840002AEB0B /* CALayer+RUMask.h */,
+				430C9CE21868D840002AEB0B /* CALayer+RUMask.m */,
+				430C9CE31868D840002AEB0B /* NSDate+RUUtility.h */,
+				430C9CE41868D840002AEB0B /* NSDate+RUUtility.m */,
 				430C9CE51868D840002AEB0B /* NSDictionary+RUFBUserResponseObject.h */,
 				430C9CE61868D840002AEB0B /* NSDictionary+RUFBUserResponseObject.m */,
 				430C9CE71868D840002AEB0B /* NSManagedObject+Utility.h */,
@@ -777,9 +777,9 @@
 				430C9E391868D840002AEB0B /* UIAlertView+RUShowUtil.m in Sources */,
 				430C9E9F1868D840002AEB0B /* UIImageView+RUFacebookAsynchronousImageFetching.m in Sources */,
 				430C9E401868D840002AEB0B /* UIImage+RUDebug.m in Sources */,
-				430C9E311868D840002AEB0B /* NSDate+Utility.m in Sources */,
+				430C9E311868D840002AEB0B /* NSDate+RUUtility.m in Sources */,
 				430C9E741868D840002AEB0B /* RUAddressBookUtil.m in Sources */,
-				430C9E301868D840002AEB0B /* CALayer+Mask.m in Sources */,
+				430C9E301868D840002AEB0B /* CALayer+RUMask.m in Sources */,
 				430C9E341868D840002AEB0B /* NSNumber+RUUtil.m in Sources */,
 				430C9CC01868D80B002AEB0B /* RUAppDelegate.m in Sources */,
 				430C9E921868D840002AEB0B /* RUGradientButton.m in Sources */,

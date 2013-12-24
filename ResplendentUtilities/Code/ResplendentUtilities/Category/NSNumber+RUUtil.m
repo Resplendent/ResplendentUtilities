@@ -1,6 +1,6 @@
 //
 //  NSNumber+RUUtil.m
-//  Pineapple
+//  Resplendent
 //
 //  Created by Benjamin Maer on 7/29/13.
 //  Copyright (c) 2013 Pineapple. All rights reserved.
