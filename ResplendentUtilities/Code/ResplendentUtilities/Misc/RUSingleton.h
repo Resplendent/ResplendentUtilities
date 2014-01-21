@@ -12,17 +12,13 @@
 
 #define RU_SYNTHESIZE_SINGLETON_FOR_CLASS_WITH_ACCESSOR(classname, accessorMethodName) \
 \
-static classname *accessorMethodName##Instance = nil; \
-\
 + (classname *)accessorMethodName \
 { \
-    @synchronized(self) \
-    { \
-        if (accessorMethodName##Instance == nil) \
-        { \
-            accessorMethodName##Instance = [self new]; \
-        } \
-    } \
+    static classname* __accessorMethodName##Instance = nil; \
+    static dispatch_once_t __accessorMethodName##InstanceOnceToken; \
+    dispatch_once(&__accessorMethodName##InstanceOnceToken, ^{ \
+        __accessorMethodName##Instance = [self new]; \
+    }); \
     \
-    return accessorMethodName##Instance; \
+    return __accessorMethodName##Instance; \
 }
