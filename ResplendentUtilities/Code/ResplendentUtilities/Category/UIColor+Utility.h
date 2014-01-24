@@ -8,7 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+
+
+
+
 #define ColorRGBA(r, g, b, a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
+#define ColorWA(w, a) [UIColor colorWithWhite:w/255.0 alpha:a]
+
+
+
+
 
 @interface UIColor (Utility)
 
