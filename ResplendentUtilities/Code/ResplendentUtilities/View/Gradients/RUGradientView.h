@@ -8,14 +8,26 @@
 
 #import <UIKit/UIKit.h>
 
+
+
+
+
+typedef NS_ENUM(NSUInteger, RUGradientViewDirection) {
+    RUGradientViewDirectionVertical,
+    RUGradientViewDirectionHorizontal
+};
+
+
+
+
+
 @interface RUGradientView : UIView
-//{
-//    CGGradientRef _gradientRef;
-//}
 
-@property (nonatomic,strong) UIColor* topGradientColor;
-@property (nonatomic,strong) UIColor* bottomGradientColor;
+@property (nonatomic, assign) RUGradientViewDirection gradientDirection;
 
-+(instancetype)gradientViewWithTopColor:(UIColor*)topColor bottomColor:(UIColor*)bottomColor;
+@property (nonatomic,strong) UIColor* startGradientColor;
+@property (nonatomic,strong) UIColor* endGradientColor;
+
+-(id)initWithStartGradientColor:(UIColor*)startGradientColor endGradientColor:(UIColor*)endGradientColor;
 
 @end
