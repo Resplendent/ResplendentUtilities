@@ -10,13 +10,35 @@
 #import "RUClassOrNilUtil.h"
 #import "RUConstants.h"
 
+
+
+
+
+static NSArray* __categoryIconUrlSizes;
+
+
+
+
+
 @interface RUFourSquareVenue ()
 
 +(NSString*)cityStateCountryAddressChunkWithAddressDict:(NSDictionary*)addressDict;
 
 @end
 
+
+
+
+
 @implementation RUFourSquareVenue
+
++(void)initialize
+{
+    if (self == [RUFourSquareVenue class])
+    {
+        __categoryIconUrlSizes = @[@(32),@(44),@(64),@(88)];
+    }
+}
 
 -(id) initWithFourSquareJSONDict:(NSDictionary*) dict
 {
@@ -96,24 +118,22 @@
     return [_infoDict objectForKey:@"name"];
 }
 
-+(NSString*)categoryIconUrlFromCategoryInfoDict:(NSDictionary*)categoryInfoDict widthClosestTo:(NSInteger)width doubleForRetina:(BOOL)doubleForRetina
++(NSString*)categoryIconUrlFromCategoryInfoDict:(NSDictionary*)categoryInfoDict widthClosestTo:(NSInteger)width
 {
     NSDictionary* urlDict = [categoryInfoDict objectForKey:@"icon"];
     
     NSNumber* targetedDimension = @(width);
-    
-    NSArray* imageSizeArray = [urlDict objectForKey:@"sizes"];
+
+    NSArray* imageSizeArray = kRUClassOrNil([urlDict objectForKey:@"sizes"], NSArray);
+
+    if (!imageSizeArray)
+    {
+        imageSizeArray = __categoryIconUrlSizes;
+    }
+
     if (imageSizeArray)
     {
         targetedDimension = ([imageSizeArray containsObject:targetedDimension] ? targetedDimension : [imageSizeArray lastObject]);
-    }
-    
-    if (targetedDimension)
-    {
-        if (doubleForRetina && [[UIScreen mainScreen] respondsToSelector:@selector(scale)])
-        {
-            targetedDimension = @(targetedDimension.integerValue * [UIScreen mainScreen].scale);
-        }
     }
     
     NSString* prefix = [urlDict objectForKey:@"prefix"];
@@ -132,9 +152,9 @@
     return [NSString stringWithFormat:@"%@%@%@",prefix,targetedDimension,suffix];
 }
 
--(NSString*)categoryIconUrlWithWidthClosestTo:(NSInteger)width doubleForRetina:(BOOL)doubleForRetina
+-(NSString*)categoryIconUrlWithWidthClosestTo:(NSInteger)width
 {
-    return [RUFourSquareVenue categoryIconUrlFromCategoryInfoDict:self.categoryInfo widthClosestTo:width doubleForRetina:doubleForRetina];
+    return [RUFourSquareVenue categoryIconUrlFromCategoryInfoDict:self.categoryInfo widthClosestTo:width];
 }
 
 -(NSString*)fullAddress

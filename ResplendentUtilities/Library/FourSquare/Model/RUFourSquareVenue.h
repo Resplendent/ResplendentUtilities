@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+
+
+
+
 @interface RUFourSquareVenue : NSObject
 {
     NSDictionary* _infoDict;
@@ -41,22 +45,30 @@
 //-(NSString*) getCategoryIconURL;
 //-(NSString*) generateShortAddress;
 
--(NSString*)categoryIconUrlWithWidthClosestTo:(NSInteger)width doubleForRetina:(BOOL)doubleForRetina;
+-(NSString*)categoryIconUrlWithWidthClosestTo:(NSInteger)width;
 
 //Returns an array of FourSquareVenues generated from the response dictionary
 +(instancetype)fourSquareVenueFromResponse:(NSDictionary*) response;
 +(NSMutableArray*)fourSquareVenueArrayFromSearchJsonResponse:(NSDictionary*) response;
 
-+(NSString*)categoryIconUrlFromCategoryInfoDict:(NSDictionary*)categoryInfoDict widthClosestTo:(NSInteger)width doubleForRetina:(BOOL)doubleForRetina;
++(NSString*)categoryIconUrlFromCategoryInfoDict:(NSDictionary*)categoryInfoDict widthClosestTo:(NSInteger)width;
 +(NSString*)fullAddressWithAddressDict:(NSDictionary*)addressDict;
 
 @end
+
+
+
+
 
 @interface NSDictionary (RUFourSquareVenueCategoryInfo)
 
 @property (nonatomic, readonly) NSString* RUFourSquareVenueCategoryInfoPluralName;
 
 @end
+
+
+
+
 
 @interface NSDictionary (RUFourSquareVenueLocationInfo)
 
