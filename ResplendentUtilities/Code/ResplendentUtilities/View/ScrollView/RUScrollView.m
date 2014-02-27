@@ -1,0 +1,39 @@
+//
+//  RUScrollView.m
+//  Resplendent
+//
+//  Created by Benjamin Maer on 4/6/13.
+//  Copyright (c) 2013 Resplendent G.P.. All rights reserved.
+//
+
+#import "RUScrollView.h"
+
+@implementation RUScrollView
+
+-(void)scrollRectToVisible:(CGRect)rect animated:(BOOL)animated
+{
+    if (!self.disableAutoScrollToSubview)
+    {
+        [super scrollRectToVisible:rect animated:animated];
+    }
+}
+
+-(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+{
+    if (self.enableTouchesOutsideOfSubviews)
+    {
+        for (UIView* subview in self.subviews)
+        {
+            if (CGRectContainsPoint(subview.frame, point))
+                return YES;
+        }
+
+        return NO;
+    }
+    else
+    {
+        return [super pointInside:point withEvent:event];
+    }
+}
+
+@end
