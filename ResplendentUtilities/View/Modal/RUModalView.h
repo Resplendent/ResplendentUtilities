@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+
+
+
+
 @interface RUModalView : UIView
 
 @property (nonatomic, readonly) UITapGestureRecognizer* tapGestureRecognizer;
