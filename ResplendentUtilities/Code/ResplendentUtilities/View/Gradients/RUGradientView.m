@@ -8,6 +8,7 @@
 
 #import "RUGradientView.h"
 #import "UIView+CoreGraphics.h"
+#import "RUConstants.h"
 
 
 
@@ -56,7 +57,13 @@
 
         case RUGradientViewDirectionHorizontal:
             return (CGPoint){0,CGRectGetHeight(self.bounds) / 2.0f};
+
+        default:
+            NSAssert(false, RUStringWithFormat(@"Unhandled gradientDirection %lu",(unsigned long)self.gradientDirection));
+            break;
     }
+
+    return CGPointZero;
 }
 
 -(CGPoint)gradientEndPoint
@@ -68,7 +75,13 @@
             
         case RUGradientViewDirectionHorizontal:
             return (CGPoint){CGRectGetWidth(self.bounds),CGRectGetHeight(self.bounds) / 2.0f};
+
+        default:
+            NSAssert(false, RUStringWithFormat(@"Unhandled gradientDirection %lu",(unsigned long)self.gradientDirection));
+            break;
     }
+
+    return CGPointZero;
 }
 
 #pragma mark - Setter methods
