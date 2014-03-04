@@ -13,8 +13,15 @@
 
 
 
+@class RUColorPickerView;
+
+
+
+
+
 @protocol RUColorPickerViewDelegate <NSObject>
 
--(RUColorPickerCellState)colorPickerCellStateForIndexPath:(NSIndexPath*)indexPath;
+-(RUColorPickerCellState)colorPickerView:(RUColorPickerView*)colorPickerView cellStateForIndexPath:(NSIndexPath*)indexPath;
+-(void)colorPickerView:(RUColorPickerView*)colorPickerView didSelectColorAtIndexPath:(NSIndexPath*)indexPath;;
 
 @end

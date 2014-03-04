@@ -16,12 +16,19 @@
 @interface RUColorPickerView : UIView <UICollectionViewDataSource,UICollectionViewDelegate>
 {
     UICollectionViewFlowLayout* _layout;
-    UICollectionView* _collectionView;
+//    UICollectionView* _collectionView;
 }
 
 @property (nonatomic, assign) NSUInteger numberOfRows;
 @property (nonatomic, strong) NSArray* colors;
 
+@property (nonatomic, readonly) UICollectionView* collectionView;
+
 @property (nonatomic, assign) id<RUColorPickerViewDelegate> delegate;
+
+@property (nonatomic, strong) UIColor* cellSelectedBorderColor;
+@property (nonatomic, strong) UIColor* cellDisabledBorderColor;
+
+-(UIColor*)colorForIndexPath:(NSIndexPath*)indexPath;
 
 @end

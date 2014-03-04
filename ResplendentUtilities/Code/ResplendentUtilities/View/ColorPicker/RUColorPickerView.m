@@ -21,8 +21,6 @@ NSString* const kRUColorPickerViewCollectionViewReuseIdentifierRUColorPickerCell
 
 @interface RUColorPickerView ()
 
--(UIColor*)colorForIndexPath:(NSIndexPath*)indexPath;
-
 -(CGFloat)itemWidthForHeight:(CGFloat)height;
 
 -(RUColorPickerCellState)colorPickerCellStateForIndexPath:(NSIndexPath*)indexPath;
@@ -41,7 +39,7 @@ NSString* const kRUColorPickerViewCollectionViewReuseIdentifierRUColorPickerCell
         _layout = [UICollectionViewFlowLayout new];
         [_layout setMinimumInteritemSpacing:0];
         [_layout setMinimumLineSpacing:0];
-        [_layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+        [_layout setScrollDirection:UICollectionViewScrollDirectionVertical];
 
         _collectionView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:_layout];
         [_collectionView setDataSource:self];
@@ -57,23 +55,42 @@ NSString* const kRUColorPickerViewCollectionViewReuseIdentifierRUColorPickerCell
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
     CGFloat itemWidth = [self itemWidthForHeight:CGRectGetHeight(self.bounds)];
     [_layout setItemSize:(CGSize){itemWidth,itemWidth}];
-    
+
     [_collectionView setFrame:self.bounds];
 }
 
 -(CGSize)sizeThatFits:(CGSize)size
 {
-    CGFloat itemWidth = [self itemWidthForHeight:size.height];
-    return (CGSize){MIN(size.width, itemWidth * ceil((CGFloat)self.colors.count / (CGFloat)self.numberOfRows)),size.height};
+    CGFloat numberOfRows = self.numberOfRows;
+
+    if (numberOfRows)
+    {
+        CGFloat itemWidth = [self itemWidthForHeight:size.height];
+        return (CGSize){MIN(size.width, itemWidth * ceil((CGFloat)self.colors.count / (CGFloat)numberOfRows)),size.height};
+    }
+    else
+    {
+        RUDLog(@"Should set a number of rows");
+        return CGSizeZero;
+    }
 }
 
 #pragma mark - Frames
 -(CGFloat)itemWidthForHeight:(CGFloat)height
 {
-    return height / (CGFloat)self.numberOfRows;
+    CGFloat numberOfRows = self.numberOfRows;
+    if (numberOfRows)
+    {
+        return height / (CGFloat)numberOfRows;
+    }
+    else
+    {
+        RUDLog(@"Should set a number of rows");
+        return 0;
+    }
 }
 
 #pragma mark - UICollectionViewDataSource,UICollectionViewDelegate
@@ -85,12 +102,31 @@ NSString* const kRUColorPickerViewCollectionViewReuseIdentifierRUColorPickerCell
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     RUColorPickerCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:kRUColorPickerViewCollectionViewReuseIdentifierRUColorPickerCell forIndexPath:indexPath];
-    
+
+    [cell setSelectedBorderColor:self.cellSelectedBorderColor];
+    [cell setDisabledBorderColor:self.cellDisabledBorderColor];
+
     [cell setBackgroundColor:[self colorForIndexPath:indexPath]];
-    
+
     [cell setState:[self colorPickerCellStateForIndexPath:indexPath]];
-    
+
     return cell;
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.delegate colorPickerView:self didSelectColorAtIndexPath:indexPath];
+}
+
+#pragma mark - Setters
+-(void)setColors:(NSArray *)colors
+{
+    if (self.colors == colors)
+        return;
+
+    _colors = colors;
+
+    [_collectionView reloadData];
 }
 
 #pragma mark - Getters
@@ -103,7 +139,7 @@ NSString* const kRUColorPickerViewCollectionViewReuseIdentifierRUColorPickerCell
 {
     if (self.delegate)
     {
-        return [self.delegate colorPickerCellStateForIndexPath:indexPath];
+        return [self.delegate colorPickerView:self cellStateForIndexPath:indexPath];
     }
     else
     {
