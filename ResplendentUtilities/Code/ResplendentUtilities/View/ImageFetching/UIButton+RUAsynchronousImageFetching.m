@@ -129,7 +129,7 @@ typedef enum{
 #pragma mark - Getter methods
 -(RUAsynchronousImageFetchingImageDestination)ruAsynchronousImageFetchingPrivateDestination
 {
-    return self.ruAsynchronousImageFetchingPrivateDestinationNumber.integerValue;
+    return (RUAsynchronousImageFetchingImageDestination)self.ruAsynchronousImageFetchingPrivateDestinationNumber.integerValue;
 }
 
 -(UIControlState)ruAsynchronousImageFetchingPrivateState
