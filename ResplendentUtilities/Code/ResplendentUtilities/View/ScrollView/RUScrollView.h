@@ -8,10 +8,25 @@
 
 #import <UIKit/UIKit.h>
 
+
+
+
+
+typedef NS_ENUM(NSUInteger, RUScrollViewTouchesInsideState) {
+	RUScrollViewTouchesInsideStateDefault,
+	RUScrollViewTouchesInsideStateIncludeSubviews,
+	RUScrollViewTouchesInsideStateOnlySubviews
+};
+
+
+
+
+
 @interface RUScrollView : UIScrollView
 
 @property (assign) BOOL disableAutoScrollToSubview;
 
-@property (assign) BOOL enableTouchesOutsideOfSubviews;
+@property (nonatomic, assign) RUScrollViewTouchesInsideState touchesInsideState;
+//@property (assign) BOOL enableTouchesOutsideOfSubviews;
 
 @end
