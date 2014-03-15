@@ -34,4 +34,6 @@
 @property (nonatomic, assign) CGPoint contentOffset;
 -(void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;
 
+@property (nonatomic, assign) BOOL enableTapToScroll;
+
 @end

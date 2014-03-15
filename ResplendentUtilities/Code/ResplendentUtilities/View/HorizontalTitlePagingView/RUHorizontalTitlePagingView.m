@@ -68,11 +68,7 @@ typedef NS_ENUM(NSUInteger, RUHorizontalTitlePagingViewRoundingDirection) {
 		[self.swipeScrollView setShowsHorizontalScrollIndicator:NO];
 		[self.swipeScrollView setBounces:NO];
 		[self addSubview:self.swipeScrollView];
-		
-		_swipeScrollViewTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapSwipeScrollView:)];
-		[self.swipeScrollViewTap requireGestureRecognizerToFail:self.swipeScrollView.panGestureRecognizer];
-		[self.swipeScrollView addGestureRecognizer:self.swipeScrollViewTap];
-		
+
 		_collectionViewLayout = [UICollectionViewFlowLayout new];
 		[_collectionViewLayout setMinimumInteritemSpacing:0];
 		[_collectionViewLayout setMinimumLineSpacing:0.0f];
@@ -225,11 +221,6 @@ typedef NS_ENUM(NSUInteger, RUHorizontalTitlePagingViewRoundingDirection) {
 	return cell;
 }
 
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-	RUDLog(@"indexPath: %@",indexPath);
-}
-
 #pragma mark - UIScrollViewDelegate
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -329,6 +320,36 @@ typedef NS_ENUM(NSUInteger, RUHorizontalTitlePagingViewRoundingDirection) {
 	NSUInteger page = [self pageForContentOffset:contentOffset contentInsetLeft:CGRectGetMinX(self.swipeScrollView.frame) withRoundingDirection:RUHorizontalTitlePagingViewRoundingDirectionEven];
 	
 	[self setCurrentPage:page animated:YES];
+}
+
+#pragma mark - enableTapToScroll
+-(BOOL)enableTapToScroll
+{
+	return (self.swipeScrollViewTap != nil);
+}
+
+-(void)setEnableTapToScroll:(BOOL)enableTapToScroll
+{
+	if (self.enableTapToScroll == enableTapToScroll)
+		return;
+
+	if (enableTapToScroll)
+	{
+		if (!self.swipeScrollViewTap)
+		{
+			self.swipeScrollViewTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapSwipeScrollView:)];
+			[self.swipeScrollViewTap requireGestureRecognizerToFail:self.swipeScrollView.panGestureRecognizer];
+			[self.swipeScrollView addGestureRecognizer:self.swipeScrollViewTap];
+		}
+	}
+	else
+	{
+		if (self.swipeScrollViewTap)
+		{
+			[self.swipeScrollView removeGestureRecognizer:self.swipeScrollViewTap];
+			self.swipeScrollViewTap = nil;
+		}
+	}
 }
 
 @end
