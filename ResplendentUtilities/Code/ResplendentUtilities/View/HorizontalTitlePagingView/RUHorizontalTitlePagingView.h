@@ -20,6 +20,7 @@
 
 @property (nonatomic, strong) NSArray* titles;
 
+@property (nonatomic, assign) UIEdgeInsets mainItemInsets;
 @property (nonatomic, readonly) CGSize itemSize;
 
 @property (nonatomic, readonly) CGRect swipeScrollViewFrame;

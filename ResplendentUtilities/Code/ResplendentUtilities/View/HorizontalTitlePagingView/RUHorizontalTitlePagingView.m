@@ -30,20 +30,16 @@ typedef NS_ENUM(NSUInteger, RUHorizontalTitlePagingViewRoundingDirection) {
 @property (nonatomic, strong) UIScrollView* swipeScrollView;
 @property (nonatomic, strong) UITapGestureRecognizer* swipeScrollViewTap;
 @property (nonatomic, assign) NSUInteger ignoreSwipeScrollViewUpdateCounter;
-//@property (nonatomic, strong) UIView* swipeScrollTouchView;
 @property (nonatomic, assign) BOOL scrollViewContentOffsetIsAnimating;
 
 @property (nonatomic, strong) UICollectionViewFlowLayout* collectionViewLayout;
 @property (nonatomic, strong) UICollectionView* collectionView;
 
 @property (nonatomic, readonly) CGRect collectionViewFrame;
-//@property (nonatomic, readonly) CGRect swipeScrollTouchViewFrame;
 
 @property (nonatomic, readonly) CGPoint collectionViewContentOffsetFromSwipeScrollViewContentOffset;
 
-//-(NSUInteger)pageForScrollView:(UIScrollView*)scrollView withRoundingDirection:(RUHorizontalTitlePagingViewRoundingDirection)roundingDirection;
 -(NSUInteger)pageForContentOffset:(CGPoint)contentOffset contentInsetLeft:(CGFloat)contentInsetLeft withRoundingDirection:(RUHorizontalTitlePagingViewRoundingDirection)roundingDirection;
-//-(RUHorizontalTitlePagingViewRoundingDirection)roundingDirectionForVelocity:(CGPoint)velocity;
 
 -(CGPoint)contentOffsetForPage:(NSUInteger)page;
 
@@ -131,8 +127,7 @@ typedef NS_ENUM(NSUInteger, RUHorizontalTitlePagingViewRoundingDirection) {
 
 -(CGSize)itemSize
 {
-	CGFloat width = ceil(CGRectGetWidth(self.bounds) / 3.0f);
-	return (CGSize){.width = width, .height = CGRectGetHeight(self.bounds)};
+	return UIEdgeInsetsInsetRect(self.bounds, self.mainItemInsets).size;
 }
 
 -(CGRect)collectionViewFrame
