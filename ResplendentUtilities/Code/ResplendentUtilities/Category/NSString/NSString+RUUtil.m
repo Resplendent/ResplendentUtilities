@@ -13,7 +13,7 @@
 
 +(NSString*)ruProperlyPluralizedStringWithValue:(NSInteger)value singularWord:(NSString*)singularWord possibleSuffix:(NSString*)possibleSuffix
 {
-    return RUStringWithFormat(@"%i %@",value,[self ruProperlyPluralizedWordWithValue:value singularWord:singularWord possibleSuffix:possibleSuffix]);
+    return RUStringWithFormat(@"%li %@",(long)value,[self ruProperlyPluralizedWordWithValue:value singularWord:singularWord possibleSuffix:possibleSuffix]);
 }
 
 +(NSString*)ruProperlyPluralizedWordWithValue:(NSInteger)value singularWord:(NSString*)singularWord possibleSuffix:(NSString*)possibleSuffix
