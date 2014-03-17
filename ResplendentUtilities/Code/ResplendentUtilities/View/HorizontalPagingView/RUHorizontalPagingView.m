@@ -244,7 +244,7 @@
 
 -(UIView *)visibleCellAtPage:(NSInteger)page
 {
-    return [_visibleCells objectForKey:RUStringWithFormat(@"%i",page)];
+    return [_visibleCells objectForKey:RUStringWithFormat(@"%li",(long)page)];
 }
 
 
@@ -516,7 +516,7 @@
         if (cell)
         {
             [_scrollView addSubview:cell];
-            [_visibleCells setObject:cell forKey:RUStringWithFormat(@"%i",page)];
+            [_visibleCells setObject:cell forKey:RUStringWithFormat(@"%li",(long)page)];
             [self.cellDelegate horizontalPagingView:self willDisplayCell:cell atPage:page];
             return YES;
         }
