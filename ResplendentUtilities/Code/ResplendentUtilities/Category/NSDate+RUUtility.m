@@ -54,7 +54,7 @@ kRUNSDateCalendarUnit NSDateTimeAgoMinCalendarUnitWithDateCompontents(NSDateComp
 -(NSString*)timeAgoString
 {
     NSDateComponents *comps = timoAgoDateComponentsFromDate(self);
-    return [NSString stringWithFormat:@"%i%@",NSDateTimeAgoStringAmountWithDateCompontents(comps),NSDateTimeAgoStringSuffixWithDateCompontents(comps)];
+    return [NSString stringWithFormat:@"%li%@",(long)NSDateTimeAgoStringAmountWithDateCompontents(comps),NSDateTimeAgoStringSuffixWithDateCompontents(comps)];
 }
 
 -(NSTimeInterval)minTimeAgoUnitSeconds
