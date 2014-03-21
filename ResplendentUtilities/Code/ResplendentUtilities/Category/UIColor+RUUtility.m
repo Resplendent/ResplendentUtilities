@@ -1,14 +1,14 @@
 //
-//  UIColor+Utility.m
+//  UIColor+RUUtility.m
 //  Resplendent
 //
 //  Created by Benjamin Maer on 8/25/12.
 //  Copyright (c) 2012 Resplendent G.P.. All rights reserved.
 //
 
-#import "UIColor+Utility.h"
+#import "UIColor+RUUtility.h"
 
-@implementation UIColor (Utility)
+@implementation UIColor (RUUtility)
 
 +(UIColor*)colorWithFloat:(CGFloat)colorFloat alpha:(CGFloat)alpha
 {

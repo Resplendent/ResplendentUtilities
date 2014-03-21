@@ -7,7 +7,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import <Foundation/Foundation.h>
+
+
+
 
 //Attributes
 #define kRUCompatibleAttributeName(attName6,attName5,attName5BridgeClass) (&attName6 ? attName6 : (__bridge attName5BridgeClass)attName5)
@@ -24,13 +26,21 @@
 #define kRUCompatibleBackgroundColorAttributeName kRUCompatibleAttributeName(NSBackgroundColorAttributeName,kCTStrokeColorAttributeName,id)
 #define kRUCompatibleBackgroundColorAttributeDictPairWithColor(color) kRUCompatibleBackgroundColorAttributeName: kRUCompatibleColor(color)
 
-@interface NSAttributedString (RUCompatability)
+
+
+
+
+@interface NSAttributedString (RUStringCompatability)
 
 -(CGSize)ruSizeWithBoundingSize:(CGSize)boundingSize;
 
 @end
 
-@interface UILabel (RUCompatability)
+
+
+
+
+@interface UILabel (RUStringCompatability)
 
 -(void)ruSetMinimumFontSizeScaleFactor:(CGFloat)minimumFontSizeScaleFactor;
 
