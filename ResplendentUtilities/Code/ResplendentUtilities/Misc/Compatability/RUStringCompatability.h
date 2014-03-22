@@ -30,7 +30,7 @@
 
 
 
-@interface NSAttributedString (RUCompatability)
+@interface NSAttributedString (RUStringCompatability)
 
 -(CGSize)ruSizeWithBoundingSize:(CGSize)boundingSize;
 
@@ -40,19 +40,8 @@
 
 
 
-@interface UILabel (RUCompatability)
+@interface UILabel (RUStringCompatability)
 
 -(void)ruSetMinimumFontSizeScaleFactor:(CGFloat)minimumFontSizeScaleFactor;
-
-@end
-
-
-
-
-
-@interface RUCompatabilityConstants : NSObject
-
-+(BOOL)screenSizeIs568;
-+(BOOL)iOSVersionAtLeast7;
 
 @end

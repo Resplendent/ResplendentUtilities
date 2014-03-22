@@ -16,7 +16,7 @@
     NSMutableArray* imageDebugDescriptionArray = [NSMutableArray array];
 
     [imageDebugDescriptionArray addObject:RUStringWithFormat(@"self: %@",self)];
-    [imageDebugDescriptionArray addObject:RUStringWithFormat(@"imageOrientation: %i",self.imageOrientation)];
+    [imageDebugDescriptionArray addObject:RUStringWithFormat(@"imageOrientation: %li",(long)self.imageOrientation)];
     [imageDebugDescriptionArray addObject:RUStringWithFormat(@"CGImage: %@",self.CGImage)];
     [imageDebugDescriptionArray addObject:RUStringWithFormat(@"size: %@",NSStringFromCGSize(self.size))];
     [imageDebugDescriptionArray addObject:RUStringWithFormat(@"cgimage width: %zu",CGImageGetWidth(self.CGImage))];
