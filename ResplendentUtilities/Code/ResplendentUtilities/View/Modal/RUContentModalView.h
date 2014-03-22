@@ -50,7 +50,7 @@ extern CGFloat const kPAContentModalViewTopBarButtonHeight;
 @property (nonatomic, readonly) CGFloat topBarLabelRightBoundary;
 
 @property (nonatomic, readonly) UIView* topBarUnderline;
-@property (nonatomic, readonly) CGRect topBarUnderLineFrame;
+@property (nonatomic, readonly) CGRect topBarUnderlineFrame;
 
 -(void)pressedTopBarButton:(UIButton*)button;
 //----
