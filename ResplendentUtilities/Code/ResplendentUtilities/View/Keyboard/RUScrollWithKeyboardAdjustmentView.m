@@ -129,6 +129,20 @@
     return nil;
 }
 
+#pragma mark - disableKeyboardAdjustment
+-(BOOL)disableKeyboardAdjustment
+{
+	return (_keyboardHelper.delegate == self);
+}
+
+-(void)setDisableKeyboardAdjustment:(BOOL)disableKeyboardAdjustment
+{
+	if (self.disableKeyboardAdjustment == disableKeyboardAdjustment)
+		return;
+
+	[_keyboardHelper setDelegate:(disableKeyboardAdjustment ? self : nil)];
+}
+
 #pragma mark - RUKeyboardAdjustmentHelperDelegate
 -(void)keyboardAdjustmentHelper:(RUKeyboardAdjustmentHelper *)keyboardAdjustmentHelper willShowWithAnimationDuration:(NSTimeInterval)animationDuration
 {

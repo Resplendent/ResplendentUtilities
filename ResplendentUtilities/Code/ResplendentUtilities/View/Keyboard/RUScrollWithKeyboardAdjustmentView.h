@@ -25,6 +25,8 @@
 @property (nonatomic, readonly) CGSize scrollViewContentSize;
 @property (nonatomic, readonly) CGFloat scrollViewContentSizeHeight;
 
+@property (nonatomic, assign) BOOL disableKeyboardAdjustment;
+
 -(void)addSubviewToScrollView:(UIView*)view;
 
 @end
