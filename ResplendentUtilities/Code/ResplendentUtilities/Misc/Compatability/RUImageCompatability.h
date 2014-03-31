@@ -74,6 +74,18 @@ RUUIImageCompatible_Synthesize_Image_Getter_Implementation(varName##568h, imageN
 #define RUUIImageScreenSizeCompatibleSynthesize480or568BasedOnScreenSizeReturnStatement(varName) ([RUCompatability screenSizeIs4inch] ? [self varName##568h] : [self varName])
 #define RUUIImageScreenSizeCompatibleSynthesize480or568BasedOnIOS7ReturnStatement(varName) ([RUCompatability isIOS7] ? [self varName##568h] : [self varName])
 
+//Testing
+#define RUImageCompatability_Test_568If4Inch480IfIOS7Else460(varName) \
+UIImage* image = [self varName]; \
+RUDLog(@"image: %@",image); \
+UIImage* image480 = [self varName##480h]; \
+RUDLog(@"image480: %@",image480); \
+UIImage* image568 = [self varName##568h]; \
+RUDLog(@"image568: %@",image568); \
+UIImage* properImage = RUUIImageScreenSizeCompatibleSynthesize568If4Inch480IfIOS7Else460(varName); \
+RUDLog(@"properImage: %@",properImage);
+
+
 
 
 
