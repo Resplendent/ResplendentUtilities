@@ -36,7 +36,7 @@
     if (self = [super initWithFrame:frame])
     {
         _scrollView = [UIScrollView new];
-        [_scrollView setBackgroundColor:[UIColor redColor]];
+        [_scrollView setBackgroundColor:[UIColor clearColor]];
         [_scrollView setShowsVerticalScrollIndicator:NO];
         [self addSubview:_scrollView];
         
