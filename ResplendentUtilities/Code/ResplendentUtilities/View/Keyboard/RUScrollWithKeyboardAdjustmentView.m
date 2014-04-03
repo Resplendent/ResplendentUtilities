@@ -18,7 +18,7 @@
 @property (nonatomic, readonly) CGRect scrollViewFrame;
 @property (nonatomic, readonly) CGFloat scrollViewKeyboardBottomPadding;
 
-@property (nonatomic, readonly) UIView* scrollViewLowestFirstResponder;
+@property (nonatomic, readonly) UIView* scrollViewLowestSubview;
 @property (nonatomic, readonly) UIView* scrollViewSubviewFirstResponder;
 
 @end
@@ -96,11 +96,11 @@
 
 -(CGFloat)scrollViewContentSizeHeight
 {
-    return CGRectGetMaxY(self.scrollViewLowestFirstResponder.frame);
+    return CGRectGetMaxY(self.scrollViewLowestSubview.frame);
 }
 
 #pragma mark - Getters
--(UIView *)scrollViewLowestFirstResponder
+-(UIView *)scrollViewLowestSubview
 {
     UIView* scrollViewLowestFirstResponder = nil;
     for (UIView* scrollViewSubview in _scrollView.subviews)
