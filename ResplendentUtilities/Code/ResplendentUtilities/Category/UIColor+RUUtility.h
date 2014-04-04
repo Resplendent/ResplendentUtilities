@@ -1,5 +1,5 @@
 //
-//  UIColor+Utility.h
+//  UIColor+RUUtility.h
 //  Resplendent
 //
 //  Created by Benjamin Maer on 8/25/12.
@@ -19,7 +19,7 @@
 
 
 
-@interface UIColor (Utility)
+@interface UIColor (RUUtility)
 
 +(UIColor*)colorWithFloat:(CGFloat)colorFloat alpha:(CGFloat)alpha;
 
