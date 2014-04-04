@@ -12,53 +12,93 @@
 
 #import "RUConstants.h"
 
+
+
+
+
+@interface RUTextFieldCustomizablePlaceholder ()
+
+@property (nonatomic, readonly) UIFont* _placeholderFont;
+@property (nonatomic, readonly) UIColor* _placeholderTextColor;
+
+@end
+
+
+
+
+
 @implementation RUTextFieldCustomizablePlaceholder
 
 -(void)drawPlaceholderInRect:(CGRect)rect
 {
-    if (self.placeholderColor)
-    {
-        [self.placeholderColor setFill];
-    }
+	if (self.placeholder.length)
+	{
+		UIColor* textColor = self._placeholderTextColor;
+		if (!textColor)
+		{
+			return;
+		}
 
-    if (self.placeholderFont && self.placeholder.length)
-    {
-        [[self placeholder] drawInRect:rect withFont:self.placeholderFont];
-    }
+		UIFont* textFont = self._placeholderFont;
+		if (!textFont)
+		{
+			return;
+		}
+
+		[textColor setFill];
+		
+		[[self placeholder] drawInRect:rect withFont:textFont lineBreakMode:NSLineBreakByWordWrapping alignment:self.textAlignment];
+	}
 }
 
-- (CGRect)editingRectForBounds:(CGRect)bounds
+#pragma mark - Getters
+-(UIFont *)_placeholderFont
 {
-    CGRect editingRect = [super editingRectForBounds:bounds];
-    editingRect.origin.x += self.placeholderLeftPadding;
-    editingRect.size.width -= self.placeholderLeftPadding;
-    return editingRect;
+	return (self.placeholderFont ?: self.font);
 }
 
--(CGRect)textRectForBounds:(CGRect)bounds
+-(UIColor *)_placeholderTextColor
 {
-    CGRect textRect = [super textRectForBounds:bounds];
-    textRect.origin.x += self.placeholderLeftPadding;
-    textRect.size.width -= self.placeholderLeftPadding;
-    return textRect;
+	return (self.placeholderTextColor ?: self.textColor);
 }
+
+//- (CGRect)editingRectForBounds:(CGRect)bounds
+//{
+//    CGRect editingRect = [super editingRectForBounds:bounds];
+//    editingRect.origin.x += self.placeholderLeftPadding;
+//    editingRect.size.width -= self.placeholderLeftPadding;
+//    return editingRect;
+//}
+//
+//-(CGRect)textRectForBounds:(CGRect)bounds
+//{
+//    CGRect textRect = [super textRectForBounds:bounds];
+//    textRect.origin.x += self.placeholderLeftPadding;
+//    textRect.size.width -= self.placeholderLeftPadding;
+//    return textRect;
+//}
 
 -(CGRect)placeholderRectForBounds:(CGRect)bounds
 {
     CGRect placeholderRect = [super placeholderRectForBounds:bounds];
 
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
-    {
-        switch (self.contentVerticalAlignment)
-        {
-            case UIControlContentVerticalAlignmentCenter:
-                placeholderRect.origin.y = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(self.placeholderFont.pointSize, CGRectGetHeight(self.bounds));
-                break;
-                
-            default:
-                break;
-        }
-    }
+	UIFont* placeholderFont = self._placeholderFont;
+
+	if (placeholderFont)
+	{
+		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
+		{
+			switch (self.contentVerticalAlignment)
+			{
+				case UIControlContentVerticalAlignmentCenter:
+					placeholderRect.origin.y = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(placeholderFont.pointSize, CGRectGetHeight(self.bounds));
+					break;
+					
+				default:
+					break;
+			}
+		}
+	}
 
     return placeholderRect;
 }
@@ -74,24 +114,24 @@
     [self setNeedsDisplay];
 }
 
--(void)setPlaceholderColor:(UIColor *)placeholderColor
+-(void)setPlaceholderTextColor:(UIColor *)placeholderTextColor
 {
-    if (self.placeholderColor == placeholderColor)
+    if (self.placeholderTextColor == placeholderTextColor)
         return;
     
-    _placeholderColor = placeholderColor;
-    
+    _placeholderTextColor = placeholderTextColor;
+
     [self setNeedsDisplay];
 }
 
--(void)setPlaceholderLeftPadding:(CGFloat)placeholderLeftPadding
-{
-    if (self.placeholderLeftPadding == placeholderLeftPadding)
-        return;
-
-    _placeholderLeftPadding = placeholderLeftPadding;
-
-    [self setNeedsDisplay];
-}
+//-(void)setPlaceholderLeftPadding:(CGFloat)placeholderLeftPadding
+//{
+//    if (self.placeholderLeftPadding == placeholderLeftPadding)
+//        return;
+//
+//    _placeholderLeftPadding = placeholderLeftPadding;
+//
+//    [self setNeedsDisplay];
+//}
 
 @end
