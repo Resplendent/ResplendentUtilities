@@ -84,7 +84,6 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 {
     [super layoutSubviews];
 
-	[self setBackgroundColor:[UIColor yellowColor]];
 	[self.superview bringSubviewToFront:self];
 
     [_contentView setFrame:self.contentViewFrame];
