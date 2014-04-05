@@ -11,9 +11,17 @@
 #import "UIView+RUUtility.h"
 #import "RUConstants.h"
 
+
+
+
+
 CGFloat const kRUFullscreenRotatingViewDefaultShowAnimationDuration = 0.25;
 CGFloat const kRUFullscreenRotatingViewDefaultHideAnimationDuration = 0.25;
 CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
+
+
+
+
 
 @interface RUFullscreenRotatingView ()
 
@@ -25,6 +33,8 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 @property (nonatomic, assign) BOOL orientationNotificationsEnabled;
 @property (nonatomic, readonly) CGAffineTransform contentViewTransformationForCurrentOrientation;
 
+-(void)updateFrame;
+
 -(void)transitionToOrientation:(UIInterfaceOrientation)orientation animated:(BOOL)animated;
 -(void)transitionToOrientation:(UIInterfaceOrientation)orientation;
 -(CGAffineTransform)contentViewTransformationForOrientation:(UIInterfaceOrientation)orientation;
@@ -35,6 +45,10 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 -(void)didTapContentView:(UITapGestureRecognizer*)tap;
 
 @end
+
+
+
+
 
 @implementation RUFullscreenRotatingView
 
@@ -70,6 +84,7 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 {
     [super layoutSubviews];
 
+	[self setBackgroundColor:[UIColor yellowColor]];
 	[self.superview bringSubviewToFront:self];
 
     [_contentView setFrame:self.contentViewFrame];
@@ -103,8 +118,7 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 #pragma mark - Update Content
 -(void)updateFrame
 {
-    CGFloat statusBarHeight = CGRectGetMaxY([UIApplication sharedApplication].statusBarFrame);
-    [self setFrame:CGRectSetY(-statusBarHeight, [UIScreen mainScreen].bounds)];
+	[self setFrame:self.superview.bounds];
 }
 
 #pragma mark - Actions
