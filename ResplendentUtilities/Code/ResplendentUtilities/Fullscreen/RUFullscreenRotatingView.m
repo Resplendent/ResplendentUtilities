@@ -66,16 +66,17 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
         [self setRotationAnimationDuration:kRUFullscreenRotatingViewDefaultRotationAnimationDuration];
 
         _contentView = [UIView new];
-        [_contentView setBackgroundColor:[UIColor clearColor]];
+        [self.contentView setBackgroundColor:[UIColor clearColor]];
+        [self addSubview:self.contentView];
+
 		_contentViewTapToDismissGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapContentView:)];
-        [_contentView addGestureRecognizer:self.contentViewTapToDismissGesture];
-        [self addSubview:_contentView];
+        [self.contentView addGestureRecognizer:self.contentViewTapToDismissGesture];
 
         _shadowView = [UIView new];
         [_shadowView setBackgroundColor:[UIColor blackColor]];
         [_shadowView setClipsToBounds:NO];
         [_shadowView setUserInteractionEnabled:NO];
-        [_contentView addSubview:_shadowView];
+        [self.contentView addSubview:_shadowView];
     }
 
     return self;
@@ -87,7 +88,7 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 
 	[self.superview bringSubviewToFront:self];
 
-    [_contentView setFrame:self.contentViewFrame];
+    [self.contentView setFrame:self.contentViewFrame];
     [_shadowView setFrame:self.shadowViewFrame];
 }
 
