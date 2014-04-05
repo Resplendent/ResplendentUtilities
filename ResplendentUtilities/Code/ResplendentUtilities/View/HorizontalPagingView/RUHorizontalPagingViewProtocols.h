@@ -8,7 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+
+
+
+
 @class RUHorizontalPagingView;
+
+
+
+
 
 @protocol RUHorizontalPagingViewCellDelegate <NSObject>
 
@@ -21,20 +29,33 @@
 
 @end
 
+
+
+
+
 //Never used directly, but as a protocol for other protocols to inherit from
-@protocol RUHorizontalPagingViewBeginFinishScrollingProtocol <NSObject>
+@protocol RUHorizontalPagingViewScrollProtocol <NSObject>
 
 -(void)horizontalPagingViewWillBeginScrolling:(RUHorizontalPagingView*)horizontalPagingView;
 -(void)horizontalPagingViewDidFinishScrolling:(RUHorizontalPagingView*)horizontalPagingView;
 
 @end
 
-@protocol RUHorizontalPagingViewScrollDelegate <RUHorizontalPagingViewBeginFinishScrollingProtocol>
 
--(void)horizontalPagingView:(RUHorizontalPagingView*)horizontalPagingView didScrollFromPage:(NSInteger)fromPage toPage:(NSInteger)toPage;
+
+
+
+//Should be used by classes that are using as paging views who want to receive these delegate events
+@protocol RUHorizontalPagingViewCellProtocol <RUHorizontalPagingViewScrollProtocol>
 
 @end
 
-@protocol RUHorizontalPagingViewCellProtocol <RUHorizontalPagingViewBeginFinishScrollingProtocol>
+
+
+
+
+@protocol RUHorizontalPagingViewScrollPageDelegate <NSObject>
+
+-(void)horizontalPagingView:(RUHorizontalPagingView*)horizontalPagingView didScrollFromPage:(NSInteger)fromPage toPage:(NSInteger)toPage;
 
 @end
