@@ -67,7 +67,8 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 
         _contentView = [UIView new];
         [_contentView setBackgroundColor:[UIColor clearColor]];
-        [_contentView addGestureRecognizer:[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapContentView:)]];
+		_contentViewTapToDismissGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapContentView:)];
+        [_contentView addGestureRecognizer:self.contentViewTapToDismissGesture];
         [self addSubview:_contentView];
 
         _shadowView = [UIView new];

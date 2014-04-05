@@ -602,7 +602,10 @@
 {
     for (UIView<RUHorizontalPagingViewCellProtocol>* cell in _visibleCells.allValues)
     {
-		[cell horizontalPagingViewWillBeginScrolling:self];
+		if ([cell conformsToProtocol:@protocol(RUHorizontalPagingViewCellProtocol)])
+		{
+			[cell horizontalPagingViewWillBeginScrolling:self];
+		}
     }
 }
 
@@ -610,7 +613,10 @@
 {
     for (UIView<RUHorizontalPagingViewCellProtocol>* cell in _visibleCells.allValues)
     {
-		[cell horizontalPagingViewDidFinishScrolling:self];
+		if ([cell conformsToProtocol:@protocol(RUHorizontalPagingViewCellProtocol)])
+		{
+			[cell horizontalPagingViewDidFinishScrolling:self];
+		}
     }
 }
 

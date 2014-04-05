@@ -26,13 +26,11 @@ typedef enum{
 
 @interface RUFullscreenRotatingView : UIView
 {
-    UIView* _contentView;
     UIView* _shadowView;
 }
 
-
-
-
+@property (nonatomic, readonly) UIView* contentView;
+@property (nonatomic, readonly) UITapGestureRecognizer* contentViewTapToDismissGesture;
 
 @property (nonatomic, assign) id<RUFullscreenRotatingViewHideDelegate> hideDelegate;
 

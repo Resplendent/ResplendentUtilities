@@ -93,7 +93,7 @@ CGFloat const kRUImageViewFullscreenRotatingViewDefaultShowAnimationDuration = 0
         _animationTransitionImageView = [[UIImageView alloc]initWithImage:imageView.image];
         [_animationTransitionImageView setContentMode:imageView.contentMode];
         [_animationTransitionImageView setClipsToBounds:YES];
-        [_contentView addSubview:_animationTransitionImageView];
+        [self.contentView addSubview:_animationTransitionImageView];
     }
 }
 
