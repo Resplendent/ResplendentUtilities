@@ -33,8 +33,20 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 
 
 
+@interface RUContentModalView ()
+
+@property (nonatomic, readonly) Class _topBarLabelClass;
+@property (nonatomic, readonly) Class _bottomBarLabelClass;
+
+@end
+
+
+
+
+
 @implementation RUContentModalView
 
+#pragma mark - UIView
 -(id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])
@@ -55,16 +67,59 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 {
     [super layoutSubviews];
     [_contentView setFrame:self.contentViewFrame];
-    
-    if (_topBar)
+
+	//Top Bar
+    if (self.topBar)
     {
-        [_topBar setFrame:self.topBarFrame];
+        [self.topBar setFrame:self.topBarFrame];
     }
-    
-    if (_bottomBar)
+
+	if (self.topBarUnderline)
+	{
+		[self.topBarUnderline setFrame:self.topBarUnderlineFrame];
+	}
+
+    if (self.topBarButton)
+	{
+		[self.topBarButton setFrame:self.topBarButtonFrame];
+	}
+
+	if (self.topBarLabel)
+	{
+		[self.topBarLabel setFrame:self.topBarLabelFrame];
+	}
+
+	//Bottom Bar
+    if (self.bottomBar)
     {
-        [_bottomBar setFrame:self.bottomBarFrame];
+        [self.bottomBar setFrame:self.bottomBarFrame];
     }
+
+	if (self.bottomBarOverline)
+	{
+		[self.bottomBarOverline setFrame:self.bottomBarOverlineFrame];
+	}
+
+	if (self.bottomBarButton)
+	{
+		[self.bottomBarButton setFrame:self.bottomBarButtonFrame];
+	}
+	
+	if (self.bottomBarLabel)
+	{
+		[self.bottomBarLabel setFrame:self.bottomBarLabelFrame];
+	}
+}
+
+#pragma mark - Classes
+-(Class)_topBarLabelClass
+{
+	return (self.topBarLabelClass ?: [UILabel class]);
+}
+
+-(Class)_bottomBarLabelClass
+{
+	return (self.bottomBarLabelClass ?: [UILabel class]);
 }
 
 #pragma mark - Content View
@@ -131,7 +186,7 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         
         if (!_topBarLabel)
         {
-            _topBarLabel = [[self.topBarLabelClass alloc]initWithFrame:self.topBarLabelFrame];
+            _topBarLabel = [self._topBarLabelClass new];
             [_topBarLabel setFont:kRUFontWithHelvetica(YES, 16.0f)];
             [_topBarLabel setText:@"Bookmark Privacy"];
             [_topBarLabel setTextColor:[UIColor blackColor]];
@@ -142,16 +197,17 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         if (!_topBarButton)
         {
             _topBarButton = [RUGradientButton buttonWithType:UIButtonTypeCustom];
-            [_topBarButton setFrame:self.topBarButtonFrame];
             [_topBarButton addTarget:self action:@selector(pressedTopBarButton:) forControlEvents:UIControlEventTouchUpInside];
             [_topBar addSubview:_topBarButton];
         }
         
         if (!_topBarUnderline)
         {
-            _topBarUnderline = [[UIView alloc] initWithFrame:self.topBarUnderLineFrame];
+            _topBarUnderline = [UIView new];
             [_topBar addSubview:_topBarUnderline];
         }
+
+		[self setNeedsLayout];
     }
     else
     {
@@ -222,7 +278,7 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
     RU_METHOD_OVERLOADED_IMPLEMENTATION_NEEDED_EXCEPTION;
 }
 
--(CGRect)topBarUnderLineFrame
+-(CGRect)topBarUnderlineFrame
 {
     CGRect topBarFrame = self.topBarFrame;
     return (CGRect){0,CGRectGetHeight(topBarFrame) - 1.0f,CGRectGetWidth(topBarFrame),1.0f};
@@ -258,7 +314,7 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         
         if (!_bottomBarLabel)
         {
-            _bottomBarLabel = [[self.bottomBarLabelClass alloc]initWithFrame:self.bottomBarLabelFrame];
+            _bottomBarLabel = [self.bottomBarLabelClass new];
             [_bottomBarLabel setFont:kRUFontWithHelvetica(YES, 16.0f)];
             [_bottomBarLabel setText:@"Bookmark Privacy"];
             [_bottomBarLabel setTextColor:[UIColor blackColor]];
@@ -269,16 +325,17 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         if (!_bottomBarButton)
         {
             _bottomBarButton = [RUGradientButton buttonWithType:UIButtonTypeCustom];
-            [_bottomBarButton setFrame:self.bottomBarButtonFrame];
             [_bottomBarButton addTarget:self action:@selector(pressedBottomBarButton:) forControlEvents:UIControlEventTouchUpInside];
             [_bottomBar addSubview:_bottomBarButton];
         }
         
         if (!_bottomBarOverline)
         {
-            _bottomBarOverline = [[UIView alloc] initWithFrame:self.bottomBarOverlineFrame];
+            _bottomBarOverline = [UIView new];
             [_bottomBar addSubview:_bottomBarOverline];
         }
+
+		[self setNeedsLayout];
     }
     else
     {

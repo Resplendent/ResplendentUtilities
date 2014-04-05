@@ -29,6 +29,47 @@
 
 @implementation RUTextFieldCustomizablePlaceholder
 
+#pragma mark - UITextField
+-(CGRect)placeholderRectForBounds:(CGRect)bounds
+{
+    CGRect placeholderRect = [super placeholderRectForBounds:bounds];
+	
+	UIFont* placeholderFont = self._placeholderFont;
+	
+	if (placeholderFont)
+	{
+		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
+		{
+			switch (self.contentVerticalAlignment)
+			{
+				case UIControlContentVerticalAlignmentCenter:
+					placeholderRect.origin.y = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(placeholderFont.pointSize, CGRectGetHeight(self.bounds));
+					break;
+					
+				default:
+					break;
+			}
+		}
+	}
+	
+	return UIEdgeInsetsInsetRect(placeholderRect, self.placeholderTextInsets);
+	//    return placeholderRect;
+}
+
+-(CGRect)textRectForBounds:(CGRect)bounds
+{
+	CGRect textRect = [super textRectForBounds:bounds];
+
+	return UIEdgeInsetsInsetRect(textRect, self.textInsets);
+}
+
+-(CGRect)editingRectForBounds:(CGRect)bounds
+{
+	CGRect editingRect = [super editingRectForBounds:bounds];
+	
+	return UIEdgeInsetsInsetRect(editingRect, self.textInsets);
+}
+
 -(void)drawPlaceholderInRect:(CGRect)rect
 {
 	if (self.placeholder.length)
@@ -77,31 +118,6 @@
 //    textRect.size.width -= self.placeholderLeftPadding;
 //    return textRect;
 //}
-
--(CGRect)placeholderRectForBounds:(CGRect)bounds
-{
-    CGRect placeholderRect = [super placeholderRectForBounds:bounds];
-
-	UIFont* placeholderFont = self._placeholderFont;
-
-	if (placeholderFont)
-	{
-		if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
-		{
-			switch (self.contentVerticalAlignment)
-			{
-				case UIControlContentVerticalAlignmentCenter:
-					placeholderRect.origin.y = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(placeholderFont.pointSize, CGRectGetHeight(self.bounds));
-					break;
-					
-				default:
-					break;
-			}
-		}
-	}
-
-    return placeholderRect;
-}
 
 #pragma mark - Setters
 -(void)setPlaceholderFont:(UIFont *)placeholderFont
