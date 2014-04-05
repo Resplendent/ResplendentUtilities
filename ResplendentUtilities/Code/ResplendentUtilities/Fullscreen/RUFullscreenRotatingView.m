@@ -193,7 +193,7 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 {
     void (^hideAnimation)() = ^{
         [_shadowView setAlpha:0.0f];
-        [self transitionToOrientation:UIInterfaceOrientationPortrait animated:NO];
+        [self transitionToOrientation:UIInterfaceOrientationPortrait animated:animated];
         [self performHideAnimation];
     };
 
@@ -203,6 +203,8 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 
         [self didHide];
         
+		[self.hideDelegate fullscreenRotatingView:self didHide:animated];
+
         if (completion)
             completion(YES);
     };
