@@ -70,6 +70,8 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 {
     [super layoutSubviews];
 
+	[self.superview bringSubviewToFront:self];
+
     [_contentView setFrame:self.contentViewFrame];
     [_shadowView setFrame:self.shadowViewFrame];
 }
@@ -78,10 +80,7 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 {
     [super willMoveToSuperview:newSuperview];
 
-    if (newSuperview && self.presenterView != newSuperview)
-    {
-        [NSException raise:NSInternalInconsistencyException format:@"%@ can only be a subview of its presenter %@, not %@",self,self.presenterView,newSuperview];
-    }
+	[self.superview bringSubviewToFront:self];
 }
 
 #pragma mark - Frames
@@ -131,10 +130,12 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 }
 
 #pragma mark - Visibility Transitions
--(void)showWithCompletion:(void (^)(BOOL didShow))completion
+-(void)showOnView:(UIView*)view completion:(void (^)(BOOL didShow))completion
 {
     if (self.readyToShow && self.preparedToShow)
     {
+		[view addSubview:self];
+
         [self willPerformShowAnimation];
 
         _state = RUFullscreenRotatingViewStateMovingToShow;
@@ -161,7 +162,6 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
     [self updateFrame];
     
     [_shadowView setAlpha:0.0f];
-    [self.presenterView addSubview:self];
 
     [self layoutIfNeeded];
 
