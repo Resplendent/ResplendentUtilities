@@ -9,11 +9,18 @@
 #import "RUModalView.h"
 
 
+
+
+
 @interface RUModalView ()
 
 -(void)didTapSelf:(UITapGestureRecognizer*)tap;
 
 @end
+
+
+
+
 
 @implementation RUModalView
 
@@ -28,6 +35,13 @@
     }
 
     return self;
+}
+
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    [self.superview bringSubviewToFront:self];
 }
 
 #pragma mark - Action methods

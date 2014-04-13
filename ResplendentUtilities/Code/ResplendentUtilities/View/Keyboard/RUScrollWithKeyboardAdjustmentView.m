@@ -8,6 +8,7 @@
 
 #import "RUScrollWithKeyboardAdjustmentView.h"
 #import "RUKeyboardAdjustmentHelper.h"
+#import "UIView+RUEnableTapToResignFirstResponder.h"
 
 
 
@@ -128,28 +129,44 @@
     return nil;
 }
 
+#pragma mark - disableKeyboardAdjustment
+-(BOOL)disableKeyboardAdjustment
+{
+	return (_keyboardHelper.delegate == self);
+}
+
+-(void)setDisableKeyboardAdjustment:(BOOL)disableKeyboardAdjustment
+{
+	if (self.disableKeyboardAdjustment == disableKeyboardAdjustment)
+		return;
+
+	[_keyboardHelper setDelegate:(disableKeyboardAdjustment ? self : nil)];
+}
+
 #pragma mark - RUKeyboardAdjustmentHelperDelegate
 -(void)keyboardAdjustmentHelper:(RUKeyboardAdjustmentHelper *)keyboardAdjustmentHelper willShowWithAnimationDuration:(NSTimeInterval)animationDuration
 {
-    [UIView animateWithDuration:animationDuration animations:^{
-        [self layoutSubviews];
-        
-        UIView* scrollViewSubviewFirstResponder = self.scrollViewSubviewFirstResponder;
-        if (scrollViewSubviewFirstResponder)
-        {
-            CGRect scrollToFrame = scrollViewSubviewFirstResponder.frame;
-            scrollToFrame.origin.y = scrollToFrame.origin.y + self.scrollViewBottomKeyboardPadding;
-            
-            [_scrollView scrollRectToVisible:scrollToFrame animated:NO];
-        }
-    }];
+	[self layoutIfNeeded];
+	[UIView animateWithDuration:animationDuration animations:^{
+		[self layoutSubviews];
+		
+	} completion:^(BOOL finished) {
+		UIView* ruSelfOrSubviewFirstResponder = self.ruSelfOrSubviewFirstResponder;
+		if (ruSelfOrSubviewFirstResponder)
+		{
+			CGRect convertedFrame = [self.scrollView convertRect:ruSelfOrSubviewFirstResponder.bounds fromView:ruSelfOrSubviewFirstResponder];
+			CGRect scrollToFrame = convertedFrame;
+			scrollToFrame.origin.y += self.scrollViewBottomKeyboardPadding;
+			[self.scrollView scrollRectToVisible:scrollToFrame animated:YES];
+		}
+	}];
 }
 
 -(void)keyboardAdjustmentHelper:(RUKeyboardAdjustmentHelper *)keyboardAdjustmentHelper willHideWithAnimationDuration:(NSTimeInterval)animationDuration
 {
-    [UIView animateWithDuration:animationDuration animations:^{
-        [self layoutSubviews];
-    }];
+	[UIView animateWithDuration:animationDuration animations:^{
+		[self layoutSubviews];
+	}];
 }
 
 @end

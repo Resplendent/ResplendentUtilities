@@ -18,7 +18,7 @@
 	static NSNumber* screenSizeIs4inch;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		screenSizeIs4inch = @([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone && [UIScreen mainScreen].bounds.size.height == 480.0);
+		screenSizeIs4inch = @([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone && [UIScreen mainScreen].bounds.size.height == 568.0f);
 	});
 
     return screenSizeIs4inch.boolValue;

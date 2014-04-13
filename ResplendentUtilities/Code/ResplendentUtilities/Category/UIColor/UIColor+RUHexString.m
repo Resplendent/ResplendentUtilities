@@ -6,7 +6,11 @@
 //  Copyright (c) 2012 Resplendent G.P. All rights reserved.
 //
 
-#import "UIColor+HexString.h"
+#import "UIColor+RUHexString.h"
+
+
+
+
 
 @implementation UIColor (HexString)
 
