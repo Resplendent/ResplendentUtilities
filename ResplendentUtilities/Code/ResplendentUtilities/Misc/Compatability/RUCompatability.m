@@ -24,6 +24,17 @@
     return screenSizeIs4inch.boolValue;
 }
 
++(BOOL)screenSizeIs3Point5inch
+{
+	static NSNumber* screenSizeIs3Point5inch;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		screenSizeIs3Point5inch = @([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone && [UIScreen mainScreen].bounds.size.height == 480.0f);
+	});
+	
+    return screenSizeIs3Point5inch.boolValue;
+}
+
 +(BOOL)isIOS7
 {
 	static NSNumber* isIOS7;
