@@ -15,6 +15,7 @@
 @interface RUCompatability : NSObject
 
 +(BOOL)screenSizeIs4inch;
++(BOOL)screenSizeIs3Point5inch;
 
 +(BOOL)isIOS7;
 +(BOOL)isPreIOS7;
