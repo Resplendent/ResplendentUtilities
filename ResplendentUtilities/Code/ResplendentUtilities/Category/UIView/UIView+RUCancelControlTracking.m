@@ -24,8 +24,23 @@
 		{
 			[controlView cancelTrackingWithEvent:event];
 		}
-
+		
 		[controlView ruCancelAllControlTrackingWithEvent:event];
 	}
 }
+
+-(void)ruEndAllControlTrackingWithTouch:(UITouch*)touch event:(UIEvent*)event
+{
+	for (UIView* view in self.subviews)
+	{
+		UIControl* controlView = kRUClassOrNil(view, UIControl);
+		if (controlView)
+		{
+			[controlView endTrackingWithTouch:touch withEvent:event];
+		}
+		
+		[controlView ruEndAllControlTrackingWithTouch:touch event:event];
+	}
+}
+
 @end

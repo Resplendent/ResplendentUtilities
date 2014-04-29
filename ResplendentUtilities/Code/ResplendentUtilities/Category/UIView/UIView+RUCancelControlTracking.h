@@ -15,5 +15,6 @@
 @interface UIView (RUCancelControlTracking)
 
 -(void)ruCancelAllControlTrackingWithEvent:(UIEvent*)event;
+-(void)ruEndAllControlTrackingWithTouch:(UITouch*)touch event:(UIEvent*)event;
 
 @end
