@@ -13,5 +13,6 @@
 @protocol RUFullscreenRotatingViewHideDelegate <NSObject>
 
 -(void)fullscreenRotatingView:(RUFullscreenRotatingView*)fullscreenRotatingView willHide:(BOOL)animated;
+-(void)fullscreenRotatingView:(RUFullscreenRotatingView*)fullscreenRotatingView didHide:(BOOL)animated;
 
 @end

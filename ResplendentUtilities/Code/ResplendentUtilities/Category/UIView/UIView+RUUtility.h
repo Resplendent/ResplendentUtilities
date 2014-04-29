@@ -1,5 +1,4 @@
 //
-//  UIView+Pineapple.h
 //  Resplendent
 //
 //  Created by Benjamin Maer on 5/6/12.
