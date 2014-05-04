@@ -71,7 +71,11 @@
 {
     [super layoutSubviews];
     [_scrollView setFrame:self.scrollViewFrame];
-    [_scrollView setContentSize:self.scrollViewContentSize];
+
+	if (kRUClassOrNil(self.scrollView, UITableView) == FALSE)
+	{
+		[self.scrollView setContentSize:self.scrollViewContentSize];
+	}
 }
 
 #pragma mark - Public
