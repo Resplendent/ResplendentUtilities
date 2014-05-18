@@ -8,11 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+
+
+
+
 @interface RUTextFieldCustomizablePlaceholder : UITextField
 
-@property (nonatomic, strong) UIColor* placeholderColor;
+@property (nonatomic, strong) UIColor* placeholderTextColor;
 @property (nonatomic, strong) UIFont* placeholderFont;
 
-@property (nonatomic, assign) CGFloat placeholderLeftPadding;
+@property (nonatomic, assign) UIEdgeInsets textInsets;
+@property (nonatomic, assign) UIEdgeInsets placeholderTextInsets;
+//@property (nonatomic, assign) CGFloat placeholderLeftPadding;
 
 @end

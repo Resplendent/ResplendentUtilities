@@ -93,7 +93,7 @@ CGFloat const kRUImageViewFullscreenRotatingViewDefaultShowAnimationDuration = 0
         _animationTransitionImageView = [[UIImageView alloc]initWithImage:imageView.image];
         [_animationTransitionImageView setContentMode:imageView.contentMode];
         [_animationTransitionImageView setClipsToBounds:YES];
-        [_contentView addSubview:_animationTransitionImageView];
+        [self.contentView addSubview:_animationTransitionImageView];
     }
 }
 
@@ -107,17 +107,14 @@ CGFloat const kRUImageViewFullscreenRotatingViewDefaultShowAnimationDuration = 0
 }
 
 #pragma mark - Show
--(void)showWithImageView:(UIImageView*)imageView completion:(void (^)(BOOL didShow))completion
+-(void)showWithImageView:(UIImageView*)imageView onView:(UIView *)view completion:(void (^)(BOOL didShow))completion
 {
     if (self.readyToShow)
     {
         _sourceImageView = imageView;
         [self addAnimationTransitionViewWithImageView:imageView];
 
-        [self showWithCompletion:^(BOOL didShow) {
-            if (completion)
-                completion(didShow);
-        }];
+		[self showOnView:view completion:completion];
     }
     else
     {
@@ -134,7 +131,8 @@ CGFloat const kRUImageViewFullscreenRotatingViewDefaultShowAnimationDuration = 0
 
 //    [_sourceImageView setHidden:YES];
 
-    _convertedOriginalFrame = [_sourceImageView convertRect:_sourceImageView.frame toView:self];
+    _convertedOriginalFrame = [_sourceImageView convertRect:_sourceImageView.bounds toView:self];
+//    _convertedOriginalFrame = [_sourceImageView convertRect:_sourceImageView.frame toView:self];
     [_animationTransitionImageView setFrame:_convertedOriginalFrame];
 
     _sourceImageView = nil;

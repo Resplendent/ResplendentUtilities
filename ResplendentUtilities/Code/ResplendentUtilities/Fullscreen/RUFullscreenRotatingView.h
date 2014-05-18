@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "RUFullscreenRotatingViewProtocols.h"
 
+
+
+
+
 typedef enum{
     RUFullscreenRotatingViewStateHiding = 0,
     RUFullscreenRotatingViewStateMovingToShow,
@@ -16,15 +20,20 @@ typedef enum{
     RUFullscreenRotatingViewStateMovingToHide,
 }RUFullscreenRotatingViewState;
 
+
+
+
+
 @interface RUFullscreenRotatingView : UIView
 {
-    UIView* _contentView;
     UIView* _shadowView;
 }
 
+@property (nonatomic, readonly) UIView* contentView;
+@property (nonatomic, readonly) UITapGestureRecognizer* contentViewTapToDismissGesture;
+
 @property (nonatomic, assign) id<RUFullscreenRotatingViewHideDelegate> hideDelegate;
 
-@property (nonatomic, assign) UIView* presenterView;
 @property (nonatomic, assign) BOOL forceLayoutSubviewsOnTransition;
 
 @property (nonatomic, assign) NSTimeInterval showAnimationDuration;
@@ -39,9 +48,9 @@ typedef enum{
 @property (nonatomic, readonly) BOOL preparedToShow;
 @property (nonatomic, readonly) BOOL readyToHide;
 
--(void)showWithCompletion:(void (^)(BOOL didShow))completion;
--(void)hide;
+-(void)showOnView:(UIView*)view completion:(void (^)(BOOL didShow))completion;
 
+-(void)hide;
 -(void)hideAnimated:(BOOL)animated completion:(void(^)(BOOL didHide))completion;
 
 //Meant for subclassing, shouldn't be called directly. Subclasses must call their super

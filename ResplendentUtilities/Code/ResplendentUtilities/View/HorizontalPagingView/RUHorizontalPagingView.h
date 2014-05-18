@@ -34,7 +34,8 @@
 @property (nonatomic, assign) BOOL pageControlOverlapsScrollView;
 
 @property (nonatomic, assign) id<RUHorizontalPagingViewCellDelegate> cellDelegate;
-@property (nonatomic, assign) id<RUHorizontalPagingViewScrollDelegate> scrollDelegate;
+@property (nonatomic, assign) id<RUHorizontalPagingViewScrollProtocol> scrollDelegate;
+@property (nonatomic, assign) id<RUHorizontalPagingViewScrollPageDelegate> scrollPageDelegate;
 
 //Must be set, or overloaded by subclass. Trying to create a new cell with a new cellClass will result in crash.
 @property (nonatomic, strong) Class cellClass;
@@ -47,12 +48,16 @@
 -(void)addViewAtEnd;
 -(void)insertViewAtPage:(NSInteger)page preserveDistanceScrolledFromRight:(BOOL)preserveDistanceScrolledFromRight;
 
+//@TODO BEN let's get rid of self size
 -(void)scrollToPage:(NSInteger)page selfSize:(CGSize)selfSize animated:(BOOL)animated;
 
 // ++++++
 // Only to be overloaded, not called directly
 
 -(void)scrollViewDidSettle;
+
+-(void)didScrollFromPage:(NSInteger)fromPage toPage:(NSInteger)toPage;
+
 
 // ------
 

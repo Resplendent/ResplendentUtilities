@@ -5,11 +5,15 @@
 //  Copyright (c) 2013 Resplendent G.P.. All rights reserved.
 //
 
-#import "RUCompatability.h"
+#import "RUStringCompatability.h"
 
 #import <CoreText/CoreText.h>
 
-@implementation NSAttributedString (RUCompatability)
+
+
+
+
+@implementation NSAttributedString (RUStringCompatability)
 
 -(CGSize)ruSizeWithBoundingSize:(CGSize)boundingSize;
 {
@@ -21,7 +25,11 @@
 
 @end
 
-@implementation UILabel (RUCompatability)
+
+
+
+
+@implementation UILabel (RUStringCompatability)
 
 -(void)ruSetMinimumFontSizeScaleFactor:(CGFloat)minimumFontSizeScaleFactor
 {
