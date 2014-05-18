@@ -31,13 +31,32 @@
 
 @implementation RUScrollWithKeyboardAdjustmentView
 
+#pragma mark - RUScrollWithKeyboardAdjustmentView
+-(id)initWithScrollView:(UIScrollView*)scrollView
+{
+	if (kRUClassOrNil(scrollView, UIScrollView) == FALSE)
+	{
+		NSAssert(FALSE, @"Must pass a scroll view");
+		return nil;
+	}
+
+	_scrollView = scrollView;
+
+	return (self = [self init]);
+}
+
+#pragma mark - UIView
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])
     {
-        _scrollView = [UIScrollView new];
-        [_scrollView setBackgroundColor:[UIColor clearColor]];
-        [_scrollView setShowsVerticalScrollIndicator:NO];
+		if (self.scrollView == nil)
+		{
+			_scrollView = [UIScrollView new];
+			[_scrollView setBackgroundColor:[UIColor clearColor]];
+			[_scrollView setShowsVerticalScrollIndicator:NO];
+		}
+
         [self addSubview:_scrollView];
         
         _keyboardHelper = [RUKeyboardAdjustmentHelper new];
@@ -52,7 +71,11 @@
 {
     [super layoutSubviews];
     [_scrollView setFrame:self.scrollViewFrame];
-    [_scrollView setContentSize:self.scrollViewContentSize];
+
+	if (kRUClassOrNil(self.scrollView, UITableView) == FALSE)
+	{
+		[self.scrollView setContentSize:self.scrollViewContentSize];
+	}
 }
 
 #pragma mark - Public
