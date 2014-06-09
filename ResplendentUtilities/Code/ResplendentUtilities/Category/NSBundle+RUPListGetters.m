@@ -8,6 +8,20 @@
 
 #import "NSBundle+RUPListGetters.h"
 
+
+
+
+
 @implementation NSBundle (RUPListGetters)
+
+-(NSString*)ruCFBundleShortVersionString
+{
+	return [self objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+}
+
+-(NSString*)ruCFBundleVersionString
+{
+	return [self objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
+}
 
 @end

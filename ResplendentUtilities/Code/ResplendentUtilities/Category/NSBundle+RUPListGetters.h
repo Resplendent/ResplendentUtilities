@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+
+
+
+
 @interface NSBundle (RUPListGetters)
+
+-(NSString*)ruCFBundleShortVersionString;
+-(NSString*)ruCFBundleVersionString;
 
 @end
