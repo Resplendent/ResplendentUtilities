@@ -27,6 +27,8 @@
 
 @property (nonatomic, assign) BOOL disableKeyboardAdjustment;
 
+-(id)initWithScrollView:(UIScrollView*)scrollView;
+
 -(void)addSubviewToScrollView:(UIView*)view;
 
 @end
