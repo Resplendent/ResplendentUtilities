@@ -118,7 +118,7 @@
 
 -(CGFloat)scrollViewContentSizeHeight
 {
-    return CGRectGetMaxY(self.scrollView.ruLowestSubview.frame);
+    return CGRectGetMaxY(self.scrollView.ruLowestSubview.frame) + self.scrollViewBottomPadding;
 }
 
 #pragma mark - disableKeyboardAdjustment

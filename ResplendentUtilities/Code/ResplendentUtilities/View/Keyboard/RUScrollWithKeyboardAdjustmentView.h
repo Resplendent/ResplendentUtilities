@@ -20,6 +20,7 @@
 
 @property (nonatomic, readonly) UIScrollView* scrollView;
 
+@property (nonatomic, assign) CGFloat scrollViewBottomPadding;
 @property (nonatomic, assign) CGFloat scrollViewBottomKeyboardPadding;
 
 @property (nonatomic, readonly) CGSize scrollViewContentSize;
