@@ -9,6 +9,7 @@
 #import "RUScrollWithKeyboardAdjustmentView.h"
 #import "RUKeyboardAdjustmentHelper.h"
 #import "UIView+RUEnableTapToResignFirstResponder.h"
+#import "UIView+RUSubviews.h"
 
 
 
@@ -18,9 +19,6 @@
 
 @property (nonatomic, readonly) CGRect scrollViewFrame;
 @property (nonatomic, readonly) CGFloat scrollViewKeyboardBottomPadding;
-
-@property (nonatomic, readonly) UIView* scrollViewLowestFirstResponder;
-@property (nonatomic, readonly) UIView* scrollViewSubviewFirstResponder;
 
 @end
 
@@ -120,36 +118,7 @@
 
 -(CGFloat)scrollViewContentSizeHeight
 {
-    return CGRectGetMaxY(self.scrollViewLowestFirstResponder.frame);
-}
-
-#pragma mark - Getters
--(UIView *)scrollViewLowestFirstResponder
-{
-    UIView* scrollViewLowestFirstResponder = nil;
-    for (UIView* scrollViewSubview in _scrollView.subviews)
-    {
-        if (!scrollViewLowestFirstResponder ||
-            (CGRectGetMaxY(scrollViewLowestFirstResponder.frame) < CGRectGetMaxY(scrollViewSubview.frame)))
-        {
-            scrollViewLowestFirstResponder = scrollViewSubview;
-        }
-    }
-    
-    return scrollViewLowestFirstResponder;
-}
-
--(UIView *)scrollViewSubviewFirstResponder
-{
-    for (UIView* scrollViewSubview in _scrollView.subviews)
-    {
-        if (scrollViewSubview.isFirstResponder)
-        {
-            return scrollViewSubview;
-        }
-    }
-    
-    return nil;
+    return CGRectGetMaxY(self.scrollView.ruLowestSubview.frame);
 }
 
 #pragma mark - disableKeyboardAdjustment
