@@ -17,6 +17,7 @@ typedef NS_ENUM(NSInteger, RUModalView_TransitionAnimation_Type) {
 
 	RUModalView_TransitionAnimation_Type_Fade,
 	RUModalView_TransitionAnimation_Type_Bottom,
+	RUModalView_TransitionAnimation_Type_Top,
 
 	RUModalView_TransitionAnimation_Type_Default = RUModalView_TransitionAnimation_Type_Fade
 };
@@ -31,13 +32,17 @@ typedef NS_ENUM(NSInteger, RUModalView_TransitionAnimation_Type) {
 @property (nonatomic, readonly) CGRect contentViewFrame;
 @property (nonatomic, readonly) CGFloat contentViewYCoord;
 @property (nonatomic, readonly) CGFloat contentViewHeight;
-@property (nonatomic, readonly) CGFloat contentViewInnerPadding;
 @property (nonatomic, readonly) CGRect innerContentViewFrame;
 
 @property (nonatomic, assign) RUModalView_TransitionAnimation_Type transitionAnimationType;
-@property (nonatomic, readonly) CGRect contentViewFrameForBottomTransition;
+//@property (nonatomic, readonly) CGRect contentViewFrameForBottomTransition;
+-(CGRect)contentViewFrameForNonRestingState;
+-(void)willShowContentView;
+-(void)isShowingContentView;
+-(void)isDismissingContentView;
 
 @property (nonatomic, readonly) UITapGestureRecognizer* tapGestureRecognizer;
+-(void)didTapSelf:(UITapGestureRecognizer*)tap; //Shouldn't be called directly, meant for subclassing.
 
 -(void)showInView:(UIView*)presenterView completion:(void(^)())completion;
 -(void)dismiss:(BOOL)animate completion:(void(^)())completion;

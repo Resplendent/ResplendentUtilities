@@ -14,9 +14,10 @@
 
 @interface RUModalView ()
 
-@property (nonatomic, assign) BOOL isTransitioning;
+@property (nonatomic, readonly) UIView* shadowView;
+@property (nonatomic, readonly) CGRect shadowViewFrame;
 
--(void)didTapSelf:(UITapGestureRecognizer*)tap;
+@property (nonatomic, assign) BOOL isTransitioning;
 
 @end
 
@@ -26,18 +27,24 @@
 
 @implementation RUModalView
 
-@synthesize contentView = _contentView;
-
 -(id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])
     {
-        [self setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7f]];
-
 		[self setTransitionAnimationType:RUModalView_TransitionAnimation_Type_Default];
 
         _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapSelf:)];
         [self addGestureRecognizer:_tapGestureRecognizer];
+
+		_shadowView = [UIView new];
+		[self.shadowView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7f]];
+		[self addSubview:self.shadowView];
+
+		_contentView = [UIView new];
+		[self.contentView setBackgroundColor:[UIColor whiteColor]];
+		[self.contentView.layer setCornerRadius:5.0f];
+		[self.contentView setClipsToBounds:YES];
+		[self addSubview:self.contentView];
     }
 
     return self;
@@ -49,25 +56,13 @@
 
     [self.superview bringSubviewToFront:self];
 
+	[self.shadowView setFrame:self.shadowViewFrame];
+	[self.shadowView.superview sendSubviewToBack:self.shadowView];
+
 	if (_contentView)
 	{
 		[self.contentView setFrame:self.contentViewFrame];
 	}
-}
-
-#pragma mark - Dynamic Loading
--(UIView *)contentView
-{
-	if (_contentView == nil)
-	{
-		_contentView = [UIView new];
-		[_contentView setBackgroundColor:[UIColor whiteColor]];
-		[_contentView.layer setCornerRadius:5.0f];
-		[_contentView setClipsToBounds:YES];
-		[self addSubview:_contentView];
-	}
-
-	return _contentView;
 }
 
 #pragma mark - Action methods
@@ -97,54 +92,13 @@
     [self setFrame:presenterView.bounds];
     [self layoutSubviews];
 
-	[self setAlpha:0.0f];
-
-	switch (self.transitionAnimationType)
-	{
-		case RUModalView_TransitionAnimation_Type_Fade:
-			if (_contentView)
-			{
-				[self.contentView setAlpha:0.0f];
-			}
-			break;
-			
-		case RUModalView_TransitionAnimation_Type_Bottom:
-			if (_contentView)
-			{
-				[self.contentView setFrame:self.contentViewFrameForBottomTransition];
-			}
-			break;
-
-		case RUModalView_TransitionAnimation_Type_None:
-		default:
-			break;
-	}
-
+	[self.contentView setFrame:self.contentViewFrameForNonRestingState];
+	[self willShowContentView];
 
     [UIView animateWithDuration:0.25f animations:^{
 
-		[self setAlpha:1.0f];
-
-		switch (self.transitionAnimationType)
-		{
-			case RUModalView_TransitionAnimation_Type_Fade:
-				if (_contentView)
-				{
-					[self.contentView setAlpha:1.0f];
-				}
-				break;
-				
-			case RUModalView_TransitionAnimation_Type_Bottom:
-				if (_contentView)
-				{
-					[self.contentView setFrame:self.contentViewFrame];
-				}
-				break;
-
-			case RUModalView_TransitionAnimation_Type_None:
-			default:
-				break;
-		}
+		[self.contentView setFrame:self.contentViewFrame];
+		[self isShowingContentView];
 
     } completion:^(BOOL finished) {
 
@@ -170,28 +124,8 @@
 
         [UIView animateWithDuration:0.25f animations:^{
 
-			[self setAlpha:0.0f];
-
-			switch (self.transitionAnimationType)
-			{
-				case RUModalView_TransitionAnimation_Type_Fade:
-					if (_contentView)
-					{
-						[self.contentView setAlpha:0.0f];
-					}
-					break;
-					
-				case RUModalView_TransitionAnimation_Type_Bottom:
-					if (_contentView)
-					{
-						[self.contentView setFrame:self.contentViewFrameForBottomTransition];
-					}
-					break;
-					
-				case RUModalView_TransitionAnimation_Type_None:
-				default:
-					break;
-			}
+			[self.contentView setFrame:self.contentViewFrameForNonRestingState];
+			[self isDismissingContentView];
 
         } completion:^(BOOL finished) {
 
@@ -214,31 +148,29 @@
 }
 
 #pragma mark - Frames
+-(CGRect)shadowViewFrame
+{
+	return self.bounds;
+}
+
 -(CGRect)contentViewFrame
 {
-	static CGFloat const padding = 10.0f;
-
     return (CGRect){
-		.origin.x = padding,
+		.origin.x = 0,
 		.origin.y = self.contentViewYCoord,
-		.size.width = CGRectGetWidth(self.bounds) - (2.0f * padding),
+		.size.width = CGRectGetWidth(self.bounds),
 		.size.height = self.contentViewHeight
     };
 }
 
 -(CGFloat)contentViewYCoord
 {
-    RU_METHOD_OVERLOADED_IMPLEMENTATION_NEEDED_EXCEPTION;
+    return 0;
 }
 
 -(CGFloat)contentViewHeight
 {
-    RU_METHOD_OVERLOADED_IMPLEMENTATION_NEEDED_EXCEPTION;
-}
-
--(CGFloat)contentViewInnerPadding
-{
-    return 10;
+    return CGRectGetHeight(self.bounds);
 }
 
 -(CGRect)innerContentViewFrame
@@ -251,9 +183,73 @@
     return (CGRect){0,yCoord,CGRectGetWidth(contentViewFrame),height};
 }
 
--(CGRect)contentViewFrameForBottomTransition
+-(CGRect)contentViewFrameForNonRestingState
 {
-	return CGRectSetY(CGRectGetHeight(self.bounds), self.contentViewFrame);
+	switch (self.transitionAnimationType)
+	{
+		case RUModalView_TransitionAnimation_Type_Bottom:
+			return CGRectSetY(CGRectGetHeight(self.bounds), self.contentViewFrame);
+
+		case RUModalView_TransitionAnimation_Type_Top:
+		{
+			CGRect contentViewFrame = self.contentViewFrame;
+			return (CGRect){
+				.origin.x = 0,
+				.origin.y = -CGRectGetHeight(contentViewFrame),
+				.size = contentViewFrame.size
+			};
+		}
+
+		default:
+			return self.contentViewFrame;
+			break;
+	}
+}
+
+#pragma mark - Animation
+-(void)willShowContentView
+{
+	[self.shadowView setAlpha:0.0f];
+
+	switch (self.transitionAnimationType)
+	{
+		case RUModalView_TransitionAnimation_Type_Fade:
+			[self.contentView setAlpha:0.0f];
+			break;
+			
+		default:
+			break;
+	}
+}
+
+-(void)isShowingContentView
+{
+	[self.shadowView setAlpha:1.0f];
+
+	switch (self.transitionAnimationType)
+	{
+		case RUModalView_TransitionAnimation_Type_Fade:
+			[self.contentView setAlpha:1.0f];
+			break;
+
+		default:
+			break;
+	}
+}
+
+-(void)isDismissingContentView
+{
+	[self.shadowView setAlpha:0.0f];
+
+	switch (self.transitionAnimationType)
+	{
+		case RUModalView_TransitionAnimation_Type_Fade:
+			[self.contentView setAlpha:0.0f];
+			break;
+
+		default:
+			break;
+	}
 }
 
 @end

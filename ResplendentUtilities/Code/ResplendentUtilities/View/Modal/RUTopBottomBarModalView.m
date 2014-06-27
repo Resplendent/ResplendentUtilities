@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Resplendent G.P.. All rights reserved.
 //
 
-#import "RUContentModalView.h"
+#import "RUTopBottomBarModalView.h"
 #import "UIView+RUUtility.h"
 #import "UIFont+RUConstants.h"
 #import "RUConstants.h"
@@ -29,7 +29,7 @@ CGFloat const kPAContentModalViewBottomBarButtonHeight = 30.0f;
 
 
 
-@interface RUContentModalView ()
+@interface RUTopBottomBarModalView ()
 
 @property (nonatomic, readonly) Class _topBarLabelClass;
 @property (nonatomic, readonly) Class _bottomBarLabelClass;
@@ -40,7 +40,7 @@ CGFloat const kPAContentModalViewBottomBarButtonHeight = 30.0f;
 
 
 
-@implementation RUContentModalView
+@implementation RUTopBottomBarModalView
 
 #pragma mark - UIView
 -(id)initWithFrame:(CGRect)frame
@@ -204,8 +204,8 @@ CGFloat const kPAContentModalViewBottomBarButtonHeight = 30.0f;
 
 -(CGRect)topBarLabelFrame
 {
-    CGFloat contentViewInnerPadding = self.contentViewInnerPadding;
-    return (CGRect){contentViewInnerPadding,0,self.topBarLabelRightBoundary - contentViewInnerPadding,self.topBarHeight};
+    CGFloat contentViewHorizontalInnerPadding = self.contentViewHorizontalInnerPadding;
+    return (CGRect){contentViewHorizontalInnerPadding,0,self.topBarLabelRightBoundary - contentViewHorizontalInnerPadding,self.topBarHeight};
 }
 
 -(CGFloat)topBarLabelRightBoundary
@@ -217,9 +217,10 @@ CGFloat const kPAContentModalViewBottomBarButtonHeight = 30.0f;
 {
     CGFloat topBarButtonWidth = self.topBarButtonWidth;
     return (CGRect){
-        CGRectGetWidth(self.contentViewFrame) - topBarButtonWidth - self.contentViewInnerPadding,
-        CGRectGetVerticallyAlignedYCoordForHeightOnHeight(kPAContentModalViewTopBarButtonHeight, self.topBarHeight),
-        topBarButtonWidth,kPAContentModalViewTopBarButtonHeight
+        .origin.x = CGRectGetWidth(self.contentViewFrame) - topBarButtonWidth - self.contentViewHorizontalInnerPadding,
+        .origin.y = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(kPAContentModalViewTopBarButtonHeight, self.topBarHeight),
+        .size.width = topBarButtonWidth,
+		.size.height = kPAContentModalViewTopBarButtonHeight
     };
 }
 
@@ -334,8 +335,8 @@ CGFloat const kPAContentModalViewBottomBarButtonHeight = 30.0f;
 
 -(CGRect)bottomBarLabelFrame
 {
-    CGFloat contentViewInnerPadding = self.contentViewInnerPadding;
-    return (CGRect){contentViewInnerPadding,0,self.bottomBarLabelRightBoundary - contentViewInnerPadding,self.bottomBarHeight};
+    CGFloat contentViewHorizontalInnerPadding = self.contentViewHorizontalInnerPadding;
+    return (CGRect){contentViewHorizontalInnerPadding,0,self.bottomBarLabelRightBoundary - contentViewHorizontalInnerPadding,self.bottomBarHeight};
 }
 
 -(CGFloat)bottomBarLabelRightBoundary
@@ -347,7 +348,7 @@ CGFloat const kPAContentModalViewBottomBarButtonHeight = 30.0f;
 {
     CGFloat bottomBarButtonWidth = self.bottomBarButtonWidth;
     return (CGRect){
-        CGRectGetWidth(self.contentViewFrame) - bottomBarButtonWidth - self.contentViewInnerPadding,
+        CGRectGetWidth(self.contentViewFrame) - bottomBarButtonWidth - self.contentViewHorizontalInnerPadding,
         CGRectGetVerticallyAlignedYCoordForHeightOnHeight(kPAContentModalViewBottomBarButtonHeight, self.bottomBarHeight),
         bottomBarButtonWidth,kPAContentModalViewBottomBarButtonHeight
     };
@@ -372,6 +373,12 @@ CGFloat const kPAContentModalViewBottomBarButtonHeight = 30.0f;
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
     return !CGRectContainsPoint(self.contentViewFrame, [touch locationInView:self]);
+}
+
+#pragma mark - Frames
+-(CGFloat)contentViewHorizontalInnerPadding
+{
+    return 10;
 }
 
 #pragma mark - RUModalView Frames
