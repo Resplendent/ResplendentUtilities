@@ -9,8 +9,8 @@
 #import "RUTextFieldCustomizablePlaceholder.h"
 #import "UIView+RUUtility.h"
 #import "RUSystemVersionUtils.h"
-
 #import "RUConstants.h"
+#import "UITextField+RUAttributes.h"
 
 
 
@@ -87,9 +87,25 @@
 		}
 
 		[textColor setFill];
-		
-		[[self placeholder] drawInRect:rect withFont:textFont lineBreakMode:NSLineBreakByWordWrapping alignment:self.textAlignment];
+
+		if ([[self placeholder] respondsToSelector:@selector(drawInRect:withAttributes:)])
+		{
+			[[self placeholder] drawInRect:rect withAttributes:self.placeholderAttributes];
+		}
+		else
+		{
+#pragma clang diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated"
+			[[self placeholder] drawInRect:rect withFont:textFont lineBreakMode:NSLineBreakByWordWrapping alignment:self.textAlignment];
+#pragma clang diagnostic pop
+		}
 	}
+}
+
+-(CGRect)leftViewRectForBounds:(CGRect)bounds
+{
+	CGRect leftViewRect = [super leftViewRectForBounds:bounds];
+	return UIEdgeInsetsInsetRect(leftViewRect, self.leftViewInsets);
 }
 
 #pragma mark - Getters
@@ -149,5 +165,57 @@
 //
 //    [self setNeedsDisplay];
 //}
+
+-(void)setTextInsets:(UIEdgeInsets)textInsets
+{
+	if (UIEdgeInsetsEqualToEdgeInsets(self.textInsets, textInsets))
+	{
+		return;
+	}
+	
+	_textInsets = textInsets;
+	
+	[self setNeedsDisplay];
+}
+
+-(void)setPlaceholderTextInsets:(UIEdgeInsets)placeholderTextInsets
+{
+	if (UIEdgeInsetsEqualToEdgeInsets(self.placeholderTextInsets, placeholderTextInsets))
+	{
+		return;
+	}
+	
+	_placeholderTextInsets = placeholderTextInsets;
+	
+	[self setNeedsDisplay];
+}
+
+-(void)setLeftViewInsets:(UIEdgeInsets)leftViewInsets
+{
+	if (UIEdgeInsetsEqualToEdgeInsets(self.leftViewInsets, leftViewInsets))
+	{
+		return;
+	}
+	
+	_leftViewInsets = leftViewInsets;
+	
+	[self setNeedsDisplay];
+}
+
+#pragma mark - Attributes
+-(NSParagraphStyle*)placeholderParagraphStyle
+{
+	return self.ruParagraphStyle;
+}
+
+-(NSDictionary*)placeholderAttributes
+{
+	return @{
+			 NSFontAttributeName: self._placeholderFont,
+			 NSForegroundColorAttributeName: self._placeholderTextColor,
+			 NSParagraphStyleAttributeName: self.placeholderParagraphStyle
+			 };
+}
+
 
 @end

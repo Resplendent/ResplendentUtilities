@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Resplendent G.P.. All rights reserved.
 //
 
-#import "RUContentModalView.h"
+#import "RUTopBottomBarModalView.h"
 #import "UIView+RUUtility.h"
 #import "UIFont+RUConstants.h"
 #import "RUConstants.h"
@@ -19,21 +19,17 @@
 
 
 
-CGFloat const kPAContentModalViewContentViewWidth = 300.0f;
-
 CGFloat const kPAContentModalViewTopBarHeight = 50.0f;
 CGFloat const kPAContentModalViewTopBarButtonHeight = 30.0f;
 
 CGFloat const kPAContentModalViewBottomBarHeight = 50.0f;
 CGFloat const kPAContentModalViewBottomBarButtonHeight = 30.0f;
 
-CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 
 
 
 
-
-@interface RUContentModalView ()
+@interface RUTopBottomBarModalView ()
 
 @property (nonatomic, readonly) Class _topBarLabelClass;
 @property (nonatomic, readonly) Class _bottomBarLabelClass;
@@ -44,7 +40,7 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 
 
 
-@implementation RUContentModalView
+@implementation RUTopBottomBarModalView
 
 #pragma mark - UIView
 -(id)initWithFrame:(CGRect)frame
@@ -52,12 +48,6 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
     if (self = [super initWithFrame:frame])
     {
         [self.tapGestureRecognizer setDelegate:self];
-
-        _contentView = [UIView new];
-        [_contentView setBackgroundColor:[UIColor whiteColor]];
-        [_contentView.layer setCornerRadius:5.0f];
-        [_contentView setClipsToBounds:YES];
-        [self addSubview:_contentView];
     }
     
     return self;
@@ -66,7 +56,6 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    [_contentView setFrame:self.contentViewFrame];
 
 	//Top Bar
     if (self.topBar)
@@ -122,45 +111,6 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 	return (self.bottomBarLabelClass ?: [UILabel class]);
 }
 
-#pragma mark - Content View
--(CGRect)contentViewFrame
-{
-    return (CGRect){
-        CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(kPAContentModalViewContentViewWidth, CGRectGetWidth(self.bounds)),
-        self.contentViewYCoord,kPAContentModalViewContentViewWidth,self.contentViewHeight
-    };
-}
-
--(CGFloat)contentViewYCoord
-{
-    RU_METHOD_OVERLOADED_IMPLEMENTATION_NEEDED_EXCEPTION;
-}
-
--(CGFloat)contentViewHeight
-{
-    RU_METHOD_OVERLOADED_IMPLEMENTATION_NEEDED_EXCEPTION;
-}
-
--(CGFloat)contentViewInnerPadding
-{
-    return kPAContentModalViewContentViewInnerHorizontalPadding;
-}
-
--(CGRect)innerContentViewFrame
-{
-    CGFloat yCoord = 0;
-    
-    if (_topBar)
-    {
-        yCoord = CGRectGetMaxY(self.topBarFrame);
-    }
-    
-    CGRect contentViewFrame = self.contentViewFrame;
-    CGFloat height = (_bottomBar ? CGRectGetMinY(self.bottomBarFrame) : CGRectGetHeight(contentViewFrame)) - yCoord;
-
-    return (CGRect){0,yCoord,CGRectGetWidth(contentViewFrame),height};
-}
-
 #pragma mark - Top Bar
 -(BOOL)enableTopBar
 {
@@ -180,7 +130,7 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         if (!_topBar)
         {
             _topBar = [UIView new];
-            [_contentView addSubview:_topBar];
+            [self.contentView addSubview:self.topBar];
             [self setNeedsLayout];
         }
         
@@ -254,8 +204,8 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 
 -(CGRect)topBarLabelFrame
 {
-    CGFloat contentViewInnerPadding = self.contentViewInnerPadding;
-    return (CGRect){contentViewInnerPadding,0,self.topBarLabelRightBoundary - contentViewInnerPadding,self.topBarHeight};
+    CGFloat contentViewHorizontalInnerPadding = self.contentViewHorizontalInnerPadding;
+    return (CGRect){contentViewHorizontalInnerPadding,0,self.topBarLabelRightBoundary - contentViewHorizontalInnerPadding,self.topBarHeight};
 }
 
 -(CGFloat)topBarLabelRightBoundary
@@ -267,9 +217,10 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 {
     CGFloat topBarButtonWidth = self.topBarButtonWidth;
     return (CGRect){
-        CGRectGetWidth(self.contentViewFrame) - topBarButtonWidth - self.contentViewInnerPadding,
-        CGRectGetVerticallyAlignedYCoordForHeightOnHeight(kPAContentModalViewTopBarButtonHeight, self.topBarHeight),
-        topBarButtonWidth,kPAContentModalViewTopBarButtonHeight
+        .origin.x = CGRectGetWidth(self.contentViewFrame) - topBarButtonWidth - self.contentViewHorizontalInnerPadding,
+        .origin.y = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(kPAContentModalViewTopBarButtonHeight, self.topBarHeight),
+        .size.width = topBarButtonWidth,
+		.size.height = kPAContentModalViewTopBarButtonHeight
     };
 }
 
@@ -308,7 +259,7 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         if (!_bottomBar)
         {
             _bottomBar = [UIView new];
-            [_contentView addSubview:_bottomBar];
+            [self.contentView addSubview:self.bottomBar];
             [self setNeedsLayout];
         }
         
@@ -384,8 +335,8 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 
 -(CGRect)bottomBarLabelFrame
 {
-    CGFloat contentViewInnerPadding = self.contentViewInnerPadding;
-    return (CGRect){contentViewInnerPadding,0,self.bottomBarLabelRightBoundary - contentViewInnerPadding,self.bottomBarHeight};
+    CGFloat contentViewHorizontalInnerPadding = self.contentViewHorizontalInnerPadding;
+    return (CGRect){contentViewHorizontalInnerPadding,0,self.bottomBarLabelRightBoundary - contentViewHorizontalInnerPadding,self.bottomBarHeight};
 }
 
 -(CGFloat)bottomBarLabelRightBoundary
@@ -397,7 +348,7 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 {
     CGFloat bottomBarButtonWidth = self.bottomBarButtonWidth;
     return (CGRect){
-        CGRectGetWidth(self.contentViewFrame) - bottomBarButtonWidth - self.contentViewInnerPadding,
+        CGRectGetWidth(self.contentViewFrame) - bottomBarButtonWidth - self.contentViewHorizontalInnerPadding,
         CGRectGetVerticallyAlignedYCoordForHeightOnHeight(kPAContentModalViewBottomBarButtonHeight, self.bottomBarHeight),
         bottomBarButtonWidth,kPAContentModalViewBottomBarButtonHeight
     };
@@ -422,6 +373,29 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
     return !CGRectContainsPoint(self.contentViewFrame, [touch locationInView:self]);
+}
+
+#pragma mark - Frames
+-(CGFloat)contentViewHorizontalInnerPadding
+{
+    return 10;
+}
+
+#pragma mark - RUModalView Frames
+-(CGRect)innerContentViewFrame
+{
+	CGRect innerContentViewFrame = [super innerContentViewFrame];
+
+	CGFloat bottom = (self.bottomBar ? CGRectGetMinY(self.bottomBarFrame) : CGRectGetMaxY(innerContentViewFrame));
+
+    if (self.topBar)
+    {
+		innerContentViewFrame.origin.y = CGRectGetMaxY(self.topBarFrame);
+    }
+
+	innerContentViewFrame.size.height = bottom - CGRectGetMinY(innerContentViewFrame);
+
+	return innerContentViewFrame;
 }
 
 @end

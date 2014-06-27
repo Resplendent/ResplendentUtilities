@@ -24,15 +24,9 @@ extern CGFloat const kPAContentModalViewTopBarButtonHeight;
 
 
 
-@interface RUContentModalView : RUModalView <UIGestureRecognizerDelegate>
+@interface RUTopBottomBarModalView : RUModalView <UIGestureRecognizerDelegate>
 
-@property (nonatomic, readonly) UIView* contentView;
-@property (nonatomic, readonly) CGRect contentViewFrame;
-@property (nonatomic, readonly) CGFloat contentViewYCoord;
-@property (nonatomic, readonly) CGFloat contentViewHeight;
-@property (nonatomic, readonly) CGFloat contentViewInnerPadding;
-
-@property (nonatomic, readonly) CGRect innerContentViewFrame;
+@property (nonatomic, readonly) CGFloat contentViewHorizontalInnerPadding;
 
 //++++ Top Bar
 @property (nonatomic, assign) BOOL enableTopBar;

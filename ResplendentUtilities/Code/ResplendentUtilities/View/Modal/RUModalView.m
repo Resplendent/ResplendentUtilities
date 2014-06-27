@@ -14,7 +14,10 @@
 
 @interface RUModalView ()
 
--(void)didTapSelf:(UITapGestureRecognizer*)tap;
+@property (nonatomic, readonly) UIView* shadowView;
+@property (nonatomic, readonly) CGRect shadowViewFrame;
+
+@property (nonatomic, assign) BOOL isTransitioning;
 
 @end
 
@@ -28,10 +31,20 @@
 {
     if (self = [super initWithFrame:frame])
     {
-        [self setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7f]];
+		[self setTransitionAnimationType:RUModalView_TransitionAnimation_Type_Default];
 
         _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapSelf:)];
         [self addGestureRecognizer:_tapGestureRecognizer];
+
+		_shadowView = [UIView new];
+		[self.shadowView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7f]];
+		[self addSubview:self.shadowView];
+
+		_contentView = [UIView new];
+		[self.contentView setBackgroundColor:[UIColor whiteColor]];
+		[self.contentView.layer setCornerRadius:5.0f];
+		[self.contentView setClipsToBounds:YES];
+		[self addSubview:self.contentView];
     }
 
     return self;
@@ -42,6 +55,14 @@
     [super layoutSubviews];
 
     [self.superview bringSubviewToFront:self];
+
+	[self.shadowView setFrame:self.shadowViewFrame];
+	[self.shadowView.superview sendSubviewToBack:self.shadowView];
+
+	if (_contentView)
+	{
+		[self.contentView setFrame:self.contentViewFrame];
+	}
 }
 
 #pragma mark - Action methods
@@ -53,37 +74,72 @@
 #pragma mark - Public Display Content methods
 -(void)showInView:(UIView*)presenterView completion:(void(^)())completion
 {
-    if (!presenterView)
-        [NSException raise:NSInvalidArgumentException format:@"Must pass a non nil presenterView"];
+    if (presenterView == nil)
+	{
+		NSAssert(FALSE, @"Must pass a non nil presenterView");
+		return;
+	}
 
-    [self setFrame:presenterView.bounds];
+	if (self.isTransitioning)
+	{
+		NSAssert(FALSE, @"already transitioning");
+		return;
+	}
+
+	[self setIsTransitioning:YES];
+
     [presenterView addSubview:self];
-    [self setNeedsLayout];
-    [self setAlpha:0.0f];
+    [self setFrame:presenterView.bounds];
+    [self layoutSubviews];
+
+	[self.contentView setFrame:self.contentViewFrameForNonRestingState];
+	[self willShowContentView];
 
     [UIView animateWithDuration:0.25f animations:^{
-        [self setAlpha:1.0f];
+
+		[self.contentView setFrame:self.contentViewFrame];
+		[self isShowingContentView];
+
     } completion:^(BOOL finished) {
+
+		[self setIsTransitioning:NO];
+
         if (completion)
             completion();
+
     }];
 }
 
 -(void)dismiss:(BOOL)animate completion:(void(^)())completion
 {
+	if (self.isTransitioning)
+	{
+		NSAssert(FALSE, @"already transitioning");
+		return;
+	}
+
     if (animate)
     {
+		[self setIsTransitioning:YES];
+
         [UIView animateWithDuration:0.25f animations:^{
-            [self setAlpha:0.0f];
+
+			[self.contentView setFrame:self.contentViewFrameForNonRestingState];
+			[self isDismissingContentView];
+
         } completion:^(BOOL finished) {
+
+			[self setIsTransitioning:NO];
+
             [self removeFromSuperview];
+
             if (completion)
                 completion();
+
         }];
     }
     else
     {
-        [self setAlpha:0.0f];
         [self removeFromSuperview];
 
         if (completion)
@@ -91,5 +147,109 @@
     }
 }
 
-@end
+#pragma mark - Frames
+-(CGRect)shadowViewFrame
+{
+	return self.bounds;
+}
 
+-(CGRect)contentViewFrame
+{
+    return (CGRect){
+		.origin.x = 0,
+		.origin.y = self.contentViewYCoord,
+		.size.width = CGRectGetWidth(self.bounds),
+		.size.height = self.contentViewHeight
+    };
+}
+
+-(CGFloat)contentViewYCoord
+{
+    return 0;
+}
+
+-(CGFloat)contentViewHeight
+{
+    return CGRectGetHeight(self.bounds);
+}
+
+-(CGRect)innerContentViewFrame
+{
+    CGFloat yCoord = 0;
+    
+    CGRect contentViewFrame = self.contentViewFrame;
+    CGFloat height = CGRectGetHeight(contentViewFrame) - yCoord;
+	
+    return (CGRect){0,yCoord,CGRectGetWidth(contentViewFrame),height};
+}
+
+-(CGRect)contentViewFrameForNonRestingState
+{
+	switch (self.transitionAnimationType)
+	{
+		case RUModalView_TransitionAnimation_Type_Bottom:
+			return CGRectSetY(CGRectGetHeight(self.bounds), self.contentViewFrame);
+
+		case RUModalView_TransitionAnimation_Type_Top:
+		{
+			CGRect contentViewFrame = self.contentViewFrame;
+			return (CGRect){
+				.origin.x = 0,
+				.origin.y = -CGRectGetHeight(contentViewFrame),
+				.size = contentViewFrame.size
+			};
+		}
+
+		default:
+			return self.contentViewFrame;
+			break;
+	}
+}
+
+#pragma mark - Animation
+-(void)willShowContentView
+{
+	[self.shadowView setAlpha:0.0f];
+
+	switch (self.transitionAnimationType)
+	{
+		case RUModalView_TransitionAnimation_Type_Fade:
+			[self.contentView setAlpha:0.0f];
+			break;
+			
+		default:
+			break;
+	}
+}
+
+-(void)isShowingContentView
+{
+	[self.shadowView setAlpha:1.0f];
+
+	switch (self.transitionAnimationType)
+	{
+		case RUModalView_TransitionAnimation_Type_Fade:
+			[self.contentView setAlpha:1.0f];
+			break;
+
+		default:
+			break;
+	}
+}
+
+-(void)isDismissingContentView
+{
+	[self.shadowView setAlpha:0.0f];
+
+	switch (self.transitionAnimationType)
+	{
+		case RUModalView_TransitionAnimation_Type_Fade:
+			[self.contentView setAlpha:0.0f];
+			break;
+
+		default:
+			break;
+	}
+}
+
+@end
