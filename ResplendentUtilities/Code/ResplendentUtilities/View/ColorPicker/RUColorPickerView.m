@@ -73,7 +73,7 @@ NSString* const kRUColorPickerViewCollectionViewReuseIdentifierRUColorPickerCell
     }
     else
     {
-        RUDLog(@"Should set a number of rows");
+		NSAssert(FALSE, @"Must set a number of rows");
         return CGSizeZero;
     }
 }
@@ -88,7 +88,7 @@ NSString* const kRUColorPickerViewCollectionViewReuseIdentifierRUColorPickerCell
     }
     else
     {
-        RUDLog(@"Should set a number of rows");
+		NSAssert(FALSE, @"Must set a number of rows");
         return 0;
     }
 }
