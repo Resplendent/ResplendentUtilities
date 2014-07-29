@@ -7,6 +7,7 @@
 //
 
 #import "RUModalView.h"
+#import "UIView+RUCancelControlTracking.h"
 #import "UIView+RUUtility.h"
 
 
@@ -88,6 +89,9 @@
 	}
 
 	[self setIsTransitioning:YES];
+
+	[presenterView ruEndAllControlTrackingWithTouch:nil event:nil];
+	[presenterView ruCancelAllControlTrackingWithEvent:nil];
 
     [presenterView addSubview:self];
     [self setFrame:presenterView.bounds];
