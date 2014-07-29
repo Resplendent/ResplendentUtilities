@@ -149,6 +149,6 @@
 }
 
 #pragma mark - Singleton
-CMRASingletonUtil_Synthesize_Singleton_Implementation(sharedInstance);
+RUSingletonUtil_Synthesize_Singleton_Implementation_SharedInstance
 
 @end
