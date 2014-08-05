@@ -15,5 +15,6 @@
 @interface UILabel (RUTextSize)
 
 -(CGSize)ruTextSizeConstrainedToWidth:(CGFloat)width;
+-(CGSize)ruTextSize;
 
 @end

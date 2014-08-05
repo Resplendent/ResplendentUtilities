@@ -35,4 +35,9 @@
 	}
 }
 
+-(CGSize)ruTextSize
+{
+	return [self ruTextSizeConstrainedToWidth:CGFLOAT_MAX];
+}
+
 @end
