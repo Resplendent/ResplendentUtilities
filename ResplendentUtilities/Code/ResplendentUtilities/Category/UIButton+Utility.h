@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 Resplendent G.P.. All rights reserved.
 //
 
-#import "UILabel+Utility.h"
 #import "UIView+RUUtility.h"
 
 extern void setButtonSizeToImageAndCoordinates(UIButton* button, CGFloat xCoord, CGFloat yCoord);
