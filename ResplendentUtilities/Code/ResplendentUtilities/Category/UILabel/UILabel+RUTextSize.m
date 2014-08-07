@@ -8,6 +8,7 @@
 
 #import "UILabel+RUTextSize.h"
 #import "RUAttributesDictionaryBuilder.h"
+#import "NSString+RUTextSize.h"
 
 
 
@@ -21,10 +22,7 @@
 	{
 		RUAttributesDictionaryBuilder* attributesDictionaryBuilder = [RUAttributesDictionaryBuilder new];
 		[attributesDictionaryBuilder absorbPropertiesFromLabel:self];
-		CGSize textSize = CGSizeMake(width, CGFLOAT_MAX);
-		CGRect textBoundingRect = [self.text boundingRectWithSize:textSize options:NSStringDrawingUsesLineFragmentOrigin attributes:[attributesDictionaryBuilder createAttributesDictionary] context:nil];
-		
-		return (CGSize){.width = CGRectGetMaxX(textBoundingRect),.height = CGRectGetMaxY(textBoundingRect)};
+		return [self.text textSizeWithBoundingWidth:width attributes:[attributesDictionaryBuilder createAttributesDictionary]];
 	}
 	else
 	{

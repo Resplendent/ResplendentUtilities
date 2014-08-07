@@ -38,6 +38,8 @@
 #define CGRectSetFrameWithVerticallyAlignedYCoordOnRect(x,width,height,onRect) CGRectSetFrameWithVerticallyAlignedYCoordOnHeight(x,width,height,CGRectGetHeight(onRect))
 #define CGRectSetFrameWithVerticallyAlignedYCoordOnView(x,width,height,onView) CGRectSetFrameWithVerticallyAlignedYCoordOnRect(x,width,height,onView.frame)
 
+#define CGRectSizeThatFitsRect(rect) ((CGSize){.width = CGRectGetMaxX(rect),.height = CGRectGetMaxY(rect)})
+
 #pragma mark Set origin methods
 CG_INLINE void setCoords(UIView* view,CGFloat xCoord,CGFloat yCoord)
 {
