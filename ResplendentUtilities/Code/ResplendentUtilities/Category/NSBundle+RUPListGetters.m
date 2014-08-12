@@ -24,4 +24,9 @@
 	return [self objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
 }
 
+-(NSString *)ruFacebookAppID
+{
+	return [self objectForInfoDictionaryKey:@"FacebookAppID"];
+}
+
 @end
