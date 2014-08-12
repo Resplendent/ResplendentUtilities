@@ -17,4 +17,6 @@
 -(NSString*)ruCFBundleShortVersionString;
 -(NSString*)ruCFBundleVersionString;
 
+-(NSString*)ruFacebookAppID;
+
 @end
