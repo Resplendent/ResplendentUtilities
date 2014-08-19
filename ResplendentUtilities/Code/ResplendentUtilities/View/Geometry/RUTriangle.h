@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+
+
+
+
 typedef enum{
     RUTriangleOrientationUp,
     RUTriangleOrientationDown,
@@ -15,10 +19,15 @@ typedef enum{
     RUTriangleOrientationRight,
 }RUTriangleOrientation;
 
+
+
+
+
 @interface RUTriangle : UIView
 
-@property (nonatomic, assign) BOOL fillTriangle;
-@property (nonatomic, strong) UIColor* color;
+@property (nonatomic, strong) UIColor* triangleBorderColor;
+@property (nonatomic, assign) BOOL enableOpenTriangle;
+@property (nonatomic, assign) UIColor* fillTriangleColor; //if nil, no filling will happen
 @property (nonatomic, assign) RUTriangleOrientation orientation;
 
 -(void)drawTrianglePathInRect:(CGRect)rect withContent:(CGContextRef)context;

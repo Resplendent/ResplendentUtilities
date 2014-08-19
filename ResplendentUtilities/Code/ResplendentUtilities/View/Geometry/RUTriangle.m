@@ -8,11 +8,19 @@
 
 #import "RUTriangle.h"
 
+
+
+
+
 @interface RUTriangle ()
 
 -(void)drawTriangleAndColorInRect:(CGRect)rect;
 
 @end
+
+
+
+
 
 @implementation RUTriangle
 
@@ -26,6 +34,8 @@
 #pragma mark - Drawing
 -(void)drawTrianglePathInRect:(CGRect)rect withContent:(CGContextRef)context
 {
+	CGContextBeginPath(context);
+
     switch (self.orientation)
     {
         case RUTriangleOrientationRight:
@@ -52,39 +62,50 @@
             CGContextAddLineToPoint(context, CGRectGetMaxX(rect), CGRectGetMaxY(rect));  // bottom right
             break;
     }
+
+	if (self.enableOpenTriangle == false)
+	{
+		CGContextClosePath(context);
+	}
 }
 
 -(void)drawTriangleAndColorInRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
 
-    CGContextBeginPath(context);
-
     [self drawTrianglePathInRect:rect withContent:context];
+	CGContextSetStrokeColorWithColor(context, self.triangleBorderColor.CGColor);
+	CGContextStrokePath(context);
 
-    CGContextClosePath(context);
-
-    if (self.fillTriangle)
+    if (self.fillTriangleColor)
     {
-        CGContextSetFillColorWithColor(context, self.color.CGColor);
+		[self drawTrianglePathInRect:rect withContent:context];
+        CGContextSetFillColorWithColor(context, self.fillTriangleColor.CGColor);
         CGContextFillPath(context);
-    }
-    else
-    {
-        CGContextSetStrokeColorWithColor(context, self.color.CGColor);
-        CGContextStrokePath(context);
     }
 }
 
 #pragma mark - Setters
--(void)setColor:(UIColor *)color
+-(void)setTriangleBorderColor:(UIColor *)triangleBorderColor
 {
-    if (self.color == color)
+    if (self.triangleBorderColor == triangleBorderColor)
         return;
 
-    _color = color;
+    _triangleBorderColor = triangleBorderColor;
 
     [self setNeedsDisplay];
+}
+
+-(void)setFillTriangleColor:(UIColor *)fillTriangleColor
+{
+	if (self.fillTriangleColor == fillTriangleColor)
+	{
+		return;
+	}
+
+	_fillTriangleColor = fillTriangleColor;
+
+	[self setNeedsDisplay];
 }
 
 -(void)setOrientation:(RUTriangleOrientation)orientation
