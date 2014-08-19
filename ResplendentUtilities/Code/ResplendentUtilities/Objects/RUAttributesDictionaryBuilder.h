@@ -18,6 +18,7 @@
 @property (nonatomic, assign) NSLineBreakMode lineBreakMode;
 
 -(void)absorbPropertiesFromLabel:(UILabel*)label;
+-(void)absorbPropertiesFromButton:(UIButton*)button;
 
 -(NSDictionary*)createAttributesDictionary;
 

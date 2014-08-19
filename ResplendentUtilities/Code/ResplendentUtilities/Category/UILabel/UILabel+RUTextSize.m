@@ -18,7 +18,8 @@
 
 -(CGSize)ruTextSizeConstrainedToWidth:(CGFloat)width
 {
-	if ([self.text respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)])
+	if (([self.text respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) &&
+		([self.text respondsToSelector:@selector(textSizeWithBoundingWidth:attributes:)]))
 	{
 		RUAttributesDictionaryBuilder* attributesDictionaryBuilder = [RUAttributesDictionaryBuilder new];
 		[attributesDictionaryBuilder absorbPropertiesFromLabel:self];
