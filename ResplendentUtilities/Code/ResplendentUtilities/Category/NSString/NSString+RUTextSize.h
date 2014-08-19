@@ -14,6 +14,6 @@
 
 @interface NSString (RUTextSize)
 
-- (CGSize)textSizeWithBoundingWidth:(CGFloat)boundingWidth attributes:(NSDictionary *)attributes;
+- (CGSize)textSizeWithBoundingWidth:(CGFloat)boundingWidth attributes:(NSDictionary *)attributes NS_AVAILABLE_IOS(7_0);
 
 @end
