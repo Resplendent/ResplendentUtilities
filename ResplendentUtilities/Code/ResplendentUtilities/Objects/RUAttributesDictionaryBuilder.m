@@ -22,6 +22,12 @@
 	[self setLineBreakMode:label.lineBreakMode];
 }
 
+-(void)absorbPropertiesFromButton:(UIButton*)button
+{
+	[self absorbPropertiesFromLabel:button.titleLabel];
+}
+
+#pragma mark - Create Attributes Dictionary
 -(NSDictionary*)createAttributesDictionary
 {
 	NSMutableDictionary* attributesDictionary = [NSMutableDictionary dictionary];
