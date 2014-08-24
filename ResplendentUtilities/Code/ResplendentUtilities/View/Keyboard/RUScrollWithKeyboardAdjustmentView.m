@@ -8,6 +8,9 @@
 
 #import "RUScrollWithKeyboardAdjustmentView.h"
 #import "RUKeyboardAdjustmentHelper.h"
+#import "UIView+RUEnableTapToResignFirstResponder.h"
+#import "UIView+RUSubviews.h"
+#import "RUClassOrNilUtil.h"
 
 
 
@@ -18,9 +21,6 @@
 @property (nonatomic, readonly) CGRect scrollViewFrame;
 @property (nonatomic, readonly) CGFloat scrollViewKeyboardBottomPadding;
 
-@property (nonatomic, readonly) UIView* scrollViewLowestSubview;
-@property (nonatomic, readonly) UIView* scrollViewSubviewFirstResponder;
-
 @end
 
 
@@ -30,13 +30,32 @@
 
 @implementation RUScrollWithKeyboardAdjustmentView
 
+#pragma mark - RUScrollWithKeyboardAdjustmentView
+-(id)initWithScrollView:(UIScrollView*)scrollView
+{
+	if (kRUClassOrNil(scrollView, UIScrollView) == FALSE)
+	{
+		NSAssert(FALSE, @"Must pass a scroll view");
+		return nil;
+	}
+
+	_scrollView = scrollView;
+
+	return (self = [self init]);
+}
+
+#pragma mark - UIView
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])
     {
-        _scrollView = [UIScrollView new];
-        [_scrollView setBackgroundColor:[UIColor clearColor]];
-        [_scrollView setShowsVerticalScrollIndicator:NO];
+		if (self.scrollView == nil)
+		{
+			_scrollView = [UIScrollView new];
+			[_scrollView setBackgroundColor:[UIColor clearColor]];
+			[_scrollView setShowsVerticalScrollIndicator:NO];
+		}
+
         [self addSubview:_scrollView];
         
         _keyboardHelper = [RUKeyboardAdjustmentHelper new];
@@ -51,7 +70,11 @@
 {
     [super layoutSubviews];
     [_scrollView setFrame:self.scrollViewFrame];
-    [_scrollView setContentSize:self.scrollViewContentSize];
+
+	if (kRUClassOrNil(self.scrollView, UITableView) == FALSE)
+	{
+		[self.scrollView setContentSize:self.scrollViewContentSize];
+	}
 }
 
 #pragma mark - Public
@@ -96,60 +119,47 @@
 
 -(CGFloat)scrollViewContentSizeHeight
 {
-    return CGRectGetMaxY(self.scrollViewLowestSubview.frame);
+    return CGRectGetMaxY(self.scrollView.ruLowestSubview.frame) + self.scrollViewBottomPadding;
 }
 
-#pragma mark - Getters
--(UIView *)scrollViewLowestSubview
+#pragma mark - disableKeyboardAdjustment
+-(BOOL)disableKeyboardAdjustment
 {
-    UIView* scrollViewLowestFirstResponder = nil;
-    for (UIView* scrollViewSubview in _scrollView.subviews)
-    {
-        if (!scrollViewLowestFirstResponder ||
-            (CGRectGetMaxY(scrollViewLowestFirstResponder.frame) < CGRectGetMaxY(scrollViewSubview.frame)))
-        {
-            scrollViewLowestFirstResponder = scrollViewSubview;
-        }
-    }
-    
-    return scrollViewLowestFirstResponder;
+	return (_keyboardHelper.delegate == self);
 }
 
--(UIView *)scrollViewSubviewFirstResponder
+-(void)setDisableKeyboardAdjustment:(BOOL)disableKeyboardAdjustment
 {
-    for (UIView* scrollViewSubview in _scrollView.subviews)
-    {
-        if (scrollViewSubview.isFirstResponder)
-        {
-            return scrollViewSubview;
-        }
-    }
-    
-    return nil;
+	if (self.disableKeyboardAdjustment == disableKeyboardAdjustment)
+		return;
+
+	[_keyboardHelper setDelegate:(disableKeyboardAdjustment ? self : nil)];
 }
 
 #pragma mark - RUKeyboardAdjustmentHelperDelegate
 -(void)keyboardAdjustmentHelper:(RUKeyboardAdjustmentHelper *)keyboardAdjustmentHelper willShowWithAnimationDuration:(NSTimeInterval)animationDuration
 {
-    [UIView animateWithDuration:animationDuration animations:^{
-        [self layoutSubviews];
-        
-        UIView* scrollViewSubviewFirstResponder = self.scrollViewSubviewFirstResponder;
-        if (scrollViewSubviewFirstResponder)
-        {
-            CGRect scrollToFrame = scrollViewSubviewFirstResponder.frame;
-            scrollToFrame.origin.y = scrollToFrame.origin.y + self.scrollViewBottomKeyboardPadding;
-            
-            [_scrollView scrollRectToVisible:scrollToFrame animated:NO];
-        }
-    }];
+	[self layoutIfNeeded];
+	[UIView animateWithDuration:animationDuration animations:^{
+		[self layoutSubviews];
+		
+	} completion:^(BOOL finished) {
+		UIView* ruSelfOrSubviewFirstResponder = self.ruSelfOrSubviewFirstResponder;
+		if (ruSelfOrSubviewFirstResponder)
+		{
+			CGRect convertedFrame = [self.scrollView convertRect:ruSelfOrSubviewFirstResponder.bounds fromView:ruSelfOrSubviewFirstResponder];
+			CGRect scrollToFrame = convertedFrame;
+			scrollToFrame.origin.y += self.scrollViewBottomKeyboardPadding;
+			[self.scrollView scrollRectToVisible:scrollToFrame animated:YES];
+		}
+	}];
 }
 
 -(void)keyboardAdjustmentHelper:(RUKeyboardAdjustmentHelper *)keyboardAdjustmentHelper willHideWithAnimationDuration:(NSTimeInterval)animationDuration
 {
-    [UIView animateWithDuration:animationDuration animations:^{
-        [self layoutSubviews];
-    }];
+	[UIView animateWithDuration:animationDuration animations:^{
+		[self layoutSubviews];
+	}];
 }
 
 @end

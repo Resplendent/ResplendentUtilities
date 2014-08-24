@@ -8,6 +8,7 @@
 
 #import "RUHorizontalTitlePagingView.h"
 #import "RUHorizontalTitlePagingViewCollectionViewCell.h"
+#import "UIView+RUUtility.h"
 
 
 

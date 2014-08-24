@@ -15,15 +15,20 @@
 
 @interface RUScrollWithKeyboardAdjustmentView : UIView <RUKeyboardAdjustmentHelperDelegate>
 {
-    UIScrollView* _scrollView;
-    
     RUKeyboardAdjustmentHelper* _keyboardHelper;
 }
 
+@property (nonatomic, readonly) UIScrollView* scrollView;
+
+@property (nonatomic, assign) CGFloat scrollViewBottomPadding;
 @property (nonatomic, assign) CGFloat scrollViewBottomKeyboardPadding;
 
 @property (nonatomic, readonly) CGSize scrollViewContentSize;
 @property (nonatomic, readonly) CGFloat scrollViewContentSizeHeight;
+
+@property (nonatomic, assign) BOOL disableKeyboardAdjustment;
+
+-(id)initWithScrollView:(UIScrollView*)scrollView;
 
 -(void)addSubviewToScrollView:(UIView*)view;
 

@@ -7,12 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RUSingleton.h"
+
+
+
+
 
 @interface RUScrollToTopManager : NSObject
 
 +(void)popOffStack:(UIScrollView*)scrollView;
 +(void)addToStack:(UIScrollView*)scrollView;
 +(NSUInteger)indexInStack:(UIScrollView*)scrollView;
+
++(instancetype)sharedInstance;
 
 @end

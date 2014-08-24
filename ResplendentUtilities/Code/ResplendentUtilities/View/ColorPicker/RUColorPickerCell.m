@@ -62,7 +62,6 @@
     
     _state = state;
 
-    RUDLog(@"self.state: %lu",(unsigned long)self.state);
     [self updateForState];
 }
 

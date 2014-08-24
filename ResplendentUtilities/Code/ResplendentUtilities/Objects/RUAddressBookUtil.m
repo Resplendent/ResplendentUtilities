@@ -412,7 +412,7 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
                 for (NSNumber* phoneProperty in phoneProperties)
                 {
                     NSMutableArray* propArray = [arrayDictionary objectForKey:phoneProperty.stringValue];
-                    ABMultiValueRef personProperties = (ABMultiValueRef)ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType(phoneProperty.integerValue));
+                    ABMultiValueRef personProperties = (ABMultiValueRef)ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType((kRUAddressBookUtilPhonePropertyType)phoneProperty.integerValue));
 
                     NSString* personProperty = nil;
 
@@ -485,7 +485,7 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
                 NSMutableDictionary* personPropertyDictionary = [NSMutableDictionary dictionary];
                 for (NSNumber* phoneProperty in phoneProperties)
                 {
-                    id personPropertiesRecord = kRUAddressBookUtilPersonPropertyForPhonePropertyType(person, phoneProperty.integerValue);
+                    id personPropertiesRecord = kRUAddressBookUtilPersonPropertyForPhonePropertyType(person, (kRUAddressBookUtilPhonePropertyType)phoneProperty.integerValue);
 
                     if (personPropertiesRecord)
                     {

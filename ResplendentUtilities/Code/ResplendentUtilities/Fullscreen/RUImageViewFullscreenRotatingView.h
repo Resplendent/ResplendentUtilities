@@ -20,6 +20,6 @@
 //If nil is returned, it will use the image it animated in with.
 @property (nonatomic, readonly) UIImage* imageForHide;
 
--(void)showWithImageView:(UIImageView*)imageView completion:(void (^)(BOOL didShow))completion;
+-(void)showWithImageView:(UIImageView*)imageView onView:(UIView *)view completion:(void (^)(BOOL didShow))completion;
 
 @end

@@ -11,9 +11,17 @@
 #import "UIView+RUUtility.h"
 #import "RUConstants.h"
 
+
+
+
+
 CGFloat const kRUFullscreenRotatingViewDefaultShowAnimationDuration = 0.25;
 CGFloat const kRUFullscreenRotatingViewDefaultHideAnimationDuration = 0.25;
 CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
+
+
+
+
 
 @interface RUFullscreenRotatingView ()
 
@@ -25,6 +33,8 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 @property (nonatomic, assign) BOOL orientationNotificationsEnabled;
 @property (nonatomic, readonly) CGAffineTransform contentViewTransformationForCurrentOrientation;
 
+-(void)updateFrame;
+
 -(void)transitionToOrientation:(UIInterfaceOrientation)orientation animated:(BOOL)animated;
 -(void)transitionToOrientation:(UIInterfaceOrientation)orientation;
 -(CGAffineTransform)contentViewTransformationForOrientation:(UIInterfaceOrientation)orientation;
@@ -35,6 +45,10 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 -(void)didTapContentView:(UITapGestureRecognizer*)tap;
 
 @end
+
+
+
+
 
 @implementation RUFullscreenRotatingView
 
@@ -52,15 +66,17 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
         [self setRotationAnimationDuration:kRUFullscreenRotatingViewDefaultRotationAnimationDuration];
 
         _contentView = [UIView new];
-        [_contentView setBackgroundColor:[UIColor clearColor]];
-        [_contentView addGestureRecognizer:[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapContentView:)]];
-        [self addSubview:_contentView];
+        [self.contentView setBackgroundColor:[UIColor clearColor]];
+        [self addSubview:self.contentView];
+
+		_contentViewTapToDismissGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTapContentView:)];
+        [self.contentView addGestureRecognizer:self.contentViewTapToDismissGesture];
 
         _shadowView = [UIView new];
         [_shadowView setBackgroundColor:[UIColor blackColor]];
         [_shadowView setClipsToBounds:NO];
         [_shadowView setUserInteractionEnabled:NO];
-        [_contentView addSubview:_shadowView];
+        [self.contentView addSubview:_shadowView];
     }
 
     return self;
@@ -70,7 +86,9 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 {
     [super layoutSubviews];
 
-    [_contentView setFrame:self.contentViewFrame];
+	[self.superview bringSubviewToFront:self];
+
+    [self.contentView setFrame:self.contentViewFrame];
     [_shadowView setFrame:self.shadowViewFrame];
 }
 
@@ -78,10 +96,7 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 {
     [super willMoveToSuperview:newSuperview];
 
-    if (newSuperview && self.presenterView != newSuperview)
-    {
-        [NSException raise:NSInternalInconsistencyException format:@"%@ can only be a subview of its presenter %@, not %@",self,self.presenterView,newSuperview];
-    }
+	[self.superview bringSubviewToFront:self];
 }
 
 #pragma mark - Frames
@@ -104,8 +119,7 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 #pragma mark - Update Content
 -(void)updateFrame
 {
-    CGFloat statusBarHeight = CGRectGetMaxY([UIApplication sharedApplication].statusBarFrame);
-    [self setFrame:CGRectSetY(-statusBarHeight, [UIScreen mainScreen].bounds)];
+	[self setFrame:self.superview.bounds];
 }
 
 #pragma mark - Actions
@@ -131,10 +145,12 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 }
 
 #pragma mark - Visibility Transitions
--(void)showWithCompletion:(void (^)(BOOL didShow))completion
+-(void)showOnView:(UIView*)view completion:(void (^)(BOOL didShow))completion
 {
     if (self.readyToShow && self.preparedToShow)
     {
+		[view addSubview:self];
+
         [self willPerformShowAnimation];
 
         _state = RUFullscreenRotatingViewStateMovingToShow;
@@ -161,7 +177,6 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
     [self updateFrame];
     
     [_shadowView setAlpha:0.0f];
-    [self.presenterView addSubview:self];
 
     [self layoutIfNeeded];
 
@@ -193,7 +208,7 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 {
     void (^hideAnimation)() = ^{
         [_shadowView setAlpha:0.0f];
-        [self transitionToOrientation:UIInterfaceOrientationPortrait animated:NO];
+        [self transitionToOrientation:UIInterfaceOrientationPortrait animated:animated];
         [self performHideAnimation];
     };
 
@@ -203,6 +218,8 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 
         [self didHide];
         
+		[self.hideDelegate fullscreenRotatingView:self didHide:animated];
+
         if (completion)
             completion(YES);
     };

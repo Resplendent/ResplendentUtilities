@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Resplendent G.P.. All rights reserved.
 //
 
-#import "RUContentModalView.h"
+#import "RUTopBottomBarModalView.h"
 #import "UIView+RUUtility.h"
 #import "UIFont+RUConstants.h"
 #import "RUConstants.h"
@@ -19,33 +19,35 @@
 
 
 
-CGFloat const kPAContentModalViewContentViewWidth = 300.0f;
-
 CGFloat const kPAContentModalViewTopBarHeight = 50.0f;
 CGFloat const kPAContentModalViewTopBarButtonHeight = 30.0f;
 
 CGFloat const kPAContentModalViewBottomBarHeight = 50.0f;
 CGFloat const kPAContentModalViewBottomBarButtonHeight = 30.0f;
 
-CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
+
+
+
+
+@interface RUTopBottomBarModalView ()
+
+@property (nonatomic, readonly) Class _topBarLabelClass;
+@property (nonatomic, readonly) Class _bottomBarLabelClass;
+
+@end
 
 
 
 
 
-@implementation RUContentModalView
+@implementation RUTopBottomBarModalView
 
+#pragma mark - UIView
 -(id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])
     {
         [self.tapGestureRecognizer setDelegate:self];
-
-        _contentView = [UIView new];
-        [_contentView setBackgroundColor:[UIColor whiteColor]];
-        [_contentView.layer setCornerRadius:5.0f];
-        [_contentView setClipsToBounds:YES];
-        [self addSubview:_contentView];
     }
     
     return self;
@@ -54,56 +56,59 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    [_contentView setFrame:self.contentViewFrame];
-    
-    if (_topBar)
+
+	//Top Bar
+    if (self.topBar)
     {
-        [_topBar setFrame:self.topBarFrame];
+        [self.topBar setFrame:self.topBarFrame];
     }
-    
-    if (_bottomBar)
+
+	if (self.topBarUnderline)
+	{
+		[self.topBarUnderline setFrame:self.topBarUnderlineFrame];
+	}
+
+    if (self.topBarButton)
+	{
+		[self.topBarButton setFrame:self.topBarButtonFrame];
+	}
+
+	if (self.topBarLabel)
+	{
+		[self.topBarLabel setFrame:self.topBarLabelFrame];
+	}
+
+	//Bottom Bar
+    if (self.bottomBar)
     {
-        [_bottomBar setFrame:self.bottomBarFrame];
+        [self.bottomBar setFrame:self.bottomBarFrame];
     }
+
+	if (self.bottomBarOverline)
+	{
+		[self.bottomBarOverline setFrame:self.bottomBarOverlineFrame];
+	}
+
+	if (self.bottomBarButton)
+	{
+		[self.bottomBarButton setFrame:self.bottomBarButtonFrame];
+	}
+	
+	if (self.bottomBarLabel)
+	{
+		[self.bottomBarLabel setFrame:self.bottomBarLabelFrame];
+	}
 }
 
-#pragma mark - Content View
--(CGRect)contentViewFrame
+#pragma mark - Classes
+-(Class)_topBarLabelClass
 {
-    return (CGRect){
-        CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(kPAContentModalViewContentViewWidth, CGRectGetWidth(self.bounds)),
-        self.contentViewYCoord,kPAContentModalViewContentViewWidth,self.contentViewHeight
-    };
+	return (self.topBarLabelClass ?: [UILabel class]);
 }
 
--(CGFloat)contentViewYCoord
+-(Class)_bottomBarLabelClass
 {
-    RU_METHOD_OVERLOADED_IMPLEMENTATION_NEEDED_EXCEPTION;
-}
-
--(CGFloat)contentViewHeight
-{
-    RU_METHOD_OVERLOADED_IMPLEMENTATION_NEEDED_EXCEPTION;
-}
-
--(CGFloat)contentViewInnerPadding
-{
-    return kPAContentModalViewContentViewInnerHorizontalPadding;
-}
-
--(CGRect)innerContentViewFrame
-{
-    CGFloat yCoord = 0;
-    
-    if (_topBar)
-    {
-        yCoord = CGRectGetMaxY(self.topBarFrame);
-    }
-    
-    CGRect contentViewFrame = self.contentViewFrame;
-    CGFloat height = (_bottomBar ? CGRectGetMinY(self.bottomBarFrame) : CGRectGetHeight(contentViewFrame)) - yCoord;
-
-    return (CGRect){0,yCoord,CGRectGetWidth(contentViewFrame),height};
+	return (self.bottomBarLabelClass ?: [UILabel class]);
 }
 
 #pragma mark - Top Bar
@@ -125,13 +130,13 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         if (!_topBar)
         {
             _topBar = [UIView new];
-            [_contentView addSubview:_topBar];
+            [self.contentView addSubview:self.topBar];
             [self setNeedsLayout];
         }
         
         if (!_topBarLabel)
         {
-            _topBarLabel = [[self.topBarLabelClass alloc]initWithFrame:self.topBarLabelFrame];
+            _topBarLabel = [self._topBarLabelClass new];
             [_topBarLabel setFont:kRUFontWithHelvetica(YES, 16.0f)];
             [_topBarLabel setText:@"Bookmark Privacy"];
             [_topBarLabel setTextColor:[UIColor blackColor]];
@@ -142,16 +147,17 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         if (!_topBarButton)
         {
             _topBarButton = [RUGradientButton buttonWithType:UIButtonTypeCustom];
-            [_topBarButton setFrame:self.topBarButtonFrame];
             [_topBarButton addTarget:self action:@selector(pressedTopBarButton:) forControlEvents:UIControlEventTouchUpInside];
             [_topBar addSubview:_topBarButton];
         }
         
         if (!_topBarUnderline)
         {
-            _topBarUnderline = [[UIView alloc] initWithFrame:self.topBarUnderLineFrame];
+            _topBarUnderline = [UIView new];
             [_topBar addSubview:_topBarUnderline];
         }
+
+		[self setNeedsLayout];
     }
     else
     {
@@ -198,8 +204,8 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 
 -(CGRect)topBarLabelFrame
 {
-    CGFloat contentViewInnerPadding = self.contentViewInnerPadding;
-    return (CGRect){contentViewInnerPadding,0,self.topBarLabelRightBoundary - contentViewInnerPadding,self.topBarHeight};
+    CGFloat contentViewHorizontalInnerPadding = self.contentViewHorizontalInnerPadding;
+    return (CGRect){contentViewHorizontalInnerPadding,0,self.topBarLabelRightBoundary - contentViewHorizontalInnerPadding,self.topBarHeight};
 }
 
 -(CGFloat)topBarLabelRightBoundary
@@ -211,9 +217,10 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 {
     CGFloat topBarButtonWidth = self.topBarButtonWidth;
     return (CGRect){
-        CGRectGetWidth(self.contentViewFrame) - topBarButtonWidth - self.contentViewInnerPadding,
-        CGRectGetVerticallyAlignedYCoordForHeightOnHeight(kPAContentModalViewTopBarButtonHeight, self.topBarHeight),
-        topBarButtonWidth,kPAContentModalViewTopBarButtonHeight
+        .origin.x = CGRectGetWidth(self.contentViewFrame) - topBarButtonWidth - self.contentViewHorizontalInnerPadding,
+        .origin.y = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(kPAContentModalViewTopBarButtonHeight, self.topBarHeight),
+        .size.width = topBarButtonWidth,
+		.size.height = kPAContentModalViewTopBarButtonHeight
     };
 }
 
@@ -222,7 +229,7 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
     RU_METHOD_OVERLOADED_IMPLEMENTATION_NEEDED_EXCEPTION;
 }
 
--(CGRect)topBarUnderLineFrame
+-(CGRect)topBarUnderlineFrame
 {
     CGRect topBarFrame = self.topBarFrame;
     return (CGRect){0,CGRectGetHeight(topBarFrame) - 1.0f,CGRectGetWidth(topBarFrame),1.0f};
@@ -252,13 +259,13 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         if (!_bottomBar)
         {
             _bottomBar = [UIView new];
-            [_contentView addSubview:_bottomBar];
+            [self.contentView addSubview:self.bottomBar];
             [self setNeedsLayout];
         }
         
         if (!_bottomBarLabel)
         {
-            _bottomBarLabel = [[self.bottomBarLabelClass alloc]initWithFrame:self.bottomBarLabelFrame];
+            _bottomBarLabel = [self.bottomBarLabelClass new];
             [_bottomBarLabel setFont:kRUFontWithHelvetica(YES, 16.0f)];
             [_bottomBarLabel setText:@"Bookmark Privacy"];
             [_bottomBarLabel setTextColor:[UIColor blackColor]];
@@ -269,16 +276,17 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
         if (!_bottomBarButton)
         {
             _bottomBarButton = [RUGradientButton buttonWithType:UIButtonTypeCustom];
-            [_bottomBarButton setFrame:self.bottomBarButtonFrame];
             [_bottomBarButton addTarget:self action:@selector(pressedBottomBarButton:) forControlEvents:UIControlEventTouchUpInside];
             [_bottomBar addSubview:_bottomBarButton];
         }
         
         if (!_bottomBarOverline)
         {
-            _bottomBarOverline = [[UIView alloc] initWithFrame:self.bottomBarOverlineFrame];
+            _bottomBarOverline = [UIView new];
             [_bottomBar addSubview:_bottomBarOverline];
         }
+
+		[self setNeedsLayout];
     }
     else
     {
@@ -327,8 +335,8 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 
 -(CGRect)bottomBarLabelFrame
 {
-    CGFloat contentViewInnerPadding = self.contentViewInnerPadding;
-    return (CGRect){contentViewInnerPadding,0,self.bottomBarLabelRightBoundary - contentViewInnerPadding,self.bottomBarHeight};
+    CGFloat contentViewHorizontalInnerPadding = self.contentViewHorizontalInnerPadding;
+    return (CGRect){contentViewHorizontalInnerPadding,0,self.bottomBarLabelRightBoundary - contentViewHorizontalInnerPadding,self.bottomBarHeight};
 }
 
 -(CGFloat)bottomBarLabelRightBoundary
@@ -340,7 +348,7 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 {
     CGFloat bottomBarButtonWidth = self.bottomBarButtonWidth;
     return (CGRect){
-        CGRectGetWidth(self.contentViewFrame) - bottomBarButtonWidth - self.contentViewInnerPadding,
+        CGRectGetWidth(self.contentViewFrame) - bottomBarButtonWidth - self.contentViewHorizontalInnerPadding,
         CGRectGetVerticallyAlignedYCoordForHeightOnHeight(kPAContentModalViewBottomBarButtonHeight, self.bottomBarHeight),
         bottomBarButtonWidth,kPAContentModalViewBottomBarButtonHeight
     };
@@ -365,6 +373,29 @@ CGFloat const kPAContentModalViewContentViewInnerHorizontalPadding = 10.0f;
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
     return !CGRectContainsPoint(self.contentViewFrame, [touch locationInView:self]);
+}
+
+#pragma mark - Frames
+-(CGFloat)contentViewHorizontalInnerPadding
+{
+    return 10;
+}
+
+#pragma mark - RUModalView Frames
+-(CGRect)innerContentViewFrame
+{
+	CGRect innerContentViewFrame = [super innerContentViewFrame];
+
+	CGFloat bottom = (self.bottomBar ? CGRectGetMinY(self.bottomBarFrame) : CGRectGetMaxY(innerContentViewFrame));
+
+    if (self.topBar)
+    {
+		innerContentViewFrame.origin.y = CGRectGetMaxY(self.topBarFrame);
+    }
+
+	innerContentViewFrame.size.height = bottom - CGRectGetMinY(innerContentViewFrame);
+
+	return innerContentViewFrame;
 }
 
 @end

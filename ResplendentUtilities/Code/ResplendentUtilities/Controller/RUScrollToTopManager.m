@@ -8,6 +8,7 @@
 
 #import "RUScrollToTopManager.h"
 #import "RUDLog.h"
+#import "RUSingleton.h"
 
 
 
@@ -28,8 +29,6 @@
 -(void)pushOffStack:(UIScrollView *)scrollView;
 -(void)addToStack:(UIScrollView*)scrollView;
 -(NSUInteger)indexInStack:(UIScrollView*)scrollView;
-
-RU_SYNTHESIZE_SINGLETON_DECLARATION_FOR_CLASS_WITH_ACCESSOR(RUScrollToTopManager, sharedInstance);
 
 @end
 
@@ -149,6 +148,7 @@ RU_SYNTHESIZE_SINGLETON_DECLARATION_FOR_CLASS_WITH_ACCESSOR(RUScrollToTopManager
     return [[RUScrollToTopManager sharedInstance] indexInStack:scrollView];
 }
 
-RU_SYNTHESIZE_SINGLETON_FOR_CLASS_WITH_ACCESSOR(RUScrollToTopManager, sharedInstance);
+#pragma mark - Singleton
+RUSingletonUtil_Synthesize_Singleton_Implementation_SharedInstance
 
 @end

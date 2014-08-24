@@ -13,6 +13,10 @@
 #import "RUDLog.h"
 #import <QuartzCore/QuartzCore.h>
 
+
+
+
+
 @interface RUHorizontalPagingView ()
 
 @property (nonatomic, readonly) CGRect scrollViewPageControlFrame;
@@ -51,7 +55,13 @@
 
 -(UIView *)visibleCellAtPage:(NSInteger)page;
 
+-(void)_didScrollFromPage:(NSInteger)fromPage toPage:(NSInteger)toPage;
+
 @end
+
+
+
+
 
 @implementation RUHorizontalPagingView
 
@@ -176,7 +186,7 @@
 
         if (oldPage != newPage)
         {
-            [self.scrollDelegate horizontalPagingView:self didScrollFromPage:oldPage toPage:newPage];
+			[self _didScrollFromPage:oldPage toPage:newPage];
         }
     }
 }
@@ -344,7 +354,20 @@
     CGRect scrollViewFrameFromPageWidth = [self scrollViewFrameWithSelfSize:selfSize];
     CGFloat newContentOffsetX = page * CGRectGetWidth(scrollViewFrameFromPageWidth);
 
+	
     [_scrollView setContentOffset:(CGPoint){newContentOffsetX,_scrollView.contentOffset.y}];
+}
+
+-(void)_didScrollFromPage:(NSInteger)fromPage toPage:(NSInteger)toPage
+{
+	[self.scrollPageDelegate horizontalPagingView:self didScrollFromPage:fromPage toPage:toPage];
+
+	[self didScrollFromPage:fromPage toPage:toPage];
+}
+
+-(void)didScrollFromPage:(NSInteger)fromPage toPage:(NSInteger)toPage
+{
+	
 }
 
 #pragma mark - Update Content
@@ -570,7 +593,6 @@
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-//    [self setVisibleCellsUserInteraction:NO];
     [self.scrollDelegate horizontalPagingViewWillBeginScrolling:self];
 
     [self updateVisibleCellsWillBeginScrolling];
@@ -580,10 +602,10 @@
 {
     for (UIView<RUHorizontalPagingViewCellProtocol>* cell in _visibleCells.allValues)
     {
-        if ([cell conformsToProtocol:@protocol(RUHorizontalPagingViewCellProtocol)])
-        {
-            [cell horizontalPagingViewWillBeginScrolling:self];
-        }
+		if ([cell conformsToProtocol:@protocol(RUHorizontalPagingViewCellProtocol)])
+		{
+			[cell horizontalPagingViewWillBeginScrolling:self];
+		}
     }
 }
 
@@ -591,10 +613,10 @@
 {
     for (UIView<RUHorizontalPagingViewCellProtocol>* cell in _visibleCells.allValues)
     {
-        if ([cell conformsToProtocol:@protocol(RUHorizontalPagingViewCellProtocol)])
-        {
-            [cell horizontalPagingViewDidFinishScrolling:self];
-        }
+		if ([cell conformsToProtocol:@protocol(RUHorizontalPagingViewCellProtocol)])
+		{
+			[cell horizontalPagingViewDidFinishScrolling:self];
+		}
     }
 }
 

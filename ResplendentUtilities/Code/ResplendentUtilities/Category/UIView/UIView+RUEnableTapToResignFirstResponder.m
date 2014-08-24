@@ -79,7 +79,8 @@ NSString* const kUIViewRUEnableTapToResignFirstResponderAssociatedKey = @"kUIVie
 #pragma mark - Actions
 -(void)_ruEnableTapToResignFirstResponderDidTapSelf:(UITapGestureRecognizer*)tap
 {
-    [self.ruSelfOrSubviewFirstResponder resignFirstResponder];
+	[self endEditing:YES];
+//    [self.ruSelfOrSubviewFirstResponder resignFirstResponder];
 }
 
 #pragma mark - Synthesize Associated Objects

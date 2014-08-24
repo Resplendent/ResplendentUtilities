@@ -6,19 +6,23 @@
 //  Copyright (c) 2012 Resplendent G.P. All rights reserved.
 //
 
-#define RU_SYNTHESIZE_SINGLETON_DECLARATION_FOR_CLASS_WITH_ACCESSOR(classname, accessorMethodName) \
-+(classname *)accessorMethodName;
-
-
-#define RU_SYNTHESIZE_SINGLETON_FOR_CLASS_WITH_ACCESSOR(classname, accessorMethodName) \
-\
-+ (classname *)accessorMethodName \
+#define RUSingletonUtil_Synthesize_Singleton_Implementation(methodName) \
++(instancetype)methodName \
 { \
-    static classname* __accessorMethodName##Instance = nil; \
-    static dispatch_once_t __accessorMethodName##InstanceOnceToken; \
-    dispatch_once(&__accessorMethodName##InstanceOnceToken, ^{ \
-        __accessorMethodName##Instance = [self new]; \
-    }); \
-    \
-    return __accessorMethodName##Instance; \
+	static id sharedInstance; \
+	 \
+__RUSingletonUtil_Synthesize_Singleton_Implementation__Body(sharedInstance) \
+	return sharedInstance; \
 }
+
+#define __RUSingletonUtil_Synthesize_Singleton_Implementation__Body(staticVarName) \
+	@synchronized (self) \
+	{ \
+		static dispatch_once_t onceToken; \
+		dispatch_once(&onceToken, ^{ \
+			staticVarName = [self new]; \
+		}); \
+	} \
+
+#define RUSingletonUtil_Synthesize_Singleton_Implementation_SharedInstance \
+RUSingletonUtil_Synthesize_Singleton_Implementation(sharedInstance)
