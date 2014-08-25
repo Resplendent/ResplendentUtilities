@@ -28,3 +28,17 @@ if (condition) { \
 	NSAssert((!assert),@"Failed condition"); \
 	return; \
 }
+
+
+
+#define kRUConditionalReturn_ReturnValue(condition,assert,returnValue) \
+if (condition) { \
+NSAssert((!assert),@"Failed condition"); \
+return returnValue; \
+}
+
+#define kRUConditionalReturn_ReturnValueNil(condition,assert) \
+kRUConditionalReturn_ReturnValue(condition,assert,nil)
+
+#define kRUConditionalReturn_ReturnValueFalse(condition,assert) \
+kRUConditionalReturn_ReturnValue(condition,assert,false)
