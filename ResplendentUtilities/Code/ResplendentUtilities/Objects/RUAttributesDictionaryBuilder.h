@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) UIFont* font;
 @property (nonatomic, assign) NSLineBreakMode lineBreakMode;
+@property (nonatomic, strong) NSNumber* lineSpacing;
 
 -(void)absorbPropertiesFromLabel:(UILabel*)label;
 -(void)absorbPropertiesFromButton:(UIButton*)button;
