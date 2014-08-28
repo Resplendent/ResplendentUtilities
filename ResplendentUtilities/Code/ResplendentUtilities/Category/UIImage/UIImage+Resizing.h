@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-static inline double radians (double degrees) {return degrees * M_PI/180;}
+
+
+
 
 @interface UIImage (Resizing)
-- (UIImage *)resizedImage:(CGSize)newSize interpolationQuality:(CGInterpolationQuality)quality;
-- (UIImage *)resizedImagePreservingAspectRatioIfLargerThanTargetSize:(CGSize)targetSize;
+
++ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
+
 @end
