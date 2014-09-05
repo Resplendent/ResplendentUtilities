@@ -18,15 +18,24 @@
 {
 	if ([self respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)] == false)
 	{
-		NSAssert(false, @"should only be able to call this when boundingRectWithSize:options:attributes:context: is available");
+		CGSize boundingSize = (CGSize){.width = boundingWidth,.height = 0};
+		NSStringDrawingOptions options = (NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine);
+		CGRect textBoundingRect = [self boundingRectWithSize:boundingSize options:options attributes:attributes context:nil];
+		
+		return CGRectSizeThatFitsRect(textBoundingRect);
+	}
+	else if ((&NSFontAttributeName) &&
+			 (&NSParagraphStyleAttributeName))
+	{
+		UIFont* font = [attributes objectForKey:NSFontAttributeName];
+		NSParagraphStyle *style = [attributes objectForKey:NSParagraphStyleAttributeName];
+		return [self sizeWithFont:font constrainedToSize:CGSizeMake(boundingWidth, 0) lineBreakMode:style.lineBreakMode];
+	}
+	else
+	{
+		NSAssert(false, @"not supported");
 		return CGSizeZero;
 	}
-
-	CGSize boundingSize = (CGSize){.width = boundingWidth,.height = 0};
-	NSStringDrawingOptions options = (NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine);
-	CGRect textBoundingRect = [self boundingRectWithSize:boundingSize options:options attributes:attributes context:nil];
-	
-	return CGRectSizeThatFitsRect(textBoundingRect);
 }
 
 @end
