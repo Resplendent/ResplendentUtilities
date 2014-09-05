@@ -16,7 +16,7 @@
 
 - (CGSize)textSizeWithBoundingWidth:(CGFloat)boundingWidth attributes:(NSDictionary *)attributes
 {
-	if ([self respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)] == false)
+	if ([self respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)])
 	{
 		CGSize boundingSize = (CGSize){.width = boundingWidth,.height = 0};
 		NSStringDrawingOptions options = (NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine);
