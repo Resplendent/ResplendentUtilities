@@ -37,11 +37,22 @@
 	NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
 	[style setLineBreakMode:self.lineBreakMode];
 
+	if (self.lineSpacing)
+	{
+		[style setLineSpacing:self.lineSpacing.floatValue];
+	}
+
 	[attributesDictionary setObjectOrRemoveIfNil:style forKey:NSParagraphStyleAttributeName];
 	
-//	NSDictionary *attributes = @{NSFontAttributeName: font,		: style};
-
 	return [attributesDictionary copy];
 }
 
+/*
+ NSInteger strLength = [myString length];
+ NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+ [style setLineSpacing:24];
+ [attString addAttribute:NSParagraphStyleAttributeName
+ value:style
+ range:NSMakeRange(0, strLength)];
+ */
 @end
