@@ -29,7 +29,10 @@
 	{
 		UIFont* font = [attributes objectForKey:NSFontAttributeName];
 		NSParagraphStyle *style = [attributes objectForKey:NSParagraphStyleAttributeName];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"  // sizeWithFont:constrainedToSize:lineBreakMode: has been deprecated
 		return [self sizeWithFont:font constrainedToSize:CGSizeMake(boundingWidth, 0) lineBreakMode:style.lineBreakMode];
+#pragma clang diagnostic pop
 	}
 	else
 	{
