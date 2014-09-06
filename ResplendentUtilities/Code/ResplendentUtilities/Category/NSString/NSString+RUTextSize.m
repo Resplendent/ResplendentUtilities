@@ -16,17 +16,29 @@
 
 - (CGSize)textSizeWithBoundingWidth:(CGFloat)boundingWidth attributes:(NSDictionary *)attributes
 {
-	if ([self respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)] == false)
+	if ([self respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)])
 	{
-		NSAssert(false, @"should only be able to call this when boundingRectWithSize:options:attributes:context: is available");
+		CGSize boundingSize = (CGSize){.width = boundingWidth,.height = 0};
+		NSStringDrawingOptions options = (NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine);
+		CGRect textBoundingRect = [self boundingRectWithSize:boundingSize options:options attributes:attributes context:nil];
+		
+		return CGRectSizeThatFitsRect(textBoundingRect);
+	}
+	else if ((&NSFontAttributeName) &&
+			 (&NSParagraphStyleAttributeName))
+	{
+		UIFont* font = [attributes objectForKey:NSFontAttributeName];
+		NSParagraphStyle *style = [attributes objectForKey:NSParagraphStyleAttributeName];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"  // sizeWithFont:constrainedToSize:lineBreakMode: has been deprecated
+		return [self sizeWithFont:font constrainedToSize:CGSizeMake(boundingWidth, 0) lineBreakMode:style.lineBreakMode];
+#pragma clang diagnostic pop
+	}
+	else
+	{
+		NSAssert(false, @"not supported");
 		return CGSizeZero;
 	}
-
-	CGSize boundingSize = (CGSize){.width = boundingWidth,.height = 0};
-	NSStringDrawingOptions options = (NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine);
-	CGRect textBoundingRect = [self boundingRectWithSize:boundingSize options:options attributes:attributes context:nil];
-	
-	return CGRectSizeThatFitsRect(textBoundingRect);
 }
 
 @end
