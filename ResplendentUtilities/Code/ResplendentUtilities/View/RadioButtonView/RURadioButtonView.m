@@ -79,9 +79,17 @@
 }
 
 #pragma mark - New Button
--(UIButton*)newButtonForTitle:(NSString*)title
+-(UIButton*)newButtonAtIndex:(NSUInteger)index
 {
-    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+	if (index >= self.buttonTitles.count)
+	{
+		NSAssert(false, @"out of bounds");
+		return nil;
+	}
+
+	NSString* title = [self.buttonTitles objectAtIndex:index];
+
+	UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:title forState:UIControlStateNormal];
     [button.titleLabel setFont:self.font];
     [button setTitleColor:self.textColor forState:UIControlStateNormal];
@@ -107,10 +115,10 @@
     {
         return @"need non-nil textColor";
     }
-    else if (!self.selectedTextColor)
-    {
-        return @"need non-nil selectedTextColor";
-    }
+//    else if (!self.selectedTextColor)
+//    {
+//        return @"need non-nil selectedTextColor";
+//    }
 
     return nil;
 }
@@ -119,7 +127,7 @@
 {
     if (self.selectedButtonIndex != NSNotFound)
     {
-        return [_buttons objectAtIndex:self.selectedButtonIndex];
+        return [self.buttons objectAtIndex:self.selectedButtonIndex];
     }
 
     return nil;
@@ -139,33 +147,35 @@
 
 -(void)setButtonTitles:(NSArray *)buttonTitles
 {
-    if (!buttonTitles.count)
-    {
-        [NSException raise:NSInvalidArgumentException format:@"must pass array with at least one object"];
-    }
-
-    _buttonTitles = buttonTitles;
-
-    NSString* reasonUnableToDraw = self.reasonUnableToDraw;
-    if (reasonUnableToDraw)
-    {
-        RUDLog(@"%@",reasonUnableToDraw);
-    }
-    else
-    {
-        NSMutableArray* newButtons = [NSMutableArray array];
-        
-        for (NSString* buttonTitle in buttonTitles)
-        {
-            UIButton* newButton = [self newButtonForTitle:buttonTitle];
-            [newButtons addObject:newButton];
-            [self addSubview:newButton];
-        }
-
-        _buttons = [NSArray arrayWithArray:newButtons];
-
-        [self setSelectedButtonIndex:0];
-    }
+	NSAssert(buttonTitles.count > 0, @"Pass an array with at least one title");
+	
+	_buttonTitles = [buttonTitles copy];
+	
+	NSString* reasonUnableToDraw = self.reasonUnableToDraw;
+	if (reasonUnableToDraw)
+	{
+		RUDLog(@"%@",reasonUnableToDraw);
+	}
+	else
+	{
+		NSMutableArray* newButtons = [NSMutableArray array];
+		
+		for (NSInteger buttonIndex = 0; buttonIndex < self.buttonTitles.count; buttonIndex++)
+		{
+			UIButton* newButton = [self newButtonAtIndex:buttonIndex];
+			
+			NSAssert(newButton != nil, @"unhandled");
+			if (newButton)
+			{
+				[newButtons addObject:newButton];
+				[self addSubview:newButton];
+			}
+		}
+		
+		_buttons = [newButtons copy];
+		
+		[self setSelectedButtonIndex:0];
+	}
 }
 
 #pragma mark - Actions
