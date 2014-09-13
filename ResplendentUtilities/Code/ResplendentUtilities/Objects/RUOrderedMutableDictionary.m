@@ -33,10 +33,7 @@
 
 +(void)initialize
 {
-	if (self == [RUOrderedMutableDictionary class])
-	{
-		NSAssert([self RUOrderedMutableDictionary_performUnitTest], @"Failed unit test!");
-	}
+	NSAssert([self RUOrderedMutableDictionary_performUnitTest], @"Failed unit test!");
 }
 
 - (id)initWithCapacity:(NSUInteger)capacity
