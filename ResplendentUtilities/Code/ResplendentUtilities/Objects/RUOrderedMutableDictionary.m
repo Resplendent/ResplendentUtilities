@@ -7,22 +7,41 @@
 //
 
 #import "RUOrderedMutableDictionary.h"
+#import "RUConditionalReturn.h"
+
+
+
+
 
 @interface RUOrderedMutableDictionary ()
 
 @property (nonatomic, readonly) NSMutableDictionary* dictionary;
 @property (nonatomic, readonly) NSMutableArray* array;
 
++(BOOL)RUOrderedMutableDictionary_performUnitTest;
+
 @end
+
+
+
+
 
 @implementation RUOrderedMutableDictionary
 
 @synthesize dictionary = _dictionary;
 @synthesize array = _array;
 
++(void)initialize
+{
+	if (self == [RUOrderedMutableDictionary class])
+	{
+		NSAssert([self RUOrderedMutableDictionary_performUnitTest], @"Failed unit test!");
+	}
+}
+
 - (id)initWithCapacity:(NSUInteger)capacity
 {
-    if (self = [self init])
+    if (self = [super initWithCapacity:capacity])
     {
         _dictionary = [NSMutableDictionary dictionaryWithCapacity:capacity];
         _array = [NSMutableArray arrayWithCapacity:capacity];
@@ -81,6 +100,39 @@
     }
 
     return _array;
+}
+
+#pragma mark - Unit Testing
++(BOOL)RUOrderedMutableDictionary_performUnitTest
+{
+	static NSInteger const count = 1000;
+
+	RUOrderedMutableDictionary* orderedMutableDictionary = [RUOrderedMutableDictionary new];
+
+	for (NSInteger i = 0; i < count; i++)
+	{
+		[orderedMutableDictionary setObject:@(i) forKey:@(i)];
+	}
+
+	NSInteger lastKeyNumber = NSNotFound;
+
+	for (NSNumber* key in orderedMutableDictionary)
+	{
+		kRUConditionalReturn_ReturnValueFalse(!kRUNumberOrNil(key), YES);
+		
+		NSInteger keyNumber = key.integerValue;
+		kRUConditionalReturn_ReturnValueFalse(((lastKeyNumber != NSNotFound) &&
+											   (lastKeyNumber != (keyNumber - 1))), YES);
+
+		NSNumber* value = kRUNumberOrNil([orderedMutableDictionary objectForKey:key]);
+		kRUConditionalReturn_ReturnValueFalse(value == nil, YES);
+		
+		kRUConditionalReturn_ReturnValueFalse(value.integerValue != keyNumber, YES);
+
+		lastKeyNumber = keyNumber;
+	}
+
+	return YES;
 }
 
 @end
