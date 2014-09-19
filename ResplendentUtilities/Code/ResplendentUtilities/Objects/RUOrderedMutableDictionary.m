@@ -38,7 +38,7 @@
 
 - (id)initWithCapacity:(NSUInteger)capacity
 {
-    if (self = [super initWithCapacity:capacity])
+	if (self = [super init])
     {
         _dictionary = [NSMutableDictionary dictionaryWithCapacity:capacity];
         _array = [NSMutableArray arrayWithCapacity:capacity];
