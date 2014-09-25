@@ -20,11 +20,11 @@
 {
 	NSString* currentTitle = self.currentTitle;
 	if (([currentTitle respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) &&
-		([currentTitle respondsToSelector:@selector(textSizeWithBoundingWidth:attributes:)]))
+		([currentTitle respondsToSelector:@selector(ruTextSizeWithBoundingWidth:attributes:)]))
 	{
 		RUAttributesDictionaryBuilder* attributesDictionaryBuilder = [RUAttributesDictionaryBuilder new];
 		[attributesDictionaryBuilder absorbPropertiesFromButton:self];
-		return [currentTitle textSizeWithBoundingWidth:width attributes:[attributesDictionaryBuilder createAttributesDictionary]];
+		return [currentTitle ruTextSizeWithBoundingWidth:width attributes:[attributesDictionaryBuilder createAttributesDictionary]];
 	}
 	else
 	{

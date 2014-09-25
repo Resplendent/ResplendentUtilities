@@ -19,11 +19,11 @@
 -(CGSize)ruTextSizeConstrainedToWidth:(CGFloat)width
 {
 	if (([self.text respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) &&
-		([self.text respondsToSelector:@selector(textSizeWithBoundingWidth:attributes:)]))
+		([self.text respondsToSelector:@selector(ruTextSizeWithBoundingWidth:attributes:)]))
 	{
 		RUAttributesDictionaryBuilder* attributesDictionaryBuilder = [RUAttributesDictionaryBuilder new];
 		[attributesDictionaryBuilder absorbPropertiesFromLabel:self];
-		return [self.text textSizeWithBoundingWidth:width attributes:[attributesDictionaryBuilder createAttributesDictionary]];
+		return [self.text ruTextSizeWithBoundingWidth:width attributes:[attributesDictionaryBuilder createAttributesDictionary]];
 	}
 	else
 	{

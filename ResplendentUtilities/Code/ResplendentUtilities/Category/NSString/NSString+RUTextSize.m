@@ -14,7 +14,7 @@
 
 @implementation NSString (RUTextSize)
 
-- (CGSize)textSizeWithBoundingWidth:(CGFloat)boundingWidth attributes:(NSDictionary *)attributes
+- (CGSize)ruTextSizeWithBoundingWidth:(CGFloat)boundingWidth attributes:(NSDictionary *)attributes
 {
 	if ([self respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)])
 	{
