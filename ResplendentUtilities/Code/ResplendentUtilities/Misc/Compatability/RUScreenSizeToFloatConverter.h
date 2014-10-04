@@ -14,9 +14,10 @@
 
 @interface RUScreenSizeToFloatConverter : NSObject
 
-@property (nonatomic, readonly) CGFloat amountFor480Height;
-@property (nonatomic, readonly) CGFloat amountFor568Height;
+@property (nonatomic, readonly) NSDictionary* screenHeightMapping;
 
 -(instancetype)initWithAmountFor480Height:(CGFloat)amountFor480Height amountFor568Height:(CGFloat)amountFor568Height NS_DESIGNATED_INITIALIZER;
+
+-(CGFloat)appropriateHeightForCurrentScreenHeight;
 
 @end

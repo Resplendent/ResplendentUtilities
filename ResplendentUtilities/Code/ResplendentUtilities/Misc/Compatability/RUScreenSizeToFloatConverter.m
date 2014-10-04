@@ -18,11 +18,25 @@
 {
 	if (self = [super init])
 	{
-		_amountFor480Height = amountFor480Height;
-		_amountFor568Height = amountFor568Height;
+		_screenHeightMapping = @{
+								 @(480.0f)	: @(amountFor480Height),
+								 @(568.0f)	: @(amountFor568Height),
+								 };
 	}
 
 	return self;
+}
+
+-(CGFloat)appropriateHeightForCurrentScreenHeight
+{
+	NSNumber* appropriateHeightNumber = [self.screenHeightMapping objectForKey:@(CGRectGetHeight([UIScreen mainScreen].bounds))];
+	if (appropriateHeightNumber == nil)
+	{
+		NSAssert(false, @"unhandled");
+		appropriateHeightNumber = [self.screenHeightMapping objectForKey:@(568.0f)];
+	}
+
+	return appropriateHeightNumber.floatValue;
 }
 
 @end
