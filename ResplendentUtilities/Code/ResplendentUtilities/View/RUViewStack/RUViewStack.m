@@ -108,6 +108,7 @@
 	if (newCurrentlyVisibleView)
 	{
 		[self addSubview:newCurrentlyVisibleView];
+		[self layoutIfNeeded];
 		[newCurrentlyVisibleView setFrame:[self pushedOnViewFrameForView:newCurrentlyVisibleView]];
 	}
 
@@ -178,21 +179,15 @@
 -(CGRect)poppedOffViewFrameForView:(UIView<RUViewStackProtocol>*)view
 {
 	CGRect visibleViewFrame = [self visibleViewFrameForView:view];
-	return UIEdgeInsetsInsetRect(visibleViewFrame, (UIEdgeInsets){
-		
-		.left = -CGRectGetWidth(self.bounds),
-		
-	});
+	visibleViewFrame.origin.x -= CGRectGetWidth(self.bounds);
+	return CGRectCeilOrigin(visibleViewFrame);
 }
 
 -(CGRect)pushedOnViewFrameForView:(UIView<RUViewStackProtocol>*)view
 {
 	CGRect visibleViewFrame = [self visibleViewFrameForView:view];
-	return UIEdgeInsetsInsetRect(visibleViewFrame, (UIEdgeInsets){
-		
-		.left = CGRectGetWidth(self.bounds),
-		
-	});
+	visibleViewFrame.origin.x += CGRectGetWidth(self.bounds);
+	return CGRectCeilOrigin(visibleViewFrame);
 }
 
 @end
