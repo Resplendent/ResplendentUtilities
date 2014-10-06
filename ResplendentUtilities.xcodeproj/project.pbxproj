@@ -92,6 +92,7 @@
 		434735B219E08DC0001DDE4D /* RUAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4347356B19E08DC0001DDE4D /* RUAlertView.m */; };
 		434735B519E08DD4001DDE4D /* RUScreenSizeToFloatConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 434735B419E08DD4001DDE4D /* RUScreenSizeToFloatConverter.m */; };
 		434735EF19E254E2001DDE4D /* RUViewStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 434735EE19E254E2001DDE4D /* RUViewStack.m */; };
+		4347371819E28704001DDE4D /* NSObject+RUKeyboardNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 4347371719E28704001DDE4D /* NSObject+RUKeyboardNotifications.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -293,6 +294,8 @@
 		434735ED19E254E2001DDE4D /* RUViewStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUViewStack.h; sourceTree = "<group>"; };
 		434735EE19E254E2001DDE4D /* RUViewStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUViewStack.m; sourceTree = "<group>"; };
 		434735F019E25E66001DDE4D /* RUViewStackProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUViewStackProtocols.h; sourceTree = "<group>"; };
+		4347371619E28704001DDE4D /* NSObject+RUKeyboardNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+RUKeyboardNotifications.h"; sourceTree = "<group>"; };
+		4347371719E28704001DDE4D /* NSObject+RUKeyboardNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+RUKeyboardNotifications.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -416,6 +419,7 @@
 			isa = PBXGroup;
 			children = (
 				434734A719E08DC0001DDE4D /* CALayer */,
+				4347371519E286F1001DDE4D /* Notifications */,
 				434734AC19E08DC0001DDE4D /* NSBundle+RUPListGetters.h */,
 				434734AD19E08DC0001DDE4D /* NSBundle+RUPListGetters.m */,
 				434734AE19E08DC0001DDE4D /* NSDate+RUUtility.h */,
@@ -833,6 +837,15 @@
 			path = RUViewStack;
 			sourceTree = "<group>";
 		};
+		4347371519E286F1001DDE4D /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				4347371619E28704001DDE4D /* NSObject+RUKeyboardNotifications.h */,
+				4347371719E28704001DDE4D /* NSObject+RUKeyboardNotifications.m */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -999,6 +1012,7 @@
 				4347359619E08DC0001DDE4D /* RUStringCompatability.m in Sources */,
 				4347359D19E08DC0001DDE4D /* RUGradientButton.m in Sources */,
 				4347357519E08DC0001DDE4D /* NSString+RUMutableURLRequest.m in Sources */,
+				4347371819E28704001DDE4D /* NSObject+RUKeyboardNotifications.m in Sources */,
 				434735EF19E254E2001DDE4D /* RUViewStack.m in Sources */,
 				4347357319E08DC0001DDE4D /* NSNumber+RUUtil.m in Sources */,
 				4347357A19E08DC0001DDE4D /* UIActionSheet+RUShowUtil.m in Sources */,
