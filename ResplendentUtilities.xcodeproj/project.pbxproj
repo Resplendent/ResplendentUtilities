@@ -292,6 +292,7 @@
 		434735B419E08DD4001DDE4D /* RUScreenSizeToFloatConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUScreenSizeToFloatConverter.m; sourceTree = "<group>"; };
 		434735ED19E254E2001DDE4D /* RUViewStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUViewStack.h; sourceTree = "<group>"; };
 		434735EE19E254E2001DDE4D /* RUViewStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUViewStack.m; sourceTree = "<group>"; };
+		434735F019E25E66001DDE4D /* RUViewStackProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUViewStackProtocols.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -827,6 +828,7 @@
 			children = (
 				434735ED19E254E2001DDE4D /* RUViewStack.h */,
 				434735EE19E254E2001DDE4D /* RUViewStack.m */,
+				434735F019E25E66001DDE4D /* RUViewStackProtocols.h */,
 			);
 			path = RUViewStack;
 			sourceTree = "<group>";

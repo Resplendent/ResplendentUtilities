@@ -9,6 +9,7 @@
 #import "RUViewStack.h"
 #import "RUConditionalReturn.h"
 #import "UIView+RUUtility.h"
+#import "RUProtocolOrNil.h"
 
 
 
@@ -18,9 +19,9 @@
 
 @property (nonatomic, assign) BOOL isAnimating;
 
-@property (nonatomic, readonly) CGRect visibleViewFrame;
-@property (nonatomic, readonly) CGRect poppedOffViewFrame;
-@property (nonatomic, readonly) CGRect pushedOnViewFrame;
+-(CGRect)visibleViewFrameForView:(UIView<RUViewStackProtocol>*)view;
+-(CGRect)poppedOffViewFrameForView:(UIView<RUViewStackProtocol>*)view;
+-(CGRect)pushedOnViewFrameForView:(UIView<RUViewStackProtocol>*)view;
 
 @end
 
@@ -31,8 +32,10 @@
 @implementation RUViewStack
 
 #pragma mark - RUViewStack
--(instancetype)initWithRootView:(UIView *)rootView
+-(instancetype)initWithRootView:(UIView<RUViewStackProtocol> *)rootView
 {
+	kRUConditionalReturn_ReturnValueNil(kRUProtocolOrNil(rootView, RUViewStackProtocol), YES);
+
 	if (self = [super init])
 	{
 		[self setViewStack:@[rootView]];
@@ -45,22 +48,30 @@
 {
 	[super layoutSubviews];
 
-	UIView* currentlyVisibleView = self.currentlyVisibleView;
+	UIView<RUViewStackProtocol>* currentlyVisibleView = self.currentlyVisibleView;
 	if (currentlyVisibleView)
 	{
-		[currentlyVisibleView setFrame:self.visibleViewFrame];
+		[currentlyVisibleView setFrame:[self visibleViewFrameForView:currentlyVisibleView]];
 	}
 }
 
 #pragma mark - Stack management
--(void)pushViewToStack:(UIView*)view animated:(BOOL)animated
+-(void)pushViewToStack:(UIView<RUViewStackProtocol> *)view animated:(BOOL)animated
 {
-	
+	kRUConditionalReturn(kRUProtocolOrNil(view, RUViewStackProtocol), YES);
+
+	NSMutableArray* newViewStack = [NSMutableArray arrayWithArray:self.viewStack];
+	[newViewStack addObject:view];
+	[self setViewStack:newViewStack animated:animated];
 }
 
 -(void)popTopViewFromStackAnimated:(BOOL)animated
 {
-	
+	NSMutableArray* newViewStack = [NSMutableArray arrayWithArray:self.viewStack];
+	kRUConditionalReturn(newViewStack.count == 0, YES);
+
+	[newViewStack removeLastObject];
+	[self setViewStack:newViewStack animated:animated];
 }
 
 #pragma mark - Setters
@@ -74,34 +85,40 @@
 	kRUConditionalReturn(self.isAnimating, YES);
 	kRUConditionalReturn(self.viewStack == viewStack, NO);
 
-	UIView* oldCurrentlyVisibleView = self.currentlyVisibleView;
+	for (UIView<RUViewStackProtocol>* view in viewStack)
+	{
+		kRUConditionalReturn(kRUProtocolOrNil(view, RUViewStackProtocol), YES);
+		[view setViewStack:self];
+	}
+
+	UIView<RUViewStackProtocol>* oldCurrentlyVisibleView = self.currentlyVisibleView;
 
 	_viewStack = [viewStack copy];
 
-	UIView* newCurrentlyVisibleView = self.currentlyVisibleView;
+	UIView<RUViewStackProtocol>* newCurrentlyVisibleView = self.currentlyVisibleView;
 
 	[self layoutIfNeeded];
 
 	if (oldCurrentlyVisibleView)
 	{
-		[oldCurrentlyVisibleView setFrame:self.visibleViewFrame];
+		[oldCurrentlyVisibleView setFrame:[self visibleViewFrameForView:oldCurrentlyVisibleView]];
 	}
 
 	if (newCurrentlyVisibleView)
 	{
-		[newCurrentlyVisibleView setFrame:self.pushedOnViewFrame];
+		[newCurrentlyVisibleView setFrame:[self pushedOnViewFrameForView:newCurrentlyVisibleView]];
 	}
 
 	void (^setFinalFramesBlock)() = ^{
 		
 		if (oldCurrentlyVisibleView)
 		{
-			[oldCurrentlyVisibleView setFrame:self.poppedOffViewFrame];
+			[oldCurrentlyVisibleView setFrame:[self poppedOffViewFrameForView:oldCurrentlyVisibleView]];
 		}
 		
 		if (newCurrentlyVisibleView)
 		{
-			[newCurrentlyVisibleView setFrame:self.visibleViewFrame];
+			[newCurrentlyVisibleView setFrame:[self visibleViewFrameForView:newCurrentlyVisibleView]];
 		}
 
 	};
@@ -127,14 +144,25 @@
 }
 
 #pragma mark - currentlyVisibleView
--(CGRect)visibleViewFrame
+-(UIView<RUViewStackProtocol> *)currentlyVisibleView
 {
-	return self.bounds;
+	return self.viewStack.lastObject;
 }
 
--(CGRect)poppedOffViewFrame
+#pragma mark - Frames
+-(CGRect)visibleViewFrameForView:(UIView<RUViewStackProtocol>*)view
 {
-	CGRect visibleViewFrame = self.visibleViewFrame;
+	CGSize viewSize = view.viewSize;
+	return CGRectCeilOrigin((CGRect){
+		.origin.x = CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(viewSize.width, CGRectGetWidth(self.bounds)),
+		.origin.y = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(viewSize.width, CGRectGetWidth(self.bounds)),
+		.size = viewSize,
+	});
+}
+
+-(CGRect)poppedOffViewFrameForView:(UIView<RUViewStackProtocol>*)view
+{
+	CGRect visibleViewFrame = [self visibleViewFrameForView:view];
 	return UIEdgeInsetsInsetRect(visibleViewFrame, (UIEdgeInsets){
 		
 		.left = -CGRectGetWidth(self.bounds),
@@ -142,9 +170,9 @@
 	});
 }
 
--(CGRect)pushedOnViewFrame
+-(CGRect)pushedOnViewFrameForView:(UIView<RUViewStackProtocol>*)view
 {
-	CGRect visibleViewFrame = self.visibleViewFrame;
+	CGRect visibleViewFrame = [self visibleViewFrameForView:view];
 	return UIEdgeInsetsInsetRect(visibleViewFrame, (UIEdgeInsets){
 		
 		.left = CGRectGetWidth(self.bounds),

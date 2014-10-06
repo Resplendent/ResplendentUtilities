@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RUViewStackProtocols.h"
 
 
 
@@ -14,14 +15,14 @@
 
 @interface RUViewStack : UIView
 
--(instancetype)initWithRootView:(UIView*)rootView NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithRootView:(UIView<RUViewStackProtocol>*)rootView NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, strong) NSArray* viewStack;
 -(void)setViewStack:(NSArray *)viewStack animated:(BOOL)animated;
 
-@property (nonatomic, readonly) UIView* currentlyVisibleView;
+@property (nonatomic, readonly) UIView<RUViewStackProtocol>* currentlyVisibleView;
 
--(void)pushViewToStack:(UIView*)view animated:(BOOL)animated;
+-(void)pushViewToStack:(UIView<RUViewStackProtocol>*)view animated:(BOOL)animated;
 -(void)popTopViewFromStackAnimated:(BOOL)animated;
 
 @end
