@@ -17,6 +17,8 @@
 
 -(instancetype)initWithRootView:(UIView<RUViewStackProtocol>*)rootView NS_DESIGNATED_INITIALIZER;
 
+@property (nonatomic, assign) UIViewController* presentingViewController;
+
 @property (nonatomic, strong) NSArray* viewStack;
 -(void)setViewStack:(NSArray *)viewStack animated:(BOOL)animated;
 
@@ -24,5 +26,7 @@
 
 -(void)pushViewToStack:(UIView<RUViewStackProtocol>*)view animated:(BOOL)animated;
 -(void)popTopViewFromStackAnimated:(BOOL)animated;
+
+-(void)updateCurrentlyVisibleViewFrameAnimated:(BOOL)animated;
 
 @end

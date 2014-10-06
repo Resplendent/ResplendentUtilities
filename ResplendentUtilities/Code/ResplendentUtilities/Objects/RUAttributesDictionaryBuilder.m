@@ -19,6 +19,7 @@
 -(void)absorbPropertiesFromLabel:(UILabel*)label
 {
 	[self setFont:label.font];
+	[self setTextColor:label.textColor];
 	[self setLineBreakMode:label.lineBreakMode];
 }
 
@@ -27,12 +28,19 @@
 	[self absorbPropertiesFromLabel:button.titleLabel];
 }
 
+-(void)absorbPropertiesFromTextField:(UITextField*)textField
+{
+	[self setFont:textField.font];
+	[self setTextColor:textField.textColor];
+}
+
 #pragma mark - Create Attributes Dictionary
 -(NSDictionary*)createAttributesDictionary
 {
 	NSMutableDictionary* attributesDictionary = [NSMutableDictionary dictionary];
 
 	[attributesDictionary setObjectOrRemoveIfNil:self.font forKey:NSFontAttributeName];
+	[attributesDictionary setObjectOrRemoveIfNil:self.textColor forKey:NSForegroundColorAttributeName];
 
 	NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
 	[style setLineBreakMode:self.lineBreakMode];

@@ -20,8 +20,14 @@
 
 @protocol RUViewStackProtocol <NSObject>
 
+
+@required
 @property (nonatomic, assign) RUViewStack* viewStack;
 
 @property (nonatomic, readonly) CGSize viewSize;
+
+
+@optional
+@property (nonatomic, readonly) CGPoint viewOriginOffset;
 
 @end

@@ -169,9 +169,21 @@
 -(CGRect)visibleViewFrameForView:(UIView<RUViewStackProtocol>*)view
 {
 	CGSize viewSize = view.viewSize;
+
+	CGPoint origin = (CGPoint){
+		.x = CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(viewSize.width, CGRectGetWidth(self.bounds)),
+		.y = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(viewSize.height, CGRectGetHeight(self.bounds)),
+	};
+
+	if ([view respondsToSelector:@selector(viewOriginOffset)])
+	{
+		CGPoint viewOriginOffset = [view viewOriginOffset];
+		origin.x += viewOriginOffset.x;
+		origin.y += viewOriginOffset.y;
+	}
+
 	return CGRectCeilOrigin((CGRect){
-		.origin.x = CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(viewSize.width, CGRectGetWidth(self.bounds)),
-		.origin.y = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(viewSize.height, CGRectGetHeight(self.bounds)),
+		.origin = origin,
 		.size = viewSize,
 	});
 }
@@ -188,6 +200,33 @@
 	CGRect visibleViewFrame = [self visibleViewFrameForView:view];
 	visibleViewFrame.origin.x += CGRectGetWidth(self.bounds);
 	return CGRectCeilOrigin(visibleViewFrame);
+}
+
+#pragma mark - Update Currently Visible View Frame
+-(void)updateCurrentlyVisibleViewFrameAnimated:(BOOL)animated
+{
+	UIView<RUViewStackProtocol>* currentlyVisibleView = self.currentlyVisibleView;
+	kRUConditionalReturn(currentlyVisibleView == nil, YES);
+
+	CGRect newFrame = [self visibleViewFrameForView:currentlyVisibleView];
+	kRUConditionalReturn(CGRectEqualToRect(currentlyVisibleView.frame, newFrame), YES);
+	
+	void (^frameChangeBlock)() = ^{
+		[currentlyVisibleView setFrame:newFrame];
+	};
+
+	if (animated)
+	{
+		[UIView animateWithDuration:0.25f animations:^{
+
+			frameChangeBlock();
+
+		}];
+	}
+	else
+	{
+		frameChangeBlock();
+	}
 }
 
 @end
