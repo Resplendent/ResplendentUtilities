@@ -91,6 +91,7 @@
 		434735B119E08DC0001DDE4D /* RUTextFieldCustomizablePlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4347356819E08DC0001DDE4D /* RUTextFieldCustomizablePlaceholder.m */; };
 		434735B219E08DC0001DDE4D /* RUAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4347356B19E08DC0001DDE4D /* RUAlertView.m */; };
 		434735B519E08DD4001DDE4D /* RUScreenSizeToFloatConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 434735B419E08DD4001DDE4D /* RUScreenSizeToFloatConverter.m */; };
+		434735EF19E254E2001DDE4D /* RUViewStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 434735EE19E254E2001DDE4D /* RUViewStack.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -289,6 +290,8 @@
 		4347356B19E08DC0001DDE4D /* RUAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAlertView.m; sourceTree = "<group>"; };
 		434735B319E08DD4001DDE4D /* RUScreenSizeToFloatConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUScreenSizeToFloatConverter.h; sourceTree = "<group>"; };
 		434735B419E08DD4001DDE4D /* RUScreenSizeToFloatConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUScreenSizeToFloatConverter.m; sourceTree = "<group>"; };
+		434735ED19E254E2001DDE4D /* RUViewStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUViewStack.h; sourceTree = "<group>"; };
+		434735EE19E254E2001DDE4D /* RUViewStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUViewStack.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -647,6 +650,7 @@
 				4347355419E08DC0001DDE4D /* Keyboard */,
 				4347355719E08DC0001DDE4D /* Modal */,
 				4347355C19E08DC0001DDE4D /* RadioButtonView */,
+				434735EC19E254C3001DDE4D /* RUViewStack */,
 				4347356019E08DC0001DDE4D /* ScrollView */,
 				4347356319E08DC0001DDE4D /* TableView */,
 				4347356619E08DC0001DDE4D /* TextFieldCustomizablePlaceholder */,
@@ -818,6 +822,15 @@
 			path = UIAlertView;
 			sourceTree = "<group>";
 		};
+		434735EC19E254C3001DDE4D /* RUViewStack */ = {
+			isa = PBXGroup;
+			children = (
+				434735ED19E254E2001DDE4D /* RUViewStack.h */,
+				434735EE19E254E2001DDE4D /* RUViewStack.m */,
+			);
+			path = RUViewStack;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -863,7 +876,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = RU;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = Resplendent;
 				TargetAttributes = {
 					430C9CC61868D80B002AEB0B = {
@@ -984,6 +997,7 @@
 				4347359619E08DC0001DDE4D /* RUStringCompatability.m in Sources */,
 				4347359D19E08DC0001DDE4D /* RUGradientButton.m in Sources */,
 				4347357519E08DC0001DDE4D /* NSString+RUMutableURLRequest.m in Sources */,
+				434735EF19E254E2001DDE4D /* RUViewStack.m in Sources */,
 				4347357319E08DC0001DDE4D /* NSNumber+RUUtil.m in Sources */,
 				4347357A19E08DC0001DDE4D /* UIActionSheet+RUShowUtil.m in Sources */,
 				4347356E19E08DC0001DDE4D /* NSBundle+RUPListGetters.m in Sources */,
@@ -1033,7 +1047,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1073,7 +1086,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1132,7 +1144,6 @@
 		430C9CDC1868D80B002AEB0B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ResplendentUtilities.app/ResplendentUtilities";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -1155,7 +1166,6 @@
 		430C9CDD1868D80B002AEB0B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ResplendentUtilities.app/ResplendentUtilities";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
