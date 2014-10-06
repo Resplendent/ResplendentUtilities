@@ -34,8 +34,6 @@
 #pragma mark - RUViewStack
 -(instancetype)initWithRootView:(UIView<RUViewStackProtocol> *)rootView
 {
-	kRUConditionalReturn_ReturnValueNil(kRUProtocolOrNil(rootView, RUViewStackProtocol), YES);
-
 	if (self = [super init])
 	{
 		[self setViewStack:@[rootView]];
@@ -51,14 +49,17 @@
 	UIView<RUViewStackProtocol>* currentlyVisibleView = self.currentlyVisibleView;
 	if (currentlyVisibleView)
 	{
-		[currentlyVisibleView setFrame:[self visibleViewFrameForView:currentlyVisibleView]];
+		if (self.isAnimating == false)
+		{
+			[currentlyVisibleView setFrame:[self visibleViewFrameForView:currentlyVisibleView]];
+		}
 	}
 }
 
 #pragma mark - Stack management
 -(void)pushViewToStack:(UIView<RUViewStackProtocol> *)view animated:(BOOL)animated
 {
-	kRUConditionalReturn(kRUProtocolOrNil(view, RUViewStackProtocol), YES);
+	kRUConditionalReturn(kRUProtocolOrNil(view, RUViewStackProtocol) == false, YES);
 
 	NSMutableArray* newViewStack = [NSMutableArray arrayWithArray:self.viewStack];
 	[newViewStack addObject:view];
@@ -87,7 +88,7 @@
 
 	for (UIView<RUViewStackProtocol>* view in viewStack)
 	{
-		kRUConditionalReturn(kRUProtocolOrNil(view, RUViewStackProtocol), YES);
+		kRUConditionalReturn(kRUProtocolOrNil(view, RUViewStackProtocol) == false, YES);
 		[view setViewStack:self];
 	}
 
@@ -106,9 +107,11 @@
 
 	if (newCurrentlyVisibleView)
 	{
+		[self addSubview:newCurrentlyVisibleView];
 		[newCurrentlyVisibleView setFrame:[self pushedOnViewFrameForView:newCurrentlyVisibleView]];
 	}
 
+	// setFinalFramesBlock
 	void (^setFinalFramesBlock)() = ^{
 		
 		if (oldCurrentlyVisibleView)
@@ -119,6 +122,16 @@
 		if (newCurrentlyVisibleView)
 		{
 			[newCurrentlyVisibleView setFrame:[self visibleViewFrameForView:newCurrentlyVisibleView]];
+		}
+
+	};
+
+	//removeOldCurrentlyVisibleViewBlock
+	void (^removeOldCurrentlyVisibleViewBlock)() = ^{
+
+		if (oldCurrentlyVisibleView)
+		{
+			[oldCurrentlyVisibleView removeFromSuperview];
 		}
 
 	};
@@ -134,12 +147,14 @@
 		} completion:^(BOOL finished) {
 
 			[self setIsAnimating:NO];
+			removeOldCurrentlyVisibleViewBlock();
 
 		}];
 	}
 	else
 	{
 		setFinalFramesBlock();
+		removeOldCurrentlyVisibleViewBlock();
 	}
 }
 
@@ -155,7 +170,7 @@
 	CGSize viewSize = view.viewSize;
 	return CGRectCeilOrigin((CGRect){
 		.origin.x = CGRectGetHorizontallyAlignedXCoordForWidthOnWidth(viewSize.width, CGRectGetWidth(self.bounds)),
-		.origin.y = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(viewSize.width, CGRectGetWidth(self.bounds)),
+		.origin.y = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(viewSize.height, CGRectGetHeight(self.bounds)),
 		.size = viewSize,
 	});
 }
