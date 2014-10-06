@@ -9,6 +9,7 @@
 #import "RUModalView.h"
 #import "UIView+RUCancelControlTracking.h"
 #import "UIView+RUUtility.h"
+#import "RUConditionalReturn.h"
 
 
 
@@ -255,6 +256,19 @@
 		default:
 			break;
 	}
+}
+
+#pragma mark - disableShadow
+-(BOOL)disableShadow
+{
+	return self.shadowView.isHidden;
+}
+
+-(void)setDisableShadow:(BOOL)disableShadow
+{
+	kRUConditionalReturn(self.disableShadow == disableShadow, NO);
+
+	[self.shadowView setHidden:disableShadow];
 }
 
 @end
