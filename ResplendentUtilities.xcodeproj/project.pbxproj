@@ -93,6 +93,7 @@
 		434735B519E08DD4001DDE4D /* RUScreenSizeToFloatConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 434735B419E08DD4001DDE4D /* RUScreenSizeToFloatConverter.m */; };
 		434735EF19E254E2001DDE4D /* RUViewStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 434735EE19E254E2001DDE4D /* RUViewStack.m */; };
 		4347371819E28704001DDE4D /* NSObject+RUKeyboardNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 4347371719E28704001DDE4D /* NSObject+RUKeyboardNotifications.m */; };
+		4384E55C19E51B7800C99255 /* UIApplication+RUPushNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 4384E55B19E51B7800C99255 /* UIApplication+RUPushNotifications.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -296,6 +297,8 @@
 		434735F019E25E66001DDE4D /* RUViewStackProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUViewStackProtocols.h; sourceTree = "<group>"; };
 		4347371619E28704001DDE4D /* NSObject+RUKeyboardNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+RUKeyboardNotifications.h"; sourceTree = "<group>"; };
 		4347371719E28704001DDE4D /* NSObject+RUKeyboardNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+RUKeyboardNotifications.m"; sourceTree = "<group>"; };
+		4384E55A19E51B7800C99255 /* UIApplication+RUPushNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+RUPushNotifications.h"; sourceTree = "<group>"; };
+		4384E55B19E51B7800C99255 /* UIApplication+RUPushNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+RUPushNotifications.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -437,6 +440,8 @@
 				434734C619E08DC0001DDE4D /* UIActionSheet+RUShowUtil.m */,
 				434734C719E08DC0001DDE4D /* UIAlertView+RUShowUtil.h */,
 				434734C819E08DC0001DDE4D /* UIAlertView+RUShowUtil.m */,
+				4384E55A19E51B7800C99255 /* UIApplication+RUPushNotifications.h */,
+				4384E55B19E51B7800C99255 /* UIApplication+RUPushNotifications.m */,
 				434734C919E08DC0001DDE4D /* UIButton+RUTextSize.h */,
 				434734CA19E08DC0001DDE4D /* UIButton+RUTextSize.m */,
 				434734CB19E08DC0001DDE4D /* UIColor */,
@@ -946,6 +951,7 @@
 				4347358919E08DC0001DDE4D /* UIView+RUCancelControlTracking.m in Sources */,
 				434735A219E08DC0001DDE4D /* RUTriangle.m in Sources */,
 				4347359A19E08DC0001DDE4D /* RUAttributesDictionaryBuilder.m in Sources */,
+				4384E55C19E51B7800C99255 /* UIApplication+RUPushNotifications.m in Sources */,
 				434735A619E08DC0001DDE4D /* RUHorizontalTitlePagingViewCollectionViewCell.m in Sources */,
 				4347359019E08DC0001DDE4D /* UIView+RUViewHierarchyUtility.m in Sources */,
 				4347358419E08DC0001DDE4D /* UIView+RUSnapshot.m in Sources */,
