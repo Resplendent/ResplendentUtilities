@@ -15,9 +15,9 @@
 
 @interface UIApplication (_RU)
 
-@property (nonatomic, readonly) RU_UIApplication_RemoteNotificationsType() RURemoteTypesToRegisterFor;
+@property (nonatomic, readonly) RU_UIApplication_RemoteNotificationsType() ruRemoteTypesToRegisterFor;
 
--(BOOL)openDeviceSettingsPage;
+-(BOOL)ruOpenDeviceSettingsPage;
 
 @end
 
@@ -27,14 +27,14 @@
 
 @implementation UIApplication (_RU)
 
--(RU_UIApplication_RemoteNotificationsType())RURemoteTypesToRegisterFor
+-(RU_UIApplication_RemoteNotificationsType())ruRemoteTypesToRegisterFor
 {
 	return (RU_UIApplication_RemoteNotificationsType(Badge) |
 			RU_UIApplication_RemoteNotificationsType(Sound) |
 			RU_UIApplication_RemoteNotificationsType(Alert));
 }
 
--(BOOL)openDeviceSettingsPage
+-(BOOL)ruOpenDeviceSettingsPage
 {
 	kRUConditionalReturn_ReturnValueFalse(&UIApplicationOpenSettingsURLString == nil, NO);
 	
@@ -49,7 +49,7 @@
 
 @implementation UIApplication (RU)
 
--(RU_UIApplication_AppropriateNotificationsType())RUTypesToRegisterFor
+-(RU_UIApplication_AppropriateNotificationsType())ruTypesToRegisterFor
 {
 	return (RU_UIApplication_AppropriateNotificationsType(Badge) |
 			RU_UIApplication_AppropriateNotificationsType(Sound) |
@@ -57,19 +57,19 @@
 }
 
 #pragma mark - RURegisteredForRemoteNotifications
--(BOOL)RURegisteredForRemoteNotifications
+-(BOOL)ruRegisteredForRemoteNotifications
 {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 	if ([self respondsToSelector:@selector(currentUserNotificationSettings)])
 	{
-		return (self.currentUserNotificationSettings.types == self.RUTypesToRegisterFor);
+		return (self.currentUserNotificationSettings.types == self.ruTypesToRegisterFor);
 	}
 	else
 	{
 		return [self isRegisteredForRemoteNotifications];
 	}
 #else
-	return (self.enabledRemoteNotificationTypes == self.RUTypesToRegisterFor);
+	return (self.enabledRemoteNotificationTypes == self.ruTypesToRegisterFor);
 #endif
 }
 
@@ -82,27 +82,27 @@
 		{
 			if (canSendToSettings && self.isRegisteredForRemoteNotifications)
 			{
-				[self openDeviceSettingsPage];
+				[self ruOpenDeviceSettingsPage];
 			}
 			else
 			{
-				UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:self.RUTypesToRegisterFor categories:nil];
+				UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:self.ruTypesToRegisterFor categories:nil];
 				
 				[self registerUserNotificationSettings:settings];
 			}
 		}
 		else
 		{
-			[self registerForRemoteNotificationTypes:self.RURemoteTypesToRegisterFor];
+			[self registerForRemoteNotificationTypes:self.ruRemoteTypesToRegisterFor];
 		}
 #else
-		[self registerForRemoteNotificationTypes:self.RUTypesToRegisterFor];
+		[self registerForRemoteNotificationTypes:self.ruTypesToRegisterFor];
 #endif
 	}
 	else
 	{
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
-		if ([self openDeviceSettingsPage] == false)
+		if ([self ruOpenDeviceSettingsPage] == false)
 		{
 			[self unregisterForRemoteNotifications];
 		}

@@ -27,13 +27,13 @@
 
 @interface UIApplication (RUPushNotifications)
 
-@property (nonatomic, readonly) RU_UIApplication_AppropriateNotificationsType() RUTypesToRegisterFor;
+@property (nonatomic, readonly) RU_UIApplication_AppropriateNotificationsType() ruTypesToRegisterFor;
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
-@property (nonatomic, readonly) BOOL RURegisteredForRemoteNotifications;
+@property (nonatomic, readonly) BOOL ruRegisteredForRemoteNotifications;
 -(void)setRURegisteredForRemoteNotifications:(BOOL)RURegisteredForRemoteNotifications canSendToSettings:(BOOL)canSendToSettings;
 #else
-@property (nonatomic, assign) BOOL RURegisteredForRemoteNotifications;
+@property (nonatomic, assign) BOOL ruRegisteredForRemoteNotifications;
 #endif
 
 @end
