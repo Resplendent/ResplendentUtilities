@@ -64,27 +64,30 @@
 	{
 		return (self.currentUserNotificationSettings.types == self.ruTypesToRegisterFor);
 	}
-	else
+	else if ([self respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
 	{
 		return [self isRegisteredForRemoteNotifications];
+	}
+	else
+	{
+		return (self.enabledRemoteNotificationTypes == self.ruRemoteTypesToRegisterFor);
 	}
 #else
 	return (self.enabledRemoteNotificationTypes == self.ruTypesToRegisterFor);
 #endif
 }
 
--(void)setRURegisteredForRemoteNotifications:(BOOL)RURegisteredForRemoteNotifications canSendToSettings:(BOOL)canSendToSettings
+-(void)setRURegisteredForRemoteNotifications:(BOOL)ruRegisteredForRemoteNotifications canSendToSettings:(BOOL)canSendToSettings
 {
-	if (RURegisteredForRemoteNotifications)
+	if (ruRegisteredForRemoteNotifications)
 	{
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
-		if ([self respondsToSelector:@selector(registerUserNotificationSettings:)])
+		if ([self respondsToSelector:@selector(isRegisteredForRemoteNotifications)] &&
+			[self respondsToSelector:@selector(currentUserNotificationSettings)] &&
+			[self respondsToSelector:@selector(registerUserNotificationSettings:)])
 		{
-			if (canSendToSettings && self.isRegisteredForRemoteNotifications)
-			{
-				[self ruOpenDeviceSettingsPage];
-			}
-			else
+			if ((canSendToSettings == false) || (self.currentUserNotificationSettings.types == self.ruTypesToRegisterFor) ||
+				([self ruOpenDeviceSettingsPage] == false))
 			{
 				UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:self.ruTypesToRegisterFor categories:nil];
 				
@@ -109,6 +112,18 @@
 #else
 		[self unregisterForRemoteNotifications];
 #endif
+	}
+}
+
+-(void)ruRegisterForPushNotificationsIfAlreadyRegisteredOrNeverRegistered
+{
+	if ([self respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
+	{
+		if ((self.isRegisteredForRemoteNotifications == false) ||
+			(self.ruRegisteredForRemoteNotifications == false))
+		{
+			[self setRURegisteredForRemoteNotifications:YES canSendToSettings:NO];
+		}
 	}
 }
 

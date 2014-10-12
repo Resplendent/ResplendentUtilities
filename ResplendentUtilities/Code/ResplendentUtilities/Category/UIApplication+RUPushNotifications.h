@@ -31,9 +31,11 @@
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 @property (nonatomic, readonly) BOOL ruRegisteredForRemoteNotifications;
--(void)setRURegisteredForRemoteNotifications:(BOOL)RURegisteredForRemoteNotifications canSendToSettings:(BOOL)canSendToSettings;
+-(void)setRURegisteredForRemoteNotifications:(BOOL)ruRegisteredForRemoteNotifications canSendToSettings:(BOOL)canSendToSettings;
 #else
 @property (nonatomic, assign) BOOL ruRegisteredForRemoteNotifications;
 #endif
+
+-(void)ruRegisterForPushNotificationsIfAlreadyRegisteredOrNeverRegistered;
 
 @end
