@@ -117,6 +117,7 @@
 
 -(void)ruRegisterForPushNotificationsIfAlreadyRegisteredOrNeverRegistered
 {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 	if ([self respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
 	{
 		if ((self.isRegisteredForRemoteNotifications == false) ||
@@ -125,6 +126,19 @@
 			[self setRURegisteredForRemoteNotifications:YES canSendToSettings:NO];
 		}
 	}
+	else
+	{
+		if (self.ruRegisteredForRemoteNotifications == false)
+		{
+			[self setRURegisteredForRemoteNotifications:YES canSendToSettings:NO];
+		}
+	}
+#else
+	if (self.ruRegisteredForRemoteNotifications == false)
+	{
+		[self setRURegisteredForRemoteNotifications:YES canSendToSettings:NO];
+	}
+#endif
 }
 
 @end
