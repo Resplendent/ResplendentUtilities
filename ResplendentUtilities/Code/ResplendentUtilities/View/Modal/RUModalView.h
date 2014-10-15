@@ -28,6 +28,8 @@ typedef NS_ENUM(NSInteger, RUModalView_TransitionAnimation_Type) {
 
 @interface RUModalView : UIView
 
+@property (nonatomic, assign) UIViewController* presentingViewController;
+
 @property (nonatomic, readonly) UIView* contentView;
 @property (nonatomic, readonly) CGRect contentViewFrame;
 @property (nonatomic, readonly) CGFloat contentViewYCoord;
@@ -35,6 +37,9 @@ typedef NS_ENUM(NSInteger, RUModalView_TransitionAnimation_Type) {
 @property (nonatomic, readonly) CGRect innerContentViewFrame;
 
 @property (nonatomic, assign) RUModalView_TransitionAnimation_Type transitionAnimationType;
+
+@property (nonatomic, assign) BOOL disableShadow;
+
 //@property (nonatomic, readonly) CGRect contentViewFrameForBottomTransition;
 -(CGRect)contentViewFrameForNonRestingState;
 -(void)willShowContentView;

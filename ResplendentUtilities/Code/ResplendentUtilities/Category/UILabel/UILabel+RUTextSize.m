@@ -36,7 +36,7 @@
 
 -(CGSize)ruTextSize
 {
-	return [self ruTextSizeConstrainedToWidth:0];
+	return [self ruTextSizeConstrainedToWidth:CGFLOAT_MAX];
 }
 
 @end

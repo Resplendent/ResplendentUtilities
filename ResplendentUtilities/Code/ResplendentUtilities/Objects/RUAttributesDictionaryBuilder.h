@@ -17,9 +17,11 @@
 @property (nonatomic, strong) UIFont* font;
 @property (nonatomic, assign) NSLineBreakMode lineBreakMode;
 @property (nonatomic, strong) NSNumber* lineSpacing;
+@property (nonatomic, strong) UIColor* textColor;
 
 -(void)absorbPropertiesFromLabel:(UILabel*)label;
 -(void)absorbPropertiesFromButton:(UIButton*)button;
+-(void)absorbPropertiesFromTextField:(UITextField*)textField;
 
 -(NSDictionary*)createAttributesDictionary;
 
