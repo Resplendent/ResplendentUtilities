@@ -14,15 +14,28 @@
 
 
 
+#define kRUDiskImageFetchingController__UseFileManager 1
+
+
+
+
+
 @interface RUDiskImageFetchingController ()
+
+#if kRUDiskImageFetchingController__UseFileManager
+@property (nonatomic, readonly) NSFileManager* fileManager;
+#endif
 
 @property (nonatomic, readonly) NSCache* memCache;
 -(void)addImageToCache:(UIImage*)image withKey:(NSString*)key;
 -(UIImage *)imageFromCacheForKey:(NSString *)key;
+-(void)clearCache;
 
 -(NSString*)keyForPath:(NSString*)path;
 
 @property (nonatomic, strong) dispatch_queue_t queue;
+
+-(void)notificationDidFire_UIApplication_DidReceiveMemoryWarningNotification;
 
 @end
 
@@ -42,6 +55,17 @@
 		[self.memCache setName:[[NSString stringWithUTF8String:nameSpace] stringByAppendingString:@".memCache"]];
 
 		_queue = dispatch_queue_create(nameSpace, DISPATCH_QUEUE_SERIAL);
+
+#if kRUDiskImageFetchingController__UseFileManager
+		dispatch_sync(self.queue, ^{
+			_fileManager = [NSFileManager new];
+		});
+#endif
+
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(notificationDidFire_UIApplication_DidReceiveMemoryWarningNotification)
+													 name:UIApplicationDidReceiveMemoryWarningNotification
+												   object:nil];
 	}
 
 	return self;
@@ -50,6 +74,8 @@
 #pragma mark - Fetching
 -(NSOperation*)fetchImageFromDiskWithPath:(NSString*)path completion:(RUDiskImageFetchingController_QueryCompletedBlock)completion
 {
+	kRUConditionalReturn_ReturnValueNil(path.length == 0, NO);
+
 	NSOperation *operation = [NSOperation new];
 
 	dispatch_async(self.queue, ^{
@@ -69,16 +95,40 @@
 			}
 			else
 			{
+#if kRUDiskImageFetchingController__UseFileManager
+				BOOL isDirectory = false;
+				if ([self.fileManager fileExistsAtPath:path isDirectory:&isDirectory])
+				{
+					if (isDirectory)
+					{
+						NSAssert(false, @"unhandled");
+					}
+					else
+					{
+						NSData* diskImageData = [self.fileManager contentsAtPath:path];
+						
+						if (diskImageData.length)
+						{
+							diskImage = [UIImage imageWithData:diskImageData];
+							[self addImageToCache:diskImage withKey:key];
+							
+							fetchedSourceType = RUDiskImageFetchingController_FetchedSourceType_Cache;
+						}
+					}
+				}
+#else
 				NSError* fetchFromDiskError = nil;
 				NSData* diskImageData = [NSData dataWithContentsOfFile:path options:0 error:&fetchFromDiskError];
-
-				if (fetchFromDiskError && diskImageData.length)
+				
+				if ((fetchFromDiskError == nil) && diskImageData.length)
 				{
 					diskImage = [UIImage imageWithData:diskImageData];
 					[self addImageToCache:diskImage withKey:key];
 					
 					fetchedSourceType = RUDiskImageFetchingController_FetchedSourceType_Cache;
 				}
+#endif
+
 			}
 			
 			dispatch_async(dispatch_get_main_queue(), ^{
@@ -105,6 +155,11 @@
 	return [self.memCache objectForKey:key];
 }
 
+-(void)clearCache
+{
+	[self.memCache removeAllObjects];
+}
+
 #pragma mark - Key
 -(NSString*)keyForPath:(NSString*)path
 {
@@ -113,5 +168,11 @@
 
 #pragma mark - Singleton
 RUSingletonUtil_Synthesize_Singleton_Implementation_SharedInstance
+
+#pragma mark - Notifications
+-(void)notificationDidFire_UIApplication_DidReceiveMemoryWarningNotification
+{
+	[self clearCache];
+}
 
 @end

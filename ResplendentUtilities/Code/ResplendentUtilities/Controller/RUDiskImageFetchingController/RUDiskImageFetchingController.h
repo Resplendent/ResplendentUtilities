@@ -31,6 +31,7 @@ typedef void(^RUDiskImageFetchingController_QueryCompletedBlock)(UIImage *image,
 
 @interface RUDiskImageFetchingController : NSObject
 
+//If the operation is canceled before it's finished, the completion block won't get called.
 -(NSOperation*)fetchImageFromDiskWithPath:(NSString*)path completion:(RUDiskImageFetchingController_QueryCompletedBlock)completion;
 
 +(instancetype)sharedInstance;

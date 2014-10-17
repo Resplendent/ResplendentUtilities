@@ -58,7 +58,7 @@ RU_Synthesize_AssociatedObject_GetterSetter_Implementation(ru_, Ru_, fetchImageF
 
 	__weak __typeof(&*self)weakSelf = self;
 
-	[[RUDiskImageFetchingController sharedInstance]fetchImageFromDiskWithPath:filePath completion:^(UIImage *image, RUDiskImageFetchingController_FetchedSourceType fetchedSourceType) {
+	[self setRu_fetchImageFromDiskOperation:[[RUDiskImageFetchingController sharedInstance]fetchImageFromDiskWithPath:filePath completion:^(UIImage *image, RUDiskImageFetchingController_FetchedSourceType fetchedSourceType) {
 
 		kRUConditionalReturn([NSThread isMainThread] == false, YES);
 		kRUConditionalReturn(weakSelf == nil, NO);
@@ -66,7 +66,7 @@ RU_Synthesize_AssociatedObject_GetterSetter_Implementation(ru_, Ru_, fetchImageF
 		__strong __typeof(&*weakSelf)strongSelf = weakSelf;
 		[strongSelf setImage:image];
 
-	}];
+	}]];
 }
 
 -(void)ru_cancelFetchImageFromDisk
