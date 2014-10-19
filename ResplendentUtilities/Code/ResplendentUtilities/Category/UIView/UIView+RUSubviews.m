@@ -42,4 +42,26 @@
     return nil;
 }
 
+#pragma mark - Subviews From Point
+-(UIView*)ru_frontMostSubviewOfPoint:(CGPoint)point withEvent:(UIEvent *)event
+{
+	for (UIView* subview in self.subviews)
+	{
+		CGPoint translatedPoint = [subview convertPoint:point fromView:self];
+
+		UIView* subview_frontMostSubviewOfPoint = [subview ru_frontMostSubviewOfPoint:translatedPoint withEvent:event];
+		if (subview_frontMostSubviewOfPoint)
+		{
+			return subview_frontMostSubviewOfPoint;
+		}
+
+		if ([subview pointInside:translatedPoint withEvent:event])
+		{
+			return subview;
+		}
+	}
+
+	return nil;
+}
+
 @end
