@@ -71,7 +71,9 @@
 #pragma mark - Action methods
 -(void)didTapSelf:(UITapGestureRecognizer*)tap
 {
-    [self dismiss:YES completion:nil];
+	kRUConditionalReturn(self.isTransitioning, NO);
+
+	[self dismiss:YES completion:nil];
 }
 
 #pragma mark - Public Display Content methods
