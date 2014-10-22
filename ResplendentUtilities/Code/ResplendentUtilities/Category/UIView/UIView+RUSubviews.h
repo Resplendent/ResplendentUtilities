@@ -17,4 +17,6 @@
 @property (nonatomic, readonly) UIView* ruLowestSubview;
 @property (nonatomic, readonly) UIView* ruFirstResponderSubview;
 
+-(UIView*)ru_frontMostSubviewOfPoint:(CGPoint)point withEvent:(UIEvent *)event;
+
 @end
