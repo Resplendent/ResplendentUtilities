@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, RUModalView_TransitionAnimation_Type) {
 
 
 
-@interface RUModalView : UIView
+@interface RUModalView : UIView <UIGestureRecognizerDelegate>
 
 @property (nonatomic, assign) UIViewController* presentingViewController;
 

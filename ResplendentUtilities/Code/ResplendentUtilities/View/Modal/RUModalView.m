@@ -37,6 +37,7 @@
 		[self setTransitionAnimationType:RUModalView_TransitionAnimation_Type_Default];
 
         _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapSelf:)];
+		[self.tapGestureRecognizer setDelegate:self];
         [self addGestureRecognizer:_tapGestureRecognizer];
 
 		_shadowView = [UIView new];
@@ -271,6 +272,15 @@
 	kRUConditionalReturn(self.disableShadow == disableShadow, NO);
 
 	[self.shadowView setHidden:disableShadow];
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+	return (
+			(touch.view == self) ||
+			(touch.view == self.contentView)
+			);
 }
 
 @end
