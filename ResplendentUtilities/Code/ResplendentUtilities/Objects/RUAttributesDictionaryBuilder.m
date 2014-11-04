@@ -44,6 +44,7 @@
 
 	NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
 	[style setLineBreakMode:self.lineBreakMode];
+	[style setAlignment:self.textAlignment];
 
 	if (self.lineSpacing)
 	{
