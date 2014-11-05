@@ -42,29 +42,6 @@
 	{
 		return NO;
 	}
-
-//	if (self.touchesInsideState == RUScrollViewTouchesInsideStateIncludeSubviews ||
-//		self.touchesInsideState == RUScrollViewTouchesInsideStateOnlySubviews)
-//    {
-//        for (UIView* subview in self.subviews)
-//        {
-//            if (CGRectContainsPoint(subview.frame, point))
-//                return YES;
-//        }
-//
-//        return NO;
-//    }
-//    else
-//    {
-//		if (self.touchesInsideState != RUScrollViewTouchesInsideStateOnlySubviews)
-//		{
-//			return [super pointInside:point withEvent:event];
-//		}
-//		else
-//		{
-//			return NO;
-//		}
-//    }
 }
 
 @end

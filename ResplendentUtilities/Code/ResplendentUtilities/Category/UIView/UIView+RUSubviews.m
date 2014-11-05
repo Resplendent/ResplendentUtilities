@@ -7,6 +7,7 @@
 //
 
 #import "UIView+RUSubviews.h"
+#import "RUConditionalReturn.h"
 
 
 
@@ -45,9 +46,7 @@
 #pragma mark - Subviews From Point
 -(UIView*)ru_frontMostSubviewOfPoint:(CGPoint)point withEvent:(UIEvent *)event
 {
-	for (UIView* subview in self.subviews)
-	{
-		CGPoint translatedPoint = [subview convertPoint:point fromView:self];
+	return [self ru_enumerateTranslatedPointsOnSubviews:self.subviews fromPoint:point event:event block:^UIView *(UIView *subview, CGPoint translatedPoint) {
 
 		UIView* subview_frontMostSubviewOfPoint = [subview ru_frontMostSubviewOfPoint:translatedPoint withEvent:event];
 		if (subview_frontMostSubviewOfPoint)
@@ -59,8 +58,52 @@
 		{
 			return subview;
 		}
-	}
+		
+		return nil;
+		
+	}];
+}
 
+-(UIView*)ru_subviewFromSubviews:(NSArray*)subviews inPoint:(CGPoint)point fromEvent:(UIEvent *)event
+{
+	return [self ru_enumerateTranslatedPointsOnSubviews:subviews fromPoint:point event:event block:^UIView *(UIView *subview, CGPoint translatedPoint) {
+
+		if ([subview pointInside:translatedPoint withEvent:event])
+		{
+			return subview;
+		}
+
+		return nil;
+
+	}];
+}
+
+-(UIView*)ru_enumerateTranslatedPointsOnSubviews:(NSArray*)subviews fromPoint:(CGPoint)point event:(UIEvent *)event block:(UIView*(^)(UIView* subview, CGPoint translatedPoint))block
+{
+	kRUConditionalReturn_ReturnValueNil(block == nil, YES);
+
+	for (UIView* subview in subviews)
+	{
+		if (kRUClassOrNil(subview, UIView) == nil)
+		{
+			NSAssert(false, @"unhandled");
+			continue;
+		}
+		
+		if ([subview isDescendantOfView:self] == false)
+		{
+			continue;
+		}
+		
+		CGPoint translatedPoint = [subview convertPoint:point fromView:self];
+
+		UIView* returnView = block(subview,translatedPoint);
+		if (returnView)
+		{
+			return returnView;
+		}
+	}
+	
 	return nil;
 }
 
