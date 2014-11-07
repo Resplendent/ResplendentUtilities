@@ -43,14 +43,10 @@
 
 	[attributesDictionary setObjectOrRemoveIfNil:self.font forKey:NSFontAttributeName];
 
-	if (&kCTForegroundColorAttributeName)
-	{
-		[attributesDictionary setObjectOrRemoveIfNil:self.textColor forKey:(NSString *)kCTForegroundColorAttributeName];
-	}
-	else
-	{
-		[attributesDictionary setObjectOrRemoveIfNil:self.textColor forKey:NSForegroundColorAttributeName];
-	}
+	[attributesDictionary setObjectOrRemoveIfNil:self.textColor forKey:
+	 ((self.textColorShouldUseCoreTextKey && (&kCTForegroundColorAttributeName)) ?
+	  (NSString *)kCTForegroundColorAttributeName :
+	  NSForegroundColorAttributeName)];
 
 	NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
 	[style setLineBreakMode:self.lineBreakMode];
