@@ -28,8 +28,6 @@ typedef NS_ENUM(NSInteger, RUModalView_TransitionAnimation_Type) {
 
 @interface RUModalView : UIView <UIGestureRecognizerDelegate>
 
-@property (nonatomic, assign) UIViewController* presentingViewController;
-
 @property (nonatomic, readonly) UIView* contentView;
 @property (nonatomic, readonly) CGRect contentViewFrame;
 @property (nonatomic, readonly) CGFloat contentViewYCoord;
