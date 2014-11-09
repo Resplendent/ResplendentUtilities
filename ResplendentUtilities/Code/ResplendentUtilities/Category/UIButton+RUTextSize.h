@@ -14,7 +14,10 @@
 
 @interface UIButton (RUTextSize)
 
--(CGSize)ruCurrentTitleTextSizeConstrainedToWidth:(CGFloat)width;
--(CGSize)ruCurrentTitleTextSize;
+-(CGSize)ru_currentTitleTextSizeConstrainedToWidth:(CGFloat)width;
+-(CGSize)ru_currentTitleTextSize;
+
+-(CGSize)ru_currentAttributedTitleTextSizeConstrainedToWidth:(CGFloat)width;
+-(CGSize)ru_currentAttributedTitleTextSize;
 
 @end

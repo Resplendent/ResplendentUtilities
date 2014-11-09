@@ -18,6 +18,8 @@
 @property (nonatomic, assign) NSLineBreakMode lineBreakMode;
 @property (nonatomic, strong) NSNumber* lineSpacing;
 @property (nonatomic, strong) UIColor* textColor;
+@property (nonatomic, assign) BOOL textColorShouldUseCoreTextKey;
+@property (nonatomic, assign) NSTextAlignment textAlignment;
 
 -(void)absorbPropertiesFromLabel:(UILabel*)label;
 -(void)absorbPropertiesFromButton:(UIButton*)button;

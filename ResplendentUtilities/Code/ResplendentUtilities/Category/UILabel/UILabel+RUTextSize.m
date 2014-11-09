@@ -9,6 +9,7 @@
 #import "UILabel+RUTextSize.h"
 #import "RUAttributesDictionaryBuilder.h"
 #import "NSString+RUTextSize.h"
+#import "NSAttributedString+RUTextSize.h"
 
 
 
@@ -18,7 +19,12 @@
 
 -(CGSize)ruTextSizeConstrainedToWidth:(CGFloat)width
 {
-	if (([self.text respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) &&
+	if ([self respondsToSelector:@selector(attributedText)] &&
+		(self.attributedText.length))
+	{
+		return [self.attributedText ru_textSizeWithBoundingWidth:width];
+	}
+	else if (([self.text respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) &&
 		([self.text respondsToSelector:@selector(ruTextSizeWithBoundingWidth:attributes:)]))
 	{
 		RUAttributesDictionaryBuilder* attributesDictionaryBuilder = [RUAttributesDictionaryBuilder new];

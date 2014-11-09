@@ -9,6 +9,7 @@
 #import "UIButton+RUTextSize.h"
 #import "RUAttributesDictionaryBuilder.h"
 #import "NSString+RUTextSize.h"
+#import "NSAttributedString+RUTextSize.h"
 
 
 
@@ -16,7 +17,7 @@
 
 @implementation UIButton (RUTextSize)
 
--(CGSize)ruCurrentTitleTextSizeConstrainedToWidth:(CGFloat)width
+-(CGSize)ru_currentTitleTextSizeConstrainedToWidth:(CGFloat)width
 {
 	NSString* currentTitle = self.currentTitle;
 	if (([currentTitle respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) &&
@@ -35,9 +36,28 @@
 	}
 }
 
--(CGSize)ruCurrentTitleTextSize
+-(CGSize)ru_currentTitleTextSize
 {
-	return [self ruCurrentTitleTextSizeConstrainedToWidth:CGFLOAT_MAX];
+	return [self ru_currentTitleTextSizeConstrainedToWidth:CGFLOAT_MAX];
+}
+
+#pragma mark - Attributed Title
+-(CGSize)ru_currentAttributedTitleTextSizeConstrainedToWidth:(CGFloat)width
+{
+	if ([self respondsToSelector:@selector(currentAttributedTitle)])
+	{
+		return [self.currentAttributedTitle ru_textSizeWithBoundingWidth:width];
+	}
+	else
+	{
+		NSAssert(false, @"unhandled");
+		return CGSizeZero;
+	}
+}
+
+-(CGSize)ru_currentAttributedTitleTextSize
+{
+	return [self ru_currentAttributedTitleTextSizeConstrainedToWidth:CGFLOAT_MAX];
 }
 
 @end

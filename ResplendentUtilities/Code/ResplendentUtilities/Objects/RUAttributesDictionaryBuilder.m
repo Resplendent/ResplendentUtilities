@@ -9,6 +9,8 @@
 #import "RUAttributesDictionaryBuilder.h"
 #import "NSMutableDictionary+RUUtil.h"
 
+#import <CoreText/CoreText.h>
+
 
 
 
@@ -40,10 +42,15 @@
 	NSMutableDictionary* attributesDictionary = [NSMutableDictionary dictionary];
 
 	[attributesDictionary setObjectOrRemoveIfNil:self.font forKey:NSFontAttributeName];
-	[attributesDictionary setObjectOrRemoveIfNil:self.textColor forKey:NSForegroundColorAttributeName];
+
+	[attributesDictionary setObjectOrRemoveIfNil:self.textColor forKey:
+	 ((self.textColorShouldUseCoreTextKey && (&kCTForegroundColorAttributeName)) ?
+	  (NSString *)kCTForegroundColorAttributeName :
+	  NSForegroundColorAttributeName)];
 
 	NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
 	[style setLineBreakMode:self.lineBreakMode];
+	[style setAlignment:self.textAlignment];
 
 	if (self.lineSpacing)
 	{
