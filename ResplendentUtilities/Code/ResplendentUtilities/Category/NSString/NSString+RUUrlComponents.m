@@ -7,7 +7,7 @@
 //
 
 #import "NSString+RUUrlComponents.h"
-#import "NSString+RUUtil.h"
+#import "RUConstants.h"
 
 
 
