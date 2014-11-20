@@ -34,6 +34,7 @@
 #pragma mark - RUViewStack
 -(instancetype)initWithRootView:(UIView<RUViewStackProtocol> *)rootView
 {
+	kRUConditionalReturn_ReturnValueNil(rootView == nil, YES);
 	if (self = [super init])
 	{
 		[self setViewStack:@[rootView]];

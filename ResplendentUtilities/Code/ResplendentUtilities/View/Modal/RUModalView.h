@@ -28,8 +28,6 @@ typedef NS_ENUM(NSInteger, RUModalView_TransitionAnimation_Type) {
 
 @interface RUModalView : UIView <UIGestureRecognizerDelegate>
 
-@property (nonatomic, assign) UIViewController* presentingViewController;
-
 @property (nonatomic, readonly) UIView* contentView;
 @property (nonatomic, readonly) CGRect contentViewFrame;
 @property (nonatomic, readonly) CGFloat contentViewYCoord;
@@ -48,6 +46,7 @@ typedef NS_ENUM(NSInteger, RUModalView_TransitionAnimation_Type) {
 
 @property (nonatomic, readonly) UITapGestureRecognizer* tapGestureRecognizer;
 -(void)didTapSelf:(UITapGestureRecognizer*)tap; //Shouldn't be called directly, meant for subclassing.
+-(BOOL)shouldDismissForTapSelfWithTouch:(UITouch*)touch;
 
 -(void)showInView:(UIView*)presenterView completion:(void(^)())completion;
 -(void)dismiss:(BOOL)animate completion:(void(^)())completion;

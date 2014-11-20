@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 
 
@@ -33,6 +34,8 @@ typedef void(^RUDiskImageFetchingController_QueryCompletedBlock)(UIImage *image,
 
 //If the operation is canceled before it's finished, the completion block won't get called.
 -(NSOperation*)fetchImageFromDiskWithPath:(NSString*)path completion:(RUDiskImageFetchingController_QueryCompletedBlock)completion;
+
+-(void)removeImageFromCacheAtFilePath:(NSString*)filePath;
 
 +(instancetype)sharedInstance;
 

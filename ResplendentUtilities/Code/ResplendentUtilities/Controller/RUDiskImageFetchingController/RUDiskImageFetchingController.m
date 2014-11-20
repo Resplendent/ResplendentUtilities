@@ -28,6 +28,8 @@
 
 @property (nonatomic, readonly) NSCache* memCache;
 -(void)addImageToCache:(UIImage*)image withKey:(NSString*)key;
+-(void)removeImageFromCacheWithKey:(NSString*)key;
+
 -(UIImage *)imageFromCacheForKey:(NSString *)key;
 -(void)clearCache;
 
@@ -148,6 +150,21 @@
 -(void)addImageToCache:(UIImage *)image withKey:(NSString *)key
 {
 	[self.memCache setObject:image forKey:key cost:image.size.height * image.size.width * image.scale];
+}
+
+-(void)removeImageFromCacheWithKey:(NSString*)key
+{
+	[self.memCache removeObjectForKey:key];
+}
+
+-(void)removeImageFromCacheAtFilePath:(NSString*)filePath
+{
+	kRUConditionalReturn(filePath.length == 0, YES);
+
+	NSString* key = [self keyForPath:filePath];
+	kRUConditionalReturn(key.length == 0, YES);
+
+	[self removeImageFromCacheWithKey:key];
 }
 
 -(UIImage *)imageFromCacheForKey:(NSString *)key

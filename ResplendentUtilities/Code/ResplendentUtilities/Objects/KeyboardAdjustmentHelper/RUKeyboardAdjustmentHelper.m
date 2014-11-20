@@ -6,7 +6,12 @@
 //  Copyright (c) 2013 Resplendent G.P.. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "RUKeyboardAdjustmentHelper.h"
+
+
+
+
 
 @interface RUKeyboardAdjustmentHelper ()
 
@@ -16,6 +21,10 @@
 +(CGFloat)keyboardTopFromKeyboardEndFrame:(CGRect)keyboardEndFrame;
 
 @end
+
+
+
+
 
 @implementation RUKeyboardAdjustmentHelper
 

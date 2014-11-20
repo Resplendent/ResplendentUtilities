@@ -277,6 +277,12 @@
 #pragma mark - UIGestureRecognizerDelegate
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
+	return [self shouldDismissForTapSelfWithTouch:touch];
+}
+
+#pragma mark - tapGestureRecognizer
+-(BOOL)shouldDismissForTapSelfWithTouch:(UITouch*)touch
+{
 	return (
 			(touch.view == self) ||
 			(touch.view == self.contentView)
