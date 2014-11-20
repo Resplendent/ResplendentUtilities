@@ -58,6 +58,19 @@ CG_INLINE CGRect CGRectCeilOrigin(CGRect rect)
 	};
 }
 
+CG_INLINE UIEdgeInsets ru_CGRectGetEdgeInsetsFromFrameToTargetSize(CGRect parentFrame, CGSize targetSize)
+{
+	CGFloat horizontalPadding = (CGRectGetWidth(parentFrame) - targetSize.width) / 2.0f;
+	CGFloat verticalPadding = (CGRectGetHeight(parentFrame) - targetSize.height) / 2.0f;
+	
+	return (UIEdgeInsets){
+		.top = verticalPadding,
+		.bottom = verticalPadding,
+		.left = horizontalPadding,
+		.right = horizontalPadding,
+	};
+}
+
 #pragma mark Set origin methods
 CG_INLINE void setCoords(UIView* view,CGFloat xCoord,CGFloat yCoord)
 {
