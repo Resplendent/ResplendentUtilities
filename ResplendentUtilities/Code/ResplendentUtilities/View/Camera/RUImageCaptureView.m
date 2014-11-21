@@ -16,6 +16,7 @@
 
 @interface RUImageCaptureView ()
 
+@property (nonatomic, readonly) AVCaptureDeviceInput* deviceVideoInput;
 @property (nonatomic, readonly) AVCaptureVideoPreviewLayer* previewLayer;
 @property (nonatomic, readonly) AVCaptureStillImageOutput* captureStillImageOutput;
 
@@ -31,6 +32,9 @@
 @property (nonatomic, readonly) UIView* animatingTapToFocusView;
 -(void)performTapToFocusAnimation;
 -(void)cancelCurrentAnimatingTapToFocusView;
+
+-(void)focusCameraAtViewPoint:(CGPoint)point;
+-(void)focusCameraAtPoint:(CGPoint)point;
 
 @end
 
@@ -52,11 +56,11 @@
 		AVCaptureDevice *inputDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 		
 		NSError* deviceInputError = nil;
-		AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:inputDevice error:&deviceInputError];
+		_deviceVideoInput = [AVCaptureDeviceInput deviceInputWithDevice:inputDevice error:&deviceInputError];
 		NSAssert(deviceInputError == nil, @"deviceInputError: %@",deviceInputError);
-		if ([captureSession canAddInput:deviceInput])
+		if ([captureSession canAddInput:self.deviceVideoInput])
 		{
-			[captureSession addInput:deviceInput];
+			[captureSession addInput:self.deviceVideoInput];
 		}
 		else
 		{
@@ -102,8 +106,12 @@
 	[super layoutSubviews];
 
 	[self.previewLayer setFrame:self.bounds];
-	[self.tapToFocusView setFrame:self.tapToFocusViewFrame];
-	[self.tapToFocusView.layer setCornerRadius:MIN(CGRectGetWidth(self.tapToFocusView.frame),CGRectGetHeight(self.tapToFocusView.frame)) / 2.0f];
+
+	if (self.tapToFocusView)
+	{
+		[self.tapToFocusView setFrame:self.tapToFocusViewFrame];
+		[self.tapToFocusView.layer setCornerRadius:MIN(CGRectGetWidth(self.tapToFocusView.frame),CGRectGetHeight(self.tapToFocusView.frame)) / 2.0f];
+	}
 }
 
 #pragma mark - Touches
@@ -143,8 +151,10 @@
 	kRUConditionalReturn(self.tapToFocusViewVisibility == false, NO);
 
 	UITouch* anyTouch = touches.anyObject;
-	[self setTapToFocusMiddle:[anyTouch locationInView:self]];
+	CGPoint touchPoint = [anyTouch locationInView:self];
+	[self setTapToFocusMiddle:touchPoint];
 	[self performTapToFocusAnimation];
+	[self focusCameraAtViewPoint:touchPoint];
 }
 
 #pragma mark - Image capture
@@ -203,6 +213,14 @@
 #pragma mark - enableTapToFocus
 -(void)setEnableTapToFocus:(BOOL)enableTapToFocus
 {
+	if (enableTapToFocus)
+	{
+		if (self.tapToFocusIsSupported == false)
+		{
+			enableTapToFocus = false;
+		}
+	}
+
 	kRUConditionalReturn(self.enableTapToFocus == enableTapToFocus, NO);
 
 	_enableTapToFocus = enableTapToFocus;
@@ -357,6 +375,59 @@
 	
 	[self.animatingTapToFocusView removeFromSuperview];
 	_animatingTapToFocusView = nil;
+}
+
+#pragma mark - Focus Camera at point
+-(void)focusCameraAtViewPoint:(CGPoint)point
+{
+	CGPoint translatedPoint = (CGPoint){
+		.x	= point.x / CGRectGetWidth(self.bounds),
+		.y	= point.y / CGRectGetHeight(self.bounds),
+	};
+
+	NSAssert(translatedPoint.x >= 0, @"translatedPoint out of bounds");
+	NSAssert(translatedPoint.x <= 1, @"translatedPoint out of bounds");
+	NSAssert(translatedPoint.y >= 0, @"translatedPoint out of bounds");
+	NSAssert(translatedPoint.y <= 1, @"translatedPoint out of bounds");
+
+	[self focusCameraAtPoint:translatedPoint];
+}
+
+-(void)focusCameraAtPoint:(CGPoint)point
+{
+	kRUConditionalReturn(self.tapToFocusIsSupported == false, YES);
+	kRUConditionalReturn(self.enableTapToFocus == false, YES);
+
+	AVCaptureDevice *device = [self.deviceVideoInput device];
+	
+	NSError* lockError = nil;
+	BOOL lockSuccess = [device lockForConfiguration:&lockError];
+	
+	if (lockSuccess && (lockError == nil))
+	{
+		[device setFocusPointOfInterest:point];
+		
+		if ([device isFocusModeSupported:AVCaptureFocusModeAutoFocus])
+		{
+			[device setFocusMode:AVCaptureFocusModeAutoFocus];
+		}
+		else
+		{
+			NSAssert(false, @"AVCaptureFocusModeAutoFocus isn't supported.");
+		}
+		
+		[device unlockForConfiguration];
+	}
+	else
+	{
+		NSAssert(false, @"unhandled lockError %@",lockError);
+	}
+}
+
+#pragma mark - Getters
+-(BOOL)tapToFocusIsSupported
+{
+	return self.deviceVideoInput.device.isFocusPointOfInterestSupported;
 }
 
 @end
