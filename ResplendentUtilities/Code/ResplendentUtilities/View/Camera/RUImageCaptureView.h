@@ -19,6 +19,10 @@
 
 @property (nonatomic, assign) BOOL imageCaptureIsRunning; //Shouldn't be used to disable camera streaming. If disabled, cannot capture an image from it.
 
+@property (nonatomic, assign) BOOL enableTapToFocus;
+@property (nonatomic, assign) CGSize tapToFocusSize;
+@property (nonatomic, strong) UIColor* tapToFocusBorderColor;
+
 -(BOOL)performImageCapture; //Returns TRUE if attempt was made, otherwise FALSE.
 
 @end
