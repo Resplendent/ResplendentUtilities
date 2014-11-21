@@ -398,7 +398,7 @@
 	kRUConditionalReturn(self.tapToFocusIsSupported == false, YES);
 	kRUConditionalReturn(self.enableTapToFocus == false, YES);
 
-	AVCaptureDevice *device = [self.deviceVideoInput device];
+	AVCaptureDevice *device = self.deviceVideoInput.device;
 	
 	NSError* lockError = nil;
 	BOOL lockSuccess = [device lockForConfiguration:&lockError];
@@ -424,10 +424,44 @@
 	}
 }
 
-#pragma mark - Getters
+#pragma mark - tapToFocusIsSupported
 -(BOOL)tapToFocusIsSupported
 {
 	return self.deviceVideoInput.device.isFocusPointOfInterestSupported;
+}
+
+#pragma mark - flash
+-(BOOL)flashAvailable
+{
+	AVCaptureDevice *device = self.deviceVideoInput.device;
+	return (device.hasFlash && device.flashAvailable);
+}
+
+-(AVCaptureFlashMode)flashMode
+{
+	return self.deviceVideoInput.device.flashMode;
+}
+
+-(void)setFlashMode:(AVCaptureFlashMode)flashMode
+{
+	kRUConditionalReturn(self.flashAvailable == false, YES);
+	kRUConditionalReturn(self.flashMode == flashMode, NO);
+
+	AVCaptureDevice *device = self.deviceVideoInput.device;
+
+	NSError* lockError = nil;
+	BOOL lockSuccess = [device lockForConfiguration:&lockError];
+
+	if (lockSuccess && (lockError == nil))
+	{
+		[self.deviceVideoInput.device setFlashMode:flashMode];
+		
+		[device unlockForConfiguration];
+	}
+	else
+	{
+		NSAssert(false, @"unhandled lockError %@",lockError);
+	}
 }
 
 @end

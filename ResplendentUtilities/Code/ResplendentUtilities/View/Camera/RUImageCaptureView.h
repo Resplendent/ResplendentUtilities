@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RUImageCaptureViewProtocols.h"
+#import <AVFoundation/AVFoundation.h>
 
 
 
@@ -23,6 +24,9 @@
 @property (nonatomic, assign) BOOL enableTapToFocus;
 @property (nonatomic, assign) CGSize tapToFocusSize;
 @property (nonatomic, strong) UIColor* tapToFocusBorderColor;
+
+@property (nonatomic, readonly) BOOL flashAvailable;
+@property (nonatomic, assign) AVCaptureFlashMode flashMode;
 
 -(BOOL)performImageCapture; //Returns TRUE if attempt was made, otherwise FALSE.
 
