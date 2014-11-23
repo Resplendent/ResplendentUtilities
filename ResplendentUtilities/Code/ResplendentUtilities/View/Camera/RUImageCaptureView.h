@@ -16,7 +16,8 @@
 
 @interface RUImageCaptureView : UIView
 
-@property (nonatomic, assign) id<RUImageCaptureView_imageCaptureDelegate> imageCaptureDelegate;
+@property (nonatomic, assign) id<RUImageCaptureView_imageDataCaptureDelegate> imageDataCaptureDelegate;
+-(BOOL)performImageDataCapture; //Returns TRUE if attempt was made, otherwise FALSE.
 
 @property (nonatomic, assign) BOOL imageCaptureIsRunning; //Shouldn't be used to disable camera streaming. If disabled, cannot capture an image from it.
 
@@ -28,6 +29,6 @@
 @property (nonatomic, readonly) BOOL flashAvailable;
 @property (nonatomic, assign) AVCaptureFlashMode flashMode;
 
--(BOOL)performImageCapture; //Returns TRUE if attempt was made, otherwise FALSE.
++(UIInterfaceOrientation)uiInterfaceOrientationForImageOrientationFromInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
 
 @end

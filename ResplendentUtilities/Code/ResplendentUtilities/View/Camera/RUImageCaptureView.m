@@ -158,12 +158,17 @@
 }
 
 #pragma mark - Image capture
--(BOOL)performImageCapture
+-(BOOL)performImageDataCapture
 {
 	AVCaptureConnection *videoConnection = [self.captureStillImageOutput ru_getAVCaptureConnectionWithPortMediaType:AVMediaTypeVideo];
 	kRUConditionalReturn_ReturnValueFalse(videoConnection == nil, YES);
 	
 	__weak typeof(self) weakSelf = self;
+
+//	[self.previewLayer.connection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
+
+//	AVCaptureVideoOrientation originlCaptureVideoOrientation = self.self.previewLayer.connection.videoOrientation;
+//	[self.previewLayer.connection setVideoOrientation:self.captureVideoOrientation];
 
 	[self.captureStillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
 
@@ -172,20 +177,20 @@
 			if ((error == nil) && (imageSampleBuffer != nil))
 			{
 				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
-				UIImage *image = [UIImage imageWithData:imageData];
 
-				// add photo metadata (ie EXIF: Aperture, Brightness, Exposure, FocalLength, etc)
 				NSDictionary *metadata = (__bridge NSDictionary *)CMCopyDictionaryOfAttachments(kCFAllocatorDefault, imageSampleBuffer, kCMAttachmentMode_ShouldPropagate);
 
-				[weakSelf.imageCaptureDelegate ruImageCaptureView:self didCaptureImage:image metaData:metadata];
+				[weakSelf.imageDataCaptureDelegate ruImageCaptureView:self didCaptureImageData:imageData metaData:metadata];
 			}
 			else
 			{
-				[weakSelf.imageCaptureDelegate ruImageCaptureView:self didFailCaptureImageCaptureWithError:error];
+				[weakSelf.imageDataCaptureDelegate ruImageCaptureView:self didFailCaptureImageDataCaptureWithError:error];
 			}
 		}
 
 	}];
+
+//	[self.previewLayer.connection setVideoOrientation:originlCaptureVideoOrientation];
 
 	return TRUE;
 }
@@ -462,6 +467,31 @@
 	{
 		NSAssert(false, @"unhandled lockError %@",lockError);
 	}
+}
+
+#pragma mark - UIInterfaceOrientation
++(UIInterfaceOrientation)uiInterfaceOrientationForImageOrientationFromInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	switch (interfaceOrientation)
+	{
+		case UIInterfaceOrientationPortrait:
+			return UIInterfaceOrientationLandscapeRight;
+			
+		case UIInterfaceOrientationPortraitUpsideDown:
+			return UIInterfaceOrientationLandscapeLeft;
+			
+		case UIInterfaceOrientationLandscapeRight:
+			return UIInterfaceOrientationPortrait;
+			
+		case UIInterfaceOrientationLandscapeLeft:
+			return UIInterfaceOrientationPortraitUpsideDown;
+			
+		case UIInterfaceOrientationUnknown:
+			break;
+	}
+	
+	NSAssert(false, @"unhandled");
+	return UIInterfaceOrientationLandscapeRight;
 }
 
 @end

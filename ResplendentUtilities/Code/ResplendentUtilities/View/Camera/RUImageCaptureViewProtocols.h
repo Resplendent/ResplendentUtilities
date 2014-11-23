@@ -18,9 +18,9 @@
 
 
 
-@protocol RUImageCaptureView_imageCaptureDelegate <NSObject>
+@protocol RUImageCaptureView_imageDataCaptureDelegate <NSObject>
 
--(void)ruImageCaptureView:(RUImageCaptureView*)imageCaptureView didCaptureImage:(UIImage*)image metaData:(NSDictionary*)metaData;
--(void)ruImageCaptureView:(RUImageCaptureView*)imageCaptureView didFailCaptureImageCaptureWithError:(NSError*)error;
+-(void)ruImageCaptureView:(RUImageCaptureView*)imageCaptureView didCaptureImageData:(NSData*)imageData metaData:(NSDictionary*)metaData;
+-(void)ruImageCaptureView:(RUImageCaptureView*)imageCaptureView didFailCaptureImageDataCaptureWithError:(NSError*)error;
 
 @end
