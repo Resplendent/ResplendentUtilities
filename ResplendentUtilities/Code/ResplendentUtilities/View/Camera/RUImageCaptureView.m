@@ -8,6 +8,8 @@
 
 #import "RUImageCaptureView.h"
 #import "AVCaptureOutput+RUGetAVCaptureConnection.h"
+#import "AVCaptureDevice+RUCaptureDevices.h"
+
 #import <AVFoundation/AVFoundation.h>
 
 
@@ -16,7 +18,9 @@
 
 @interface RUImageCaptureView ()
 
-@property (nonatomic, readonly) AVCaptureDeviceInput* deviceVideoInput;
+@property (nonatomic, readonly) AVCaptureSession* captureSession;
+@property (nonatomic, strong) AVCaptureDeviceInput* deviceVideoInput;
+-(void)updateDeviceVideoInputWithAVCaptureDevice:(AVCaptureDevice*)captureDevice;
 @property (nonatomic, readonly) AVCaptureVideoPreviewLayer* previewLayer;
 @property (nonatomic, readonly) AVCaptureStillImageOutput* captureStillImageOutput;
 
@@ -44,30 +48,65 @@
 
 @implementation RUImageCaptureView
 
+#pragma mark - captureDevicePosition
+-(AVCaptureDevicePosition)captureDevicePosition
+{
+	return self.deviceVideoInput.device.position;
+}
+
+-(void)setCaptureDevicePosition:(AVCaptureDevicePosition)captureDevicePosition
+{
+	kRUConditionalReturn(self.captureDevicePosition == captureDevicePosition, NO);
+
+	[self updateDeviceVideoInputWithAVCaptureDevice:[AVCaptureDevice ru_captureDeviceForPosition:captureDevicePosition]];
+}
+
+#pragma mark - deviceVideoInput
+-(void)updateDeviceVideoInputWithAVCaptureDevice:(AVCaptureDevice*)captureDevice
+{
+	kRUConditionalReturn(captureDevice == nil, YES);
+
+	NSError* deviceInputError = nil;
+	AVCaptureDeviceInput* deviceVideoInput = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&deviceInputError];
+	kRUConditionalReturn(deviceInputError != nil, YES);
+
+	[self setDeviceVideoInput:deviceVideoInput];
+	NSAssert(deviceInputError == nil, @"deviceInputError: %@",deviceInputError);
+}
+
+-(void)setDeviceVideoInput:(AVCaptureDeviceInput *)deviceVideoInput
+{
+	kRUConditionalReturn(self.deviceVideoInput == deviceVideoInput, NO);
+
+	if (self.deviceVideoInput)
+	{
+		[self.captureSession removeInput:self.deviceVideoInput];
+	}
+
+	_deviceVideoInput = deviceVideoInput;
+
+	if ([self.captureSession canAddInput:self.deviceVideoInput])
+	{
+		[self.captureSession addInput:self.deviceVideoInput];
+	}
+	else
+	{
+		NSAssert(false, @"can't handle it");
+	}
+}
+
 #pragma mark - UIView
 -(instancetype)initWithFrame:(CGRect)frame
 {
 	if (self = [super initWithFrame:frame])
 	{
 		//AV session
-		AVCaptureSession* captureSession = [AVCaptureSession new];
-		[captureSession setSessionPreset:AVCaptureSessionPresetLow];
-		
-		AVCaptureDevice *inputDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-		
-		NSError* deviceInputError = nil;
-		_deviceVideoInput = [AVCaptureDeviceInput deviceInputWithDevice:inputDevice error:&deviceInputError];
-		NSAssert(deviceInputError == nil, @"deviceInputError: %@",deviceInputError);
-		if ([captureSession canAddInput:self.deviceVideoInput])
-		{
-			[captureSession addInput:self.deviceVideoInput];
-		}
-		else
-		{
-			NSAssert(false, @"can't handle it");
-		}
-		
-		_previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
+		_captureSession = [AVCaptureSession new];
+		[self.captureSession setSessionPreset:AVCaptureSessionPresetLow];
+
+		[self setCaptureDevicePosition:AVCaptureDevicePositionBack];
+
+		_previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.captureSession];
 		[self.previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
 		
 		CALayer *rootLayer = self.layer;
@@ -82,13 +121,13 @@
 		  };
 		[self.captureStillImageOutput setOutputSettings:outputSettings];
 		
-		[captureSession addOutput:self.captureStillImageOutput];
+		[self.captureSession addOutput:self.captureStillImageOutput];
 		
 		
 		//Session preset
-		if ([captureSession canSetSessionPreset:AVCaptureSessionPresetPhoto])
+		if ([self.captureSession canSetSessionPreset:AVCaptureSessionPresetPhoto])
 		{
-			[captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
+			[self.captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
 		}
 		else
 		{
@@ -471,25 +510,42 @@
 
 #pragma mark - UIInterfaceOrientation
 +(UIInterfaceOrientation)uiInterfaceOrientationForImageOrientationFromInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+																	 captureDevicePosition:(AVCaptureDevicePosition)captureDevicePosition
 {
-	switch (interfaceOrientation)
+	NSDictionary* interfaceOrientationToInterfaceOrientationForImageOrientationMapping =
+ @{
+   @(UIInterfaceOrientationPortrait)			: @(UIInterfaceOrientationLandscapeRight),
+   @(UIInterfaceOrientationPortraitUpsideDown)	: @(UIInterfaceOrientationLandscapeLeft),
+   @(UIInterfaceOrientationLandscapeRight)		: @{
+		   @(AVCaptureDevicePositionBack)	: @(UIInterfaceOrientationPortrait),
+		   @(AVCaptureDevicePositionFront)	: @(UIInterfaceOrientationPortraitUpsideDown),
+		   },
+   @(UIInterfaceOrientationLandscapeLeft)		: @{
+		   @(AVCaptureDevicePositionBack)	: @(UIInterfaceOrientationPortraitUpsideDown),
+		   @(AVCaptureDevicePositionFront)	: @(UIInterfaceOrientationPortrait),
+		   },
+   };
+
+	id interfaceOrientationForImageOrientationMapping = [interfaceOrientationToInterfaceOrientationForImageOrientationMapping objectForKey:@(interfaceOrientation)];
+	NSNumber* interfaceOrientationForImageOrientationNumber = nil;
+	if (kRUDictionaryOrNil(interfaceOrientationForImageOrientationMapping))
 	{
-		case UIInterfaceOrientationPortrait:
-			return UIInterfaceOrientationLandscapeRight;
-			
-		case UIInterfaceOrientationPortraitUpsideDown:
-			return UIInterfaceOrientationLandscapeLeft;
-			
-		case UIInterfaceOrientationLandscapeRight:
-			return UIInterfaceOrientationPortrait;
-			
-		case UIInterfaceOrientationLandscapeLeft:
-			return UIInterfaceOrientationPortraitUpsideDown;
-			
-		case UIInterfaceOrientationUnknown:
-			break;
+		interfaceOrientationForImageOrientationNumber = kRUNumberOrNil([(NSDictionary*)interfaceOrientationForImageOrientationMapping objectForKey:@(captureDevicePosition)]);
 	}
-	
+	else if (kRUNumberOrNil(interfaceOrientationForImageOrientationMapping))
+	{
+		interfaceOrientationForImageOrientationNumber = interfaceOrientationForImageOrientationMapping;
+	}
+	else
+	{
+		NSAssert(false, @"unhandled");
+	}
+
+	if (interfaceOrientationForImageOrientationNumber && kRUNumberOrNil(interfaceOrientationForImageOrientationNumber))
+	{
+		return interfaceOrientationForImageOrientationNumber.integerValue;
+	}
+
 	NSAssert(false, @"unhandled");
 	return UIInterfaceOrientationLandscapeRight;
 }

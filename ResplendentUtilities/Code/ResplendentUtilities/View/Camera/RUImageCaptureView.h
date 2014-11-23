@@ -29,6 +29,9 @@
 @property (nonatomic, readonly) BOOL flashAvailable;
 @property (nonatomic, assign) AVCaptureFlashMode flashMode;
 
-+(UIInterfaceOrientation)uiInterfaceOrientationForImageOrientationFromInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
+@property (nonatomic, assign) AVCaptureDevicePosition captureDevicePosition;
+
++(UIInterfaceOrientation)uiInterfaceOrientationForImageOrientationFromInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+																	 captureDevicePosition:(AVCaptureDevicePosition)captureDevicePosition;
 
 @end
