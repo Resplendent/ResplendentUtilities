@@ -15,6 +15,9 @@
 @interface RUStatusBarBackgroundNavigationController (RUColoredNavigationBar)
 
 -(instancetype)initWithColoredNavigationBarWithColor:(UIColor*)navigationBarColor statusBarColor:(UIColor*)statusBarColor;
+-(instancetype)initWithColoredNavigationBarWithColor:(UIColor*)navigationBarColor statusBarColor:(UIColor*)statusBarColor coloredNavigationBarClass:(Class)coloredNavigationBarClass;
+
 -(instancetype)initWithColoredNavigationBarWithStatusAndNavigationBarColor:(UIColor*)statusAndNavigationBarColor;
+-(instancetype)initWithColoredNavigationBarWithStatusAndNavigationBarColor:(UIColor*)statusAndNavigationBarColor coloredNavigationBarClass:(Class)coloredNavigationBarClass;
 
 @end

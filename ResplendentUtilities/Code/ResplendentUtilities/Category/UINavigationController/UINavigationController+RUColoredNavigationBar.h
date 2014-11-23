@@ -15,5 +15,6 @@
 @interface UINavigationController (RUColoredNavigationBar)
 
 -(instancetype)initWithColoredNavigationBarWithColor:(UIColor*)navigationBarColor;
+-(instancetype)initWithColoredNavigationBarWithColor:(UIColor*)navigationBarColor coloredNavigationBarClass:(Class)coloredNavigationBarClass;
 
 @end
