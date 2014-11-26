@@ -8,6 +8,8 @@
 
 #import "UINavigationController+RUColoredNavigationBar.h"
 #import "RUColoredNavigationBar.h"
+#import "RUConditionalReturn.h"
+#import "RUClassOrNilUtil.h"
 
 
 
@@ -17,8 +19,21 @@
 
 -(instancetype)initWithColoredNavigationBarWithColor:(UIColor*)navigationBarColor
 {
-	if (self = [self initWithNavigationBarClass:[RUColoredNavigationBar class] toolbarClass:nil])
+	return (self = [self initWithColoredNavigationBarWithColor:navigationBarColor coloredNavigationBarClass:[RUColoredNavigationBar class]]);
+}
+
+-(instancetype)initWithColoredNavigationBarWithColor:(UIColor*)navigationBarColor coloredNavigationBarClass:(Class)coloredNavigationBarClass
+{
+	if (coloredNavigationBarClass)
 	{
+		coloredNavigationBarClass = [RUColoredNavigationBar class];
+	}
+
+	kRUConditionalReturn_ReturnValueNil(kRUClassOrNil(coloredNavigationBarClass, RUColoredNavigationBar) == nil, YES);
+
+	if (self = [self initWithNavigationBarClass:coloredNavigationBarClass toolbarClass:nil])
+	{
+		NSAssert(kRUClassOrNil(self.navigationBar, RUColoredNavigationBar), @"Must have a proper colored navbar");
 		[kRUClassOrNil(self.navigationBar, RUColoredNavigationBar) setNavigationBarDrawColor:navigationBarColor];
 	}
 	

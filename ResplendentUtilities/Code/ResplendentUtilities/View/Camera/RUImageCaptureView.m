@@ -11,6 +11,8 @@
 #import "AVCaptureDevice+RUCaptureDevices.h"
 
 #import <AVFoundation/AVFoundation.h>
+#import "RUConditionalReturn.h"
+#import "RUClassOrNilUtil.h"
 
 
 
