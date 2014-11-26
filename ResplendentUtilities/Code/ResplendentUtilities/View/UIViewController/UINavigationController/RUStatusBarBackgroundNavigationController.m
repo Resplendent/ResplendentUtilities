@@ -17,6 +17,8 @@
 @property (nonatomic, readonly) UIView* statusBarBackgroundView;
 @property (nonatomic, readonly) CGRect statusBarBackgroundViewFrame;
 
+-(void)updateStatusBarBackgroundViewColor;
+
 @end
 
 
@@ -25,10 +27,8 @@
 
 @implementation RUStatusBarBackgroundNavigationController
 
-@synthesize statusBarBackgroundView = _statusBarBackgroundView;
-
 #pragma mark - RUStatusBarBackgroundNavigationController
--(instancetype)initWithStaticBarBackgroundColor:(UIColor*)staticBarBackgroundColor
+-(instancetype)initWithStatusBarBackgroundColor:(UIColor*)staticBarBackgroundColor
 {
 	if (self = [self init])
 	{
@@ -43,7 +43,9 @@
 {
 	[super viewDidLoad];
 	// Do any additional setup after loading the view.
-	
+
+	_statusBarBackgroundView = [UIView new];
+	[self updateStatusBarBackgroundViewColor];
 	[self.view addSubview:self.statusBarBackgroundView];
 }
 
@@ -52,6 +54,12 @@
 	[super viewWillLayoutSubviews];
 	
 	[self.statusBarBackgroundView setFrame:self.statusBarBackgroundViewFrame];
+}
+
+#pragma mark - Update Content
+-(void)updateStatusBarBackgroundViewColor
+{
+	[self.statusBarBackgroundView setBackgroundColor:self.statusBarBackgroundColor];
 }
 
 #pragma mark - Frames
@@ -65,29 +73,14 @@
 	};
 }
 
-#pragma mark - Dynamic Getters
--(UIView *)statusBarBackgroundView
-{
-	if (_statusBarBackgroundView == nil)
-	{
-		_statusBarBackgroundView = [UIView new];
-		[self setStatusBarBackgroundColor:[UIColor whiteColor]];
-	}
-	
-	return _statusBarBackgroundView;
-}
-
 #pragma mark - Setters
--(UIColor *)statusBarBackgroundColor
-{
-	return self.statusBarBackgroundView.backgroundColor;
-}
-
 -(void)setStatusBarBackgroundColor:(UIColor *)statusBarBackgroundColor
 {
 	kRUConditionalReturn(self.statusBarBackgroundColor == statusBarBackgroundColor, NO);
 	
-	[self.statusBarBackgroundView setBackgroundColor:statusBarBackgroundColor];
+	_statusBarBackgroundColor = statusBarBackgroundColor;
+
+	[self updateStatusBarBackgroundViewColor];
 }
 
 @end

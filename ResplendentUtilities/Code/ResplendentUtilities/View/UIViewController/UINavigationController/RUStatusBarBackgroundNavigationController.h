@@ -16,6 +16,6 @@
 
 @property (nonatomic, strong) UIColor* statusBarBackgroundColor;
 
--(instancetype)initWithStaticBarBackgroundColor:(UIColor*)staticBarBackgroundColor;
+-(instancetype)initWithStatusBarBackgroundColor:(UIColor*)staticBarBackgroundColor;
 
 @end
