@@ -24,7 +24,7 @@
 
 -(instancetype)initWithColoredNavigationBarWithColor:(UIColor*)navigationBarColor coloredNavigationBarClass:(Class)coloredNavigationBarClass
 {
-	if (coloredNavigationBarClass)
+	if (coloredNavigationBarClass == nil)
 	{
 		coloredNavigationBarClass = [RUColoredNavigationBar class];
 	}
