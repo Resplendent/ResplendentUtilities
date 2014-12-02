@@ -17,6 +17,13 @@ typedef NS_ENUM(NSInteger, RUSlideNavigationController_MenuType) {
 	RUSlideNavigationController_MenuType_Right
 };
 
+static inline RUSlideNavigationController_MenuType RUSlideNavigationController_MenuType_Opposite(RUSlideNavigationController_MenuType menuType)
+{
+	return (menuType == RUSlideNavigationController_MenuType_Right ?
+			RUSlideNavigationController_MenuType_Left :
+			RUSlideNavigationController_MenuType_Right);
+}
+
 
 
 
