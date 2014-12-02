@@ -120,8 +120,9 @@
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 	if ([self respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
 	{
-		if ((self.isRegisteredForRemoteNotifications == false) ||
-			(self.ruRegisteredForRemoteNotifications == false))
+		if (self.isRegisteredForRemoteNotifications == self.ruRegisteredForRemoteNotifications)
+//		if ((self.isRegisteredForRemoteNotifications == false) ||
+//			(self.ruRegisteredForRemoteNotifications == false))
 		{
 			[self setRURegisteredForRemoteNotifications:YES canSendToSettings:NO];
 		}

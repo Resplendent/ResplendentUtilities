@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Resplendent. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "RUScreenSizeToFloatConverter.h"
 
 
