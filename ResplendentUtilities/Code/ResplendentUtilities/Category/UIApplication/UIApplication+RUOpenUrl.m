@@ -7,6 +7,7 @@
 //
 
 #import "UIApplication+RUOpenUrl.h"
+#import "RUDLog.h"
 
 
 
