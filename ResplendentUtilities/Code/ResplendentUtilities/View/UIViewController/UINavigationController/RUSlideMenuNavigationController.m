@@ -162,7 +162,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 - (void)closeMenuWithDuration:(float)duration andCompletion:(void (^)())completion
 {
 	[self enableTapGestureToCloseMenu:NO];
-	
+
 	[UIView animateWithDuration:duration
 						  delay:0
 						options:UIViewAnimationOptionCurveEaseOut
@@ -172,6 +172,9 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 						 [self moveHorizontallyToLocation:rect.origin.x];
 					 }
 					 completion:^(BOOL finished) {
+
+						 [self.currentViewControllerMenuView removeFromSuperview];
+
 						 if (completion)
 							 completion();
 					 }];
@@ -228,17 +231,16 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 	
 	UIView *menuView = [self currentViewControllerMenuViewForMenuType:menu];
 
+	[self.view.superview insertSubview:menuView belowSubview:self.view];
+
 	kRUConditionalReturn(menuView == removingMenuView, NO);
-//	UIView *menuView = (menu == RUSlideNavigationController_MenuType_Left) ? self.defaultLeftMenuView : self.defaultRightMenuView;
-//	UIView *removingMenuView = (menu == RUSlideNavigationController_MenuType_Left) ? self.defaultRightMenuView : self.defaultLeftMenuView;
-	
+
 	// If menu is already open don't prepare, unless forcePrepare is set to true
 	if ([self isMenuOpen] && !forcePrepare)
 		return;
 	
 	[removingMenuView removeFromSuperview];
-	[self.view.window insertSubview:menuView atIndex:0];
-	
+
 	[self updateMenuFrameAndTransformAccordingToOrientation];
 	
 	[self.menuAnimator prepareMenuForAnimation:menu];
@@ -350,7 +352,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 	}
 	
 	rect.size.width -= slideOffset;
-	
+
 	if (menu == RUSlideNavigationController_MenuType_Right)
 	{
 		rect.origin.x += slideOffset;
