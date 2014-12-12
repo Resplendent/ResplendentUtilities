@@ -328,12 +328,17 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 	
 //	BOOL isIos7 = SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0");
 //	CGFloat statusBarHeight = kPASlideNavigationControllerSTATUS_BAR_HEIGHT;
-	CGFloat statusBarHeight = (CGRectGetHeight([UIScreen mainScreen].bounds) + CGRectGetMaxY([UIApplication sharedApplication].statusBarFrame)) - CGRectGetHeight(self.view.frame);
+	CGFloat yOffset = 0;
+	if (self.fitMenuViewsUnderStatusBar)
+	{
+		CGFloat statusBarHeight = (CGRectGetHeight([UIScreen mainScreen].bounds) + CGRectGetMaxY([UIApplication sharedApplication].statusBarFrame)) - CGRectGetHeight(self.view.frame);
+		yOffset += statusBarHeight;
+	}
 	
 	if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
 	{
-		rect.origin.x = (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight) ? 0 : statusBarHeight;
-		rect.size.width = self.view.frame.size.width-statusBarHeight;
+		rect.origin.x = (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight) ? 0 : yOffset;
+		rect.size.width = self.view.frame.size.width-yOffset;
 //		if (!isIos7)
 //		{
 //			// For some reasons in landscape belos the status bar is considered y=0, but in portrait it's considered y=20
@@ -343,8 +348,8 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 	}
 	else
 	{
-		rect.origin.y = (self.interfaceOrientation == UIInterfaceOrientationPortrait) ? statusBarHeight : 0;
-		rect.size.height = self.view.frame.size.height-statusBarHeight;
+		rect.origin.y = (self.interfaceOrientation == UIInterfaceOrientationPortrait) ? yOffset : 0;
+		rect.size.height = self.view.frame.size.height-yOffset;
 //		if (!isIos7)
 //		{
 //			// For some reasons in landscape belos the status bar is considered y=0, but in portrait it's considered y=20

@@ -15,6 +15,8 @@
 
 @interface RUSlideMenuNavigationController : UINavigationController
 
+@property (nonatomic, assign) BOOL fitMenuViewsUnderStatusBar;
+
 @property (nonatomic, assign) BOOL enableSwipeGesture;
 
 @property (nonatomic, assign) CGFloat portraitSlideOffset;
