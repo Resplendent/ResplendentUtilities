@@ -23,6 +23,7 @@
 	[self setFont:label.font];
 	[self setTextColor:label.textColor];
 	[self setLineBreakMode:label.lineBreakMode];
+	[self setTextAlignment:label.textAlignment];
 }
 
 -(void)absorbPropertiesFromButton:(UIButton*)button
