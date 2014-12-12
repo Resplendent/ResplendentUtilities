@@ -13,7 +13,7 @@
 
 
 
-@interface UIApplication (_RU)
+@interface UIApplication (_RUPushNotifications)
 
 @property (nonatomic, readonly) RU_UIApplication_RemoteNotificationsType() ruRemoteTypesToRegisterFor;
 
@@ -25,7 +25,7 @@
 
 
 
-@implementation UIApplication (_RU)
+@implementation UIApplication (_RUPushNotifications)
 
 -(RU_UIApplication_RemoteNotificationsType())ruRemoteTypesToRegisterFor
 {
@@ -47,7 +47,7 @@
 
 
 
-@implementation UIApplication (RU)
+@implementation UIApplication (RUPushNotifications)
 
 -(RU_UIApplication_AppropriateNotificationsType())ruTypesToRegisterFor
 {
