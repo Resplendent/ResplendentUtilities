@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Resplendent G.P.. All rights reserved.
 //
 
-#import "NSDate+RUUtility.h"
+#import "NSDate+RUTimeAgo.h"
 
 
 
