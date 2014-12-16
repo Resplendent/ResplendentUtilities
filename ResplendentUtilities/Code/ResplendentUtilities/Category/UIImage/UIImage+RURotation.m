@@ -14,7 +14,7 @@
 
 @implementation UIImage (RURotation)
 
--(UIImage*)rotatedImageToOrientation:(UIImageOrientation)orientation
+-(UIImage*)ru_rotatedImageToOrientation:(UIImageOrientation)orientation
 {
 	UIGraphicsBeginImageContext(self.size);
 	
