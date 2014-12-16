@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-extern UIImage* rotatedImage(UIImage* src, UIImageOrientation orientation);
 
-@interface UIImage (Rotation)
 
--(UIImage*)rotatedImageToOrientation:(UIImageOrientation)orientation;
+
+
+@interface UIImage (RURotation)
+
+-(UIImage*)ru_rotatedImageToOrientation:(UIImageOrientation)orientation;
 
 @end
