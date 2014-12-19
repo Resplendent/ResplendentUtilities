@@ -14,6 +14,6 @@
 
 @interface NSString (RUURLParams)
 
--(NSDictionary*)ruURLParams;
+-(NSDictionary*)ru_URLParams;
 
 @end

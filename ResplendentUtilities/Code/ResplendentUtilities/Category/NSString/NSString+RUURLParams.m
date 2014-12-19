@@ -8,6 +8,7 @@
 
 #import "NSString+RUURLParams.h"
 #import "NSMutableDictionary+RUUtil.h"
+#import "RUClassOrNilUtil.h"
 
 
 
@@ -15,25 +16,30 @@
 
 @implementation NSString (RUURLParams)
 
--(NSDictionary*)ruURLParams
+-(NSDictionary*)ru_URLParams
 {
 	if (self.length == 0)
 	{
 		return nil;
 	}
 
-	NSArray* components = [self componentsSeparatedByString:@","];
+	NSArray* urlComponents = [self componentsSeparatedByString:@"&"];
+	NSMutableDictionary* ruURLParams = [NSMutableDictionary dictionaryWithCapacity:urlComponents.count];
 
-	NSMutableDictionary* ruURLParams = [NSMutableDictionary dictionaryWithCapacity:components.count];
-	for (NSString* component in components)
+	for (NSString* urlComponent in urlComponents)
 	{
-		NSRange equalRange = [component rangeOfString:@"="];
-		if (equalRange.location != NSNotFound)
+		NSArray* urlComponentsKeyAndValue = [urlComponent componentsSeparatedByString:@"="];
+		if (urlComponentsKeyAndValue.count != 2)
 		{
-			NSString* key = [component substringToIndex:equalRange.location];
-			NSString* value = [component substringFromIndex:equalRange.location + equalRange.length];
-			[ruURLParams setObjectOrRemoveIfNil:value forKey:key];
+			NSAssert(false, @"unhandled");
+			continue;
 		}
+
+		NSString* key = urlComponentsKeyAndValue.firstObject;
+		id value = urlComponentsKeyAndValue.lastObject;
+		NSArray* commaSeparatedValue = [value componentsSeparatedByString:@","];
+
+		[ruURLParams setObject:(commaSeparatedValue.count == 1 ? commaSeparatedValue.firstObject : commaSeparatedValue) forKey:key];
 	}
 
 	return [ruURLParams copy];
