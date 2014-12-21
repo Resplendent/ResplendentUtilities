@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		43058EED1A462F2F00983040 /* AVCaptureDevice+RUCaptureDevices.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058DC11A462F2F00983040 /* AVCaptureDevice+RUCaptureDevices.m */; };
-		43058EEE1A462F2F00983040 /* AVCaptureOutput+RUGetAVCaptureConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058DC31A462F2F00983040 /* AVCaptureOutput+RUGetAVCaptureConnection.m */; };
 		43058EEF1A462F2F00983040 /* CALayer+RUMask.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058DC61A462F2F00983040 /* CALayer+RUMask.m */; };
 		43058EF01A462F2F00983040 /* CAShapeLayer+RUMessageBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058DC81A462F2F00983040 /* CAShapeLayer+RUMessageBox.m */; };
 		43058EF11A462F2F00983040 /* CMDeviceMotion+RUOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058DCA1A462F2F00983040 /* CMDeviceMotion+RUOrientation.m */; };
@@ -90,7 +88,6 @@
 		43058F3F1A462F2F00983040 /* RURadioButtonGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058E8E1A462F2F00983040 /* RURadioButtonGroup.m */; };
 		43058F401A462F2F00983040 /* RUCollectionViewFlowLayout_ContentSizeAdjustForMinimumLineSpacing.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058E921A462F2F00983040 /* RUCollectionViewFlowLayout_ContentSizeAdjustForMinimumLineSpacing.m */; };
 		43058F411A462F3000983040 /* RUGradientButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058E961A462F2F00983040 /* RUGradientButton.m */; };
-		43058F421A462F3000983040 /* RUImageCaptureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058E991A462F2F00983040 /* RUImageCaptureView.m */; };
 		43058F431A462F3000983040 /* RUColorPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058E9D1A462F2F00983040 /* RUColorPickerCell.m */; };
 		43058F441A462F3000983040 /* RUColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058EA01A462F2F00983040 /* RUColorPickerView.m */; };
 		43058F451A462F3000983040 /* RUCornerRoundingBorderedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058EA41A462F2F00983040 /* RUCornerRoundingBorderedView.m */; };
@@ -142,10 +139,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		43058DC01A462F2F00983040 /* AVCaptureDevice+RUCaptureDevices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVCaptureDevice+RUCaptureDevices.h"; sourceTree = "<group>"; };
-		43058DC11A462F2F00983040 /* AVCaptureDevice+RUCaptureDevices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVCaptureDevice+RUCaptureDevices.m"; sourceTree = "<group>"; };
-		43058DC21A462F2F00983040 /* AVCaptureOutput+RUGetAVCaptureConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVCaptureOutput+RUGetAVCaptureConnection.h"; sourceTree = "<group>"; };
-		43058DC31A462F2F00983040 /* AVCaptureOutput+RUGetAVCaptureConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVCaptureOutput+RUGetAVCaptureConnection.m"; sourceTree = "<group>"; };
 		43058DC51A462F2F00983040 /* CALayer+RUMask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+RUMask.h"; sourceTree = "<group>"; };
 		43058DC61A462F2F00983040 /* CALayer+RUMask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+RUMask.m"; sourceTree = "<group>"; };
 		43058DC71A462F2F00983040 /* CAShapeLayer+RUMessageBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CAShapeLayer+RUMessageBox.h"; sourceTree = "<group>"; };
@@ -327,9 +320,6 @@
 		43058E921A462F2F00983040 /* RUCollectionViewFlowLayout_ContentSizeAdjustForMinimumLineSpacing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUCollectionViewFlowLayout_ContentSizeAdjustForMinimumLineSpacing.m; sourceTree = "<group>"; };
 		43058E951A462F2F00983040 /* RUGradientButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUGradientButton.h; sourceTree = "<group>"; };
 		43058E961A462F2F00983040 /* RUGradientButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUGradientButton.m; sourceTree = "<group>"; };
-		43058E981A462F2F00983040 /* RUImageCaptureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUImageCaptureView.h; sourceTree = "<group>"; };
-		43058E991A462F2F00983040 /* RUImageCaptureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUImageCaptureView.m; sourceTree = "<group>"; };
-		43058E9A1A462F2F00983040 /* RUImageCaptureViewProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUImageCaptureViewProtocols.h; sourceTree = "<group>"; };
 		43058E9C1A462F2F00983040 /* RUColorPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUColorPickerCell.h; sourceTree = "<group>"; };
 		43058E9D1A462F2F00983040 /* RUColorPickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUColorPickerCell.m; sourceTree = "<group>"; };
 		43058E9E1A462F2F00983040 /* RUColorPickerCellUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUColorPickerCellUtil.h; sourceTree = "<group>"; };
@@ -449,10 +439,6 @@
 		43058DBF1A462F2F00983040 /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				43058DC01A462F2F00983040 /* AVCaptureDevice+RUCaptureDevices.h */,
-				43058DC11A462F2F00983040 /* AVCaptureDevice+RUCaptureDevices.m */,
-				43058DC21A462F2F00983040 /* AVCaptureOutput+RUGetAVCaptureConnection.h */,
-				43058DC31A462F2F00983040 /* AVCaptureOutput+RUGetAVCaptureConnection.m */,
 				43058DC41A462F2F00983040 /* CALayer */,
 				43058DC91A462F2F00983040 /* CMDeviceMotion+RUOrientation.h */,
 				43058DCA1A462F2F00983040 /* CMDeviceMotion+RUOrientation.m */,
@@ -811,7 +797,6 @@
 			isa = PBXGroup;
 			children = (
 				43058E941A462F2F00983040 /* Buttons */,
-				43058E971A462F2F00983040 /* Camera */,
 				43058E9B1A462F2F00983040 /* ColorPicker */,
 				43058EA21A462F2F00983040 /* CornerRoundingBorderedView */,
 				43058EA51A462F2F00983040 /* Geometry */,
@@ -843,16 +828,6 @@
 				43058E961A462F2F00983040 /* RUGradientButton.m */,
 			);
 			path = Buttons;
-			sourceTree = "<group>";
-		};
-		43058E971A462F2F00983040 /* Camera */ = {
-			isa = PBXGroup;
-			children = (
-				43058E981A462F2F00983040 /* RUImageCaptureView.h */,
-				43058E991A462F2F00983040 /* RUImageCaptureView.m */,
-				43058E9A1A462F2F00983040 /* RUImageCaptureViewProtocols.h */,
-			);
-			path = Camera;
 			sourceTree = "<group>";
 		};
 		43058E9B1A462F2F00983040 /* ColorPicker */ = {
@@ -1246,7 +1221,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43058F421A462F3000983040 /* RUImageCaptureView.m in Sources */,
 				43058EF61A462F2F00983040 /* NSAttributedString+RUTextSize.m in Sources */,
 				43058F141A462F2F00983040 /* UIFont+RUConstants.m in Sources */,
 				43058EF51A462F2F00983040 /* NSArray+RUShuffling.m in Sources */,
@@ -1347,14 +1321,12 @@
 				43058F181A462F2F00983040 /* UIImage+RUResizing.m in Sources */,
 				43058F3D1A462F2F00983040 /* RUDeallocHook.m in Sources */,
 				43058F041A462F2F00983040 /* NSString+RUNumberCheck.m in Sources */,
-				43058EEE1A462F2F00983040 /* AVCaptureOutput+RUGetAVCaptureConnection.m in Sources */,
 				43058F1D1A462F2F00983040 /* UIInterfaceOrientation+RUUtil.m in Sources */,
 				43058F121A462F2F00983040 /* UIColor+RUHexString.m in Sources */,
 				43058F151A462F2F00983040 /* UIImage+RUDebug.m in Sources */,
 				43058F031A462F2F00983040 /* NSString+RUMutableURLRequest.m in Sources */,
 				43058F4F1A462F3000983040 /* UIImageView+RUFacebookAsynchronousImageFetching.m in Sources */,
 				43058F3E1A462F2F00983040 /* RUOrderedMutableDictionary.m in Sources */,
-				43058EED1A462F2F00983040 /* AVCaptureDevice+RUCaptureDevices.m in Sources */,
 				43058F1B1A462F2F00983040 /* UIView+RUSnapshot.m in Sources */,
 				43058F271A462F2F00983040 /* UIView+CoreGraphics.m in Sources */,
 				43058EFF1A462F2F00983040 /* NSString+MKCoordinateRegion.m in Sources */,
