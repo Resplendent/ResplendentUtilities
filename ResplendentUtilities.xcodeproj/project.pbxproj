@@ -18,7 +18,6 @@
 		43058EF51A462F2F00983040 /* NSArray+RUShuffling.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058DD41A462F2F00983040 /* NSArray+RUShuffling.m */; };
 		43058EF61A462F2F00983040 /* NSAttributedString+RUTextSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058DD61A462F2F00983040 /* NSAttributedString+RUTextSize.m */; };
 		43058EF71A462F2F00983040 /* NSBundle+RUPListGetters.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058DD81A462F2F00983040 /* NSBundle+RUPListGetters.m */; };
-		43058EF81A462F2F00983040 /* NSDate+RUTimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058DDC1A462F2F00983040 /* NSDate+RUTimeAgo.m */; };
 		43058EFA1A462F2F00983040 /* NSDictionary+RUFBUserResponseObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058DE01A462F2F00983040 /* NSDictionary+RUFBUserResponseObject.m */; };
 		43058EFB1A462F2F00983040 /* NSMutableArray+RUAddObjectIfNotNil.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058DE21A462F2F00983040 /* NSMutableArray+RUAddObjectIfNotNil.m */; };
 		43058EFC1A462F2F00983040 /* NSMutableDictionary+RUUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 43058DE41A462F2F00983040 /* NSMutableDictionary+RUUtil.m */; };
@@ -165,8 +164,6 @@
 		43058DD61A462F2F00983040 /* NSAttributedString+RUTextSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+RUTextSize.m"; sourceTree = "<group>"; };
 		43058DD71A462F2F00983040 /* NSBundle+RUPListGetters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+RUPListGetters.h"; sourceTree = "<group>"; };
 		43058DD81A462F2F00983040 /* NSBundle+RUPListGetters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+RUPListGetters.m"; sourceTree = "<group>"; };
-		43058DDB1A462F2F00983040 /* NSDate+RUTimeAgo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+RUTimeAgo.h"; sourceTree = "<group>"; };
-		43058DDC1A462F2F00983040 /* NSDate+RUTimeAgo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+RUTimeAgo.m"; sourceTree = "<group>"; };
 		43058DDF1A462F2F00983040 /* NSDictionary+RUFBUserResponseObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+RUFBUserResponseObject.h"; sourceTree = "<group>"; };
 		43058DE01A462F2F00983040 /* NSDictionary+RUFBUserResponseObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+RUFBUserResponseObject.m"; sourceTree = "<group>"; };
 		43058DE11A462F2F00983040 /* NSMutableArray+RUAddObjectIfNotNil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+RUAddObjectIfNotNil.h"; sourceTree = "<group>"; };
@@ -465,7 +462,6 @@
 				43058DD61A462F2F00983040 /* NSAttributedString+RUTextSize.m */,
 				43058DD71A462F2F00983040 /* NSBundle+RUPListGetters.h */,
 				43058DD81A462F2F00983040 /* NSBundle+RUPListGetters.m */,
-				43058DD91A462F2F00983040 /* NSDate */,
 				43058DDF1A462F2F00983040 /* NSDictionary+RUFBUserResponseObject.h */,
 				43058DE01A462F2F00983040 /* NSDictionary+RUFBUserResponseObject.m */,
 				43058DE11A462F2F00983040 /* NSMutableArray+RUAddObjectIfNotNil.h */,
@@ -536,23 +532,6 @@
 				43058DD41A462F2F00983040 /* NSArray+RUShuffling.m */,
 			);
 			path = NSArray;
-			sourceTree = "<group>";
-		};
-		43058DD91A462F2F00983040 /* NSDate */ = {
-			isa = PBXGroup;
-			children = (
-				43058DDA1A462F2F00983040 /* TimeAgo */,
-			);
-			path = NSDate;
-			sourceTree = "<group>";
-		};
-		43058DDA1A462F2F00983040 /* TimeAgo */ = {
-			isa = PBXGroup;
-			children = (
-				43058DDB1A462F2F00983040 /* NSDate+RUTimeAgo.h */,
-				43058DDC1A462F2F00983040 /* NSDate+RUTimeAgo.m */,
-			);
-			path = TimeAgo;
 			sourceTree = "<group>";
 		};
 		43058DE91A462F2F00983040 /* NSString */ = {
@@ -1354,7 +1333,6 @@
 				43058F0D1A462F2F00983040 /* UIAlertView+RUShowUtil.m in Sources */,
 				43058F301A462F2F00983040 /* UIViewController+RUDismissOrPop.m in Sources */,
 				43058F401A462F2F00983040 /* RUCollectionViewFlowLayout_ContentSizeAdjustForMinimumLineSpacing.m in Sources */,
-				43058EF81A462F2F00983040 /* NSDate+RUTimeAgo.m in Sources */,
 				43058F451A462F3000983040 /* RUCornerRoundingBorderedView.m in Sources */,
 				43058F5C1A462F3000983040 /* RUSlideMenuNavigationController.m in Sources */,
 				43058EFB1A462F2F00983040 /* NSMutableArray+RUAddObjectIfNotNil.m in Sources */,
