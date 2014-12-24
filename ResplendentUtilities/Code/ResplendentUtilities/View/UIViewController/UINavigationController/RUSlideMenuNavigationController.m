@@ -219,15 +219,24 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 
 - (void)prepareMenuForReveal:(RUSlideNavigationController_MenuType)menu forcePrepare:(BOOL)forcePrepare
 {
+	UIViewController<RUSlideNavigationController_DisplayDelegate>* currentViewControllerForDisplayActions = self.currentViewControllerForDisplayActions;
+	
 	UIView *removingMenuView = [self currentViewControllerMenuViewForMenuType:RUSlideNavigationController_MenuType_Opposite(menu)];
 
-	UIViewController<RUSlideNavigationController_DisplayDelegate>* currentViewControllerForDisplayActions = self.currentViewControllerForDisplayActions;
 	_currentViewControllerMenuView = ((currentViewControllerForDisplayActions &&
 									   [currentViewControllerForDisplayActions respondsToSelector:@selector(ru_slideNavigationController_viewForMenuType:)]) ?
 									  [currentViewControllerForDisplayActions ru_slideNavigationController_viewForMenuType:menu] :
 									  nil);
 	
 	UIView *menuView = [self currentViewControllerMenuViewForMenuType:menu];
+
+	if (menuView.superview == nil)
+	{
+		if ([currentViewControllerForDisplayActions respondsToSelector:@selector(ru_slideNavigationController_willDisplayMenuType:)])
+		{
+			[currentViewControllerForDisplayActions ru_slideNavigationController_willDisplayMenuType:menu];
+		}
+	}
 
 	[self.view.superview insertSubview:menuView belowSubview:self.view];
 

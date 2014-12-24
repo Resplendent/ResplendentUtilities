@@ -34,12 +34,8 @@ static inline RUSlideNavigationController_MenuType RUSlideNavigationController_M
 // This gets called right before the menu is about to reveal
 - (void)prepareMenuForAnimation:(RUSlideNavigationController_MenuType)menu;
 
-// Animate the view based on the progress (progress is between 0 and 1)
+// Animate the view based on the progress (progress ranges from 0 and 1)
 - (void)animateMenu:(RUSlideNavigationController_MenuType)menu withProgress:(CGFloat)progress;
-
-// Gets called ff for any the instance of animator is being change
-// You should make any cleanup that is needed
-- (void)clear;
 
 @end
 
@@ -51,6 +47,7 @@ static inline RUSlideNavigationController_MenuType RUSlideNavigationController_M
 
 @optional
 - (BOOL)ru_slideNavigationController_shouldDisplayMenuType:(RUSlideNavigationController_MenuType)menuType;
+- (void)ru_slideNavigationController_willDisplayMenuType:(RUSlideNavigationController_MenuType)menuType;
 - (UIView*)ru_slideNavigationController_viewForMenuType:(RUSlideNavigationController_MenuType)menuType;
 
 @end
