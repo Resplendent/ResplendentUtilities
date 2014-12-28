@@ -16,35 +16,56 @@
 
 -(UIInterfaceOrientation)ru_UIInterfaceOrientation
 {
-	BOOL isLandscape = fabs(self.gravity.x) > fabs(self.gravity.y);
+	return [self ru_UIInterfaceOrientationWithGravityTolerance:0];
+}
+
+-(UIInterfaceOrientation)ru_UIInterfaceOrientationWithGravityTolerance:(double)gravityTolerance
+{
+	return [self.class ru_UIInterfaceOrientationFromGravityX:self.gravity.x gravityY:self.gravity.y gravityTolerance:gravityTolerance];
+}
+
++(UIInterfaceOrientation)ru_UIInterfaceOrientationFromGravityX:(double)gravityX gravityY:(double)gravityY gravityTolerance:(double)gravityTolerance
+{
+	NSAssert(gravityTolerance >= 0, @"unhandled");
+	gravityTolerance = fabs(gravityTolerance);
+	BOOL isLandscape = fabs(gravityX) > fabs(gravityY);
+	RUDLog(@"gravityX: %f",gravityX);
+	RUDLog(@"gravityY: %f",gravityY);
 	
 	if (isLandscape)
 	{
-		if (self.gravity.x < 0)
+		if (gravityX < -gravityTolerance)
 		{
 			return UIInterfaceOrientationLandscapeRight;
 		}
-		else
+		else if (gravityX > gravityTolerance)
 		{
 			return UIInterfaceOrientationLandscapeLeft;
 		}
 	}
 	else
 	{
-		if (self.gravity.y < 0)
+		if (gravityY < -gravityTolerance)
 		{
 			return UIInterfaceOrientationPortrait;
 		}
-		else
+		else if (gravityY > gravityTolerance)
 		{
 			return UIInterfaceOrientationPortraitUpsideDown;
 		}
 	}
+
+	return UIInterfaceOrientationUnknown;
+}
+
+-(double)ru_gravityAngle
+{
+	return atan2(-self.gravity.x, -self.gravity.y);
 }
 
 -(CGAffineTransform)ru_CGAffineTransform
 {
-	CGFloat angle =  atan2(-self.gravity.x, -self.gravity.y );
+	double angle = [self ru_gravityAngle];
 	CGAffineTransform transform = CGAffineTransformMakeRotation(angle);
 	return transform;
 }

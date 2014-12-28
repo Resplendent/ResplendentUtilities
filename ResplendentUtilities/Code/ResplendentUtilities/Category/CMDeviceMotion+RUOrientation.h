@@ -15,6 +15,12 @@
 @interface CMDeviceMotion (RUOrientation)
 
 -(UIInterfaceOrientation)ru_UIInterfaceOrientation;
+
+//gravityTolerance should be between 0 and 1
+//Returns UIInterfaceOrientationUnknown if gravity values are under the tolerance.
+-(UIInterfaceOrientation)ru_UIInterfaceOrientationWithGravityTolerance:(double)gravityTolerance;
++(UIInterfaceOrientation)ru_UIInterfaceOrientationFromGravityX:(double)gravityX gravityY:(double)gravityY gravityTolerance:(double)gravityTolerance;
+
 -(CGAffineTransform)ru_CGAffineTransform;
 
 @end
