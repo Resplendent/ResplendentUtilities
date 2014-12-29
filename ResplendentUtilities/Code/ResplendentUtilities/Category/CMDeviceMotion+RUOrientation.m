@@ -29,8 +29,6 @@
 	NSAssert(gravityTolerance >= 0, @"unhandled");
 	gravityTolerance = fabs(gravityTolerance);
 	BOOL isLandscape = fabs(gravityX) > fabs(gravityY);
-	RUDLog(@"gravityX: %f",gravityX);
-	RUDLog(@"gravityY: %f",gravityY);
 	
 	if (isLandscape)
 	{
