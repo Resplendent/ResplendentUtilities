@@ -24,6 +24,8 @@ const struct RURadioButtonGroup_KVOProperties RURadioButtonGroup_KVOProperties =
 
 @interface RURadioButtonGroup ()
 
+-(void)selectButtonAtCurrentlySelectedButtonIndex;
+
 -(void)pressed_button:(UIButton*)button;
 
 @end
@@ -52,6 +54,7 @@ const struct RURadioButtonGroup_KVOProperties RURadioButtonGroup_KVOProperties =
 	}
 
 	[self setSelectedButtonIndex:0];
+	[self selectButtonAtCurrentlySelectedButtonIndex];
 }
 
 #pragma mark - Actions
@@ -81,7 +84,11 @@ const struct RURadioButtonGroup_KVOProperties RURadioButtonGroup_KVOProperties =
 	[unSelectButton setSelected:NO];
 	
 	_selectedButtonIndex = selectedButtonIndex;
-	
+	[self selectButtonAtCurrentlySelectedButtonIndex];
+}
+
+-(void)selectButtonAtCurrentlySelectedButtonIndex
+{
 	UIButton* selectedButton = self.selectedButton;
 	[selectedButton setSelected:YES];
 }

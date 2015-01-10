@@ -134,32 +134,25 @@ static void* kRURadioButtonView__KVOContext = &kRURadioButtonView__KVOContext;
 #pragma mark - Button Titles
 -(void)setButtonsWithButtonTitles:(NSArray*)buttonTitles
 {
-	NSAssert(buttonTitles.count > 0, @"Pass an array with at least one title");
+	kRUConditionalReturn(buttonTitles.count == 0, YES);
+	kRUConditionalReturn(self.reasonUnableToDraw.length > 0, YES);
+
+	NSMutableArray* newButtons = [NSMutableArray array];
 	
-	NSString* reasonUnableToDraw = self.reasonUnableToDraw;
-	if (reasonUnableToDraw)
-	{
-		RUDLog(@"%@",reasonUnableToDraw);
-	}
-	else
-	{
-		NSMutableArray* newButtons = [NSMutableArray array];
-
-		[buttonTitles enumerateObjectsUsingBlock:^(NSString* buttonTitle, NSUInteger buttonTitleIndex, BOOL *stop) {
-
-			UIButton* newButton = [self newButtonAtIndex:buttonTitleIndex withTitle:buttonTitle];
-			
-			NSAssert(newButton != nil, @"unhandled");
-			if (newButton)
-			{
-				[newButtons addObject:newButton];
-				[self addSubview:newButton];
-			}
-
-		}];
-
-		[self.radioButtonGroup setButtons:newButtons];
-	}
+	[buttonTitles enumerateObjectsUsingBlock:^(NSString* buttonTitle, NSUInteger buttonTitleIndex, BOOL *stop) {
+		
+		UIButton* newButton = [self newButtonAtIndex:buttonTitleIndex withTitle:buttonTitle];
+		
+		NSAssert(newButton != nil, @"unhandled");
+		if (newButton)
+		{
+			[newButtons addObject:newButton];
+			[self addSubview:newButton];
+		}
+		
+	}];
+	
+	[self.radioButtonGroup setButtons:newButtons];
 }
 
 #pragma mark - KVO
