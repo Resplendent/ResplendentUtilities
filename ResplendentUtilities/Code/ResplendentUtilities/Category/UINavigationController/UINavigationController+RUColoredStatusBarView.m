@@ -10,14 +10,13 @@
 #import "RUSynthesizeAssociatedObjects.h"
 #import "RUConditionalReturn.h"
 #import "NSObject+RUNotifications_UIApplication.h"
-#import "RUDeallocHook.h"
 
 
 
 
 
 NSString* const kUINavigationController_RUColoredStatusBarView_StatusBarBackgroundView_TapAssociatedKey = @"kUINavigationController_RUColoredStatusBarView_StatusBarBackgroundView_TapAssociatedKey";
-NSString* const kUINavigationController_RUColoredStatusBarView_DeallocHookKey = @"kUINavigationController_RUColoredStatusBarView_DeallocHookKey";
+NSString* const kUINavigationController_RUColoredStatusBarView_Key_UINavigationController_RUColoredStatusBarView_Listener = @"kUINavigationController_RUColoredStatusBarView_Key_UINavigationController_RUColoredStatusBarView_Listener";
 
 static void* kUINavigationController_RUColoredStatusBarView__KVOContext = &kUINavigationController_RUColoredStatusBarView__KVOContext;
 
@@ -25,13 +24,120 @@ static void* kUINavigationController_RUColoredStatusBarView__KVOContext = &kUINa
 
 
 
-@interface UINavigationController (_RUColoredStatusBarView)
+@class UINavigationController_RUColoredStatusBarView_Listener;
+@protocol UINavigationController_RUColoredStatusBarView_Listener_Delegate <NSObject>
 
-@property (nonatomic, strong) RUDeallocHook* ru_deallocHook;
+-(void)navigationController_RUColoredStatusBarView_Listener:(UINavigationController_RUColoredStatusBarView_Listener*)navigationController_RUColoredStatusBarView_Listener ru_notificationDidFire_UIApplicationWillChangeStatusBarFrameNotification:(NSNotification*)notification;
 
--(void)ru_updateStatusBarBackgroundView;
+-(void)navigationController_RUColoredStatusBarView_Listener_navigationBarFrameDidChange:(UINavigationController_RUColoredStatusBarView_Listener*)navigationController_RUColoredStatusBarView_Listener;
+
+@end
+
+
+
+
+
+@interface UINavigationController_RUColoredStatusBarView_Listener : NSObject
+
+@property (nonatomic, strong) UINavigationBar* navigationBarToWatchFrameOn;
+@property (nonatomic, assign) id<UINavigationController_RUColoredStatusBarView_Listener_Delegate> delegate;
 
 -(void)ru_notificationDidFire_UIApplicationWillChangeStatusBarFrameNotification:(NSNotification*)notification;
+
+@end
+
+
+
+
+
+@implementation UINavigationController_RUColoredStatusBarView_Listener
+
+#pragma mark - NSObject
+-(instancetype)init
+{
+	if (self = [super init])
+	{
+		[self setRegisteredForNotifications_RU_UIApplicationWillChangeStatusBarFrameNotificationOnWithNotificationSelector:@selector(ru_notificationDidFire_UIApplicationWillChangeStatusBarFrameNotification:)];
+	}
+
+	return self;
+}
+
+-(void)dealloc
+{
+	[self clearRegisteredForNotifications_RU_UIApplicationWillChangeStatusBarFrameNotification];
+}
+
+#pragma mark - navigationBarToWatchFrameOn
+-(void)setNavigationBarToWatchFrameOn:(UINavigationBar *)navigationBarToWatchFrameOn
+{
+	kRUConditionalReturn(self.navigationBarToWatchFrameOn == navigationBarToWatchFrameOn, NO);
+
+	_navigationBarToWatchFrameOn = navigationBarToWatchFrameOn;
+}
+
+#pragma mark - NSNotificationCenter
+-(void)ru_notificationDidFire_UIApplicationWillChangeStatusBarFrameNotification:(NSNotification*)notification
+{
+	[self.delegate navigationController_RUColoredStatusBarView_Listener:self ru_notificationDidFire_UIApplicationWillChangeStatusBarFrameNotification:notification];
+}
+
+#pragma mark - KVO
+-(void)setRegisteredToCurrentNavigationBarToWatchFrameOn:(BOOL)registered
+{
+	kRUConditionalReturn(self.navigationBarToWatchFrameOn == nil, NO);
+	
+	static NSArray* propertiesToObserve;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		propertiesToObserve = @[
+								@"center",
+								];
+	});
+	
+	for (NSString* propertyToObserve in propertiesToObserve)
+	{
+		if (registered)
+		{
+			[self.navigationBarToWatchFrameOn addObserver:self forKeyPath:propertyToObserve options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:&kUINavigationController_RUColoredStatusBarView__KVOContext];
+		}
+		else
+		{
+			[self.navigationBarToWatchFrameOn removeObserver:self forKeyPath:propertyToObserve context:&kUINavigationController_RUColoredStatusBarView__KVOContext];
+		}
+	}
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if (context == kUINavigationController_RUColoredStatusBarView__KVOContext)
+	{
+		if (object == self.navigationBarToWatchFrameOn)
+		{
+			[self.delegate navigationController_RUColoredStatusBarView_Listener_navigationBarFrameDidChange:self];
+		}
+		else
+		{
+			NSAssert(false, @"unhandled");
+		}
+	}
+	else
+	{
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	}
+}
+
+@end
+
+
+
+
+
+@interface UINavigationController (_RUColoredStatusBarView)
+
+@property (nonatomic, strong) UINavigationController_RUColoredStatusBarView_Listener* ru_UINavigationController_RUColoredStatusBarView_Listener;
+
+-(void)ru_updateStatusBarBackgroundView;
 
 @end
 
@@ -49,13 +155,8 @@ static void* kUINavigationController_RUColoredStatusBarView__KVOContext = &kUINa
 	}];
 }
 
--(void)ru_notificationDidFire_UIApplicationWillChangeStatusBarFrameNotification:(NSNotification*)notification
-{
-	[self ru_updateStatusBarBackgroundView];
-}
-
 #pragma mark - Synthesize Associated Objects
-RU_Synthesize_AssociatedObject_GetterSetter_Implementation(ru, Ru, _deallocHook, RUDeallocHook*, &kUINavigationController_RUColoredStatusBarView_DeallocHookKey, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+RU_Synthesize_AssociatedObject_GetterSetter_Implementation(ru, Ru, _UINavigationController_RUColoredStatusBarView_Listener, UINavigationController_RUColoredStatusBarView_Listener*, &kUINavigationController_RUColoredStatusBarView_Key_UINavigationController_RUColoredStatusBarView_Listener, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
 @end
 
@@ -87,16 +188,10 @@ RU_Synthesize_AssociatedObject_GetterSetter_Implementation(ru, Ru, _deallocHook,
 			
 			[self.view addSubview:self.ru_statusBarBackgroundView];
 
-			[self setRegisteredForNotifications_RU_UIApplicationWillChangeStatusBarFrameNotificationOnWithNotificationSelector:@selector(ru_notificationDidFire_UIApplicationWillChangeStatusBarFrameNotification:)];
-			static NSString* const kvoKeyPath_navigationBar_frame = @"center";
-			[self.navigationBar addObserver:self forKeyPath:kvoKeyPath_navigationBar_frame options:0 context:&kUINavigationController_RUColoredStatusBarView__KVOContext];
-
-			[self setRu_deallocHook:[RUDeallocHook deallocHookWithBlock:^{
-
-				[self clearRegisteredForNotifications_RU_UIApplicationWillChangeStatusBarFrameNotification];
-				[self.navigationBar removeObserver:self forKeyPath:kvoKeyPath_navigationBar_frame context:&kUINavigationController_RUColoredStatusBarView__KVOContext];
-
-			}]];
+			UINavigationController_RUColoredStatusBarView_Listener* navigationController_RUColoredStatusBarView_Listener = [UINavigationController_RUColoredStatusBarView_Listener new];
+			[navigationController_RUColoredStatusBarView_Listener setNavigationBarToWatchFrameOn:self.navigationBar];
+			[navigationController_RUColoredStatusBarView_Listener setDelegate:(id<UINavigationController_RUColoredStatusBarView_Listener_Delegate>)self];
+			[self setRu_UINavigationController_RUColoredStatusBarView_Listener:navigationController_RUColoredStatusBarView_Listener];
 		}
 		
 		[self.ru_statusBarBackgroundView setBackgroundColor:ru_statusBarBackgroundColor];
@@ -114,24 +209,15 @@ RU_Synthesize_AssociatedObject_GetterSetter_Implementation(ru, Ru, _deallocHook,
 #pragma mark - Synthesize Associated Objects
 RU_Synthesize_AssociatedObject_GetterSetter_Implementation(ru, Ru, _statusBarBackgroundView, UIView*, &kUINavigationController_RUColoredStatusBarView_StatusBarBackgroundView_TapAssociatedKey, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
-#pragma mark - KVO
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+#pragma mark - UINavigationController_RUColoredStatusBarView_Listener_Delegate
+-(void)navigationController_RUColoredStatusBarView_Listener:(UINavigationController_RUColoredStatusBarView_Listener*)navigationController_RUColoredStatusBarView_Listener ru_notificationDidFire_UIApplicationWillChangeStatusBarFrameNotification:(NSNotification*)notification
 {
-	if (context == kUINavigationController_RUColoredStatusBarView__KVOContext)
-	{
-		if (object == self.navigationBar)
-		{
-			[self ru_updateStatusBarBackgroundView];
-		}
-		else
-		{
-			NSAssert(false, @"unhandled");
-		}
-	}
-	else
-	{
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-	}
+	[self ru_updateStatusBarBackgroundView];
+}
+
+-(void)navigationController_RUColoredStatusBarView_Listener_navigationBarFrameDidChange:(UINavigationController_RUColoredStatusBarView_Listener*)navigationController_RUColoredStatusBarView_Listener
+{
+	[self ru_updateStatusBarBackgroundView];
 }
 
 @end
