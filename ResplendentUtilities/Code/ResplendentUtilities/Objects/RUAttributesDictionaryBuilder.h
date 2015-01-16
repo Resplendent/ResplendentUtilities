@@ -25,6 +25,7 @@
 -(void)absorbPropertiesFromLabel:(UILabel*)label;
 -(void)absorbPropertiesFromButton:(UIButton*)button;
 -(void)absorbPropertiesFromTextField:(UITextField*)textField;
+-(void)absorbPropertiesFromTextView:(UITextView*)textView;
 
 -(NSDictionary*)createAttributesDictionary;
 

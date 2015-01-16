@@ -37,6 +37,13 @@
 	[self setTextColor:textField.textColor];
 }
 
+-(void)absorbPropertiesFromTextView:(UITextView*)textView
+{
+	[self setFont:textView.font];
+	[self setTextColor:textView.textColor];
+	[self setTextAlignment:textView.textAlignment];
+}
+
 #pragma mark - Create Attributes Dictionary
 -(NSDictionary*)createAttributesDictionary
 {
