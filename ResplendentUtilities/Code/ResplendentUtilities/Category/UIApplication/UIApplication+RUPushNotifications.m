@@ -115,31 +115,28 @@
 	}
 }
 
--(void)ruRegisterForPushNotificationsIfAlreadyRegisteredOrNeverRegistered
+-(BOOL)ru_alreadyRegisteredOrNeverRegisteredForPushNotifications
 {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
 	if ([self respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
 	{
-		if (self.isRegisteredForRemoteNotifications == self.ruRegisteredForRemoteNotifications)
-//		if ((self.isRegisteredForRemoteNotifications == false) ||
-//			(self.ruRegisteredForRemoteNotifications == false))
-		{
-			[self setRURegisteredForRemoteNotifications:YES canSendToSettings:NO];
-		}
+		return (self.isRegisteredForRemoteNotifications == self.ruRegisteredForRemoteNotifications);
 	}
 	else
 	{
-		if (self.ruRegisteredForRemoteNotifications == false)
-		{
-			[self setRURegisteredForRemoteNotifications:YES canSendToSettings:NO];
-		}
+		return (self.ruRegisteredForRemoteNotifications == false);
 	}
 #else
-	if (self.ruRegisteredForRemoteNotifications == false)
+	return (self.ruRegisteredForRemoteNotifications == false);
+#endif
+}
+
+-(void)ruRegisterForPushNotificationsIfAlreadyRegisteredOrNeverRegistered
+{
+	if (self.ru_alreadyRegisteredOrNeverRegisteredForPushNotifications)
 	{
 		[self setRURegisteredForRemoteNotifications:YES canSendToSettings:NO];
 	}
-#endif
 }
 
 @end
