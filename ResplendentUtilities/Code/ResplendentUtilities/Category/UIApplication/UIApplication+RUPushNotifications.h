@@ -36,6 +36,7 @@
 @property (nonatomic, assign) BOOL ruRegisteredForRemoteNotifications;
 #endif
 
+@property (nonatomic, readonly) BOOL ru_alreadyRegisteredOrNeverRegisteredForPushNotifications;
 -(void)ruRegisterForPushNotificationsIfAlreadyRegisteredOrNeverRegistered;
 
 @end
