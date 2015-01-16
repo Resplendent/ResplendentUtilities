@@ -66,6 +66,7 @@ static void* kUINavigationController_RUColoredStatusBarView__KVOContext = &kUINa
 -(void)dealloc
 {
 	[self clearRegisteredForNotifications_RU_UIApplicationWillChangeStatusBarFrameNotification];
+	[self setRegisteredToCurrentNavigationBarToWatchFrameOn:NO];
 }
 
 #pragma mark - navigationBarToWatchFrameOn
@@ -73,7 +74,11 @@ static void* kUINavigationController_RUColoredStatusBarView__KVOContext = &kUINa
 {
 	kRUConditionalReturn(self.navigationBarToWatchFrameOn == navigationBarToWatchFrameOn, NO);
 
+	[self setRegisteredToCurrentNavigationBarToWatchFrameOn:NO];
+
 	_navigationBarToWatchFrameOn = navigationBarToWatchFrameOn;
+
+	[self setRegisteredToCurrentNavigationBarToWatchFrameOn:YES];
 }
 
 #pragma mark - NSNotificationCenter
@@ -189,8 +194,8 @@ RU_Synthesize_AssociatedObject_GetterSetter_Implementation(ru, Ru, _UINavigation
 			[self.view addSubview:self.ru_statusBarBackgroundView];
 
 			UINavigationController_RUColoredStatusBarView_Listener* navigationController_RUColoredStatusBarView_Listener = [UINavigationController_RUColoredStatusBarView_Listener new];
-			[navigationController_RUColoredStatusBarView_Listener setNavigationBarToWatchFrameOn:self.navigationBar];
 			[navigationController_RUColoredStatusBarView_Listener setDelegate:(id<UINavigationController_RUColoredStatusBarView_Listener_Delegate>)self];
+			[navigationController_RUColoredStatusBarView_Listener setNavigationBarToWatchFrameOn:self.navigationBar];
 			[self setRu_UINavigationController_RUColoredStatusBarView_Listener:navigationController_RUColoredStatusBarView_Listener];
 		}
 		
