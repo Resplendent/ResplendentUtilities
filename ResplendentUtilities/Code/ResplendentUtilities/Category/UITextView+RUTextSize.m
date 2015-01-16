@@ -19,17 +19,17 @@
 
 -(CGSize)ru_textSizeConstrainedToWidth:(CGFloat)width
 {
-	if ([self respondsToSelector:@selector(attributedText)] &&
-		(self.attributedText.length))
-	{
-		return [self.attributedText ru_textSizeWithBoundingWidth:width];
-	}
-	else if (([self.text respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) &&
-			 ([self.text respondsToSelector:@selector(ruTextSizeWithBoundingWidth:attributes:)]))
+	if (([self.text respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) &&
+		([self.text respondsToSelector:@selector(ruTextSizeWithBoundingWidth:attributes:)]))
 	{
 		RUAttributesDictionaryBuilder* attributesDictionaryBuilder = [RUAttributesDictionaryBuilder new];
 		[attributesDictionaryBuilder absorbPropertiesFromTextView:self];
 		return [self.text ruTextSizeWithBoundingWidth:width attributes:[attributesDictionaryBuilder createAttributesDictionary]];
+	}
+	else if ([self respondsToSelector:@selector(attributedText)] &&
+			 (self.attributedText.length))
+	{
+		return [self.attributedText ru_textSizeWithBoundingWidth:width];
 	}
 	else
 	{
