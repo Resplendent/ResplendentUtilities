@@ -52,6 +52,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 - (BOOL)shouldDisplayMenu:(RUSlideNavigationController_MenuType)menu forViewController:(UIViewController *)vc;
 
 - (void)updateMenuFrameAndTransformAccordingToOrientation;
+- (void)updateMenuFrameAndTransformAccordingToOrientationWithMenu:(RUSlideNavigationController_MenuType)menu;
 
 - (void)moveHorizontallyToLocation:(CGFloat)location;
 - (void)updateMenuAnimation:(RUSlideNavigationController_MenuType)menu;
@@ -77,8 +78,20 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 	[self setEnableSwipeGesture:YES];
 }
 
+-(void)viewWillLayoutSubviews
+{
+	[super viewWillLayoutSubviews];
+
+	[self updateMenuFrameAndTransformAccordingToOrientation];
+}
+
 #pragma mark - Update Content
 - (void)updateMenuFrameAndTransformAccordingToOrientation
+{
+	[self updateMenuFrameAndTransformAccordingToOrientationWithMenu:[self menuTypeForHorizontalLocation:self.horizontalPanLocationWithVelocity]];
+}
+
+- (void)updateMenuFrameAndTransformAccordingToOrientationWithMenu:(RUSlideNavigationController_MenuType)menu
 {
 	// Animate rotatation when menu is open and device rotates
 	CGAffineTransform transform = self.view.transform;
@@ -91,7 +104,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 	if (self.currentViewControllerMenuView)
 	{
 		self.currentViewControllerMenuView.transform = transform;
-		self.currentViewControllerMenuView.frame = [self initialRectForMenu:[self menuTypeForHorizontalLocation:self.horizontalPanLocationWithVelocity]];
+		self.currentViewControllerMenuView.frame = [self initialRectForMenu:menu];
 	}
 }
 
@@ -248,7 +261,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 	
 	[removingMenuView removeFromSuperview];
 
-	[self updateMenuFrameAndTransformAccordingToOrientation];
+	[self updateMenuFrameAndTransformAccordingToOrientationWithMenu:menu];
 	
 	[self.menuAnimator prepareMenuForAnimation:menu];
 }
