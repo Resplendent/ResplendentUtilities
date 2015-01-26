@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RUTextViewWithPlaceholderContainerViewProtocols.h"
 
 
 
@@ -19,6 +20,8 @@
 
 @property (nonatomic, readonly) UILabel* textViewPlaceholderLabel;
 @property (nonatomic, readonly) CGRect textViewPlaceholderLabelFrame;
+
+@property (nonatomic, assign) id<RUTextViewWithPlaceholderContainerView_textDelegate> textDelegate;
 
 -(void)updateTextViewPlaceholderLabelVisilibity;
 

@@ -74,6 +74,8 @@
 - (void)textViewDidChange:(UITextView *)textView
 {
 	[self updateTextViewPlaceholderLabelVisilibity];
+
+	[self.textDelegate textViewWithPlaceholderContainerView:self textViewDidChangeText:self.textView.text];
 }
 
 #pragma mark - Update Content
