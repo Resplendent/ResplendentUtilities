@@ -14,7 +14,15 @@
 
 
 
+static void* kRUTextViewWithPlaceholderContainerView__KVOContext = &kRUTextViewWithPlaceholderContainerView__KVOContext;
+
+
+
+
+
 @interface RUTextViewWithPlaceholderContainerView ()
+
+-(void)ru_setRegisteredToTextView:(BOOL)registered;
 
 @end
 
@@ -23,6 +31,12 @@
 
 
 @implementation RUTextViewWithPlaceholderContainerView
+
+#pragma mark - NSObject
+-(void)dealloc
+{
+	[self ru_setRegisteredToTextView:NO];
+}
 
 #pragma mark - UIView
 -(instancetype)initWithFrame:(CGRect)frame
@@ -35,6 +49,8 @@
 
 		_textViewPlaceholderLabel = [UILabel new];
 		[self.textView addSubview:self.textViewPlaceholderLabel];
+
+		[self ru_setRegisteredToTextView:YES];
 	}
 
 	return self;
@@ -82,6 +98,58 @@
 -(void)updateTextViewPlaceholderLabelVisilibity
 {
 	[self.textViewPlaceholderLabel setHidden:(self.textView.text.length > 0)];
+}
+
+#pragma mark - KVO
+-(void)ru_setRegisteredToTextView:(BOOL)registered
+{
+	kRUConditionalReturn(self.textView == nil, NO);
+	
+	static NSArray* propertiesToObserve;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		propertiesToObserve = @[
+								@"text",
+								];
+	});
+	
+	for (NSString* propertyToObserve in propertiesToObserve)
+	{
+		if (registered)
+		{
+			[self.textView addObserver:self forKeyPath:propertyToObserve options:(NSKeyValueObservingOptionInitial) context:&kRUTextViewWithPlaceholderContainerView__KVOContext];
+		}
+		else
+		{
+			[self.textView removeObserver:self forKeyPath:propertyToObserve context:&kRUTextViewWithPlaceholderContainerView__KVOContext];
+		}
+	}
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if (context == kRUTextViewWithPlaceholderContainerView__KVOContext)
+	{
+		if (object == self.textView)
+		{
+			if ([keyPath isEqualToString:@"text"])
+			{
+				[self updateTextViewPlaceholderLabelVisilibity];
+			}
+			else
+			{
+				NSAssert(false, @"unhandled");
+			}
+		}
+		else
+		{
+			NSAssert(false, @"unhandled");
+		}
+	}
+	else
+	{
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	}
 }
 
 @end
