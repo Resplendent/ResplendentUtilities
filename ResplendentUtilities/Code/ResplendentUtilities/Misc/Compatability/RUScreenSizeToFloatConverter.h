@@ -17,7 +17,13 @@
 
 @property (nonatomic, readonly) NSDictionary* screenHeightMapping;
 
--(instancetype)initWithAmountFor480Height:(CGFloat)amountFor480Height amountFor568Height:(CGFloat)amountFor568Height NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithAmountFor480Height:(CGFloat)amountFor480Height
+					   amountFor568Height:(CGFloat)amountFor568Heigh;
+
+-(instancetype)initWithAmountFor480Height:(CGFloat)amountFor480Height
+					   amountFor568Height:(CGFloat)amountFor568Height
+					   amountFor667Height:(CGFloat)amountFor667Height
+					   amountFor736Height:(CGFloat)amountFor736Height;
 
 -(CGFloat)appropriateHeightForCurrentScreenHeight;
 
