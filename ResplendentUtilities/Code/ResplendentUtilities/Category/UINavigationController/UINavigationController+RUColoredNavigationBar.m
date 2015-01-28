@@ -40,4 +40,10 @@
 	return self;
 }
 
+#pragma mark - Setters
+-(void)ru_setNavigationBarColor:(UIColor*)navigationBarColor
+{
+	[kRUClassOrNil(self.navigationBar, RUColoredNavigationBar) setNavigationBarDrawColor:navigationBarColor];
+}
+
 @end

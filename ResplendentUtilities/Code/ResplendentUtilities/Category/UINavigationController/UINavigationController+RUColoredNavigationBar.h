@@ -17,4 +17,6 @@
 -(instancetype)initWithColoredNavigationBarWithColor:(UIColor*)navigationBarColor;
 -(instancetype)initWithColoredNavigationBarWithColor:(UIColor*)navigationBarColor coloredNavigationBarClass:(Class)coloredNavigationBarClass;
 
+-(void)ru_setNavigationBarColor:(UIColor*)navigationBarColor;
+
 @end
