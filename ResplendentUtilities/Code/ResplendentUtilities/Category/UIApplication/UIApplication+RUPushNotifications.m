@@ -105,7 +105,7 @@
 	else
 	{
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
-		if ([self ruOpenDeviceSettingsPage] == false)
+		if ((canSendToSettings == false) || [self ruOpenDeviceSettingsPage] == false)
 		{
 			[self unregisterForRemoteNotifications];
 		}

@@ -37,6 +37,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 @property (nonatomic, readonly) CGFloat horizontalViewLocation;
 @property (nonatomic, readonly) CGFloat horizontalPanLocation;
 @property (nonatomic, readonly) CGFloat horizontalPanLocationWithVelocity;
+@property (nonatomic, readonly) CGFloat viewOriginXOrHorizontalPanLocationOrHorizontalPanLocationWithVelocity;
 -(RUSlideNavigationController_MenuType)menuTypeForHorizontalLocation:(CGFloat)horizontalLocation;
 - (CGRect)initialRectForMenu:(RUSlideNavigationController_MenuType)menu;
 @property (nonatomic, readonly) CGFloat horizontalSize;
@@ -88,7 +89,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 #pragma mark - Update Content
 - (void)updateMenuFrameAndTransformAccordingToOrientation
 {
-	[self updateMenuFrameAndTransformAccordingToOrientationWithMenu:[self menuTypeForHorizontalLocation:self.horizontalPanLocationWithVelocity]];
+	[self updateMenuFrameAndTransformAccordingToOrientationWithMenu:[self menuTypeForHorizontalLocation:self.viewOriginXOrHorizontalPanLocationOrHorizontalPanLocationWithVelocity]];
 }
 
 - (void)updateMenuFrameAndTransformAccordingToOrientationWithMenu:(RUSlideNavigationController_MenuType)menu
@@ -233,7 +234,12 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 - (void)prepareMenuForReveal:(RUSlideNavigationController_MenuType)menu forcePrepare:(BOOL)forcePrepare
 {
 	UIViewController<RUSlideNavigationController_DisplayDelegate>* currentViewControllerForDisplayActions = self.currentViewControllerForDisplayActions;
-	
+
+	if ([self shouldDisplayMenu:menu forViewController:currentViewControllerForDisplayActions] == false)
+	{
+		return;
+	}
+
 	UIView *removingMenuView = [self currentViewControllerMenuViewForMenuType:RUSlideNavigationController_MenuType_Opposite(menu)];
 
 	_currentViewControllerMenuView = ((currentViewControllerForDisplayActions &&
@@ -253,7 +259,11 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 
 	[self.view.superview insertSubview:menuView belowSubview:self.view];
 
-	kRUConditionalReturn(menuView == removingMenuView, NO);
+	if (menuView == removingMenuView)
+	{
+		[self updateMenuFrameAndTransformAccordingToOrientationWithMenu:menu];
+		return;
+	}
 
 	// If menu is already open don't prepare, unless forcePrepare is set to true
 	if ([self isMenuOpen] && !forcePrepare)
@@ -268,16 +278,22 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 
 - (BOOL)shouldDisplayMenu:(RUSlideNavigationController_MenuType)menu forViewController:(UIViewController *)vc
 {
-	if ((menu == RUSlideNavigationController_MenuType_Left ? self.defaultLeftMenuView : self.defaultRightMenuView) == nil)
-		return NO;
-	
-	if ([vc conformsToProtocol:@protocol(RUSlideNavigationController_DisplayDelegate)] &&
-		[vc respondsToSelector:@selector(ru_slideNavigationController_shouldDisplayMenuType:)])
+	BOOL vc_conformsTo_RUSlideNavigationController_DisplayDelegate = [vc conformsToProtocol:@protocol(RUSlideNavigationController_DisplayDelegate)];
+	if (vc_conformsTo_RUSlideNavigationController_DisplayDelegate)
 	{
-		return [(id<RUSlideNavigationController_DisplayDelegate>)vc ru_slideNavigationController_shouldDisplayMenuType:menu];
+		if ([vc respondsToSelector:@selector(ru_slideNavigationController_shouldDisplayMenuType:)])
+		{
+			if ([(id<RUSlideNavigationController_DisplayDelegate>)vc ru_slideNavigationController_shouldDisplayMenuType:menu] == NO)
+			{
+				return NO;
+			}
+		}
 	}
-	
-	return YES;
+
+	return ((vc_conformsTo_RUSlideNavigationController_DisplayDelegate &&
+			 [vc respondsToSelector:@selector(ru_slideNavigationController_viewForMenuType:)]) ?
+			[(id<RUSlideNavigationController_DisplayDelegate>)vc ru_slideNavigationController_viewForMenuType:menu] :
+			(menu == RUSlideNavigationController_MenuType_Left ? self.defaultLeftMenuView : self.defaultRightMenuView)) != nil;
 }
 
 - (void)toggleLeftMenu
@@ -333,10 +349,27 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 	return self.horizontalPanLocation + velocity.x;
 }
 
+-(CGFloat)viewOriginXOrHorizontalPanLocationOrHorizontalPanLocationWithVelocity
+{
+	CGFloat viewOriginX = CGRectGetMinX(self.view.frame);
+	if (viewOriginX != 0)
+	{
+		return viewOriginX;
+	}
+	
+	CGFloat horizontalPanLocation = self.horizontalPanLocation;
+	if (horizontalPanLocation != 0)
+	{
+		return horizontalPanLocation;
+	}
+
+	return self.horizontalPanLocationWithVelocity;
+}
+
 #pragma mark - Frames
 -(RUSlideNavigationController_MenuType)menuTypeForHorizontalLocation:(CGFloat)horizontalLocation
 {
-	return ((horizontalLocation > 0) ?
+	return ((horizontalLocation >= 0) ?
 			RUSlideNavigationController_MenuType_Left :
 			RUSlideNavigationController_MenuType_Right);
 }
@@ -476,8 +509,8 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 
 - (void)panDetected:(UIPanGestureRecognizer *)aPanRecognizer
 {
-	CGFloat horizontalPanLocationWithVelocity = self.horizontalPanLocationWithVelocity;
-	RUSlideNavigationController_MenuType menuFromHorizontalPanLocationWithVelocity = [self menuTypeForHorizontalLocation:horizontalPanLocationWithVelocity];
+	CGFloat viewOriginXOrHorizontalPanLocationOrHorizontalPanLocationWithVelocity = self.viewOriginXOrHorizontalPanLocationOrHorizontalPanLocationWithVelocity;
+	RUSlideNavigationController_MenuType menuFromHorizontalPanLocationWithVelocity = [self menuTypeForHorizontalLocation:viewOriginXOrHorizontalPanLocationOrHorizontalPanLocationWithVelocity];
 	
 	if (aPanRecognizer.state == UIGestureRecognizerStateBegan)
 	{
@@ -498,6 +531,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 	}
 	else if (aPanRecognizer.state == UIGestureRecognizerStateEnded)
 	{
+		CGFloat horizontalPanLocationWithVelocity = self.horizontalPanLocationWithVelocity;
 		CGPoint velocity = [aPanRecognizer velocityInView:aPanRecognizer.view];
 
 		// If the speed is high enough follow direction
