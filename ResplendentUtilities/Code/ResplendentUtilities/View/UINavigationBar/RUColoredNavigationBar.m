@@ -22,9 +22,9 @@
 	
 	if (self.navigationBarDrawColor)
 	{
-		[super drawRect:rect];
-		
 		CGContextRef context = UIGraphicsGetCurrentContext();
+		CGContextClearRect(context, self.bounds);
+
 		CGContextSetFillColorWithColor(context, self.navigationBarDrawColor.CGColor);
 		CGContextFillRect(context, rect);
 	}
