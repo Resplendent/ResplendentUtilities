@@ -19,8 +19,14 @@
 	return [self objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
 }
 
+-(NSString*)ru_CFBundleName
+{
+	return [self objectForInfoDictionaryKey:@"CFBundleName"];
+}
+
 -(NSString*)ruCFBundleVersionString
 {
+	RUDLog(@"kCFBundleVersionKey: %@",kCFBundleVersionKey);
 	return [self objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
 }
 

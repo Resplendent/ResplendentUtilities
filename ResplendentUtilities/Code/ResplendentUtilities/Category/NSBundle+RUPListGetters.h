@@ -15,6 +15,7 @@
 @interface NSBundle (RUPListGetters)
 
 -(NSString*)ruCFBundleShortVersionString;
+-(NSString*)ru_CFBundleName;
 -(NSString*)ruCFBundleVersionString;		//Commonly refered to as bundle version
 
 -(NSString*)ruFacebookAppID;
