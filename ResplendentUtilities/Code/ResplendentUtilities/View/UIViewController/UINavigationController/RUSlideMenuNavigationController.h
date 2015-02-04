@@ -27,6 +27,8 @@
 
 @property (nonatomic, strong) id <RUSlideNavigationController_Animator> menuAnimator;
 
+@property (nonatomic, assign) UIEdgeInsets menuViewFrameInsets;
+
 - (void)bounceMenu:(RUSlideNavigationController_MenuType)menu withCompletion:(void (^)())completion;
 - (void)openMenu:(RUSlideNavigationController_MenuType)menu withCompletion:(void (^)())completion;
 - (void)closeMenuWithCompletion:(void (^)())completion;

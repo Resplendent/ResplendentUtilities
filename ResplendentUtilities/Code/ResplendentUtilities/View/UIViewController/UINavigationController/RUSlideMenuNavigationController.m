@@ -420,7 +420,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 		rect.origin.x += slideOffset;
 	}
 	
-	return rect;
+	return UIEdgeInsetsInsetRect(rect, self.menuViewFrameInsets);
 }
 
 - (CGFloat)horizontalSize
@@ -618,6 +618,16 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 	
 	NSAssert(false, @"unhandled");
 	return nil;
+}
+
+#pragma mark - menuViewFrameInsets
+-(void)setMenuViewFrameInsets:(UIEdgeInsets)menuViewFrameInsets
+{
+	kRUConditionalReturn(UIEdgeInsetsEqualToEdgeInsets(self.menuViewFrameInsets, menuViewFrameInsets), NO);
+
+	_menuViewFrameInsets = menuViewFrameInsets;
+
+	[self.view setNeedsLayout];
 }
 
 @end
