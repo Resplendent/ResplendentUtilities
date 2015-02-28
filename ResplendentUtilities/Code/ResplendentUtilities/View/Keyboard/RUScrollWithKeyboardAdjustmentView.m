@@ -30,6 +30,12 @@
 
 @implementation RUScrollWithKeyboardAdjustmentView
 
+#pragma mark - NSObject
+-(id)forwardingTargetForSelector:(SEL)aSelector
+{
+	return self.scrollView;
+}
+
 #pragma mark - RUScrollWithKeyboardAdjustmentView
 -(id)initWithScrollView:(UIScrollView*)scrollView
 {

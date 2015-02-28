@@ -10,6 +10,15 @@
 #import "RUCompatability.h"
 #import "RUDLog.h"
 #import "RUConstants.h"
+#import "RUConditionalReturn.h"
+#import "RURadioButtonGroup.h"
+#import "RUClassOrNilUtil.h"
+
+
+
+
+
+static void* kRURadioButtonView__KVOContext = &kRURadioButtonView__KVOContext;
 
 
 
@@ -20,6 +29,8 @@
 //Returns nil if ready, otherwise returns
 @property (nonatomic, readonly) NSString* reasonUnableToDraw;
 
+-(void)RURadioButtonView_setRegisteredToRadioButtonGroup:(BOOL)registered;
+
 @end
 
 
@@ -28,11 +39,21 @@
 
 @implementation RURadioButtonView
 
+#pragma mark - NSObject
+-(void)dealloc
+{
+	[self RURadioButtonView_setRegisteredToRadioButtonGroup:NO];
+}
+
+#pragma mark - UIView
 -(id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])
     {
-        [self setNumberOfRows:1];
+		_radioButtonGroup = [RURadioButtonGroup new];
+		[self RURadioButtonView_setRegisteredToRadioButtonGroup:YES];
+
+		[self setNumberOfRows:1];
     }
 
     return self;
@@ -42,10 +63,11 @@
 {
     [super layoutSubviews];
 
-    if (_buttons.count)
+    if (self.radioButtonGroup.buttons.count)
     {
+		NSArray* buttons = self.radioButtonGroup.buttons;
         NSUInteger numberOfRows = self.numberOfRows;
-        NSUInteger numberOfColumns = ceil((double)self.buttonTitles.count / (double)numberOfRows);
+        NSUInteger numberOfColumns = ceil((double)buttons.count / (double)numberOfRows);
         CGFloat buttonPadding = self.buttonPadding;
         CGFloat buttonWidth = ((CGRectGetWidth(self.frame) + buttonPadding) / (double)numberOfColumns) - buttonPadding;
         CGFloat buttonHeight = ((CGRectGetHeight(self.frame) + buttonPadding) / (double)numberOfRows) - buttonPadding;
@@ -53,7 +75,7 @@
         NSUInteger row = 0;
         NSUInteger column = 0;
 
-        for (UIButton* button in _buttons)
+        for (UIButton* button in buttons)
         {
             CGFloat xCoord = (row * (buttonWidth + buttonPadding));
             CGFloat yCoord = (column * (buttonHeight + buttonPadding));
@@ -73,23 +95,17 @@
     }
 }
 
--(NSString *)description
-{
-    return RUStringWithFormat(@"%@ %@",[super description],@{@"Button titles": self.buttonTitles});
-}
-
 #pragma mark - New Button
--(UIButton*)newButtonForTitle:(NSString*)title
+-(UIButton*)newButtonAtIndex:(NSUInteger)index withTitle:(NSString*)title
 {
-    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+	UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:title forState:UIControlStateNormal];
     [button.titleLabel setFont:self.font];
     [button setTitleColor:self.textColor forState:UIControlStateNormal];
     [button setTitleColor:self.selectedTextColor forState:UIControlStateSelected];
     [button setBackgroundColor:[UIColor clearColor]];
-    [button addTarget:self action:@selector(pressedButton:) forControlEvents:UIControlEventTouchUpInside];
 
-    return button;
+	return button;
 }
 
 #pragma mark - Getters
@@ -107,87 +123,104 @@
     {
         return @"need non-nil textColor";
     }
-    else if (!self.selectedTextColor)
-    {
-        return @"need non-nil selectedTextColor";
-    }
+//    else if (!self.selectedTextColor)
+//    {
+//        return @"need non-nil selectedTextColor";
+//    }
 
     return nil;
 }
 
--(UIButton *)selectedButton
+#pragma mark - Button Titles
+-(void)setButtonsWithButtonTitles:(NSArray*)buttonTitles
 {
-    if (self.selectedButtonIndex != NSNotFound)
-    {
-        return [_buttons objectAtIndex:self.selectedButtonIndex];
-    }
+	kRUConditionalReturn(buttonTitles.count == 0, YES);
+	kRUConditionalReturn(self.reasonUnableToDraw.length > 0, YES);
 
-    return nil;
+	NSMutableArray* newButtons = [NSMutableArray array];
+	
+	[buttonTitles enumerateObjectsUsingBlock:^(NSString* buttonTitle, NSUInteger buttonTitleIndex, BOOL *stop) {
+		
+		UIButton* newButton = [self newButtonAtIndex:buttonTitleIndex withTitle:buttonTitle];
+		
+		NSAssert(newButton != nil, @"unhandled");
+		if (newButton)
+		{
+			[newButtons addObject:newButton];
+			[self addSubview:newButton];
+		}
+		
+	}];
+	
+	[self.radioButtonGroup setButtons:newButtons];
 }
 
-#pragma mark - Setters
--(void)setSelectedButtonIndex:(NSUInteger)selectedButtonIndex
+#pragma mark - KVO
+-(void)RURadioButtonView_setRegisteredToRadioButtonGroup:(BOOL)registered
 {
-    UIButton* unSelectButton = self.selectedButton;
-    [unSelectButton setSelected:NO];
-
-    _selectedButtonIndex = selectedButtonIndex;
-
-    UIButton* selectedButton = self.selectedButton;
-    [selectedButton setSelected:YES];
+	kRUConditionalReturn(self.radioButtonGroup == nil, YES);
+	
+	static NSArray* propertiesToObserve;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		propertiesToObserve = @[
+								RURadioButtonGroup_KVOProperties.buttons,
+								];
+	});
+	
+	for (NSString* propertyToObserve in propertiesToObserve)
+	{
+		if (registered)
+		{
+			[self.radioButtonGroup addObserver:self forKeyPath:propertyToObserve options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:&kRURadioButtonView__KVOContext];
+		}
+		else
+		{
+			[self.radioButtonGroup removeObserver:self forKeyPath:propertyToObserve context:&kRURadioButtonView__KVOContext];
+		}
+	}
 }
 
--(void)setButtonTitles:(NSArray *)buttonTitles
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (!buttonTitles.count)
-    {
-        [NSException raise:NSInvalidArgumentException format:@"must pass array with at least one object"];
-    }
+	if (context == kRURadioButtonView__KVOContext)
+	{
+		if (object == self.radioButtonGroup)
+		{
+			if ([keyPath isEqualToString:RURadioButtonGroup_KVOProperties.buttons])
+			{
+				NSArray* oldButtons = [change objectForKey:NSKeyValueChangeOldKey];
+				if (kRUClassOrNil(oldButtons, NSArray))
+				{
+					for (UIButton* oldButton in oldButtons)
+					{
+						[oldButton removeFromSuperview];
+					}
+				}
 
-    _buttonTitles = buttonTitles;
-
-    NSString* reasonUnableToDraw = self.reasonUnableToDraw;
-    if (reasonUnableToDraw)
-    {
-        RUDLog(@"%@",reasonUnableToDraw);
-    }
-    else
-    {
-        NSMutableArray* newButtons = [NSMutableArray array];
-        
-        for (NSString* buttonTitle in buttonTitles)
-        {
-            UIButton* newButton = [self newButtonForTitle:buttonTitle];
-            [newButtons addObject:newButton];
-            [self addSubview:newButton];
-        }
-
-        _buttons = [NSArray arrayWithArray:newButtons];
-
-        [self setSelectedButtonIndex:0];
-    }
-}
-
-#pragma mark - Actions
--(void)pressedButton:(UIButton*)button
-{
-    NSUInteger buttonIndex = [_buttons indexOfObject:button];
-    if (buttonIndex == NSNotFound)
-    {
-        RUDLog(@"button %@ not found in buttons %@",button,_buttons);
-    }
-    else
-    {
-        if (self.deSelectButtonOnPress)
-        {
-            if (buttonIndex == self.selectedButtonIndex)
-            {
-                buttonIndex = NSNotFound;
-            }
-        }
-        [self setSelectedButtonIndex:buttonIndex];
-        [self.selectionDelegate radioButtonView:self selectedButtonAtIndex:buttonIndex];
-    }
+				NSArray* newButtons = [change objectForKey:NSKeyValueChangeNewKey];
+				if (kRUClassOrNil(newButtons, NSArray))
+				{
+					for (UIButton* newButton in newButtons)
+					{
+						[self addSubview:newButton];
+					}
+				}
+			}
+			else
+			{
+				NSAssert(false, @"unhandled");
+			}
+		}
+		else
+		{
+			NSAssert(false, @"unhandled");
+		}
+	}
+	else
+	{
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	}
 }
 
 @end

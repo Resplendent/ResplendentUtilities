@@ -14,7 +14,7 @@
 
 @implementation UIView (RUSnapshot)
 
--(UIImage*)getSnapshotFromWindow
+-(UIImage*)ruGetSnapshotFromWindow
 {
 	UIView* viewToMakeImage = self.window;
 	

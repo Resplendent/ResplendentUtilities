@@ -203,9 +203,18 @@
 }
 
 #pragma mark - Attributes
+@synthesize placeholderParagraphStyle = _placeholderParagraphStyle;
 -(NSParagraphStyle*)placeholderParagraphStyle
 {
+    if (_placeholderParagraphStyle) {
+        return _placeholderParagraphStyle;
+    }
+    
 	return self.ruParagraphStyle;
+}
+
+- (void)setPlaceholderParagraphStyle:(NSParagraphStyle *)placeholderParagraphStyle {
+    _placeholderParagraphStyle = placeholderParagraphStyle;
 }
 
 -(NSDictionary*)placeholderAttributes

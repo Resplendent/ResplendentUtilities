@@ -7,7 +7,9 @@
 //
 
 #import "RUModalView.h"
+#import "UIView+RUCancelControlTracking.h"
 #import "UIView+RUUtility.h"
+#import "RUConditionalReturn.h"
 
 
 
@@ -35,6 +37,7 @@
 		[self setTransitionAnimationType:RUModalView_TransitionAnimation_Type_Default];
 
         _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapSelf:)];
+		[self.tapGestureRecognizer setDelegate:self];
         [self addGestureRecognizer:_tapGestureRecognizer];
 
 		_shadowView = [UIView new];
@@ -69,7 +72,9 @@
 #pragma mark - Action methods
 -(void)didTapSelf:(UITapGestureRecognizer*)tap
 {
-    [self dismiss:YES completion:nil];
+	kRUConditionalReturn(self.isTransitioning, NO);
+
+	[self dismiss:YES completion:nil];
 }
 
 #pragma mark - Public Display Content methods
@@ -88,6 +93,9 @@
 	}
 
 	[self setIsTransitioning:YES];
+
+	[presenterView ruEndAllControlTrackingWithTouch:nil event:nil];
+	[presenterView ruCancelAllControlTrackingWithEvent:nil];
 
     [presenterView addSubview:self];
     [self setFrame:presenterView.bounds];
@@ -251,6 +259,34 @@
 		default:
 			break;
 	}
+}
+
+#pragma mark - disableShadow
+-(BOOL)disableShadow
+{
+	return self.shadowView.isHidden;
+}
+
+-(void)setDisableShadow:(BOOL)disableShadow
+{
+	kRUConditionalReturn(self.disableShadow == disableShadow, NO);
+
+	[self.shadowView setHidden:disableShadow];
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+	return [self shouldDismissForTapSelfWithTouch:touch];
+}
+
+#pragma mark - tapGestureRecognizer
+-(BOOL)shouldDismissForTapSelfWithTouch:(UITouch*)touch
+{
+	return (
+			(touch.view == self) ||
+			(touch.view == self.contentView)
+			);
 }
 
 @end

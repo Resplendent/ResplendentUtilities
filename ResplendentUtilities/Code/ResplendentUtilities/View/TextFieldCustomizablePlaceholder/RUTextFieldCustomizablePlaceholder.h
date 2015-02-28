@@ -23,7 +23,7 @@
 
 @property (nonatomic, assign) UIEdgeInsets leftViewInsets;
 
-@property (nonatomic, readonly) NSParagraphStyle* placeholderParagraphStyle;
+@property (nonatomic, strong) NSParagraphStyle* placeholderParagraphStyle;
 @property (nonatomic, readonly) NSDictionary* placeholderAttributes;
 
 @end

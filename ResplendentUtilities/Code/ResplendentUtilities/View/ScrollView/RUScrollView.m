@@ -7,6 +7,7 @@
 //
 
 #import "RUScrollView.h"
+#import "UIView+RUSubviews.h"
 
 
 
@@ -27,11 +28,10 @@
     if (self.touchesInsideState == RUScrollViewTouchesInsideStateIncludeSubviews ||
 		self.touchesInsideState == RUScrollViewTouchesInsideStateOnlySubviews)
     {
-        for (UIView* subview in self.subviews)
-        {
-            if (CGRectContainsPoint(subview.frame, point))
-                return YES;
-        }
+		if ([self ru_frontMostSubviewOfPoint:point withEvent:event])
+		{
+			return YES;
+		}
     }
 
 	if (self.touchesInsideState != RUScrollViewTouchesInsideStateOnlySubviews)
@@ -42,29 +42,6 @@
 	{
 		return NO;
 	}
-
-//	if (self.touchesInsideState == RUScrollViewTouchesInsideStateIncludeSubviews ||
-//		self.touchesInsideState == RUScrollViewTouchesInsideStateOnlySubviews)
-//    {
-//        for (UIView* subview in self.subviews)
-//        {
-//            if (CGRectContainsPoint(subview.frame, point))
-//                return YES;
-//        }
-//
-//        return NO;
-//    }
-//    else
-//    {
-//		if (self.touchesInsideState != RUScrollViewTouchesInsideStateOnlySubviews)
-//		{
-//			return [super pointInside:point withEvent:event];
-//		}
-//		else
-//		{
-//			return NO;
-//		}
-//    }
 }
 
 @end

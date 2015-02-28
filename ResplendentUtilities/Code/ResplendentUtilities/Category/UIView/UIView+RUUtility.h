@@ -38,6 +38,39 @@
 #define CGRectSetFrameWithVerticallyAlignedYCoordOnRect(x,width,height,onRect) CGRectSetFrameWithVerticallyAlignedYCoordOnHeight(x,width,height,CGRectGetHeight(onRect))
 #define CGRectSetFrameWithVerticallyAlignedYCoordOnView(x,width,height,onView) CGRectSetFrameWithVerticallyAlignedYCoordOnRect(x,width,height,onView.frame)
 
+#define CGRectSizeThatFitsRect(rect) ((CGSize){.width = CGRectGetMaxX(rect),.height = CGRectGetMaxY(rect)})
+
+CG_INLINE CGRect CGRectFloorOrigin(CGRect rect)
+{
+	return (CGRect){
+		.origin.x = floor(rect.origin.x),
+		.origin.y = floor(rect.origin.y),
+		.size = rect.size,
+	};
+}
+
+CG_INLINE CGRect CGRectCeilOrigin(CGRect rect)
+{
+	return (CGRect){
+		.origin.x = ceil(rect.origin.x),
+		.origin.y = ceil(rect.origin.y),
+		.size = rect.size,
+	};
+}
+
+CG_INLINE UIEdgeInsets ru_CGRectGetEdgeInsetsFromFrameToTargetSize(CGRect parentFrame, CGSize targetSize)
+{
+	CGFloat horizontalPadding = (CGRectGetWidth(parentFrame) - targetSize.width) / 2.0f;
+	CGFloat verticalPadding = (CGRectGetHeight(parentFrame) - targetSize.height) / 2.0f;
+	
+	return (UIEdgeInsets){
+		.top = verticalPadding,
+		.bottom = verticalPadding,
+		.left = horizontalPadding,
+		.right = horizontalPadding,
+	};
+}
+
 #pragma mark Set origin methods
 CG_INLINE void setCoords(UIView* view,CGFloat xCoord,CGFloat yCoord)
 {

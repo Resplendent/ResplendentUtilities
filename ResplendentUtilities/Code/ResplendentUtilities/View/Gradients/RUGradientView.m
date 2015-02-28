@@ -7,7 +7,7 @@
 //
 
 #import "RUGradientView.h"
-#import "UIView+CoreGraphics.h"
+#import "UIView+RUCoreGraphics.h"
 #import "RUConstants.h"
 
 
@@ -36,7 +36,7 @@
 
     [super drawRect:rect];
 
-    [self RUDrawBackgroundColor:context];
+    [self ru_drawBackgroundColor:context];
 
     if (self.readyToDrawGradient)
     {

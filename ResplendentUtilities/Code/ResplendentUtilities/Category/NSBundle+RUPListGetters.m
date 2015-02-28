@@ -19,9 +19,20 @@
 	return [self objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
 }
 
+-(NSString*)ru_CFBundleName
+{
+	return [self objectForInfoDictionaryKey:@"CFBundleName"];
+}
+
 -(NSString*)ruCFBundleVersionString
 {
+	RUDLog(@"kCFBundleVersionKey: %@",kCFBundleVersionKey);
 	return [self objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
+}
+
+-(NSString *)ruFacebookAppID
+{
+	return [self objectForInfoDictionaryKey:@"FacebookAppID"];
 }
 
 @end
