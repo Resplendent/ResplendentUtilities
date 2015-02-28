@@ -1,4 +1,5 @@
 Pod::Spec.new do |spec|
+  spec.platform     = :ios
   spec.name         = 'ResplendentUtilities'
   spec.version      = '0.0.1'
   spec.license      = 'MIT'
