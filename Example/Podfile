@@ -1,0 +1,9 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+
+target 'ResplendentUtilities', :exclusive => true do
+  pod "ResplendentUtilities", :path => "../"
+
+  pod 'Specta'
+  pod 'Expecta'
+end
