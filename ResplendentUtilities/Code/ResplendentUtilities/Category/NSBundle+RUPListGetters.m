@@ -26,7 +26,6 @@
 
 -(NSString*)ruCFBundleVersionString
 {
-	RUDLog(@"kCFBundleVersionKey: %@",kCFBundleVersionKey);
 	return [self objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
 }
 
