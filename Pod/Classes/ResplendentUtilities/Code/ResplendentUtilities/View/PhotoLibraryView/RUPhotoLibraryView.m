@@ -137,16 +137,17 @@ NSString* const kRUPhotoLibraryView_cellIdentifier_RUPhotoLibraryCollectionViewC
 
 	[self setIsEnumeratingAssetsLibrary:YES];
 
+	__block BOOL stopped = NO;
 	__weak typeof(self) weakSelf = self;
 	[self.assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
 
-		if ((weakSelf == nil) || (group == nil))
+		RUDLog(@"!!");
+		*stop = YES;
+
+		if ((stopped == false) && (*stop == YES))
 		{
-			*stop = YES;
-		}
-		
-		if (*stop == YES)
-		{
+			stopped = YES;
+			RUDLog(@"stopped");
 			if (weakSelf)
 			{
 				dispatch_async(dispatch_get_main_queue(), ^{
@@ -196,6 +197,12 @@ NSString* const kRUPhotoLibraryView_cellIdentifier_RUPhotoLibraryCollectionViewC
 	}];
 	
 	return asset;
+}
+
+#pragma mark - Scrolling
+-(void)scrollToTop:(BOOL)animated
+{
+	[self.collectionView setContentOffset:CGPointZero animated:animated];
 }
 
 @end

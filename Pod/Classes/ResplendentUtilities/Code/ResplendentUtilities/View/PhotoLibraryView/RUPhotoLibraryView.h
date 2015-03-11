@@ -14,4 +14,6 @@
 
 @interface RUPhotoLibraryView : UIView
 
+-(void)scrollToTop:(BOOL)animated;
+
 @end
