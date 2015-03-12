@@ -125,10 +125,10 @@ NSString* const kRUPhotoLibraryView_cellIdentifier_RUPhotoLibraryCollectionViewC
 	return photoLibraryCollectionViewCell;
 }
 
-//-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-//{
-//	[self.productSelectionDelegate productsCollectionView:self didSelectProduct:[self dataSource_productAtIndex:indexPath.row]];
-//}
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+	[self.assetSelectionDelegate photoLibraryView:self didSelectAsset:[self assetAtIndexPath:indexPath]];
+}
 
 #pragma mark - Load Asset Group
 -(void)loadAssetGroup

@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RUPhotoLibraryViewProtocols.h"
 
 
 
 
 
 @interface RUPhotoLibraryView : UIView
+
+@property (nonatomic, assign) id<RUPhotoLibraryView_assetSelectionDelegate> assetSelectionDelegate;
 
 -(void)scrollToTop:(BOOL)animated;
 
