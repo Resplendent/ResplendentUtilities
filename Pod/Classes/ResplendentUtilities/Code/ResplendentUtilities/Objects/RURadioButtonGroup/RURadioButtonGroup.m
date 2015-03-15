@@ -53,7 +53,7 @@ const struct RURadioButtonGroup_KVOProperties RURadioButtonGroup_KVOProperties =
 		[newButton addTarget:self action:@selector(pressed_button:) forControlEvents:UIControlEventTouchUpInside];
 	}
 
-	[self setSelectedButtonIndex:0];
+	[self setSelectedButtonIndex:(self.allowDeselectionOfSelectedButton ? NSNotFound : 0)];
 	[self selectButtonAtCurrentlySelectedButtonIndex];
 }
 
