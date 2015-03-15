@@ -12,7 +12,15 @@
 
 
 
+@class RUColoredNavigationBar;
+
+
+
+
+
 @interface UINavigationController (RUColoredNavigationBar)
+
+@property (nonatomic, readonly) RUColoredNavigationBar* ru_coloredNavigationBar;
 
 -(instancetype)initWithColoredNavigationBarWithColor:(UIColor*)navigationBarColor;
 -(instancetype)initWithColoredNavigationBarWithColor:(UIColor*)navigationBarColor coloredNavigationBarClass:(Class)coloredNavigationBarClass;

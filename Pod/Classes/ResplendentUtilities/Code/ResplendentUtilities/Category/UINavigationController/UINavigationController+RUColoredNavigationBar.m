@@ -33,8 +33,9 @@
 
 	if (self = [self initWithNavigationBarClass:coloredNavigationBarClass toolbarClass:nil])
 	{
-		NSAssert(kRUClassOrNil(self.navigationBar, RUColoredNavigationBar), @"Must have a proper colored navbar");
-		[kRUClassOrNil(self.navigationBar, RUColoredNavigationBar) setNavigationBarDrawColor:navigationBarColor];
+		RUColoredNavigationBar* ru_coloredNavigationBar = self.ru_coloredNavigationBar;
+		NSAssert(ru_coloredNavigationBar != nil, @"Must have a proper colored navbar");
+		[ru_coloredNavigationBar setNavigationBarDrawColor:navigationBarColor];
 	}
 	
 	return self;
@@ -44,6 +45,12 @@
 -(void)ru_setNavigationBarColor:(UIColor*)navigationBarColor
 {
 	[kRUClassOrNil(self.navigationBar, RUColoredNavigationBar) setNavigationBarDrawColor:navigationBarColor];
+}
+
+#pragma mark - ru_coloredNavigationBar
+-(RUColoredNavigationBar *)ru_coloredNavigationBar
+{
+	return kRUClassOrNil(self.navigationBar, RUColoredNavigationBar);
 }
 
 @end
