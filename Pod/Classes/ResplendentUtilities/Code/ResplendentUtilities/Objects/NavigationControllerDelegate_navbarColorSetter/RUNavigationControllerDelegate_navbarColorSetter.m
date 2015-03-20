@@ -11,6 +11,7 @@
 #import "UINavigationController+RUColoredStatusBarView.h"
 #import "RUProtocolOrNil.h"
 #import "RUNavigationControllerDelegate_navbarColorSetterProtocols.h"
+#import "UIViewController+RUNavigationBarColorSetterDelegate.h"
 
 
 
@@ -28,10 +29,21 @@
 
 -(UIColor*)navbarColorForViewController:(UIViewController*)viewController
 {
-	id<RUNavigationControllerDelegate_navbarColorSetter_viewControllerColorDelegate> viewControllerColorDelegate = kRUProtocolOrNil(viewController, RUNavigationControllerDelegate_navbarColorSetter_viewControllerColorDelegate);
+	kRUConditionalReturn_ReturnValue(viewController == nil, YES, self.defaultColor);
 
-	return (viewControllerColorDelegate == nil ? self.defaultColor :
-			[viewControllerColorDelegate ruNavigationControllerDelegate_navbarColorSetter_colorForNavigationBar:self]);
+	id<RUViewController_NavigationBarColorSetterDelegate> ru_viewController_NavigationBarColorSetterDelegate = viewController.ru_viewController_NavigationBarColorSetterDelegate;
+	if (ru_viewController_NavigationBarColorSetterDelegate)
+	{
+		return [ru_viewController_NavigationBarColorSetterDelegate ruViewController_NavigationBarColorSetterDelegate_colorForViewController:viewController];
+	}
+	
+	id<RUNavigationControllerDelegate_navbarColorSetter_viewControllerColorDelegate> viewControllerColorDelegate = kRUProtocolOrNil(viewController, RUNavigationControllerDelegate_navbarColorSetter_viewControllerColorDelegate);
+	if (viewControllerColorDelegate)
+	{
+		return [viewControllerColorDelegate ruNavigationControllerDelegate_navbarColorSetter_colorForNavigationBar:self];
+	}
+
+	return self.defaultColor;
 }
 
 #pragma mark - UINavigationControllerDelegate
