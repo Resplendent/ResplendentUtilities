@@ -8,6 +8,17 @@
 
 #import "RUDeallocHook.h"
 #import "RUDLog.h"
+#import "RUConditionalReturn.h"
+
+
+
+
+
+@interface RUDeallocHook ()
+
+@property (nonatomic, readonly) RUDeallocHookBlock deallocBlock;
+
+@end
 
 
 
@@ -15,32 +26,41 @@
 
 @implementation RUDeallocHook
 
--(id)initWithBlock:(RUDeallocHookBlock)deallocBlock
-{
-    if (!deallocBlock)
-    {
-        RUDLog(@"No reason to create dealloc hook if not using block");
-    }
-
-    if (self = [self init])
-    {
-        _deallocBlock = deallocBlock;
-    }
-
-    return self;
-}
-
+#pragma mark - NSObject
 -(void)dealloc
 {
-    if (_deallocBlock)
+    if (self.deallocBlock)
     {
-        _deallocBlock();
+        self.deallocBlock();
+		[self clearBlock];
     }
+}
+
+#pragma mark - Contructors
+-(id)initWithBlock:(RUDeallocHookBlock)deallocBlock
+{
+	//No reason to create dealloc hook if not using block
+	kRUConditionalReturn_ReturnValueNil(deallocBlock == nil, YES);
+	
+	if (self = [self init])
+	{
+		_deallocBlock = deallocBlock;
+	}
+	
+	return self;
 }
 
 +(instancetype)deallocHookWithBlock:(RUDeallocHookBlock)deallocBlock
 {
     return [[[self class]alloc]initWithBlock:deallocBlock];
+}
+
+#pragma mark - clearBlock
+-(void)clearBlock
+{
+	kRUConditionalReturn(self.deallocBlock == nil, YES);
+
+	_deallocBlock = nil;
 }
 
 @end

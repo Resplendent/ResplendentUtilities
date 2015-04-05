@@ -1,9 +1,9 @@
 //
 //  UIView+RUSnapshot.m
-//  Pineapple
+//  Resplendent
 //
 //  Created by Benjamin Maer on 5/16/14.
-//  Copyright (c) 2014 Pineapple. All rights reserved.
+//  Copyright (c) 2014 Resplendent. All rights reserved.
 //
 
 #import "UIView+RUSnapshot.h"
