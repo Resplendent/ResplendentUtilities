@@ -9,14 +9,12 @@
 #import "UIScrollView+RUAboveContentView.h"
 #import "RUSynthesizeAssociatedObjects.h"
 #import "UIView+RUUtility.h"
-#import "RUDeallocHook.h"
 
 
 
 
 
-NSString* const kUIScrollView_RUAboveContentView_AssociatedObject_Key_ru_UIScrollView_aboveContentView = @"kUIScrollView_RUAboveContentView_AssociatedObject_Key_ru_UIScrollView_aboveContentView";
-NSString* const kUIScrollView_RUAboveContentView_AssociatedObject_Key_ru_UIScrollView_ruDeallocHook = @"kUIScrollView_RUAboveContentView_AssociatedObject_Key_ru_UIScrollView_ruDeallocHook";
+NSString* const kUIScrollView_RUAboveContentView_AssociatedObject_Key_ru_UIScrollView_ru_UIScrollView_RU_UIScrollView_AboveContentView_UpdatingView = @"kUIScrollView_RUAboveContentView_AssociatedObject_Key_ru_UIScrollView_ru_UIScrollView_RU_UIScrollView_AboveContentView_UpdatingView";
 
 static void* kUIScrollView_RUAboveContentView__KVOContext = &kUIScrollView_RUAboveContentView__KVOContext;
 
@@ -24,14 +22,13 @@ static void* kUIScrollView_RUAboveContentView__KVOContext = &kUIScrollView_RUAbo
 
 
 
-@interface UIScrollView (_RUAboveContentView)
+// ++ _RU_UIScrollView_AboveContentView_UpdatingView
+@interface _RU_UIScrollView_AboveContentView_UpdatingView : UIView
 
-@property (nonatomic, strong) RUDeallocHook* _ru_UIScrollView_ruDeallocHook;
+@property (nonatomic, readonly) CGRect aboveContentViewFrame;
 
--(void)_ru_UIScrollView_aboveContentView_updateFrame;
-@property (nonatomic, readonly) CGRect _ru_UIScrollView_aboveContentViewFrame;
-
--(void)_ru_aboveContentView_UIScrollView_setRegistered:(BOOL)registered;
+-(void)setRegisteredToScrollView:(BOOL)registered;
+-(void)setRegisteredToScrollView:(UIScrollView*)scrollView registered:(BOOL)registered;
 
 @end
 
@@ -39,41 +36,63 @@ static void* kUIScrollView_RUAboveContentView__KVOContext = &kUIScrollView_RUAbo
 
 
 
-@implementation UIScrollView (_RUAboveContentView)
+@implementation _RU_UIScrollView_AboveContentView_UpdatingView
 
-#pragma mark - Frames
--(CGRect)_ru_UIScrollView_aboveContentViewFrame
+#pragma mark - UIView
+-(void)layoutSubviews
 {
-	return CGRectCeilOrigin((CGRect){
-		.origin.y		= MIN(self.contentOffset.y, -CGRectGetHeight(self.frame)),
-		.size.width		= CGRectGetWidth(self.frame),
-		.size.height	= CGRectGetHeight(self.frame),
-	});
+	[super layoutSubviews];
+
+	if (self.superview)
+	{
+		[self setFrame:self.aboveContentViewFrame];
+	}
 }
 
-#pragma mark - Layout
--(void)_ru_UIScrollView_aboveContentView_updateFrame
+-(void)willMoveToSuperview:(UIView *)newSuperview
 {
-	[self.ru_UIScrollView_aboveContentView setFrame:self._ru_UIScrollView_aboveContentViewFrame];
+	[super willMoveToSuperview:newSuperview];
+
+	if (self.superview)
+	{
+		UIScrollView* scrollView = kRUClassOrNil(self.superview, UIScrollView);
+		[self setRegisteredToScrollView:scrollView registered:NO];
+	}
+
+	if (newSuperview)
+	{
+		UIScrollView* scrollView = kRUClassOrNil(newSuperview, UIScrollView);
+		[self setRegisteredToScrollView:scrollView registered:YES];
+	}
 }
 
 #pragma mark - KVO
--(void)_ru_aboveContentView_UIScrollView_setRegistered:(BOOL)registered
+-(void)setRegisteredToScrollView:(BOOL)registered
 {
+	UIScrollView* scrollView = kRUClassOrNil([self superview], UIScrollView);
+	kRUConditionalReturn(scrollView == nil, NO);
+
+	[self setRegisteredToScrollView:scrollView registered:registered];
+}
+
+-(void)setRegisteredToScrollView:(UIScrollView*)scrollView registered:(BOOL)registered
+{
+	kRUConditionalReturn(scrollView == nil, NO);
+
 	NSArray* propertiesToObserve = @[
 									 NSStringFromSelector(@selector(contentOffset)),
 									 NSStringFromSelector(@selector(frame)),
 									 ];
-	
+
 	for (NSString* propertyToObserve in propertiesToObserve)
 	{
 		if (registered)
 		{
-			[self addObserver:self forKeyPath:propertyToObserve options:(NSKeyValueObservingOptionInitial) context:&kUIScrollView_RUAboveContentView__KVOContext];
+			[scrollView addObserver:self forKeyPath:propertyToObserve options:(0) context:&kUIScrollView_RUAboveContentView__KVOContext];
 		}
 		else
 		{
-			[self removeObserver:self forKeyPath:propertyToObserve context:&kUIScrollView_RUAboveContentView__KVOContext];
+			[scrollView removeObserver:self forKeyPath:propertyToObserve context:&kUIScrollView_RUAboveContentView__KVOContext];
 		}
 	}
 }
@@ -82,15 +101,16 @@ static void* kUIScrollView_RUAboveContentView__KVOContext = &kUIScrollView_RUAbo
 {
 	if (context == kUIScrollView_RUAboveContentView__KVOContext)
 	{
-		if (object == self)
+		if (object == self.superview &&
+			(kRUClassOrNil(self.superview, UIScrollView) != nil))
 		{
 			if ([keyPath isEqualToString:NSStringFromSelector(@selector(contentOffset))])
 			{
-				[self _ru_UIScrollView_aboveContentView_updateFrame];
+				[self setNeedsLayout];
 			}
 			else if ([keyPath isEqualToString:NSStringFromSelector(@selector(frame))])
 			{
-				[self _ru_UIScrollView_aboveContentView_updateFrame];
+				[self setNeedsLayout];
 			}
 			else
 			{
@@ -108,8 +128,40 @@ static void* kUIScrollView_RUAboveContentView__KVOContext = &kUIScrollView_RUAbo
 	}
 }
 
+#pragma mark - Frames
+-(CGRect)aboveContentViewFrame
+{
+	UIScrollView* scrollView = kRUClassOrNil([self superview], UIScrollView);
+	kRUConditionalReturn_ReturnValue(scrollView == nil, YES, CGRectZero);
+
+	return CGRectCeilOrigin((CGRect){
+		.origin.y		= MIN(scrollView.contentOffset.y, -CGRectGetHeight(scrollView.frame)),
+		.size.width		= CGRectGetWidth(scrollView.frame),
+		.size.height	= CGRectGetHeight(scrollView.frame),
+	});
+}
+
+@end
+// -- _RU_UIScrollView_AboveContentView_UpdatingView
+
+
+
+
+
+@interface UIScrollView (_RUAboveContentView)
+
+@property (nonatomic, strong) _RU_UIScrollView_AboveContentView_UpdatingView* _ru_UIScrollView_RU_UIScrollView_AboveContentView_UpdatingView;
+
+@end
+
+
+
+
+
+@implementation UIScrollView (_RUAboveContentView)
+
 #pragma mark - Synthesize Associated Objects
-RU_Synthesize_AssociatedObject_GetterSetter_Implementation(_ru, _ru, _UIScrollView_ruDeallocHook, RUDeallocHook*, &kUIScrollView_RUAboveContentView_AssociatedObject_Key_ru_UIScrollView_ruDeallocHook, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+RU_Synthesize_AssociatedObject_GetterSetter_Implementation(_ru, _ru, _UIScrollView_RU_UIScrollView_AboveContentView_UpdatingView, _RU_UIScrollView_AboveContentView_UpdatingView*, &kUIScrollView_RUAboveContentView_AssociatedObject_Key_ru_UIScrollView_ru_UIScrollView_RU_UIScrollView_AboveContentView_UpdatingView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
 @end
 
@@ -122,8 +174,7 @@ RU_Synthesize_AssociatedObject_GetterSetter_Implementation(_ru, _ru, _UIScrollVi
 #pragma mark - ru_UIScrollView_enableAboveContentView
 -(BOOL)ru_UIScrollView_enableAboveContentView
 {
-	return ((self.ru_UIScrollView_aboveContentView != nil) &&
-			(self._ru_UIScrollView_ruDeallocHook != nil));
+	return (self.ru_UIScrollView_aboveContentView != nil);
 }
 
 -(void)setRu_UIScrollView_enableAboveContentView:(BOOL)ru_UIScrollView_enableAboveContentView
@@ -132,51 +183,25 @@ RU_Synthesize_AssociatedObject_GetterSetter_Implementation(_ru, _ru, _UIScrollVi
 
 	if (ru_UIScrollView_enableAboveContentView)
 	{
-		kRUConditionalReturn(self.ru_UIScrollView_aboveContentView != nil, YES);
-		kRUConditionalReturn(self._ru_UIScrollView_ruDeallocHook != nil, YES);
+		kRUConditionalReturn(self._ru_UIScrollView_RU_UIScrollView_AboveContentView_UpdatingView != nil, YES);
 
-//		UIView* ru_UIScrollView_aboveContentView = ;
-		[self setRu_UIScrollView_aboveContentView:[UIView new]];
-		[self addSubview:self.ru_UIScrollView_aboveContentView];
-
-		[self _ru_aboveContentView_UIScrollView_setRegistered:YES];
-
-		__weak typeof(self) weakSelf = self;
-		RUDeallocHook* _ru_UIScrollView_ruDeallocHook = [RUDeallocHook deallocHookWithBlock:^{
-
-			[weakSelf _ru_aboveContentView_UIScrollView_setRegistered:NO];
-
-		}];
-		[self set_ru_UIScrollView_ruDeallocHook:_ru_UIScrollView_ruDeallocHook];
-
-		[self setNeedsLayout];
+		_RU_UIScrollView_AboveContentView_UpdatingView* aboveContentView_Updater = [_RU_UIScrollView_AboveContentView_UpdatingView new];
+		[self addSubview:aboveContentView_Updater];
+		[self set_ru_UIScrollView_RU_UIScrollView_AboveContentView_UpdatingView:aboveContentView_Updater];
 	}
 	else
 	{
-		if (self.ru_UIScrollView_aboveContentView)
-		{
-			[self _ru_aboveContentView_UIScrollView_setRegistered:NO];
-			[self.ru_UIScrollView_aboveContentView removeFromSuperview];
-			[self setRu_UIScrollView_aboveContentView:nil];
-		}
-		else
-		{
-			NSAssert(false, @"unhandled");
-		}
+		kRUConditionalReturn(self._ru_UIScrollView_RU_UIScrollView_AboveContentView_UpdatingView == nil, YES);
 
-		if (self._ru_UIScrollView_ruDeallocHook)
-		{
-			[self._ru_UIScrollView_ruDeallocHook clearBlock];
-			[self set_ru_UIScrollView_ruDeallocHook:nil];
-		}
-		else
-		{
-			NSAssert(false, @"unhandled");
-		}
+		[self._ru_UIScrollView_RU_UIScrollView_AboveContentView_UpdatingView removeFromSuperview];
+		[self set_ru_UIScrollView_RU_UIScrollView_AboveContentView_UpdatingView:nil];
 	}
 }
 
-#pragma mark - Synthesize Associated Objects
-RU_Synthesize_AssociatedObject_GetterSetter_Implementation(ru, Ru, _UIScrollView_aboveContentView, UIView*, &kUIScrollView_RUAboveContentView_AssociatedObject_Key_ru_UIScrollView_aboveContentView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+#pragma mark - ru_UIScrollView_aboveContentView
+-(UIView *)ru_UIScrollView_aboveContentView
+{
+	return self._ru_UIScrollView_RU_UIScrollView_AboveContentView_UpdatingView;
+}
 
 @end
