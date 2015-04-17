@@ -24,9 +24,16 @@ NSString* const kUINavigationController_RUNavbarColorSetter_AssociatedObject_Key
 
 -(void)ru_setupNavbarColorSetterWithDefaultColor:(UIColor*)defaultColor
 {
+	return [self ru_setupNavbarColorSetterWithDefaultColor:defaultColor navbarColorSetterClass:[RUNavigationControllerDelegate_navbarColorSetter class]];
+}
+
+-(void)ru_setupNavbarColorSetterWithDefaultColor:(UIColor*)defaultColor navbarColorSetterClass:(Class)navbarColorSetterClass
+{
+	kRUConditionalReturn(kRUClassOrNil(navbarColorSetterClass, RUNavigationControllerDelegate_navbarColorSetter) == nil, YES);
+
 	if (self.ru_navbarColorSetter == nil)
 	{
-		[self setRu_navbarColorSetter:[RUNavigationControllerDelegate_navbarColorSetter new]];
+		[self setRu_navbarColorSetter:[navbarColorSetterClass new]];
 		[self setDelegate:self.ru_navbarColorSetter];
 	}
 	

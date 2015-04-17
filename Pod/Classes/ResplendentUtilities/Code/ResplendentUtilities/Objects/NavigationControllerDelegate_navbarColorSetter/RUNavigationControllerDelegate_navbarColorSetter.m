@@ -68,11 +68,4 @@
 	[self updateNavigationController:navigationController withColorFromViewController:viewController];
 }
 
-- (id <UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController
-						  interactionControllerForAnimationController:(id <UIViewControllerAnimatedTransitioning>) animationController
-{
-//	[self updateNavigationController:navigationController withColorFromViewController:viewController];
-	return nil;
-}
-
 @end

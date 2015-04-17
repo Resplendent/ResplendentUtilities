@@ -23,6 +23,7 @@
 @property (nonatomic, strong) RUNavigationControllerDelegate_navbarColorSetter* ru_navbarColorSetter;
 
 -(void)ru_setupNavbarColorSetterWithDefaultColor:(UIColor*)defaultColor;
+-(void)ru_setupNavbarColorSetterWithDefaultColor:(UIColor*)defaultColor navbarColorSetterClass:(Class)navbarColorSetterClass;
 -(void)ru_updateNavbarColors;
 
 @end
