@@ -21,12 +21,14 @@
 
 -(void)updateNavigationController:(UINavigationController*)navigationController withColorFromViewController:(UIViewController*)viewController
 {
-	UIColor* color = [self navbarColorForViewController:viewController];
-	
-	[navigationController ru_setNavigationBarColor:color];
-	[navigationController setRu_statusBarBackgroundColor:color];
+	UIColor* color_navigationBarColor = [self navbarColorForViewController:viewController];
+	[navigationController ru_setNavigationBarColor:color_navigationBarColor];
+
+	UIColor* color_statusBar = [self statusBarColorForViewController:viewController];
+	[navigationController setRu_statusBarBackgroundColor:color_statusBar];
 }
 
+#pragma mark - Colors
 -(UIColor*)navbarColorForViewController:(UIViewController*)viewController
 {
 	kRUConditionalReturn_ReturnValue(viewController == nil, YES, self.defaultColor);
@@ -46,10 +48,31 @@
 	return self.defaultColor;
 }
 
+-(UIColor*)statusBarColorForViewController:(UIViewController*)viewController
+{
+	kRUConditionalReturn_ReturnValue(viewController == nil, YES, [self navbarColorForViewController:viewController]);
+
+	id<RUNavigationControllerDelegate_navbarColorSetter_viewControllerColorDelegate> viewControllerColorDelegate = kRUProtocolOrNil(viewController, RUNavigationControllerDelegate_navbarColorSetter_viewControllerColorDelegate);
+	if (viewControllerColorDelegate &&
+		[viewController respondsToSelector:@selector(ruNavigationControllerDelegate_navbarColorSetter_colorForStatusBar:)])
+	{
+		return [viewControllerColorDelegate ruNavigationControllerDelegate_navbarColorSetter_colorForStatusBar:self];
+	}
+
+	return [self navbarColorForViewController:viewController];
+}
+
 #pragma mark - UINavigationControllerDelegate
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
 	[self updateNavigationController:navigationController withColorFromViewController:viewController];
+}
+
+- (id <UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController
+						  interactionControllerForAnimationController:(id <UIViewControllerAnimatedTransitioning>) animationController
+{
+//	[self updateNavigationController:navigationController withColorFromViewController:viewController];
+	return nil;
 }
 
 @end

@@ -20,6 +20,11 @@
 
 @protocol RUNavigationControllerDelegate_navbarColorSetter_viewControllerColorDelegate <NSObject>
 
+@required
 -(UIColor*)ruNavigationControllerDelegate_navbarColorSetter_colorForNavigationBar:(RUNavigationControllerDelegate_navbarColorSetter*)navigationControllerDelegate_navbarColorSetter;
+
+//If not implemented, the status bar's color will be determined by ruNavigationControllerDelegate_navbarColorSetter_colorForNavigationBar:
+@optional
+-(UIColor*)ruNavigationControllerDelegate_navbarColorSetter_colorForStatusBar:(RUNavigationControllerDelegate_navbarColorSetter*)navigationControllerDelegate_navbarColorSetter;
 
 @end
