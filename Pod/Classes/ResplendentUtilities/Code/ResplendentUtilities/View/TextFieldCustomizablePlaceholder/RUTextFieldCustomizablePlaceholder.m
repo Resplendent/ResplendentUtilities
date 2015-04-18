@@ -18,8 +18,8 @@
 
 @interface RUTextFieldCustomizablePlaceholder ()
 
-@property (nonatomic, readonly) UIFont* _placeholderFont;
-@property (nonatomic, readonly) UIColor* _placeholderTextColor;
+@property (nonatomic, readonly) UIFont* ru__placeholderFont;
+@property (nonatomic, readonly) UIColor* ru__placeholderTextColor;
 
 @end
 
@@ -34,7 +34,7 @@
 {
     CGRect placeholderRect = [super placeholderRectForBounds:bounds];
 	
-	UIFont* placeholderFont = self._placeholderFont;
+	UIFont* placeholderFont = self.ru__placeholderFont;
 	
 	if (placeholderFont)
 	{
@@ -43,7 +43,10 @@
 			switch (self.contentVerticalAlignment)
 			{
 				case UIControlContentVerticalAlignmentCenter:
-					placeholderRect.origin.y = CGRectGetVerticallyAlignedYCoordForHeightOnHeight(placeholderFont.pointSize, CGRectGetHeight(self.bounds));
+					if (self.isFirstResponder == false)
+					{
+						placeholderRect.size.height		-= CGRectGetVerticallyAlignedYCoordForHeightOnHeight(placeholderFont.pointSize, CGRectGetHeight(self.bounds));
+					}
 					break;
 					
 				default:
@@ -51,36 +54,51 @@
 			}
 		}
 	}
-	
-	return UIEdgeInsetsInsetRect(placeholderRect, self.placeholderTextInsets);
-	//    return placeholderRect;
+
+	placeholderRect = CGRectCeilOrigin(UIEdgeInsetsInsetRect(placeholderRect, self.ru_placeholderTextInsets));
+	return placeholderRect;
 }
 
 -(CGRect)textRectForBounds:(CGRect)bounds
 {
 	CGRect textRect = [super textRectForBounds:bounds];
 
-	return UIEdgeInsetsInsetRect(textRect, self.textInsets);
+	textRect = CGRectCeilOrigin(UIEdgeInsetsInsetRect(textRect, self.ru_textInsets));
+	return textRect;
 }
 
 -(CGRect)editingRectForBounds:(CGRect)bounds
 {
 	CGRect editingRect = [super editingRectForBounds:bounds];
-	
-	return UIEdgeInsetsInsetRect(editingRect, self.textInsets);
+
+	if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
+	{
+		switch (self.contentVerticalAlignment)
+		{
+			case UIControlContentVerticalAlignmentCenter:
+				editingRect.size.height		-= CGRectGetVerticallyAlignedYCoordForHeightOnHeight(self.font.pointSize, CGRectGetHeight(self.bounds));
+				break;
+				
+			default:
+				break;
+		}
+	}
+
+	editingRect = CGRectCeilOrigin(UIEdgeInsetsInsetRect(editingRect, self.ru_textInsets));
+	return editingRect;
 }
 
 -(void)drawPlaceholderInRect:(CGRect)rect
 {
 	if (self.placeholder.length)
 	{
-		UIColor* textColor = self._placeholderTextColor;
+		UIColor* textColor = self.ru__placeholderTextColor;
 		if (!textColor)
 		{
 			return;
 		}
 
-		UIFont* textFont = self._placeholderFont;
+		UIFont* textFont = self.ru__placeholderFont;
 		if (!textFont)
 		{
 			return;
@@ -90,7 +108,7 @@
 
 		if ([[self placeholder] respondsToSelector:@selector(drawInRect:withAttributes:)])
 		{
-			[[self placeholder] drawInRect:rect withAttributes:self.placeholderAttributes];
+			[[self placeholder] drawInRect:rect withAttributes:self.ru_placeholderAttributes];
 		}
 		else
 		{
@@ -105,126 +123,102 @@
 -(CGRect)leftViewRectForBounds:(CGRect)bounds
 {
 	CGRect leftViewRect = [super leftViewRectForBounds:bounds];
-	return UIEdgeInsetsInsetRect(leftViewRect, self.leftViewInsets);
+
+	CGRect leftViewRect_inset = UIEdgeInsetsInsetRect(leftViewRect, self.ru_leftViewInsets);
+	return leftViewRect_inset;
 }
 
 #pragma mark - Getters
--(UIFont *)_placeholderFont
+-(UIFont *)ru__placeholderFont
 {
-	return (self.placeholderFont ?: self.font);
+	return (self.ru_placeholderFont ?: self.font);
 }
 
--(UIColor *)_placeholderTextColor
+-(UIColor *)ru__placeholderTextColor
 {
-	return (self.placeholderTextColor ?: self.textColor);
+	return (self.ru_placeholderTextColor ?: self.textColor);
 }
-
-//- (CGRect)editingRectForBounds:(CGRect)bounds
-//{
-//    CGRect editingRect = [super editingRectForBounds:bounds];
-//    editingRect.origin.x += self.placeholderLeftPadding;
-//    editingRect.size.width -= self.placeholderLeftPadding;
-//    return editingRect;
-//}
-//
-//-(CGRect)textRectForBounds:(CGRect)bounds
-//{
-//    CGRect textRect = [super textRectForBounds:bounds];
-//    textRect.origin.x += self.placeholderLeftPadding;
-//    textRect.size.width -= self.placeholderLeftPadding;
-//    return textRect;
-//}
 
 #pragma mark - Setters
--(void)setPlaceholderFont:(UIFont *)placeholderFont
+-(void)setRu_placeholderFont:(UIFont *)ru_placeholderFont
 {
-    if (self.placeholderFont == placeholderFont)
+    if (self.ru_placeholderFont == ru_placeholderFont)
         return;
     
-    _placeholderFont = placeholderFont;
+    _ru_placeholderFont = ru_placeholderFont;
     
     [self setNeedsDisplay];
 }
 
--(void)setPlaceholderTextColor:(UIColor *)placeholderTextColor
+-(void)setRu_placeholderTextColor:(UIColor *)ru_placeholderTextColor
 {
-    if (self.placeholderTextColor == placeholderTextColor)
+    if (self.ru_placeholderTextColor == ru_placeholderTextColor)
         return;
     
-    _placeholderTextColor = placeholderTextColor;
+    _ru_placeholderTextColor = ru_placeholderTextColor;
 
     [self setNeedsDisplay];
 }
 
-//-(void)setPlaceholderLeftPadding:(CGFloat)placeholderLeftPadding
-//{
-//    if (self.placeholderLeftPadding == placeholderLeftPadding)
-//        return;
-//
-//    _placeholderLeftPadding = placeholderLeftPadding;
-//
-//    [self setNeedsDisplay];
-//}
-
--(void)setTextInsets:(UIEdgeInsets)textInsets
+-(void)setRu_textInsets:(UIEdgeInsets)ru_textInsets
 {
-	if (UIEdgeInsetsEqualToEdgeInsets(self.textInsets, textInsets))
+	if (UIEdgeInsetsEqualToEdgeInsets(self.ru_textInsets, ru_textInsets))
 	{
 		return;
 	}
 	
-	_textInsets = textInsets;
+	_ru_textInsets = ru_textInsets;
 	
 	[self setNeedsDisplay];
 }
 
--(void)setPlaceholderTextInsets:(UIEdgeInsets)placeholderTextInsets
+-(void)setRu_placeholderTextInsets:(UIEdgeInsets)ru_placeholderTextInsets
 {
-	if (UIEdgeInsetsEqualToEdgeInsets(self.placeholderTextInsets, placeholderTextInsets))
+	if (UIEdgeInsetsEqualToEdgeInsets(self.ru_placeholderTextInsets, ru_placeholderTextInsets))
 	{
 		return;
 	}
 	
-	_placeholderTextInsets = placeholderTextInsets;
+	_ru_placeholderTextInsets = ru_placeholderTextInsets;
 	
 	[self setNeedsDisplay];
 }
 
--(void)setLeftViewInsets:(UIEdgeInsets)leftViewInsets
+-(void)setRu_leftViewInsets:(UIEdgeInsets)ru_leftViewInsets
 {
-	if (UIEdgeInsetsEqualToEdgeInsets(self.leftViewInsets, leftViewInsets))
+	if (UIEdgeInsetsEqualToEdgeInsets(self.ru_leftViewInsets, ru_leftViewInsets))
 	{
 		return;
 	}
 	
-	_leftViewInsets = leftViewInsets;
+	_ru_leftViewInsets = ru_leftViewInsets;
 	
 	[self setNeedsDisplay];
 }
 
 #pragma mark - Attributes
-@synthesize placeholderParagraphStyle = _placeholderParagraphStyle;
--(NSParagraphStyle*)placeholderParagraphStyle
+@synthesize ru_placeholderParagraphStyle = _ru_placeholderParagraphStyle;
+-(NSParagraphStyle*)ru_placeholderParagraphStyle
 {
-    if (_placeholderParagraphStyle) {
-        return _placeholderParagraphStyle;
+    if (_ru_placeholderParagraphStyle) {
+        return _ru_placeholderParagraphStyle;
     }
     
 	return self.ruParagraphStyle;
 }
 
-- (void)setPlaceholderParagraphStyle:(NSParagraphStyle *)placeholderParagraphStyle {
-    _placeholderParagraphStyle = placeholderParagraphStyle;
+- (void)setRu_placeholderParagraphStyle:(NSParagraphStyle *)ru_placeholderParagraphStyle
+{
+    _ru_placeholderParagraphStyle = ru_placeholderParagraphStyle;
 }
 
--(NSDictionary*)placeholderAttributes
+-(NSDictionary*)ru_placeholderAttributes
 {
 	return @{
-			 NSFontAttributeName: self._placeholderFont,
-			 NSForegroundColorAttributeName: self._placeholderTextColor,
-			 NSParagraphStyleAttributeName: self.placeholderParagraphStyle
+			 NSFontAttributeName: self.ru__placeholderFont,
+			 NSForegroundColorAttributeName: self.ru__placeholderTextColor,
+			 NSParagraphStyleAttributeName: self.ru_placeholderParagraphStyle
 			 };
 }
-
 
 @end

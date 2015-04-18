@@ -14,16 +14,16 @@
 
 @interface RUTextFieldCustomizablePlaceholder : UITextField
 
-@property (nonatomic, strong) UIColor* placeholderTextColor;
-@property (nonatomic, strong) UIFont* placeholderFont;
+@property (nonatomic, strong) UIColor* ru_placeholderTextColor;
+@property (nonatomic, strong) UIFont* ru_placeholderFont;
 
-@property (nonatomic, assign) UIEdgeInsets textInsets;
-@property (nonatomic, assign) UIEdgeInsets placeholderTextInsets;
+@property (nonatomic, assign) UIEdgeInsets ru_textInsets;
+@property (nonatomic, assign) UIEdgeInsets ru_placeholderTextInsets;
 //@property (nonatomic, assign) CGFloat placeholderLeftPadding;
 
-@property (nonatomic, assign) UIEdgeInsets leftViewInsets;
+@property (nonatomic, assign) UIEdgeInsets ru_leftViewInsets;
 
-@property (nonatomic, strong) NSParagraphStyle* placeholderParagraphStyle;
-@property (nonatomic, readonly) NSDictionary* placeholderAttributes;
+@property (nonatomic, strong) NSParagraphStyle* ru_placeholderParagraphStyle;
+@property (nonatomic, readonly) NSDictionary* ru_placeholderAttributes;
 
 @end
