@@ -26,7 +26,7 @@ THE SOFTWARE.
 
 ## ResplendentUtilities
 
-Copyright (c) 2015 BenMaer <ben@resplendent.co>
+Copyright (c) 2015 Benjamin Maer <ben@resplendent.co>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
