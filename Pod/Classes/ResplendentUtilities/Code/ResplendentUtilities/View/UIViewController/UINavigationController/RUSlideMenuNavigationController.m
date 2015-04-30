@@ -9,6 +9,7 @@
 #import "RUSlideMenuNavigationController.h"
 #import "RUProtocolOrNil.h"
 #import "RUConditionalReturn.h"
+#import "UIViewController+RUStatusBarHeight.h"
 
 
 
@@ -386,7 +387,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 	CGFloat yOffset = 0;
 	if (self.fitMenuViewsUnderStatusBar)
 	{
-		CGFloat statusBarHeight = (CGRectGetHeight([UIScreen mainScreen].bounds) + CGRectGetMaxY([UIApplication sharedApplication].statusBarFrame)) - CGRectGetHeight(self.view.frame);
+		CGFloat statusBarHeight = [self ru_statusBarHeightInView];
 		yOffset += statusBarHeight;
 	}
 	

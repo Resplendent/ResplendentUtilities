@@ -19,11 +19,9 @@ typedef void (^RUDeallocHookBlock) (void);
 
 
 @interface RUDeallocHook : NSObject
-{
-    RUDeallocHookBlock _deallocBlock;
-}
 
 -(id)initWithBlock:(RUDeallocHookBlock)deallocBlock;
+-(void)clearBlock;
 
 +(instancetype)deallocHookWithBlock:(RUDeallocHookBlock)deallocBlock;
 

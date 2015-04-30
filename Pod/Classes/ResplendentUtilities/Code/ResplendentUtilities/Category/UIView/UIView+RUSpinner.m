@@ -1,9 +1,9 @@
 //
 //  UIView+RUSpinner.m
-//  Pineapple
+//  Resplendent
 //
 //  Created by Benjamin Maer on 4/7/14.
-//  Copyright (c) 2014 Pineapple. All rights reserved.
+//  Copyright (c) 2014 Resplendent. All rights reserved.
 //
 
 #import "UIView+RUSpinner.h"

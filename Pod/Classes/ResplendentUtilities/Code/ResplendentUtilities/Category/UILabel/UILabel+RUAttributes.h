@@ -1,9 +1,9 @@
 //
 //  UILabel+RUAttributes.h
-//  Pineapple
+//  Resplendent
 //
 //  Created by Benjamin Maer on 5/31/14.
-//  Copyright (c) 2014 Pineapple. All rights reserved.
+//  Copyright (c) 2014 Resplendent. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

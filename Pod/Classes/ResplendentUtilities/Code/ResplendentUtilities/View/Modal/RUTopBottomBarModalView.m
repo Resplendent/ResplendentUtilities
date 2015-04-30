@@ -8,7 +8,6 @@
 
 #import "RUTopBottomBarModalView.h"
 #import "UIView+RUUtility.h"
-#import "UIFont+RUConstants.h"
 #import "RUConstants.h"
 #import "RUGradientButton.h"
 #import "RUDLog.h"
@@ -137,7 +136,6 @@ CGFloat const kPAContentModalViewBottomBarButtonHeight = 30.0f;
         if (!_topBarLabel)
         {
             _topBarLabel = [self._topBarLabelClass new];
-            [_topBarLabel setFont:kRUFontWithHelvetica(YES, 16.0f)];
             [_topBarLabel setText:@"Bookmark Privacy"];
             [_topBarLabel setTextColor:[UIColor blackColor]];
             [_topBarLabel setBackgroundColor:[UIColor clearColor]];
@@ -266,7 +264,6 @@ CGFloat const kPAContentModalViewBottomBarButtonHeight = 30.0f;
         if (!_bottomBarLabel)
         {
             _bottomBarLabel = [self.bottomBarLabelClass new];
-            [_bottomBarLabel setFont:kRUFontWithHelvetica(YES, 16.0f)];
             [_bottomBarLabel setText:@"Bookmark Privacy"];
             [_bottomBarLabel setTextColor:[UIColor blackColor]];
             [_bottomBarLabel setBackgroundColor:[UIColor clearColor]];
