@@ -25,6 +25,5 @@
 #endif
 
 #define RU_METHOD_IMPLEMENTATION_NEEDED \
-#warning Potentially incomplete method implementation. \
 RUDLog(@"@IMPLEMENT Need to implement method")
 
