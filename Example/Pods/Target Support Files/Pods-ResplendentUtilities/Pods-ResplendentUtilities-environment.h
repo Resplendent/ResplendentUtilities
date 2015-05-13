@@ -8,19 +8,19 @@
 
 // Expecta
 #define COCOAPODS_POD_AVAILABLE_Expecta
-#define COCOAPODS_VERSION_MAJOR_Expecta 0
-#define COCOAPODS_VERSION_MINOR_Expecta 4
-#define COCOAPODS_VERSION_PATCH_Expecta 2
+#define COCOAPODS_VERSION_MAJOR_Expecta 1
+#define COCOAPODS_VERSION_MINOR_Expecta 0
+#define COCOAPODS_VERSION_PATCH_Expecta 0
 
 // ResplendentUtilities
 #define COCOAPODS_POD_AVAILABLE_ResplendentUtilities
 #define COCOAPODS_VERSION_MAJOR_ResplendentUtilities 0
 #define COCOAPODS_VERSION_MINOR_ResplendentUtilities 2
-#define COCOAPODS_VERSION_PATCH_ResplendentUtilities 0
+#define COCOAPODS_VERSION_PATCH_ResplendentUtilities 1
 
 // Specta
 #define COCOAPODS_POD_AVAILABLE_Specta
-#define COCOAPODS_VERSION_MAJOR_Specta 0
-#define COCOAPODS_VERSION_MINOR_Specta 5
+#define COCOAPODS_VERSION_MAJOR_Specta 1
+#define COCOAPODS_VERSION_MINOR_Specta 0
 #define COCOAPODS_VERSION_PATCH_Specta 0
 
