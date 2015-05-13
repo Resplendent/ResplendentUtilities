@@ -105,6 +105,7 @@
 		42BA36785B6CF48EE5A47B3E /* RUCompatability.m in Sources */ = {isa = PBXBuildFile; fileRef = 430B0D6BF7CE45E3347F0A08 /* RUCompatability.m */; };
 		436BD80FAA43C59E4C6D1509 /* RUGradientButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FF52BD65738F40302CB44E1 /* RUGradientButton.h */; };
 		439AC7F6476E681705E6ECDC /* SPTCompiledExample.h in Headers */ = {isa = PBXBuildFile; fileRef = CF29254DC4B5F320680AEF73 /* SPTCompiledExample.h */; };
+		43DE49B01B03B14700A8E84D /* RUTableSectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 43DE49AF1B03B14700A8E84D /* RUTableSectionManager.m */; };
 		442F59C3D41740947CE3409F /* UIView+RUEnableTapToResignFirstResponder.h in Headers */ = {isa = PBXBuildFile; fileRef = 2224EEBE11A0A6832469AA12 /* UIView+RUEnableTapToResignFirstResponder.h */; };
 		45F0083864C4546958DF11AA /* EXPMatchers+beLessThanOrEqualTo.h in Headers */ = {isa = PBXBuildFile; fileRef = 03EA47B7F0A9F2837FB7D453 /* EXPMatchers+beLessThanOrEqualTo.h */; };
 		46A495674C126301A2B589B7 /* UIApplication+RUOpenUrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FEF95FABCB3CFCF282B385D /* UIApplication+RUOpenUrl.m */; };
@@ -488,6 +489,9 @@
 		431DE2BFA79D31CB17D03154 /* EXPUnsupportedObject.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EXPUnsupportedObject.h; path = Expecta/EXPUnsupportedObject.h; sourceTree = "<group>"; };
 		433B58D56529093A7163F84B /* EXPMatchers+beKindOf.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+beKindOf.m"; path = "Expecta/Matchers/EXPMatchers+beKindOf.m"; sourceTree = "<group>"; };
 		4344DC36F2BBF9B88A4FF160 /* RUNavigationControllerDelegate_navbarColorSetterProtocols.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RUNavigationControllerDelegate_navbarColorSetterProtocols.h; sourceTree = "<group>"; };
+		43DE49AE1B03B14700A8E84D /* RUTableSectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUTableSectionManager.h; sourceTree = "<group>"; };
+		43DE49AF1B03B14700A8E84D /* RUTableSectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUTableSectionManager.m; sourceTree = "<group>"; };
+		43DE49B11B03B15C00A8E84D /* RUTableSectionManagerProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUTableSectionManagerProtocols.h; sourceTree = "<group>"; };
 		4431F37C001D831B6124B353 /* CALayer+RUMask.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CALayer+RUMask.h"; sourceTree = "<group>"; };
 		445CA2C735BCFD11C033854A /* NSString+RUCamelCase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSString+RUCamelCase.h"; sourceTree = "<group>"; };
 		447A409516A7A6EF82C68791 /* NSObject+Expecta.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSObject+Expecta.h"; path = "Expecta/NSObject+Expecta.h"; sourceTree = "<group>"; };
@@ -1106,6 +1110,16 @@
 				0065492D782843EDA6CE852B /* UIViewController+RUStatusBarHeight.m */,
 			);
 			path = UIViewController;
+			sourceTree = "<group>";
+		};
+		43DE49AD1B03B13B00A8E84D /* TableSectionManager */ = {
+			isa = PBXGroup;
+			children = (
+				43DE49AE1B03B14700A8E84D /* RUTableSectionManager.h */,
+				43DE49B11B03B15C00A8E84D /* RUTableSectionManagerProtocols.h */,
+				43DE49AF1B03B14700A8E84D /* RUTableSectionManager.m */,
+			);
+			path = TableSectionManager;
 			sourceTree = "<group>";
 		};
 		49BBA84C1F5653AB3B11B644 /* UIViewController */ = {
@@ -1730,15 +1744,16 @@
 		F7263F2193C8FAEE44B49492 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				6E19E969283A0F89FA97E7DE /* KeyboardAdjustmentHelper */,
+				8E81D31AF96E7C51F4EC8FCE /* NavigationControllerDelegate_navbarColorSetter */,
 				94753B43351E5F528D3F8947 /* RUAddressBookUtil.h */,
 				921DD426A1161A4A45C369CE /* RUAddressBookUtil.m */,
 				79D9375724DDCA594A7945B9 /* RUDeallocHook.h */,
 				952F039023051D039F27EF07 /* RUDeallocHook.m */,
 				D2B7FE3EE5B756170C94C413 /* RUOrderedMutableDictionary.h */,
 				92DC74A0078144B6C7711BDB /* RUOrderedMutableDictionary.m */,
-				6E19E969283A0F89FA97E7DE /* KeyboardAdjustmentHelper */,
-				8E81D31AF96E7C51F4EC8FCE /* NavigationControllerDelegate_navbarColorSetter */,
 				7EA9731D99681356764C0161 /* RURadioButtonGroup */,
+				43DE49AD1B03B13B00A8E84D /* TableSectionManager */,
 				77E5A9AF6C7617180AB3D105 /* UICollectionViewFlowLayout */,
 			);
 			path = Objects;
@@ -2169,6 +2184,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43DE49B01B03B14700A8E84D /* RUTableSectionManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
