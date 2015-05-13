@@ -24,5 +24,6 @@
 #define RUDLog(fmt, ...) kRUDLogDeclaration(fmt, ##__VA_ARGS__)
 #endif
 
-#define RU_METHOD_IMPLEMENTATION_NEEDED RUDLog(@"@IMPLEMENT Need to implement method")
+#define RU_METHOD_IMPLEMENTATION_NEEDED \
+RUDLog(@"@IMPLEMENT Need to implement method")
 
