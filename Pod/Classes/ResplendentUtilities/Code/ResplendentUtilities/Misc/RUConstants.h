@@ -12,6 +12,7 @@
 #define RU_MUST_OVERRIDE [NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"%s must override %@ in a class %@",__PRETTY_FUNCTION__,NSStringFromSelector(_cmd),NSStringFromClass(self.class)] userInfo:nil];
 
 #define RU_METHOD_OVERLOADED_IMPLEMENTATION_NEEDED_EXCEPTION \
+#warning Incomplete method implementation. Current execution will be terminated. \
 @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:RUStringWithFormat(@"%@ must overload",NSStringFromClass([self class])) userInfo:nil];
 
 #define RUStringWithFormat(...) [NSString stringWithFormat:__VA_ARGS__]
