@@ -67,11 +67,11 @@
 
 	kRUConditionalReturn_ReturnValue(self.firstAndLastSectionsAreAppropriate == false, YES, firstSection);
 
-	NSInteger numberOfSectionsAvailable = self.numberOfSectionsAvailable;
+	NSInteger forLoopMax = firstSection + indexPathSection;
 	NSInteger sectionsSkipped = 0;
-	
+
 	for (NSInteger sectionLoop = firstSection;
-		 sectionLoop - sectionsSkipped < numberOfSectionsAvailable;
+		 sectionLoop - sectionsSkipped < forLoopMax;
 		 sectionLoop++)
 	{
 		if (![self sectionDelegate_sectionIsAvailable:sectionLoop])
