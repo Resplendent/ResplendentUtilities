@@ -67,11 +67,11 @@
 
 	kRUConditionalReturn_ReturnValue(self.firstAndLastSectionsAreAppropriate == false, YES, firstSection);
 
+	NSInteger numberOfSectionsAvailable = self.numberOfSectionsAvailable;
 	NSInteger sectionsSkipped = 0;
-	NSInteger indexPathSectionPlusFirst = indexPathSection + firstSection;
 	
 	for (NSInteger sectionLoop = firstSection;
-		 sectionLoop - sectionsSkipped <= self.lastSection;
+		 sectionLoop - sectionsSkipped < numberOfSectionsAvailable;
 		 sectionLoop++)
 	{
 		if (![self sectionDelegate_sectionIsAvailable:sectionLoop])
@@ -80,6 +80,7 @@
 		}
 	}
 	
+	NSInteger indexPathSectionPlusFirst = indexPathSection + firstSection;
 	NSInteger finalSection = indexPathSectionPlusFirst + sectionsSkipped;
 	kRUConditionalReturn_ReturnValue([self sectionIsWithinBounds:finalSection] == false, YES, firstSection)
 	
