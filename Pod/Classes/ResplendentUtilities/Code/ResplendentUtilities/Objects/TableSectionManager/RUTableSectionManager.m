@@ -71,7 +71,7 @@
 	NSInteger sectionsSkipped = 0;
 
 	for (NSInteger sectionLoop = firstSection;
-		 sectionLoop - sectionsSkipped < forLoopMax;
+		 sectionLoop - sectionsSkipped <= forLoopMax;
 		 sectionLoop++)
 	{
 		if (![self sectionDelegate_sectionIsAvailable:sectionLoop])
