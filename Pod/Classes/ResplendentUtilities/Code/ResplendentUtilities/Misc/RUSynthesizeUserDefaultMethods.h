@@ -92,7 +92,7 @@ RUSynthesizeSetGetUserDefaultsMethodDeclarations_Primitive(-,VarName,varName,var
 
 //Primitive Static, Declaration
 #define RUSynthesizeStaticSetGetUserDefaultsMethodDeclarations_Primitive(VarName,varName,varType) \
-RUSynthesizeInstanceSetGetUserDefaultsMethodDeclarations_Primitive(+,VarName,varName,varType)
+RUSynthesizeSetGetUserDefaultsMethodDeclarations_Primitive(+,VarName,varName,varType)
 
 #define RUSynthesizeStaticSetGetUserDefaultsMethodDeclarations(VarName,varName,varType) \
 RUSynthesizeStaticSetGetUserDefaultsMethodDeclarations_Primitive(VarName,varName,varType *)
