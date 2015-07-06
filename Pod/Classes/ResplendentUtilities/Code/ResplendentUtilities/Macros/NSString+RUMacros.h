@@ -12,8 +12,8 @@
 
 
 
-#define RUDefineNSStringConstant(name) \
-static NSString * const name = @""##name;
+#define kRUDefineNSStringConstant(name) \
+static NSString * const name = @"" #name;
 
 
 
