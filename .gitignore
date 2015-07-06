@@ -1,14 +1,3 @@
-#####
-# OS X temporary files that should never be committed
-#
-# c.f. http://www.westwind.com/reference/os-x/invisibles.html
-
-.DS_Store
-
-# c.f. http://www.westwind.com/reference/os-x/invisibles.html
-
-.Trashes
-
 # Xcode
 #
 build/
@@ -20,8 +9,6 @@ build/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-*.xcworkspace
-!default.xcworkspace
 xcuserdata
 *.xccheckout
 *.moved-aside
@@ -29,3 +16,11 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+
+# CocoaPods
+#
+# We recommend against adding the Pods directory to your .gitignore. However
+# you should judge for yourself, the pros and cons are mentioned at:
+# http://guides.cocoapods.org/using/using-cocoapods.html#should-i-ignore-the-pods-directory-in-source-control
+#
+# Pods/
