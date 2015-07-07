@@ -2,9 +2,11 @@
 //  ResplendentUtilitiesTests.m
 //  ResplendentUtilitiesTests
 //
-//  Created by BenMaer on 02/27/2015.
-//  Copyright (c) 2014 BenMaer. All rights reserved.
+//  Created by Richard Reitzfeld on 07/07/2015.
+//  Copyright (c) 2015 Richard Reitzfeld. All rights reserved.
 //
+
+// https://github.com/Specta/Specta
 
 SpecBegin(InitialSpecs)
 
@@ -18,8 +20,10 @@ describe(@"these will fail", ^{
         expect(@"number").to.equal(@"string");
     });
     
-    it(@"will wait and fail", ^AsyncBlock {
+    it(@"will wait for 10 seconds and fail", ^{
+        waitUntil(^(DoneCallback done) {
         
+        });
     });
 });
 
@@ -33,11 +37,12 @@ describe(@"these will pass", ^{
         expect(@"team").toNot.contain(@"I");
     });
     
-    it(@"will wait and succeed", ^AsyncBlock {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+    it(@"will wait and succeed", ^{
+        waitUntil(^(DoneCallback done) {
             done();
         });
     });
 });
 
 SpecEnd
+
