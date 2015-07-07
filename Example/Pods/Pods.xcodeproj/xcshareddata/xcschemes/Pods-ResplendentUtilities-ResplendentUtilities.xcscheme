@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BFDD0AEA5FE806E19DA952DB"
+               BlueprintIdentifier = "8407E0F6919ECD2D1F708A2C"
                BuildableName = "libPods-ResplendentUtilities-ResplendentUtilities.a"
                BlueprintName = "Pods-ResplendentUtilities-ResplendentUtilities"
                ReferencedContainer = "container:Pods.xcodeproj">
