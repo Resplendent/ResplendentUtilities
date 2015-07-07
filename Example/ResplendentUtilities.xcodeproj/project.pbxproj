@@ -21,7 +21,6 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		72CB3F28FB2D543291872E3A /* Pods_ResplendentUtilities_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A95FD040207805B39A7A0C36 /* Pods_ResplendentUtilities_Example.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		96097E1EE3A82CB355603B87 /* Pods_ResplendentUtilities_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6D213ACEEDEFB34953B7391 /* Pods_ResplendentUtilities_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -57,7 +56,6 @@
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		797B0E69BC42060B1F8FAA4A /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9DC8C26E1C410F75C25542FF /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		A7D93C35383543C89E682936 /* ResplendentUtilities.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ResplendentUtilities.podspec; path = ../ResplendentUtilities.podspec; sourceTree = "<group>"; };
 		A862E485425BEB65C537153D /* Pods-ResplendentUtilities_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ResplendentUtilities_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ResplendentUtilities_Tests/Pods-ResplendentUtilities_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -143,7 +141,6 @@
 			children = (
 				6003F59C195388D20070C39A /* RUAppDelegate.h */,
 				6003F59D195388D20070C39A /* RUAppDelegate.m */,
-				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* RUViewController.h */,
 				6003F5A6195388D20070C39A /* RUViewController.m */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
@@ -276,7 +273,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 			);
