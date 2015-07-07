@@ -773,6 +773,7 @@
 		F3C00C42FDAF7D506DC0031C /* RUViewController_NavigationBarColorSetterProtocols.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RUViewController_NavigationBarColorSetterProtocols.h; sourceTree = "<group>"; };
 		F3C03CE6F1FE325464E3EC22 /* UIImageView+RUAsynchronousImageFetching.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIImageView+RUAsynchronousImageFetching.h"; sourceTree = "<group>"; };
 		F453D936EA929C5C4962AE9A /* UIColor+RUHexString.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIColor+RUHexString.m"; sourceTree = "<group>"; };
+		F4F157A11B4C6DE9006D8242 /* Blocks+RUMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Blocks+RUMacros.h"; sourceTree = "<group>"; };
 		F53D4A9971F27E6DBBE0253B /* EXPMatchers+haveCountOf.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+haveCountOf.m"; path = "Expecta/Matchers/EXPMatchers+haveCountOf.m"; sourceTree = "<group>"; };
 		F5CD080AF93CC0AE95603908 /* EXPMatchers+endWith.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+endWith.m"; path = "Expecta/Matchers/EXPMatchers+endWith.m"; sourceTree = "<group>"; };
 		F602F1FBCEB4CD6F2D08A77B /* EXPMatchers+postNotification.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+postNotification.h"; path = "Expecta/Matchers/EXPMatchers+postNotification.h"; sourceTree = "<group>"; };
@@ -1087,6 +1088,7 @@
 		383A6446CF60732B1397692E /* Macros */ = {
 			isa = PBXGroup;
 			children = (
+				F4F157A11B4C6DE9006D8242 /* Blocks+RUMacros.h */,
 				EA0ADF30ADF7737F3171B514 /* NSString+RUMacros.h */,
 				9E6299667F315CDDA140B0B8 /* RUActionSheetManagement.h */,
 			);
