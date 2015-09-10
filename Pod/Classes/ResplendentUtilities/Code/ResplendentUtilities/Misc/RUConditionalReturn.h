@@ -14,7 +14,7 @@
 
 #define kRUConditionalReturn(condition,assert) \
 if (condition) { \
-	NSAssert((!assert),@"Failed condition"); \
+	NSCAssert((!assert),@"Failed condition"); \
 	return; \
 }
 
@@ -25,7 +25,7 @@ if (condition) { \
 	{ \
 		[alertView show]; \
 	} \
-	NSAssert((!assert),@"Failed condition"); \
+	NSCAssert((!assert),@"Failed condition"); \
 	return; \
 }
 
@@ -33,7 +33,7 @@ if (condition) { \
 
 #define kRUConditionalReturn_ReturnValue(condition,assert,returnValue) \
 if (condition) { \
-NSAssert((!assert),@"Failed condition"); \
+NSCAssert((!assert),@"Failed condition"); \
 return returnValue; \
 }
 
@@ -48,7 +48,7 @@ kRUConditionalReturn_ReturnValue(condition,assert,true)
 
 #define kRUConditionalReturn_AlertView_ReturnValue(condition,assert,alertView,returnValue) \
 if (condition) { \
-	NSAssert((!assert),@"Failed condition"); \
+	NSCAssert((!assert),@"Failed condition"); \
 	if (alertView != nil) \
 	{ \
 		[alertView show]; \
