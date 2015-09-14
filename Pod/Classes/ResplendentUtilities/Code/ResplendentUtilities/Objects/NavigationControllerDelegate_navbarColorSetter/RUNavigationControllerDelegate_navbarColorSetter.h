@@ -21,4 +21,7 @@
 
 -(void)updateNavigationController:(UINavigationController*)navigationController withColorFromViewController:(UIViewController*)viewController;
 
+#pragma mark - UINavigationControllerDelegate
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
+
 @end
