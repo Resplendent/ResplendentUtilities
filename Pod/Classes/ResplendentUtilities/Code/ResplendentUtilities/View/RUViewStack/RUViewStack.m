@@ -35,11 +35,32 @@
 -(instancetype)initWithRootView:(UIView<RUViewStackProtocol> *)rootView
 {
 	kRUConditionalReturn_ReturnValueNil(rootView == nil, YES);
-	if (self = [super init])
+	if (self = [super initWithFrame:CGRectZero])
 	{
 		[self setViewStack:@[rootView]];
 	}
 
+	return self;
+}
+
+#pragma mark - UIView
+-(instancetype)initWithFrame:(CGRect)frame
+{
+	if (self = [self initWithRootView:nil])
+	{
+		
+	}
+	
+	return self;
+}
+
+-(instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+	if (self = [super initWithCoder:aDecoder])
+	{
+		
+	}
+	
 	return self;
 }
 

@@ -16,6 +16,7 @@
 @interface RUViewStack : UIView
 
 -(instancetype)initWithRootView:(UIView<RUViewStackProtocol>*)rootView NS_DESIGNATED_INITIALIZER;
+-(instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, strong) NSArray* viewStack;
 -(void)setViewStack:(NSArray *)viewStack animated:(BOOL)animated;
