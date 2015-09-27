@@ -35,11 +35,32 @@
 -(instancetype)initWithRootView:(UIView<RUViewStackProtocol> *)rootView
 {
 	kRUConditionalReturn_ReturnValueNil(rootView == nil, YES);
-	if (self = [super init])
+	if (self = [super initWithFrame:CGRectZero])
 	{
 		[self setViewStack:@[rootView]];
 	}
 
+	return self;
+}
+
+#pragma mark - UIView
+-(instancetype)initWithFrame:(CGRect)frame
+{
+	if (self = [self initWithRootView:nil])
+	{
+		
+	}
+	
+	return self;
+}
+
+-(instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+	if (self = [super initWithCoder:aDecoder])
+	{
+		
+	}
+	
 	return self;
 }
 
@@ -76,7 +97,7 @@
 	[self setViewStack:newViewStack animated:animated];
 }
 
-#pragma mark - Setters
+#pragma mark - viewStack
 -(void)setViewStack:(NSArray *)viewStack
 {
 	[self setViewStack:viewStack animated:NO];
@@ -114,16 +135,20 @@
 	}
 
 	// setFinalFramesBlock
+	__weak typeof(self) weak_self = self;
+	__weak typeof(oldCurrentlyVisibleView) oldCurrentlyVisibleView_weak = oldCurrentlyVisibleView;
+	__weak typeof(newCurrentlyVisibleView) newCurrentlyVisibleView_weak = newCurrentlyVisibleView;
 	void (^setFinalFramesBlock)() = ^{
+		kRUConditionalReturn(weak_self == nil, NO);
 		
-		if (oldCurrentlyVisibleView)
+		if (oldCurrentlyVisibleView_weak)
 		{
-			[oldCurrentlyVisibleView setFrame:[self poppedOffViewFrameForView:oldCurrentlyVisibleView]];
+			[oldCurrentlyVisibleView_weak setFrame:[weak_self poppedOffViewFrameForView:oldCurrentlyVisibleView_weak]];
 		}
 		
-		if (newCurrentlyVisibleView)
+		if (newCurrentlyVisibleView_weak)
 		{
-			[newCurrentlyVisibleView setFrame:[self visibleViewFrameForView:newCurrentlyVisibleView]];
+			[newCurrentlyVisibleView_weak setFrame:[weak_self visibleViewFrameForView:newCurrentlyVisibleView_weak]];
 		}
 
 	};
@@ -131,9 +156,9 @@
 	//removeOldCurrentlyVisibleViewBlock
 	void (^removeOldCurrentlyVisibleViewBlock)() = ^{
 
-		if (oldCurrentlyVisibleView)
+		if (oldCurrentlyVisibleView_weak)
 		{
-			[oldCurrentlyVisibleView removeFromSuperview];
+			[oldCurrentlyVisibleView_weak removeFromSuperview];
 		}
 
 	};
@@ -148,7 +173,7 @@
 
 		} completion:^(BOOL finished) {
 
-			[self setIsAnimating:NO];
+			[weak_self setIsAnimating:NO];
 			removeOldCurrentlyVisibleViewBlock();
 
 		}];
@@ -206,14 +231,19 @@
 #pragma mark - Update Currently Visible View Frame
 -(void)updateCurrentlyVisibleViewFrameAnimated:(BOOL)animated
 {
-	UIView<RUViewStackProtocol>* currentlyVisibleView = self.currentlyVisibleView;
-	kRUConditionalReturn(currentlyVisibleView == nil, YES);
+	__weak typeof(self) weak_self = self;
 
-	CGRect newFrame = [self visibleViewFrameForView:currentlyVisibleView];
-	kRUConditionalReturn(CGRectEqualToRect(currentlyVisibleView.frame, newFrame), YES);
+	__weak typeof(self.currentlyVisibleView) currentlyVisibleView_weak = self.currentlyVisibleView;
+	kRUConditionalReturn(currentlyVisibleView_weak == nil, YES);
+
+	CGRect newFrame = [self visibleViewFrameForView:currentlyVisibleView_weak];
+	kRUConditionalReturn(CGRectEqualToRect(currentlyVisibleView_weak.frame, newFrame), YES);
 	
 	void (^frameChangeBlock)() = ^{
-		[currentlyVisibleView setFrame:newFrame];
+		kRUConditionalReturn(weak_self == nil, NO);
+		kRUConditionalReturn(currentlyVisibleView_weak == nil, NO);
+
+		[currentlyVisibleView_weak setFrame:newFrame];
 	};
 
 	if (animated)
