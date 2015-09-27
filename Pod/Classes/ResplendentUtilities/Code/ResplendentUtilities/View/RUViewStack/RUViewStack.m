@@ -97,7 +97,7 @@
 	[self setViewStack:newViewStack animated:animated];
 }
 
-#pragma mark - Setters
+#pragma mark - viewStack
 -(void)setViewStack:(NSArray *)viewStack
 {
 	[self setViewStack:viewStack animated:NO];
