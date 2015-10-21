@@ -45,8 +45,11 @@ NSString* const kUINavigationController_RUNavbarColorSetter_AssociatedObject_Key
 {
 	NSAssert(self.ru_navbarColorSetter != nil, @"unhandled");
 	NSAssert(self.delegate == self.ru_navbarColorSetter, @"unhandled");
+
+	UIViewController* topViewController = self.topViewController;
+	kRUConditionalReturn(self != topViewController.navigationController, YES);
 	
-	[self.ru_navbarColorSetter updateNavigationController:self withColorFromViewController:self.visibleViewController];
+	[self.ru_navbarColorSetter updateNavigationController:self withColorFromViewController:topViewController];
 }
 
 #pragma mark - Synthesize Associated Objects
