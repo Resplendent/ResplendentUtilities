@@ -21,21 +21,21 @@
 static NSString* __kRUSynthesizeUserDefaultMethods_AssociatedKey_Name(varName) = __kRUSynthesizeUserDefaultMethods_AssociatedKey_String(varName); \
 
 #define kRUSynthesizeSetUserDefaultsMethodCompletionImplementation(varName,key,completion) \
-NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
-if (varName && !kRUClassOrNil(varName,NSNull)) [userDefaults setObject:varName forKey:key]; \
-else [userDefaults removeObjectForKey:key]; \
-[userDefaults synchronize]; \
-if (completion) \
-{ \
-void (^completionBlock)() = completion; \
-completionBlock(varName); \
-} \
+	NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
+	if (varName && !kRUClassOrNil(varName,NSNull)) [userDefaults setObject:varName forKey:key]; \
+	else [userDefaults removeObjectForKey:key]; \
+	[userDefaults synchronize]; \
+	if (completion) \
+	{ \
+		void (^completionBlock)() = completion; \
+		completionBlock(varName); \
+	} \
 
 
 #define RUSynthesizeSetUserDefaultsMethodCompletion(varName,varType,key,completion) \
 -(void)set##varName:(varType *)varName \
 { \
-    kRUSynthesizeSetUserDefaultsMethodCompletionImplementation(varName,key,completion) \
+	kRUSynthesizeSetUserDefaultsMethodCompletionImplementation(varName,key,completion) \
 }
 
 #define RUSynthesizeSetUserDefaultsMethod(varName,varType,key) \
@@ -44,8 +44,8 @@ RUSynthesizeSetUserDefaultsMethodCompletion(varName,varType,key,nil)
 #define RUSynthesizeGetUserDefaultsMethod(varName,varType,key) \
 -(varType *)varName \
 { \
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
-    return [userDefaults objectForKey:key]; \
+	NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
+	return [userDefaults objectForKey:key]; \
 }
 
 #define RUSynthesizeSetGetUserDefaultsMethod(VarName,varName,varType,key) \
@@ -56,7 +56,7 @@ RUSynthesizeGetUserDefaultsMethod(varName,varType,key)
 #define RUSynthesizeStaticSetUserDefaultsMethodCompletion(varName,varType,key,completion) \
 +(void)set##varName:(varType *)varName \
 { \
-kRUSynthesizeSetUserDefaultsMethodCompletionImplementation(varName,key,completion) \
+	kRUSynthesizeSetUserDefaultsMethodCompletionImplementation(varName,key,completion) \
 }
 
 #define RUSynthesizeStaticSetUserDefaultsMethod(varName,varType,key) \
@@ -66,8 +66,8 @@ RUSynthesizeStaticSetUserDefaultsMethodCompletion(varName,varType,key,nil)
 #define RUSynthesizeStaticGetUserDefaultsMethod(varName,varType,key) \
 +(varType *)varName \
 { \
-NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
-return [userDefaults objectForKey:key]; \
+	NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
+	return [userDefaults objectForKey:key]; \
 }
 
 #define RUSynthesizeStaticSetGetUserDefaultsMethod(VarName,varName,varType,key) \
@@ -84,6 +84,7 @@ RUSynthesizeStaticGetUserDefaultsMethod(varName,varType,__RUSynthesizeUserDefaul
 // ++ Primitive, Declaration
 #define RUSynthesizeSetGetUserDefaultsMethodDeclarations_Primitive(plusOrMinus,VarName,varName,varType) \
 plusOrMinus(void)set##VarName:(varType)varName; \
+plusOrMinus(NSNumber*)varName##_numberWrapper; \
 plusOrMinus(varType)varName;
 
 //Primitive Instance, Declaration
@@ -104,7 +105,7 @@ RUSynthesizeStaticSetGetUserDefaultsMethodDeclarations_Primitive(VarName,varName
 #define RUSynthesizeSetUserDefaultsMethodCompletion_Primitive(plusOrMinus,varName,varType,key,completion) \
 plusOrMinus(void)set##varName:(varType)varName \
 { \
-kRUSynthesizeSetUserDefaultsMethodCompletionImplementation(@(varName),key,completion) \
+	kRUSynthesizeSetUserDefaultsMethodCompletionImplementation(@(varName),key,completion) \
 }
 
 //Primitive Instance, Setter Implementation
@@ -119,12 +120,20 @@ RUSynthesizeSetUserDefaultsMethodCompletion_Primitive(+,varName,varType,key,comp
 
 // ++ Primitive, Getter Implementation
 #define RUSynthesizeGetUserDefaultsMethod_Primitive_SynthesizeKey(plusOrMinus,varName,varType,NSNumberGetter) \
+plusOrMinus(NSNumber*)varName##_numberWrapper \
+{ \
+	NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
+	NSString* key = __kRUSynthesizeUserDefaultMethods_AssociatedKey_Name(varName); \
+	NSNumber* varNumber = [userDefaults objectForKey:key]; \
+	return varNumber; \
+} \
+\
 plusOrMinus(varType)varName \
 { \
-NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
-NSString* key = __kRUSynthesizeUserDefaultMethods_AssociatedKey_Name(varName); \
-NSNumber* varNumber = [userDefaults objectForKey:key]; \
-return varNumber.NSNumberGetter; \
+	NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults]; \
+	NSString* key = __kRUSynthesizeUserDefaultMethods_AssociatedKey_Name(varName); \
+	NSNumber* varNumber = [userDefaults objectForKey:key]; \
+	return varNumber.NSNumberGetter; \
 }
 
 //Primitive Instance, Getter Implementation

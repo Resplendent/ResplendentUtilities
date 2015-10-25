@@ -1,12 +1,12 @@
 PODS:
   - Expecta (1.0.3)
-  - ResplendentUtilities (0.2.13)
+  - ResplendentUtilities (0.2.16)
   - Specta (1.0.4)
 
 DEPENDENCIES:
-  - Expecta
+  - Expecta (= 1.0.3)
   - ResplendentUtilities (from `../`)
-  - Specta
+  - Specta (= 1.0.4)
 
 EXTERNAL SOURCES:
   ResplendentUtilities:
@@ -14,7 +14,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Expecta: 9d1bff6c8b0eeee73a166a2ee898892478927a15
-  ResplendentUtilities: 86c6fd5f25b40d1bdab25ae61962007dbb492867
+  ResplendentUtilities: 4b9b8df19ba0746639d856135ed0943b502aff7d
   Specta: 69bb134672aae190a1379ff91df07dad8dd1f869
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0
