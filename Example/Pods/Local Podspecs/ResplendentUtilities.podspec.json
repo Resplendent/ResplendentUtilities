@@ -1,6 +1,6 @@
 {
   "name": "ResplendentUtilities",
-  "version": "0.2.13",
+  "version": "0.2.16",
   "summary": "An Objective-C library for all kinds of things",
   "homepage": "https://github.com/Resplendent/ResplendentUtilities",
   "license": "MIT",
@@ -9,7 +9,7 @@
   },
   "source": {
     "git": "https://github.com/Resplendent/ResplendentUtilities.git",
-    "tag": "v0.2.13"
+    "tag": "v0.2.16"
   },
   "platforms": {
     "ios": "6.0"
