@@ -16,7 +16,7 @@
 
 -(UIImage*)ru_rotatedImageToOrientation:(UIImageOrientation)orientation
 {
-	UIGraphicsBeginImageContext(self.size);
+	UIGraphicsBeginImageContextWithOptions(self.size, NO, self.scale);
 	
 	CGContextRef context=(UIGraphicsGetCurrentContext());
 
