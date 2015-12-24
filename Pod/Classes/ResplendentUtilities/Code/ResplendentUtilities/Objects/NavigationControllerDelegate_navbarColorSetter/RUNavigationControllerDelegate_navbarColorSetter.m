@@ -37,13 +37,23 @@
 	id<RUViewController_NavigationBarColorSetterDelegate> ru_viewController_NavigationBarColorSetterDelegate = viewController.ru_viewController_NavigationBarColorSetterDelegate;
 	if (ru_viewController_NavigationBarColorSetterDelegate)
 	{
-		return [ru_viewController_NavigationBarColorSetterDelegate ruViewController_NavigationBarColorSetterDelegate_colorForViewController:viewController];
+		UIColor* color = [ru_viewController_NavigationBarColorSetterDelegate ruViewController_NavigationBarColorSetterDelegate_colorForViewController:viewController];
+		if ((color != nil) ||
+			(self.useDefaultColorWhenOtherSourcesReturnNil == false))
+		{
+			return color;
+		}
 	}
 	
 	id<RUNavigationControllerDelegate_navbarColorSetter_viewControllerColorDelegate> viewControllerColorDelegate = kRUProtocolOrNil(viewController, RUNavigationControllerDelegate_navbarColorSetter_viewControllerColorDelegate);
 	if (viewControllerColorDelegate)
 	{
-		return [viewControllerColorDelegate ruNavigationControllerDelegate_navbarColorSetter_colorForNavigationBar:self];
+		UIColor* color = [viewControllerColorDelegate ruNavigationControllerDelegate_navbarColorSetter_colorForNavigationBar:self];
+		if ((color != nil) ||
+			(self.useDefaultColorWhenOtherSourcesReturnNil == false))
+		{
+			return color;
+		}
 	}
 
 	return self.defaultColor;
