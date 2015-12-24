@@ -15,6 +15,7 @@
 @interface RUNavigationControllerDelegate_navbarColorSetter : NSObject <UINavigationControllerDelegate>
 
 @property (nonatomic, strong) UIColor* defaultColor;
+@property (nonatomic, assign) BOOL useDefaultColorWhenOtherSourcesReturnNil;
 
 -(UIColor*)navbarColorForViewController:(UIViewController*)viewController;
 -(UIColor*)statusBarColorForViewController:(UIViewController*)viewController;

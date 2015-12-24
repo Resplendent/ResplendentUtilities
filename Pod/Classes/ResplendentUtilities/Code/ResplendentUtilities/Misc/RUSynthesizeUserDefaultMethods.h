@@ -105,7 +105,12 @@ RUSynthesizeStaticSetGetUserDefaultsMethodDeclarations_Primitive(VarName,varName
 #define RUSynthesizeSetUserDefaultsMethodCompletion_Primitive(plusOrMinus,varName,varType,key,completion) \
 plusOrMinus(void)set##varName:(varType)varName \
 { \
-	kRUSynthesizeSetUserDefaultsMethodCompletionImplementation(@(varName),key,completion) \
+	[self set##varName##_numberWrapper:@(varName)]; \
+} \
+\
+plusOrMinus(void)set##varName##_numberWrapper:(NSNumber*)varName##_number \
+{ \
+	kRUSynthesizeSetUserDefaultsMethodCompletionImplementation(varName##_number,key,completion) \
 }
 
 //Primitive Instance, Setter Implementation

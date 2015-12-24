@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '5CB79F182A9B058BB6A6257C'
+               BlueprintIdentifier = '7D59288D9CE3DB83A0B7ACA2'
                BlueprintName = 'ResplendentUtilities'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libResplendentUtilities.a'>
