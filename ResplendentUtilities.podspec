@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "ResplendentUtilities"
-  s.version          = "0.4"
+  s.version          = "0.4.0"
   s.summary          = "An Objective-C library for all kinds of things"
   # s.description      = <<-DESC                       
   #                          An optional longer description of ResplendentUtilities
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.homepage         = "https://github.com/Resplendent/ResplendentUtilities"
   # s.screenshots    = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
-  s.author           = { "BenMaer" => "ben@resplendent.co" }
+  s.author           = { "Benjamin Maer" => "ben@resplendent.co" }
   s.source           = { :git => "https://github.com/Resplendent/ResplendentUtilities.git", :tag => "v#{s.version}" }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
