@@ -7,33 +7,78 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28744E1CC4C45B0D6A418B74 /* Pods_ResplendentUtilities_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CC4753CB51CEED1BB75D1F8 /* Pods_ResplendentUtilities_Tests.framework */; };
+		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
+		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
+		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
+		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
+		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
+		6003F59E195388D20070C39A /* RUAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* RUAppDelegate.m */; };
+		6003F5A7195388D20070C39A /* RUViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5A6195388D20070C39A /* RUViewController.m */; };
+		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
 		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
-		92395FD998F541BD226E9550 /* libPods-ResplendentUtilities.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7FBE8F94E91488C45C2E344 /* libPods-ResplendentUtilities.a */; };
+		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
+		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		E6255FAC4312569CDA485621 /* Pods_ResplendentUtilities_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6000FB6A2691BA9815374DF8 /* Pods_ResplendentUtilities_Example.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		6003F5B3195388D20070C39A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6003F582195388D10070C39A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6003F589195388D20070C39A;
+			remoteInfo = ResplendentUtilities;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		0FA179C0FC7116D37C4CCB8E /* Pods-ResplendentUtilities.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ResplendentUtilities.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ResplendentUtilities/Pods-ResplendentUtilities.debug.xcconfig"; sourceTree = "<group>"; };
-		368B2D454619B2B17CD15E8C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		40731313B7CE7BD465596370 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		6003F58A195388D20070C39A /* ResplendentUtilities.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResplendentUtilities.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AF65A0F70490ADF57997832 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		4156CB7756064511A23409B3 /* ResplendentUtilities.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ResplendentUtilities.podspec; path = ../ResplendentUtilities.podspec; sourceTree = "<group>"; };
+		6000FB6A2691BA9815374DF8 /* Pods_ResplendentUtilities_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ResplendentUtilities_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6003F58A195388D20070C39A /* ResplendentUtilities_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResplendentUtilities_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6003F591195388D20070C39A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		6003F5AE195388D20070C39A /* ResplendentUtilities.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ResplendentUtilities.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6003F595195388D20070C39A /* ResplendentUtilities-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ResplendentUtilities-Info.plist"; sourceTree = "<group>"; };
+		6003F597195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6003F599195388D20070C39A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6003F59B195388D20070C39A /* ResplendentUtilities-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ResplendentUtilities-Prefix.pch"; sourceTree = "<group>"; };
+		6003F59C195388D20070C39A /* RUAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RUAppDelegate.h; sourceTree = "<group>"; };
+		6003F59D195388D20070C39A /* RUAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RUAppDelegate.m; sourceTree = "<group>"; };
+		6003F5A5195388D20070C39A /* RUViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RUViewController.h; sourceTree = "<group>"; };
+		6003F5A6195388D20070C39A /* RUViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RUViewController.m; sourceTree = "<group>"; };
+		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		6003F5AE195388D20070C39A /* ResplendentUtilities_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ResplendentUtilities_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
-		AB8EF22D31BD7F247899714D /* ResplendentUtilities.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ResplendentUtilities.podspec; path = ../ResplendentUtilities.podspec; sourceTree = "<group>"; };
-		D7FBE8F94E91488C45C2E344 /* libPods-ResplendentUtilities.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ResplendentUtilities.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EDAC390133A0606E9F3183BA /* Pods-ResplendentUtilities.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ResplendentUtilities.release.xcconfig"; path = "Pods/Target Support Files/Pods-ResplendentUtilities/Pods-ResplendentUtilities.release.xcconfig"; sourceTree = "<group>"; };
+		6CC4753CB51CEED1BB75D1F8 /* Pods_ResplendentUtilities_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ResplendentUtilities_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		85610303C4C742DB09C019C1 /* Pods-ResplendentUtilities_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ResplendentUtilities_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ResplendentUtilities_Tests/Pods-ResplendentUtilities_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		8D7CCAFB08E9236EBB19DF7D /* Pods-ResplendentUtilities_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ResplendentUtilities_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ResplendentUtilities_Example/Pods-ResplendentUtilities_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		9BDF29068899B0B796A81148 /* Pods-ResplendentUtilities_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ResplendentUtilities_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ResplendentUtilities_Tests/Pods-ResplendentUtilities_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		BD4F626535BD7E4846779A39 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		CB3D6AFA17BEE3D2B10D4A18 /* Pods-ResplendentUtilities_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ResplendentUtilities_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-ResplendentUtilities_Example/Pods-ResplendentUtilities_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6003F587195388D20070C39A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
+				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
+				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
+				E6255FAC4312569CDA485621 /* Pods_ResplendentUtilities_Example.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6003F5AB195388D20070C39A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -41,7 +86,7 @@
 				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
 				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				92395FD998F541BD226E9550 /* libPods-ResplendentUtilities.a in Frameworks */,
+				28744E1CC4C45B0D6A418B74 /* Pods_ResplendentUtilities_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,19 +96,20 @@
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
-				6003F58C195388D20070C39A /* Frameworks */,
-				6E026C81E07E3F2EC6EC400B /* Pods */,
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
-				6003F58B195388D20070C39A /* Products */,
+				6003F593195388D20070C39A /* Example for ResplendentUtilities */,
 				6003F5B5195388D20070C39A /* Tests */,
+				6003F58C195388D20070C39A /* Frameworks */,
+				6003F58B195388D20070C39A /* Products */,
+				DD78D8408CF391D3013B770A /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
 		6003F58B195388D20070C39A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6003F58A195388D20070C39A /* ResplendentUtilities.app */,
-				6003F5AE195388D20070C39A /* ResplendentUtilities.xctest */,
+				6003F58A195388D20070C39A /* ResplendentUtilities_Example.app */,
+				6003F5AE195388D20070C39A /* ResplendentUtilities_Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,9 +121,36 @@
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
-				D7FBE8F94E91488C45C2E344 /* libPods-ResplendentUtilities.a */,
+				6000FB6A2691BA9815374DF8 /* Pods_ResplendentUtilities_Example.framework */,
+				6CC4753CB51CEED1BB75D1F8 /* Pods_ResplendentUtilities_Tests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6003F593195388D20070C39A /* Example for ResplendentUtilities */ = {
+			isa = PBXGroup;
+			children = (
+				6003F59C195388D20070C39A /* RUAppDelegate.h */,
+				6003F59D195388D20070C39A /* RUAppDelegate.m */,
+				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
+				6003F5A5195388D20070C39A /* RUViewController.h */,
+				6003F5A6195388D20070C39A /* RUViewController.m */,
+				6003F5A8195388D20070C39A /* Images.xcassets */,
+				6003F594195388D20070C39A /* Supporting Files */,
+			);
+			name = "Example for ResplendentUtilities";
+			path = ResplendentUtilities;
+			sourceTree = "<group>";
+		};
+		6003F594195388D20070C39A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6003F595195388D20070C39A /* ResplendentUtilities-Info.plist */,
+				6003F596195388D20070C39A /* InfoPlist.strings */,
+				6003F599195388D20070C39A /* main.m */,
+				6003F59B195388D20070C39A /* ResplendentUtilities-Prefix.pch */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		6003F5B5195388D20070C39A /* Tests */ = {
@@ -102,18 +175,20 @@
 		60FF7A9C1954A5C5007DD14C /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
-				AB8EF22D31BD7F247899714D /* ResplendentUtilities.podspec */,
-				368B2D454619B2B17CD15E8C /* README.md */,
-				40731313B7CE7BD465596370 /* LICENSE */,
+				4156CB7756064511A23409B3 /* ResplendentUtilities.podspec */,
+				1AF65A0F70490ADF57997832 /* README.md */,
+				BD4F626535BD7E4846779A39 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
-		6E026C81E07E3F2EC6EC400B /* Pods */ = {
+		DD78D8408CF391D3013B770A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				0FA179C0FC7116D37C4CCB8E /* Pods-ResplendentUtilities.debug.xcconfig */,
-				EDAC390133A0606E9F3183BA /* Pods-ResplendentUtilities.release.xcconfig */,
+				8D7CCAFB08E9236EBB19DF7D /* Pods-ResplendentUtilities_Example.debug.xcconfig */,
+				CB3D6AFA17BEE3D2B10D4A18 /* Pods-ResplendentUtilities_Example.release.xcconfig */,
+				9BDF29068899B0B796A81148 /* Pods-ResplendentUtilities_Tests.debug.xcconfig */,
+				85610303C4C742DB09C019C1 /* Pods-ResplendentUtilities_Tests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -121,24 +196,45 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6003F5AD195388D20070C39A /* ResplendentUtilities */ = {
+		6003F589195388D20070C39A /* ResplendentUtilities_Example */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "ResplendentUtilities" */;
+			buildConfigurationList = 6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "ResplendentUtilities_Example" */;
 			buildPhases = (
-				E0E3263118806D06D9959543 /* Check Pods Manifest.lock */,
-				6003F5AA195388D20070C39A /* Sources */,
-				6003F5AB195388D20070C39A /* Frameworks */,
-				6003F5AC195388D20070C39A /* Resources */,
-				D036AEB0A4571EAB8E6C3711 /* Copy Pods Resources */,
-				8FA2B062CC527480ADECF9C7 /* Embed Pods Frameworks */,
+				63EEB5CF618C6A790C383EDC /* Check Pods Manifest.lock */,
+				6003F586195388D20070C39A /* Sources */,
+				6003F587195388D20070C39A /* Frameworks */,
+				6003F588195388D20070C39A /* Resources */,
+				346494DEF3561E69CCA762C0 /* Embed Pods Frameworks */,
+				1A9CBDB080458A52945A0AC2 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = ResplendentUtilities;
+			name = ResplendentUtilities_Example;
+			productName = ResplendentUtilities;
+			productReference = 6003F58A195388D20070C39A /* ResplendentUtilities_Example.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6003F5AD195388D20070C39A /* ResplendentUtilities_Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "ResplendentUtilities_Tests" */;
+			buildPhases = (
+				21C73217E658630ADC8563AC /* Check Pods Manifest.lock */,
+				6003F5AA195388D20070C39A /* Sources */,
+				6003F5AB195388D20070C39A /* Frameworks */,
+				6003F5AC195388D20070C39A /* Resources */,
+				5F227290E36CB1C55572C59F /* Embed Pods Frameworks */,
+				082418895DCC30C137859790 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6003F5B4195388D20070C39A /* PBXTargetDependency */,
+			);
+			name = ResplendentUtilities_Tests;
 			productName = ResplendentUtilitiesTests;
-			productReference = 6003F5AE195388D20070C39A /* ResplendentUtilities.xctest */;
+			productReference = 6003F5AE195388D20070C39A /* ResplendentUtilities_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -148,8 +244,8 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = RU;
-				LastUpgradeCheck = 0700;
-				ORGANIZATIONNAME = BenMaer;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Benjamin Maer";
 				TargetAttributes = {
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
@@ -169,12 +265,23 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6003F5AD195388D20070C39A /* ResplendentUtilities */,
+				6003F589195388D20070C39A /* ResplendentUtilities_Example */,
+				6003F5AD195388D20070C39A /* ResplendentUtilities_Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6003F588195388D20070C39A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
+				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
+				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6003F5AC195388D20070C39A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -186,22 +293,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		8FA2B062CC527480ADECF9C7 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ResplendentUtilities/Pods-ResplendentUtilities-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D036AEB0A4571EAB8E6C3711 /* Copy Pods Resources */ = {
+		082418895DCC30C137859790 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -213,10 +305,70 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ResplendentUtilities/Pods-ResplendentUtilities-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ResplendentUtilities_Tests/Pods-ResplendentUtilities_Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E0E3263118806D06D9959543 /* Check Pods Manifest.lock */ = {
+		1A9CBDB080458A52945A0AC2 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ResplendentUtilities_Example/Pods-ResplendentUtilities_Example-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		21C73217E658630ADC8563AC /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		346494DEF3561E69CCA762C0 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ResplendentUtilities_Example/Pods-ResplendentUtilities_Example-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5F227290E36CB1C55572C59F /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ResplendentUtilities_Tests/Pods-ResplendentUtilities_Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		63EEB5CF618C6A790C383EDC /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -234,16 +386,43 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6003F586195388D20070C39A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6003F59E195388D20070C39A /* RUAppDelegate.m in Sources */,
+				6003F5A7195388D20070C39A /* RUViewController.m in Sources */,
+				6003F59A195388D20070C39A /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6003F5AA195388D20070C39A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6003F5BC195388D20070C39A /* Tests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		6003F5B4195388D20070C39A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6003F589195388D20070C39A /* ResplendentUtilities_Example */;
+			targetProxy = 6003F5B3195388D20070C39A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		6003F596195388D20070C39A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6003F597195388D20070C39A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		6003F5B8195388D20070C39A /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -328,10 +507,43 @@
 			};
 			name = Release;
 		};
+		6003F5C0195388D20070C39A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8D7CCAFB08E9236EBB19DF7D /* Pods-ResplendentUtilities_Example.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ResplendentUtilities/ResplendentUtilities-Prefix.pch";
+				INFOPLIST_FILE = "ResplendentUtilities/ResplendentUtilities-Info.plist";
+				MODULE_NAME = ExampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		6003F5C1195388D20070C39A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CB3D6AFA17BEE3D2B10D4A18 /* Pods-ResplendentUtilities_Example.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ResplendentUtilities/ResplendentUtilities-Prefix.pch";
+				INFOPLIST_FILE = "ResplendentUtilities/ResplendentUtilities-Info.plist";
+				MODULE_NAME = ExampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		6003F5C3195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0FA179C0FC7116D37C4CCB8E /* Pods-ResplendentUtilities.debug.xcconfig */;
+			baseConfigurationReference = 9BDF29068899B0B796A81148 /* Pods-ResplendentUtilities_Tests.debug.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -346,15 +558,16 @@
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ResplendentUtilities_Example.app/ResplendentUtilities_Example";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
 		6003F5C4195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EDAC390133A0606E9F3183BA /* Pods-ResplendentUtilities.release.xcconfig */;
+			baseConfigurationReference = 85610303C4C742DB09C019C1 /* Pods-ResplendentUtilities_Tests.release.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -365,7 +578,7 @@
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ResplendentUtilities_Example.app/ResplendentUtilities_Example";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
@@ -382,7 +595,16 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "ResplendentUtilities" */ = {
+		6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "ResplendentUtilities_Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6003F5C0195388D20070C39A /* Debug */,
+				6003F5C1195388D20070C39A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "ResplendentUtilities_Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6003F5C3195388D20070C39A /* Debug */,
