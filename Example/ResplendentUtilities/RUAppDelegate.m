@@ -8,14 +8,36 @@
 
 #import "RUAppDelegate.h"
 
+#import "RUConstants.h"
+#import "RUConditionalReturn.h"
+#import "RUOrderedMutableDictionary.h"
+
+
+
+
+
+@interface RUAppDelegate ()
+
+#pragma mark - test_RUOrderedMutableDictionary
+-(void)test_RUOrderedMutableDictionary;
+
+@end
+
+
+
+
+
 @implementation RUAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
 
-	
-    return YES;
+	// ++ Test RUOrderedMutableDictionary
+	[self test_RUOrderedMutableDictionary];
+	// -- Test RUOrderedMutableDictionary
+
+	return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -43,6 +65,16 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - test_RUOrderedMutableDictionary
+-(void)test_RUOrderedMutableDictionary
+{
+	/*
+	 RUOrderedMutableDictionary validates itself in its `+initialize` method, so we are just calling the class method `class` to trigger it.
+	 */
+
+	[RUOrderedMutableDictionary class];
 }
 
 @end
