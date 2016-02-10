@@ -14,10 +14,10 @@
 
 
 
-@interface RUOrderedMutableDictionary ()
+@interface RUOrderedMutableDictionary<KeyType, ObjectType> ()
 
-@property (nonatomic, readonly) NSMutableDictionary* dictionary;
-@property (nonatomic, readonly) NSMutableArray* array;
+@property (nonatomic, readonly, nonnull) NSMutableDictionary<KeyType, ObjectType>* dictionary;
+@property (nonatomic, readonly, nonnull) NSMutableArray<KeyType>* keysArray;
 
 +(BOOL)RUOrderedMutableDictionary_performUnitTest;
 
@@ -29,20 +29,19 @@
 
 @implementation RUOrderedMutableDictionary
 
-@synthesize dictionary = _dictionary;
-@synthesize array = _array;
-
+#pragma mark - NSObject
 +(void)initialize
 {
 	NSAssert([self RUOrderedMutableDictionary_performUnitTest], @"Failed unit test!");
 }
 
+#pragma mark - NSMutableDictionary
 - (id)initWithCapacity:(NSUInteger)capacity
 {
 	if (self = [super init])
     {
         _dictionary = [NSMutableDictionary dictionaryWithCapacity:capacity];
-        _array = [NSMutableArray arrayWithCapacity:capacity];
+        _keysArray = [NSMutableArray arrayWithCapacity:capacity];
     }
 
     return self;
@@ -52,7 +51,7 @@
 {
     if (![self.dictionary objectForKey:aKey])
     {
-        [self.array addObject:aKey];
+        [self.keysArray addObject:aKey];
     }
 
     [self.dictionary setObject:anObject forKey:aKey];
@@ -61,7 +60,7 @@
 - (void)removeObjectForKey:(id)aKey
 {
     [self.dictionary removeObjectForKey:aKey];
-    [self.array removeObject:aKey];
+    [self.keysArray removeObject:aKey];
 }
 
 - (NSUInteger)count
@@ -76,10 +75,11 @@
 
 - (NSEnumerator *)keyEnumerator
 {
-    return [self.array objectEnumerator];
+    return [self.keysArray objectEnumerator];
 }
 
 #pragma mark - Getters
+@synthesize dictionary = _dictionary;
 -(NSMutableDictionary *)dictionary
 {
     if (!_dictionary)
@@ -90,47 +90,121 @@
     return _dictionary;
 }
 
--(NSMutableArray *)array
+@synthesize keysArray = _keysArray;
+-(NSMutableArray *)keysArray
 {
-    if (!_array)
+    if (!_keysArray)
     {
-        _array = [NSMutableArray array];
+        _keysArray = [NSMutableArray array];
     }
 
-    return _array;
+    return _keysArray;
 }
 
 #pragma mark - Unit Testing
 +(BOOL)RUOrderedMutableDictionary_performUnitTest
 {
-	static NSInteger const count = 1000;
+	static NSInteger const lastValue = 100;
+	static NSInteger const startValue = -lastValue;
 
-	RUOrderedMutableDictionary* orderedMutableDictionary = [RUOrderedMutableDictionary new];
+	RUOrderedMutableDictionary<NSNumber*,NSNumber*>* orderedMutableDictionary = [RUOrderedMutableDictionary new];
 
-	for (NSInteger i = 0; i < count; i++)
+	for (NSInteger i = startValue;
+		 i <= lastValue;
+		 i++)
 	{
 		[orderedMutableDictionary setObject:@(i) forKey:@(i)];
 	}
 
-	NSInteger lastKeyNumber = NSNotFound;
+	kRUConditionalReturn_ReturnValueFalse(orderedMutableDictionary.count != (1 + lastValue - startValue), YES);
 
-	for (NSNumber* key in orderedMutableDictionary)
+	__block NSInteger lastKeyNumber = NSNotFound;
+
+	void (^reset_lastKeyNumber)() = ^{
+		lastKeyNumber = NSNotFound;
+	};
+	
+	BOOL (^validateNextNumberAndAdvance)(NSNumber* _Nonnull nextNumber, NSNumber* _Nullable nextObject) = ^BOOL(NSNumber* _Nonnull nextNumber, NSNumber* _Nullable nextObject)
 	{
-		kRUConditionalReturn_ReturnValueFalse(!kRUNumberOrNil(key), YES);
+		kRUConditionalReturn_ReturnValueFalse(kRUNumberOrNil(nextNumber) == nil, YES);
 		
-		NSInteger keyNumber = key.integerValue;
+		NSInteger keyNumber = nextNumber.integerValue;
 		kRUConditionalReturn_ReturnValueFalse(((lastKeyNumber != NSNotFound) &&
 											   (lastKeyNumber != (keyNumber - 1))), YES);
-
-		NSNumber* value = kRUNumberOrNil([orderedMutableDictionary objectForKey:key]);
-		kRUConditionalReturn_ReturnValueFalse(value == nil, YES);
 		
-		kRUConditionalReturn_ReturnValueFalse(value.integerValue != keyNumber, YES);
+		NSNumber* orderedMutableDictionary_objectForNextNumber = kRUNumberOrNil([orderedMutableDictionary objectForKey:nextNumber]);
+		kRUConditionalReturn_ReturnValueFalse(orderedMutableDictionary_objectForNextNumber == nil, YES);
+		
+		kRUConditionalReturn_ReturnValueFalse(orderedMutableDictionary_objectForNextNumber.integerValue != keyNumber, YES);
 
+		if (nextObject != nil)
+		{
+			kRUConditionalReturn_ReturnValueFalse(orderedMutableDictionary_objectForNextNumber.integerValue != nextObject.integerValue, YES);
+		}
+		
 		lastKeyNumber = keyNumber;
+		
+		return YES;
+	};
+
+	//For Loop enumeration
+	for (NSNumber* key in orderedMutableDictionary)
+	{
+		kRUConditionalReturn_ReturnValueFalse(validateNextNumberAndAdvance(key,nil) == false, YES);
 	}
 
+	//Native method enumeration
+	reset_lastKeyNumber();
+	__block BOOL enumerationFailed = false;
+	[orderedMutableDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber * _Nonnull key, NSNumber * _Nonnull obj, BOOL * _Nonnull stop) {
+		if (validateNextNumberAndAdvance(key,obj) == false)
+		{
+			NSAssert(false, @"enumerationFailed for key %@ and obj %@",key,obj);
+			enumerationFailed = YES;
+			*stop = YES;
+		}
+	}];
+
+	kRUConditionalReturn_ReturnValueFalse(enumerationFailed == true, YES);
+
+	//Custom enumeration
+	reset_lastKeyNumber();
+	[orderedMutableDictionary enumerateIndexesKeysAndObjectsUsingBlock:^(NSUInteger index, NSNumber * _Nonnull key, NSNumber * _Nonnull obj, BOOL * _Nonnull stop) {
+
+		if ((key.integerValue != (index + startValue)) ||
+			(validateNextNumberAndAdvance(key,obj) == false))
+		{
+			NSAssert(false, @"enumerationFailed for key %@ and obj %@",key,obj);
+			enumerationFailed = YES;
+			*stop = YES;
+		}
+
+	}];
+
+	kRUConditionalReturn_ReturnValueFalse(enumerationFailed == true, YES);
+
 	return YES;
+}
+
+#pragma mark - Object At Index
+-(nullable id)keyAtIndex:(NSUInteger)index
+{
+	return [self.keysArray objectAtIndex:index];
+}
+
+-(nullable id)objectAtIndex:(NSUInteger)index
+{
+	return [self objectForKey:[self keyAtIndex:index]];
+}
+
+#pragma mark - Enumeration
+-(void)enumerateIndexesKeysAndObjectsUsingBlock:(nonnull void (^)(NSUInteger index, id _Nonnull key, id _Nonnull obj, BOOL  * _Nonnull stop))block
+{
+	kRUConditionalReturn(block == nil, YES);
+
+	[self.keysArray enumerateObjectsUsingBlock:^(id  _Nonnull key, NSUInteger idx, BOOL * _Nonnull stop) {
+		block(idx,key,[self objectForKey:key],stop);
+	}];
 }
 
 @end

@@ -8,15 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-//@interface RUOrderedMutableDictionary : NSObject
-@interface RUOrderedMutableDictionary : NSMutableDictionary
 
-//- (id)initWithCapacity:(NSUInteger)capacity;
-//- (NSUInteger)count;
-//- (NSEnumerator *)keyEnumerator;
-//
-//- (void)setObject:(id)anObject forKey:(id)aKey;
-//- (void)removeObjectForKey:(id)aKey;
-//- (id)objectForKey:(id)aKey;
+
+
+
+@interface RUOrderedMutableDictionary<KeyType, ObjectType> : NSMutableDictionary<KeyType, ObjectType>
+
+#pragma mark - Index
+-(nullable KeyType)keyAtIndex:(NSUInteger)index;
+-(nullable ObjectType)objectAtIndex:(NSUInteger)index;
+
+#pragma mark - Enumeration
+-(void)enumerateIndexesKeysAndObjectsUsingBlock:(nonnull void (^)(NSUInteger index, KeyType _Nonnull key, ObjectType _Nonnull obj, BOOL  * _Nonnull stop))block;
 
 @end

@@ -1,15 +1,15 @@
 {
   "name": "ResplendentUtilities",
-  "version": "0.4",
+  "version": "0.4.1",
   "summary": "An Objective-C library for all kinds of things",
   "homepage": "https://github.com/Resplendent/ResplendentUtilities",
   "license": "MIT",
   "authors": {
-    "BenMaer": "ben@resplendent.co"
+    "Benjamin Maer": "ben@resplendent.co"
   },
   "source": {
     "git": "https://github.com/Resplendent/ResplendentUtilities.git",
-    "tag": "v0.4"
+    "tag": "v0.4.1"
   },
   "platforms": {
     "ios": "6.0"

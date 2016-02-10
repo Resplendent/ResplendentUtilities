@@ -1,0 +1,6 @@
+framework module ResplendentUtilities {
+  umbrella header "ResplendentUtilities-umbrella.h"
+
+  export *
+  module * { export * }
+}

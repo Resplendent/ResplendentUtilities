@@ -1,9 +1,15 @@
 source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
 
+target 'ResplendentUtilities_Example', :exclusive => true do
+  pod 'ResplendentUtilities', :path => '../'
+end
 
-target 'ResplendentUtilities', :exclusive => true do
-  pod "ResplendentUtilities", :path => "../"
+target 'ResplendentUtilities_Tests', :exclusive => true do
+  pod 'ResplendentUtilities', :path => '../'
 
-  pod 'Specta', '1.0.5'
-  pod 'Expecta', '1.0.5'
+  pod 'Specta'
+  pod 'Expecta'
+  pod 'FBSnapshotTestCase'
+  pod 'Expecta+Snapshots'
 end
