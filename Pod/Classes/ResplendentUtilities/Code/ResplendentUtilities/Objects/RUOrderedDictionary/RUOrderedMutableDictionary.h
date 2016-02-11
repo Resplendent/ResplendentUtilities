@@ -12,7 +12,7 @@
 
 
 
-@class RUOrderedDictionary;
+@class RUOrderedDictionary<KeyType, ObjectType>;
 
 
 
@@ -34,8 +34,8 @@
 -(nonnull NSArray*)allValues;
 
 #pragma mark - Custom Init
--(nonnull instancetype)initWithRUOrderedDictionary:(nonnull RUOrderedDictionary*)orderedDictionary;
--(nonnull instancetype)initWithRUOrderedMutableDictionary:(nonnull RUOrderedMutableDictionary*)orderedMutableDictionary;
+-(nonnull instancetype)initWithRUOrderedDictionary:(nonnull RUOrderedDictionary<KeyType, ObjectType>*)orderedDictionary;
+-(nonnull instancetype)initWithRUOrderedMutableDictionary:(nonnull RUOrderedMutableDictionary<KeyType, ObjectType>*)orderedMutableDictionary;
 
 #pragma mark - Index
 -(NSUInteger)ru_indexOfKey:(nonnull KeyType)key;
@@ -46,7 +46,7 @@
 -(void)ru_enumerateIndexesKeysAndObjectsUsingBlock:(nonnull void (^)(NSUInteger index, KeyType _Nonnull key, ObjectType _Nonnull obj, BOOL  * _Nonnull stop))block;
 
 #pragma mark - NSObject: Copying
--(nonnull RUOrderedDictionary*)copy;
+-(nonnull RUOrderedDictionary<KeyType, ObjectType>*)copy;
 -(nonnull instancetype)mutableCopy;
 
 #if DEBUG
