@@ -104,6 +104,7 @@
 #import "RUNavigationControllerDelegate_navbarColorSetterProtocols.h"
 #import "RUAddressBookUtil.h"
 #import "RUDeallocHook.h"
+#import "RUOrderedDictionary.h"
 #import "RUOrderedMutableDictionary.h"
 #import "RURadioButtonGroup.h"
 #import "RURadioButtonGroupProtocols.h"
