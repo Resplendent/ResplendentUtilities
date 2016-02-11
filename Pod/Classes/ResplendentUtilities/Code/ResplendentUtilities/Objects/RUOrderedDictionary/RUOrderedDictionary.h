@@ -12,7 +12,7 @@
 
 
 
-@class RUOrderedMutableDictionary;
+@class RUOrderedMutableDictionary<KeyType, ObjectType>;
 
 
 
@@ -24,7 +24,7 @@
 -(BOOL)isEqual:(nullable id)object;
 
 #pragma mark - Is Equal
--(BOOL)isEqualToRUOrderedDictionary:(nonnull RUOrderedDictionary*)orderedDictionary;
+-(BOOL)isEqualToRUOrderedDictionary:(nonnull RUOrderedDictionary<KeyType, ObjectType>*)orderedDictionary;
 
 #pragma mark - NSDictionary
 -(nonnull instancetype)initWithObjects:(nonnull NSArray *)objects forKeys:(nonnull NSArray<id<NSCopying>> *)keys NS_DESIGNATED_INITIALIZER;
@@ -38,7 +38,7 @@
 
 #pragma mark - NSObject: Copying
 -(nonnull instancetype)copy;
--(nonnull RUOrderedMutableDictionary*)mutableCopy;
+-(nonnull RUOrderedMutableDictionary<KeyType, ObjectType>*)mutableCopy;
 
 #if DEBUG
 #pragma mark - Unit Testing
