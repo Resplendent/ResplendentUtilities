@@ -14,6 +14,6 @@
 
 @interface NSDictionary (RUReverse)
 
--(NSDictionary*)ru_reverseDictionary;
+-(nonnull instancetype)ru_reverseDictionary;
 
 @end
