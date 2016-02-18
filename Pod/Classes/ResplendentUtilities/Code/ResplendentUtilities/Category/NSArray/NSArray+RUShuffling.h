@@ -12,8 +12,8 @@
 
 
 
-@interface NSArray (RUShuffling)
+@interface NSArray<ObjectType> (RUShuffling)
 
--(NSMutableArray*)ru_shuffledArray;
+-(NSMutableArray<ObjectType>*)ru_shuffledArray;
 
 @end

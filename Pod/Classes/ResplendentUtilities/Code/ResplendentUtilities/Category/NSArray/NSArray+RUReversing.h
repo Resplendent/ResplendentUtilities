@@ -12,8 +12,8 @@
 
 
 
-@interface NSArray (RUReversing)
+@interface NSArray<ObjectType> (RUReversing)
 
--(NSMutableArray*)ru_reversedArray;
+-(NSMutableArray<ObjectType>*)ru_reversedArray;
 
 @end
