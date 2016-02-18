@@ -12,8 +12,8 @@
 
 
 
-@interface NSMutableArray (RUAddObjectIfNotNil)
+@interface NSMutableArray<ObjectType> (RUAddObjectIfNotNil)
 
--(void)ru_addObjectIfNotNil:(id)object;
+-(void)ru_addObjectIfNotNil:(ObjectType)object;
 
 @end
