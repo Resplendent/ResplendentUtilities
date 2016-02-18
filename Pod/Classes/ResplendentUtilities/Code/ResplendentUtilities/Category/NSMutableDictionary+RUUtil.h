@@ -12,8 +12,8 @@
 
 
 
-@interface NSMutableDictionary (RUUtil)
+@interface NSMutableDictionary<KeyType, ObjectType> (RUUtil)
 
--(void)setObjectOrRemoveIfNil:(id)anObject forKey:(id<NSCopying>)aKey;
+-(void)setObjectOrRemoveIfNil:(ObjectType)anObject forKey:(KeyType<NSCopying>)aKey;
 
 @end
