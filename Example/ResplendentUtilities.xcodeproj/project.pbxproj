@@ -13,8 +13,6 @@
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
 		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
-		6003F59E195388D20070C39A /* RUAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* RUAppDelegate.m */; };
-		6003F5A7195388D20070C39A /* RUViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5A6195388D20070C39A /* RUViewController.m */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
 		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -22,6 +20,9 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		D73C65131C9B1AD000E82DA3 /* RUAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D73C650F1C9B1AD000E82DA3 /* RUAppDelegate.m */; };
+		D73C65141C9B1AD000E82DA3 /* RUViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D73C65121C9B1AD000E82DA3 /* RUViewController.m */; };
+		D73C65181C9B1B0200E82DA3 /* RUSynthesizeUserDefaultMethods_Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = D73C65171C9B1B0200E82DA3 /* RUSynthesizeUserDefaultMethods_Testing.m */; };
 		E6255FAC4312569CDA485621 /* Pods_ResplendentUtilities_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6000FB6A2691BA9815374DF8 /* Pods_ResplendentUtilities_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,10 +48,6 @@
 		6003F597195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F599195388D20070C39A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6003F59B195388D20070C39A /* ResplendentUtilities-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ResplendentUtilities-Prefix.pch"; sourceTree = "<group>"; };
-		6003F59C195388D20070C39A /* RUAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RUAppDelegate.h; sourceTree = "<group>"; };
-		6003F59D195388D20070C39A /* RUAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RUAppDelegate.m; sourceTree = "<group>"; };
-		6003F5A5195388D20070C39A /* RUViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RUViewController.h; sourceTree = "<group>"; };
-		6003F5A6195388D20070C39A /* RUViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RUViewController.m; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6003F5AE195388D20070C39A /* ResplendentUtilities_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ResplendentUtilities_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -65,6 +62,12 @@
 		9BDF29068899B0B796A81148 /* Pods-ResplendentUtilities_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ResplendentUtilities_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ResplendentUtilities_Tests/Pods-ResplendentUtilities_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		BD4F626535BD7E4846779A39 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		CB3D6AFA17BEE3D2B10D4A18 /* Pods-ResplendentUtilities_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ResplendentUtilities_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-ResplendentUtilities_Example/Pods-ResplendentUtilities_Example.release.xcconfig"; sourceTree = "<group>"; };
+		D73C650E1C9B1AD000E82DA3 /* RUAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAppDelegate.h; sourceTree = "<group>"; };
+		D73C650F1C9B1AD000E82DA3 /* RUAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAppDelegate.m; sourceTree = "<group>"; };
+		D73C65111C9B1AD000E82DA3 /* RUViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUViewController.h; sourceTree = "<group>"; };
+		D73C65121C9B1AD000E82DA3 /* RUViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUViewController.m; sourceTree = "<group>"; };
+		D73C65161C9B1B0200E82DA3 /* RUSynthesizeUserDefaultMethods_Testing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSynthesizeUserDefaultMethods_Testing.h; sourceTree = "<group>"; };
+		D73C65171C9B1B0200E82DA3 /* RUSynthesizeUserDefaultMethods_Testing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSynthesizeUserDefaultMethods_Testing.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,12 +133,9 @@
 		6003F593195388D20070C39A /* Example for ResplendentUtilities */ = {
 			isa = PBXGroup;
 			children = (
-				6003F59C195388D20070C39A /* RUAppDelegate.h */,
-				6003F59D195388D20070C39A /* RUAppDelegate.m */,
-				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
-				6003F5A5195388D20070C39A /* RUViewController.h */,
-				6003F5A6195388D20070C39A /* RUViewController.m */,
+				D73C650C1C9B1AD000E82DA3 /* Code */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
+				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
 			name = "Example for ResplendentUtilities";
@@ -180,6 +180,43 @@
 				BD4F626535BD7E4846779A39 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		D73C650C1C9B1AD000E82DA3 /* Code */ = {
+			isa = PBXGroup;
+			children = (
+				D73C650D1C9B1AD000E82DA3 /* AppDelegate */,
+				D73C65151C9B1AEA00E82DA3 /* Testing */,
+				D73C65101C9B1AD000E82DA3 /* UIViewController */,
+			);
+			path = Code;
+			sourceTree = "<group>";
+		};
+		D73C650D1C9B1AD000E82DA3 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				D73C650E1C9B1AD000E82DA3 /* RUAppDelegate.h */,
+				D73C650F1C9B1AD000E82DA3 /* RUAppDelegate.m */,
+			);
+			path = AppDelegate;
+			sourceTree = "<group>";
+		};
+		D73C65101C9B1AD000E82DA3 /* UIViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D73C65111C9B1AD000E82DA3 /* RUViewController.h */,
+				D73C65121C9B1AD000E82DA3 /* RUViewController.m */,
+			);
+			path = UIViewController;
+			sourceTree = "<group>";
+		};
+		D73C65151C9B1AEA00E82DA3 /* Testing */ = {
+			isa = PBXGroup;
+			children = (
+				D73C65161C9B1B0200E82DA3 /* RUSynthesizeUserDefaultMethods_Testing.h */,
+				D73C65171C9B1B0200E82DA3 /* RUSynthesizeUserDefaultMethods_Testing.m */,
+			);
+			path = Testing;
 			sourceTree = "<group>";
 		};
 		DD78D8408CF391D3013B770A /* Pods */ = {
@@ -390,9 +427,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F59E195388D20070C39A /* RUAppDelegate.m in Sources */,
-				6003F5A7195388D20070C39A /* RUViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				D73C65181C9B1B0200E82DA3 /* RUSynthesizeUserDefaultMethods_Testing.m in Sources */,
+				D73C65141C9B1AD000E82DA3 /* RUViewController.m in Sources */,
+				D73C65131C9B1AD000E82DA3 /* RUAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
