@@ -7,6 +7,7 @@
 //
 
 #import "RUAppDelegate.h"
+#import "RUSynthesizeUserDefaultMethods_Testing.h"
 
 #import "RUConstants.h"
 #import "RUConditionalReturn.h"
@@ -38,6 +39,8 @@
 	[self test_RUOrderedMutableDictionary];
 
 	[self test_RUOrderedDictionary];
+
+	[RUSynthesizeUserDefaultMethods_Testing runTests];
 
 	return YES;
 }

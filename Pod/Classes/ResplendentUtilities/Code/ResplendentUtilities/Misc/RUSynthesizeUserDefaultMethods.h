@@ -32,6 +32,7 @@ static NSString* __kRUSynthesizeUserDefaultMethods_AssociatedKey_Name(varName) =
 	} \
 
 
+//Instance, Setter Implementation
 #define RUSynthesizeSetUserDefaultsMethodCompletion(varName,varType,key,completion) \
 -(void)set##varName:(varType *)varName \
 { \
@@ -41,6 +42,7 @@ static NSString* __kRUSynthesizeUserDefaultMethods_AssociatedKey_Name(varName) =
 #define RUSynthesizeSetUserDefaultsMethod(varName,varType,key) \
 RUSynthesizeSetUserDefaultsMethodCompletion(varName,varType,key,nil)
 
+//Instance, Getter Implementation
 #define RUSynthesizeGetUserDefaultsMethod(varName,varType,key) \
 -(varType *)varName \
 { \
@@ -48,9 +50,29 @@ RUSynthesizeSetUserDefaultsMethodCompletion(varName,varType,key,nil)
 	return [userDefaults objectForKey:key]; \
 }
 
+//Instance, Setter and Getter Implementation
 #define RUSynthesizeSetGetUserDefaultsMethod(VarName,varName,varType,key) \
 RUSynthesizeSetUserDefaultsMethod(VarName,varType,key) \
 RUSynthesizeGetUserDefaultsMethod(varName,varType,key)
+
+//Instance, Setter and Getter Implementation with synthesized key
+#define RUSynthesizeSetGetUserDefaultsMethod_SynthesizeKey(VarName,varName,varType) \
+__kRUSynthesizeUserDefaultMethods_Synthesize_AssociatedKey(varName) \
+RUSynthesizeSetGetUserDefaultsMethod(VarName,varName,varType,__RUSynthesizeUserDefaultMethods_##varName##_AssociatedKey) \
+
+
+// ++ Instance or Static, Declaration
+#define RUSynthesizeSetGetUserDefaultsMethodDeclarations(plusOrMinus,VarName,varName,varType) \
+plusOrMinus(void)set##VarName:(varType)varName; \
+plusOrMinus(varType)varName;
+
+// ++ Instance, Declaration
+#define RUSynthesizeSetGetUserDefaultsMethodDeclarations_Instance(VarName,varName,varType) \
+RUSynthesizeSetGetUserDefaultsMethodDeclarations(-,VarName,varName,varType)
+
+// ++ Static, Declaration
+#define RUSynthesizeSetGetUserDefaultsMethodDeclarations_Static(VarName,varName,varType) \
+RUSynthesizeSetGetUserDefaultsMethodDeclarations(+,VarName,varName,varType)
 
 //Static, Setter Implementation
 #define RUSynthesizeStaticSetUserDefaultsMethodCompletion(varName,varType,key,completion) \
@@ -70,6 +92,7 @@ RUSynthesizeStaticSetUserDefaultsMethodCompletion(varName,varType,key,nil)
 	return [userDefaults objectForKey:key]; \
 }
 
+//Static, Getter and Setter Implementation
 #define RUSynthesizeStaticSetGetUserDefaultsMethod(VarName,varName,varType,key) \
 RUSynthesizeStaticSetUserDefaultsMethod(VarName,varType,key) \
 RUSynthesizeStaticGetUserDefaultsMethod(varName,varType,key)
@@ -83,9 +106,8 @@ RUSynthesizeStaticGetUserDefaultsMethod(varName,varType,__RUSynthesizeUserDefaul
 
 // ++ Primitive, Declaration
 #define RUSynthesizeSetGetUserDefaultsMethodDeclarations_Primitive(plusOrMinus,VarName,varName,varType) \
-plusOrMinus(void)set##VarName:(varType)varName; \
-plusOrMinus(NSNumber*)varName##_numberWrapper; \
-plusOrMinus(varType)varName;
+RUSynthesizeSetGetUserDefaultsMethodDeclarations(plusOrMinus,VarName,varName,varType) \
+plusOrMinus(NSNumber*)varName##_numberWrapper;
 
 //Primitive Instance, Declaration
 #define RUSynthesizeInstanceSetGetUserDefaultsMethodDeclarations_Primitive(VarName,varName,varType) \
