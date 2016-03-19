@@ -37,6 +37,7 @@
 #import "UIColor+RUUtility.h"
 #import "UIFont+RUHelvetica.h"
 #import "UIFont+RUHelveticaNeue.h"
+#import "UIGeometry+RUUtility.h"
 #import "UIImage+RUDebug.h"
 #import "UIImage+RUImageColorMasking.h"
 #import "UIImage+RUImageFromColor.h"
