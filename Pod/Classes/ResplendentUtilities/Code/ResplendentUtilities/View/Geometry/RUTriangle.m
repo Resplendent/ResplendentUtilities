@@ -25,6 +25,7 @@
 
 @implementation RUTriangle
 
+#pragma mark - UIView
 -(void)drawRect:(CGRect)rect
 {
     [super drawRect:rect];
