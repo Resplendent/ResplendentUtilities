@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "ResplendentUtilities"
-  s.version          = "0.4.7"
+  s.version          = "0.4.8"
   s.summary          = "An Objective-C library for all kinds of things"
   # s.description      = <<-DESC                       
   #                          An optional longer description of ResplendentUtilities

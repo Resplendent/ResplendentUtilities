@@ -25,11 +25,11 @@ typedef enum{
 
 @interface RUTriangle : UIView
 
-@property (nonatomic, strong) UIColor* triangleBorderColor;
+@property (nonatomic, strong, nullable) UIColor* triangleBorderColor;
 @property (nonatomic, assign) BOOL enableOpenTriangle;
-@property (nonatomic, assign) UIColor* fillTriangleColor; //if nil, no filling will happen
+@property (nonatomic, strong, nullable) UIColor* fillTriangleColor; //if nil, no filling will happen
 @property (nonatomic, assign) RUTriangleOrientation orientation;
 
--(void)drawTrianglePathInRect:(CGRect)rect withContent:(CGContextRef)context;
+-(void)drawTrianglePathInRect:(CGRect)rect withContent:(nonnull CGContextRef)context;
 
 @end
