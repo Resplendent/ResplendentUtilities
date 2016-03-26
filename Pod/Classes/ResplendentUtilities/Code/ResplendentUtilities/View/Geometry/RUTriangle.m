@@ -7,6 +7,7 @@
 //
 
 #import "RUTriangle.h"
+#import "RUConditionalReturn.h"
 
 
 
@@ -32,8 +33,10 @@
 }
 
 #pragma mark - Drawing
--(void)drawTrianglePathInRect:(CGRect)rect withContent:(CGContextRef)context
+-(void)drawTrianglePathInRect:(CGRect)rect withContent:(nonnull CGContextRef)context
 {
+	kRUConditionalReturn(context == nil, YES);
+
 	CGContextBeginPath(context);
 
     switch (self.orientation)
