@@ -14,7 +14,7 @@
 
 @implementation NSDictionary (RUReverse)
 
--(nonnull instancetype)ru_reverseDictionary
+-(nonnull __kindof NSDictionary*)ru_reverseDictionary
 {
 	NSDictionary* ru_reverseDictionary = [[self class] dictionaryWithObjects:self.allKeys forKeys:self.allValues];
 	NSAssert(ru_reverseDictionary.count == self.count, @"unhandled");

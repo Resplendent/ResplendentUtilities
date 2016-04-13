@@ -7,28 +7,13 @@
 //
 
 #import "RUAppDelegate.h"
-#import "RUSynthesizeUserDefaultMethods_Testing.h"
-
-#import "RUConstants.h"
-#import "RUConditionalReturn.h"
-#import "RUOrderedMutableDictionary.h"
-#import "RUOrderedDictionary.h"
-#import "UIGeometry+RUUtility.h"
+#import "RUUnitTestManager.h"
 
 
 
 
 
 @interface RUAppDelegate ()
-
-#pragma mark - test_RUOrderedMutableDictionary
--(void)test_RUOrderedMutableDictionary;
-
-#pragma mark - test_RUOrderedDictionary
--(void)test_RUOrderedDictionary;
-
-#pragma mark - test_RUOrderedDictionary
--(void)test_UIGeometry_RUUtility;
 
 @end
 
@@ -40,13 +25,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	[self test_RUOrderedMutableDictionary];
-
-	[self test_RUOrderedDictionary];
-
-	[self test_UIGeometry_RUUtility];
-
-	[RUSynthesizeUserDefaultMethods_Testing runTests];
+	[RUUnitTestManager runUnitTests];
 
 	return YES;
 }
@@ -76,53 +55,6 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
-#pragma mark - test_RUOrderedMutableDictionary
--(void)test_RUOrderedMutableDictionary
-{
-	/*
-	 RUOrderedMutableDictionary validates itself in its `+initialize` method, so we are just calling the class method `class` to trigger it.
-	 */
-	
-	[RUOrderedMutableDictionary class];
-}
-
-#pragma mark - test_RUOrderedDictionary
--(void)test_RUOrderedDictionary
-{
-	/*
-	 RUOrderedMutableDictionary validates itself in its `+initialize` method, so we are just calling the class method `class` to trigger it.
-	 */
-	
-	[RUOrderedDictionary class];
-}
-
-#pragma mark - test_RUOrderedDictionary
--(void)test_UIGeometry_RUUtility
-{
-	CGFloat const test_1_value = 123.456f;
-	UIEdgeInsets const test_1_answer = (UIEdgeInsets){
-		.left		= test_1_value,
-		.right		= test_1_value,
-		.top		= test_1_value,
-		.bottom		= test_1_value,
-	};
-	
-	UIEdgeInsets const test_1_attemptedAnswer = RU_UIEdgeInsetsMakeAll(test_1_value);
-	NSAssert(UIEdgeInsetsEqualToEdgeInsets(test_1_answer, test_1_attemptedAnswer),
-			 @"test_1_attemptedAnswer should have been %@, but instead was %@",NSStringFromUIEdgeInsets(test_1_answer),NSStringFromUIEdgeInsets(test_1_attemptedAnswer));
-
-	UIEdgeInsets const test_2_answer = (UIEdgeInsets){
-		.left		= -test_1_answer.left,
-		.right		= -test_1_answer.right,
-		.top		= -test_1_answer.top,
-		.bottom		= -test_1_answer.bottom,
-	};
-
-	UIEdgeInsets test_2_attemptedAnswer = RU_UIEdgeInsetsInvert(test_1_answer);
-	NSAssert(UIEdgeInsetsEqualToEdgeInsets(test_2_answer, test_2_attemptedAnswer),
-			 @"test_2_attemptedAnswer should have been %@, but instead was %@",NSStringFromUIEdgeInsets(test_2_answer),NSStringFromUIEdgeInsets(test_2_attemptedAnswer));
 }
 
 @end

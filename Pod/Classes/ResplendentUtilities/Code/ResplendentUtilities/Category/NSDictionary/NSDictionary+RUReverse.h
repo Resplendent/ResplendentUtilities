@@ -12,8 +12,11 @@
 
 
 
-@interface NSDictionary (RUReverse)
+@interface NSDictionary<KeyType, ObjectType> (RUReverse)
 
--(nonnull instancetype)ru_reverseDictionary;
+/**
+ Returns an new instance of the receiver's class, that have swapped the keys and objects of the receiver.
+ */
+-(nonnull __kindof NSDictionary<ObjectType,KeyType>*)ru_reverseDictionary;
 
 @end
