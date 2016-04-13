@@ -20,6 +20,7 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		D709B3831CBEE3EF007ADAB2 /* RUUnitTestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D709B3821CBEE3EF007ADAB2 /* RUUnitTestManager.m */; };
 		D73C65131C9B1AD000E82DA3 /* RUAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D73C650F1C9B1AD000E82DA3 /* RUAppDelegate.m */; };
 		D73C65141C9B1AD000E82DA3 /* RUViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D73C65121C9B1AD000E82DA3 /* RUViewController.m */; };
 		D73C65181C9B1B0200E82DA3 /* RUSynthesizeUserDefaultMethods_Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = D73C65171C9B1B0200E82DA3 /* RUSynthesizeUserDefaultMethods_Testing.m */; };
@@ -62,6 +63,8 @@
 		9BDF29068899B0B796A81148 /* Pods-ResplendentUtilities_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ResplendentUtilities_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ResplendentUtilities_Tests/Pods-ResplendentUtilities_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		BD4F626535BD7E4846779A39 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		CB3D6AFA17BEE3D2B10D4A18 /* Pods-ResplendentUtilities_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ResplendentUtilities_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-ResplendentUtilities_Example/Pods-ResplendentUtilities_Example.release.xcconfig"; sourceTree = "<group>"; };
+		D709B3811CBEE3EF007ADAB2 /* RUUnitTestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUnitTestManager.h; sourceTree = "<group>"; };
+		D709B3821CBEE3EF007ADAB2 /* RUUnitTestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUUnitTestManager.m; sourceTree = "<group>"; };
 		D73C650E1C9B1AD000E82DA3 /* RUAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAppDelegate.h; sourceTree = "<group>"; };
 		D73C650F1C9B1AD000E82DA3 /* RUAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAppDelegate.m; sourceTree = "<group>"; };
 		D73C65111C9B1AD000E82DA3 /* RUViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUViewController.h; sourceTree = "<group>"; };
@@ -215,6 +218,8 @@
 			children = (
 				D73C65161C9B1B0200E82DA3 /* RUSynthesizeUserDefaultMethods_Testing.h */,
 				D73C65171C9B1B0200E82DA3 /* RUSynthesizeUserDefaultMethods_Testing.m */,
+				D709B3811CBEE3EF007ADAB2 /* RUUnitTestManager.h */,
+				D709B3821CBEE3EF007ADAB2 /* RUUnitTestManager.m */,
 			);
 			path = Testing;
 			sourceTree = "<group>";
@@ -430,6 +435,7 @@
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				D73C65181C9B1B0200E82DA3 /* RUSynthesizeUserDefaultMethods_Testing.m in Sources */,
 				D73C65141C9B1AD000E82DA3 /* RUViewController.m in Sources */,
+				D709B3831CBEE3EF007ADAB2 /* RUUnitTestManager.m in Sources */,
 				D73C65131C9B1AD000E82DA3 /* RUAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
