@@ -9,6 +9,9 @@
 #import "UIFont+RUHelveticaNeue.h"
 #import "RUConditionalReturn.h"
 #import "RUConstants.h"
+#import "RUSystemVersionUtils.h"
+
+#import <CoreText/CoreText.h>
 
 
 
@@ -31,6 +34,27 @@ __attribute__((constructor)) static void ru_UIFont_RUHelveticaNeue_initializeSom
 	kRUConditionalReturn_ReturnValueNil(fontName.length == 0, YES);
 	
 	UIFont* font = [UIFont fontWithName:fontName size:size];
+
+	/**
+	 To deal with an Apple bug, where they accidentally removed Helvetia Neue Italic for iOS version v, where 7.1 > v >= 7.0.3
+	 http://stackoverflow.com/questions/19527962/what-happened-to-helveticaneue-italic-on-ios-7-0-3
+	 */
+	if (
+		(type == RU_UIFont_HelveticaNeue_type_italic) &&
+		SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.3") &&
+		SYSTEM_VERSION_LESS_THAN(@"7.1"))
+	{
+		if (
+			(font == nil) &&
+			([UIFontDescriptor class] != nil)
+			)
+		{
+			font = (__bridge_transfer UIFont*)CTFontCreateWithName(CFSTR("HelveticaNeue-Italic"), size, NULL);
+		}
+	}
+	
+	NSAssert(font != nil, @"couldn't create font of type %li and size %f",type,size);
+
 	kRUConditionalReturn_ReturnValueNil([font.fontName isEqualToString:fontName] == false, YES);
 	
 	return font;
