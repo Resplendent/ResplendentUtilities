@@ -40,9 +40,9 @@ typedef NS_ENUM(NSInteger, RU_UIFont_HelveticaNeue_type) {
 
 @interface UIFont (RUHelveticaNeue)
 
-+(instancetype)ru_helveticaNeueFontWithType:(RU_UIFont_HelveticaNeue_type)type size:(CGFloat)size;
-+(NSString*)ru_helveticaNeueFontNameForType:(RU_UIFont_HelveticaNeue_type)type;
-+(NSString*)ru_helveticaNeueFontNameComponentsForType:(RU_UIFont_HelveticaNeue_type)type;
++(nullable instancetype)ru_helveticaNeueFontWithType:(RU_UIFont_HelveticaNeue_type)type size:(CGFloat)size;
++(nullable NSString*)ru_helveticaNeueFontNameForType:(RU_UIFont_HelveticaNeue_type)type;
++(nullable NSString*)ru_helveticaNeueFontNameComponentsForType:(RU_UIFont_HelveticaNeue_type)type;
 
 #if DEBUG
 +(void)ru_validateAllHelveticaNeueFonts;
