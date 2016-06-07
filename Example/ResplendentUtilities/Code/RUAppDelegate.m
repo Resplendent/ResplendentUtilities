@@ -2,32 +2,18 @@
 //  RUAppDelegate.m
 //  ResplendentUtilities
 //
-//  Created by Benjamin Maer on 02/10/2016.
+//  Created by Benjamin Maer on 06/07/2016.
 //  Copyright (c) 2016 Benjamin Maer. All rights reserved.
 //
 
 #import "RUAppDelegate.h"
-#import "RUUnitTestManager.h"
-
-
-
-
-
-@interface RUAppDelegate ()
-
-@end
-
-
-
-
 
 @implementation RUAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	[RUUnitTestManager runUnitTests];
-
-	return YES;
+    // Override point for customization after application launch.
+    return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

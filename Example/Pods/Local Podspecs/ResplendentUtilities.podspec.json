@@ -1,24 +1,22 @@
 {
   "name": "ResplendentUtilities",
-  "version": "0.4.9",
-  "summary": "An Objective-C library for all kinds of things",
-  "homepage": "https://github.com/Resplendent/ResplendentUtilities",
-  "license": "MIT",
+  "version": "0.1.0",
+  "summary": "A short description of ResplendentUtilities.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/<GITHUB_USERNAME>/ResplendentUtilities",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
   "authors": {
     "Benjamin Maer": "ben@resplendent.co"
   },
   "source": {
-    "git": "https://github.com/Resplendent/ResplendentUtilities.git",
-    "tag": "v0.4.9"
+    "git": "https://github.com/<GITHUB_USERNAME>/ResplendentUtilities.git",
+    "tag": "0.1.0"
   },
   "platforms": {
-    "ios": "6.0"
+    "ios": "7.0"
   },
-  "requires_arc": true,
-  "source_files": "Pod/Classes/**/*",
-  "resource_bundles": {
-    "ResplendentUtilities": [
-      "Pod/Assets/*.png"
-    ]
-  }
+  "source_files": "ResplendentUtilities/Classes/**/*"
 }

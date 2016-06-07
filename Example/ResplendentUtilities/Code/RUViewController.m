@@ -2,22 +2,36 @@
 //  RUViewController.m
 //  ResplendentUtilities
 //
-//  Created by Benjamin Maer on 02/10/2016.
+//  Created by Benjamin Maer on 06/07/2016.
 //  Copyright (c) 2016 Benjamin Maer. All rights reserved.
 //
 
 #import "RUViewController.h"
+#import "RUUnitTestManager.h"
+
+
+
+
 
 @interface RUViewController ()
 
 @end
+
+
+
+
 
 @implementation RUViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+
+	[self.view setBackgroundColor:[UIColor redColor]];
+
+	[RUUnitTestManager runUnitTests];
+
+	[self.view setBackgroundColor:[UIColor greenColor]];
 }
 
 - (void)didReceiveMemoryWarning
