@@ -15,12 +15,36 @@
 #import "RUOrderedDictionary.h"
 #import "UIGeometry+RUUtility.h"
 #import "NSDictionary+RUReverse.h"
+#import "RUEnumIsInRangeSynthesization.h"
+#import "RUScreenHeightTypes.h"
+
+
+
+
+
+typedef NS_ENUM(NSInteger, RUUnitTestManager__testType) {
+	RUUnitTestManager__testType_RUOrderedMutableDictionary,
+	RUUnitTestManager__testType_RUOrderedDictionary,
+	RUUnitTestManager__testType_UIGeometry_RUUtility,
+	RUUnitTestManager__testType_NSDictionary_RUReverse,
+	RUUnitTestManager__testType_NSDictionary_RUReverse_and_RUOrderedDictionary,
+	RUUnitTestManager__testType_RUSynthesizeUserDefaultMethods,
+	RUUnitTestManager__testType_RUScreenHeightTypes,
+	
+	RUUnitTestManager__testType__first	= RUUnitTestManager__testType_RUOrderedMutableDictionary,
+	RUUnitTestManager__testType__last	= RUUnitTestManager__testType_RUScreenHeightTypes,
+};
+
+RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 
 
 
 
 
 @interface RUUnitTestManager ()
+
+#pragma mark - Run Unit Test
++(void)runUnitTest:(RUUnitTestManager__testType)testType;
 
 #pragma mark - test_RUOrderedMutableDictionary
 +(void)test_RUOrderedMutableDictionary;
@@ -37,6 +61,10 @@
 #pragma mark - Test NSDictionary+RUReverse and RUOrderedDictionary
 +(void)test_NSDictionary_RUReverse_and_RUOrderedDictionary;
 
+#pragma mark - Test RUScreenHeightTypes
++(void)test_RUScreenHeightTypes;
++(CGFloat)test_RUScreenHeightTypes_appropriateHeightForType:(RUScreenHeightType)screenHeightType;
+
 @end
 
 
@@ -48,17 +76,48 @@
 #pragma mark - Run Unit Test
 +(void)runUnitTests
 {
-	[self test_RUOrderedMutableDictionary];
-	
-	[self test_RUOrderedDictionary];
-	
-	[self test_UIGeometry_RUUtility];
-	
-	[self test_NSDictionary_RUReverse];
+	for (RUUnitTestManager__testType testType = RUUnitTestManager__testType__first;
+		 testType <= RUUnitTestManager__testType__last;
+		 testType++)
+	{
+		[self runUnitTest:testType];
+	}
+}
 
-	[self test_NSDictionary_RUReverse_and_RUOrderedDictionary];
-	
-	[RUSynthesizeUserDefaultMethods_Testing runTests];
++(void)runUnitTest:(RUUnitTestManager__testType)testType
+{
+	kRUConditionalReturn(RUUnitTestManager__testType__isInRange(testType) == false, YES);
+
+	switch (testType)
+	{
+		case RUUnitTestManager__testType_RUOrderedMutableDictionary:
+			[self test_RUOrderedMutableDictionary];
+			break;
+
+		case RUUnitTestManager__testType_RUOrderedDictionary:
+			[self test_RUOrderedDictionary];
+			break;
+			
+		case RUUnitTestManager__testType_UIGeometry_RUUtility:
+			[self test_UIGeometry_RUUtility];
+			break;
+			
+		case RUUnitTestManager__testType_NSDictionary_RUReverse:
+			[self test_NSDictionary_RUReverse];
+			break;
+			
+		case RUUnitTestManager__testType_NSDictionary_RUReverse_and_RUOrderedDictionary:
+			[self test_NSDictionary_RUReverse_and_RUOrderedDictionary];
+			break;
+
+		case RUUnitTestManager__testType_RUSynthesizeUserDefaultMethods:
+			[RUSynthesizeUserDefaultMethods_Testing runTests];
+			break;
+			
+		case RUUnitTestManager__testType_RUScreenHeightTypes:
+			[self test_RUScreenHeightTypes];
+			break;
+	}
 }
 
 #pragma mark - test_RUOrderedMutableDictionary
@@ -169,6 +228,42 @@
 		NSNumber* number = [testDictionary.allValues objectAtIndex:index];
 		NSAssert([[testDictionary_reversed.allKeys objectAtIndex:index]isEqualToNumber:number], @"testDictionary_reversed %@ should have number %@ at index %lu",testDictionary_reversed,number,index);
 	}
+}
+
+#pragma mark - Test RUScreenHeightTypes
++(void)test_RUScreenHeightTypes
+{
+	RUScreenHeightType screenHeightType = RUScreenHeightType__forCurrentScreen();
+	NSAssert(CGRectGetHeight([UIScreen mainScreen].bounds) == [self test_RUScreenHeightTypes_appropriateHeightForType:screenHeightType],
+			 @"height mismatch for screenHeightType %li",screenHeightType);
+}
+
++(CGFloat)test_RUScreenHeightTypes_appropriateHeightForType:(RUScreenHeightType)screenHeightType
+{
+	switch (screenHeightType)
+	{
+		case RUScreenHeightType_unknown:
+			break;
+
+		case RUScreenHeightType_480:
+			return 480.0f;
+			break;
+
+		case RUScreenHeightType_568:
+			return 568.0f;
+			break;
+
+		case RUScreenHeightType_667:
+			return 667.0f;
+			break;
+
+		case RUScreenHeightType_736:
+			return 736.0f;
+			break;
+	}
+
+	NSAssert(false, @"unhandled screenHeightType %li",screenHeightType);
+	return 0.0f;
 }
 
 @end
