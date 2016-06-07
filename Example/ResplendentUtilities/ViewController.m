@@ -8,20 +8,32 @@
 
 #import "ViewController.h"
 
+#import "RUUnitTestManager.h"
+
+
+
+
+
 @interface ViewController ()
 
 @end
 
+
+
+
+
 @implementation ViewController
 
-- (void)viewDidLoad {
+#pragma mark - UIViewController
+- (void)viewDidLoad
+{
 	[super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-}
-
-- (void)didReceiveMemoryWarning {
-	[super didReceiveMemoryWarning];
-	// Dispose of any resources that can be recreated.
+	
+	[self.view setBackgroundColor:[UIColor redColor]];
+	
+	[RUUnitTestManager runUnitTests];
+	
+	[self.view setBackgroundColor:[UIColor greenColor]];
 }
 
 @end

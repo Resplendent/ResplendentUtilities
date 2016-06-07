@@ -28,9 +28,9 @@ typedef NS_ENUM(NSInteger, RUScreenHeightType) {
 	RUScreenHeightType__last	= RUScreenHeightType_736,
 };
 
-RUEnumIsInRangeSynthesization_autoFirstLast(RUScreenHeightType)
+static inline RUEnumIsInRangeSynthesization_autoFirstLast(RUScreenHeightType)
 
-RUScreenHeightType RUScreenHeightType__forCurrentScreen()
+static inline RUScreenHeightType RUScreenHeightType__forCurrentScreen()
 {
 	NSDictionary<NSNumber*,NSNumber*>* screenHeight_to_RUScreenHeightType_mapping =
 	@{

@@ -14,6 +14,8 @@
 		D793CEEB1D0785F000047A87 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D793CEE91D0785F000047A87 /* Main.storyboard */; };
 		D793CEED1D0785F000047A87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D793CEEC1D0785F000047A87 /* Assets.xcassets */; };
 		D793CEF01D0785F000047A87 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D793CEEE1D0785F000047A87 /* LaunchScreen.storyboard */; };
+		D793CEFD1D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = D793CEFA1D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.m */; };
+		D793CEFE1D07876D00047A87 /* RUUnitTestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D793CEFC1D07876D00047A87 /* RUUnitTestManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,10 @@
 		D793CEEC1D0785F000047A87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D793CEEF1D0785F000047A87 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D793CEF11D0785F000047A87 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D793CEF91D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUSynthesizeUserDefaultMethods_Testing.h; sourceTree = "<group>"; };
+		D793CEFA1D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSynthesizeUserDefaultMethods_Testing.m; sourceTree = "<group>"; };
+		D793CEFB1D07876D00047A87 /* RUUnitTestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUnitTestManager.h; sourceTree = "<group>"; };
+		D793CEFC1D07876D00047A87 /* RUUnitTestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUUnitTestManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,13 +90,14 @@
 			children = (
 				D793CEE31D0785F000047A87 /* AppDelegate.h */,
 				D793CEE41D0785F000047A87 /* AppDelegate.m */,
+				D793CEEC1D0785F000047A87 /* Assets.xcassets */,
+				D793CEF71D07876D00047A87 /* Code */,
+				D793CEF11D0785F000047A87 /* Info.plist */,
+				D793CEEE1D0785F000047A87 /* LaunchScreen.storyboard */,
+				D793CEE91D0785F000047A87 /* Main.storyboard */,
+				D793CEE01D0785F000047A87 /* Supporting Files */,
 				D793CEE61D0785F000047A87 /* ViewController.h */,
 				D793CEE71D0785F000047A87 /* ViewController.m */,
-				D793CEE91D0785F000047A87 /* Main.storyboard */,
-				D793CEEC1D0785F000047A87 /* Assets.xcassets */,
-				D793CEEE1D0785F000047A87 /* LaunchScreen.storyboard */,
-				D793CEF11D0785F000047A87 /* Info.plist */,
-				D793CEE01D0785F000047A87 /* Supporting Files */,
 			);
 			path = ResplendentUtilities;
 			sourceTree = "<group>";
@@ -101,6 +108,25 @@
 				D793CEE11D0785F000047A87 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D793CEF71D07876D00047A87 /* Code */ = {
+			isa = PBXGroup;
+			children = (
+				D793CEF81D07876D00047A87 /* Testing */,
+			);
+			path = Code;
+			sourceTree = "<group>";
+		};
+		D793CEF81D07876D00047A87 /* Testing */ = {
+			isa = PBXGroup;
+			children = (
+				D793CEF91D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.h */,
+				D793CEFA1D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.m */,
+				D793CEFB1D07876D00047A87 /* RUUnitTestManager.h */,
+				D793CEFC1D07876D00047A87 /* RUUnitTestManager.m */,
+			);
+			path = Testing;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -225,7 +251,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D793CEE81D0785F000047A87 /* ViewController.m in Sources */,
+				D793CEFD1D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.m in Sources */,
 				D793CEE51D0785F000047A87 /* AppDelegate.m in Sources */,
+				D793CEFE1D07876D00047A87 /* RUUnitTestManager.m in Sources */,
 				D793CEE21D0785F000047A87 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
