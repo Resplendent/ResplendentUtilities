@@ -1,12 +1,16 @@
-source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '7.0'
 use_frameworks!
 
-target 'ResplendentUtilities_Example', :exclusive => true do
+def sharedPods
   pod 'ResplendentUtilities', :path => '../'
 end
 
-target 'ResplendentUtilities_Tests', :exclusive => true do
-  pod 'ResplendentUtilities', :path => '../'
+target 'ResplendentUtilities_Example' do
+  sharedPods
+end
+
+target 'ResplendentUtilities_Tests' do
+  sharedPods
 
   pod 'Specta'
   pod 'Expecta'
