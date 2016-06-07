@@ -1,15 +1,6 @@
 platform :ios, '7.0'
 use_frameworks!
 
-target 'ResplendentUtilities_Example' do
+target 'ResplendentUtilities' do
   pod 'ResplendentUtilities', :path => '../'
-
-  target 'ResplendentUtilities_Tests' do
-    inherit! :search_paths
-
-    pod 'Specta'
-  pod 'Expecta'
-  pod 'FBSnapshotTestCase'
-  pod 'Expecta+Snapshots'
-  end
 end
