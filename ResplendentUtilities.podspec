@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "ResplendentUtilities"
-  s.version          = "0.4.9"
+  s.version          = "0.4.10"
   s.summary          = "An Objective-C library for all kinds of things"
   # s.description      = <<-DESC                       
   #                          An optional longer description of ResplendentUtilities
@@ -28,9 +28,9 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes/**/*'
-  s.resource_bundles = {
-    'ResplendentUtilities' => ['Pod/Assets/*.png']
-  }
+  # s.resource_bundles = {
+  #   'ResplendentUtilities' => ['Pod/Assets/*.png']
+  # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'

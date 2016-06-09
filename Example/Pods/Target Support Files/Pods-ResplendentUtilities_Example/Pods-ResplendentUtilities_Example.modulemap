@@ -1,6 +1,0 @@
-framework module Pods_ResplendentUtilities_Example {
-  umbrella header "Pods-ResplendentUtilities_Example-umbrella.h"
-
-  export *
-  module * { export * }
-}
