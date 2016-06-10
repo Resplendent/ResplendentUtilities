@@ -35,6 +35,9 @@ static inline RUScreenHeightType RUScreenHeightType__forCurrentScreen()
 	NSDictionary<NSNumber*,NSNumber*>* screenHeight_to_RUScreenHeightType_mapping =
 	@{
 	  @(480.0f)	: @(RUScreenHeightType_480),
+	  @(568.0f)	: @(RUScreenHeightType_568),
+	  @(667.0f)	: @(RUScreenHeightType_667),
+	  @(736.0f)	: @(RUScreenHeightType_736),
 	  };
 	
 	NSNumber* RUScreenHeightType_number = [screenHeight_to_RUScreenHeightType_mapping objectForKey:@(CGRectGetHeight([UIScreen mainScreen].bounds))];
