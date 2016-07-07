@@ -223,19 +223,25 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 		 index++)
 	{
 		NSString* string = [testDictionary.allKeys objectAtIndex:index];
-		NSAssert([[testDictionary_reversed.allValues objectAtIndex:index]isEqualToString:string], @"testDictionary_reversed %@ should have string %@ at index %lu",testDictionary_reversed,string,index);
+		NSAssert([[testDictionary_reversed.allValues objectAtIndex:index]isEqualToString:string], @"testDictionary_reversed %@ should have string %@ at index %lu",testDictionary_reversed,string,(unsigned long)index);
 
 		NSNumber* number = [testDictionary.allValues objectAtIndex:index];
-		NSAssert([[testDictionary_reversed.allKeys objectAtIndex:index]isEqualToNumber:number], @"testDictionary_reversed %@ should have number %@ at index %lu",testDictionary_reversed,number,index);
+		NSAssert([[testDictionary_reversed.allKeys objectAtIndex:index]isEqualToNumber:number], @"testDictionary_reversed %@ should have number %@ at index %lu",testDictionary_reversed,number,(unsigned long)index);
 	}
 }
 
 #pragma mark - Test RUScreenHeightTypes
 +(void)test_RUScreenHeightTypes
 {
-	RUScreenHeightType screenHeightType = RUScreenHeightType__forCurrentScreen();
-	NSAssert(CGRectGetHeight([UIScreen mainScreen].bounds) == [self test_RUScreenHeightTypes_appropriateHeightForType:screenHeightType],
-			 @"height mismatch for screenHeightType %li",screenHeightType);
+	RUScreenHeightType const screenHeightType = RUScreenHeightType__forCurrentScreen();
+	CGFloat const screenHeightType_appropriateHeight = [self test_RUScreenHeightTypes_appropriateHeightForType:screenHeightType];
+	CGFloat const deviceHeight =
+	(UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) ?
+	 CGRectGetWidth([UIScreen mainScreen].bounds) :
+	 CGRectGetHeight([UIScreen mainScreen].bounds));
+
+	NSAssert(deviceHeight == screenHeightType_appropriateHeight,
+			 @"height mismatch for screenHeightType %li",(long)screenHeightType);
 }
 
 +(CGFloat)test_RUScreenHeightTypes_appropriateHeightForType:(RUScreenHeightType)screenHeightType
@@ -260,9 +266,21 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 		case RUScreenHeightType_736:
 			return 736.0f;
 			break;
+
+		case RUScreenHeightType_iPad_512:
+			return 512.0f;
+			break;
+
+		case RUScreenHeightType_iPad_1024:
+			return 1024.0f;
+			break;
+
+		case RUScreenHeightType_iPad_1366:
+			return 1366.0f;
+			break;
 	}
 
-	NSAssert(false, @"unhandled screenHeightType %li",screenHeightType);
+	NSAssert(false, @"unhandled screenHeightType %li",(long)screenHeightType);
 	return 0.0f;
 }
 
