@@ -1,5 +1,5 @@
 PODS:
-  - ResplendentUtilities (0.4.11)
+  - ResplendentUtilities (0.4.12)
 
 DEPENDENCIES:
   - ResplendentUtilities (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ResplendentUtilities: 740a5aded6073c73ee4fedd36c554ea51abacac3
+  ResplendentUtilities: 185956d176c9aa20b8bcd7d3729a225539073fe1
 
 PODFILE CHECKSUM: b36c6f04ed66bd9cbe28c946a8e4ffc545c7a0cc
 
