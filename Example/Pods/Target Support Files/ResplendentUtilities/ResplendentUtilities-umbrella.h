@@ -82,7 +82,6 @@
 #import "RUCompatability.h"
 #import "RUImageCompatability.h"
 #import "RUScreenHeightTypes.h"
-#import "RUScreenSizeToFloatConverter.h"
 #import "RUStringCompatability.h"
 #import "RUClassOrNilUtil.h"
 #import "RUConditionalReturn.h"

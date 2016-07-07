@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4CB5EEACD3115A6DDFE775F3 /* Pods_ResplendentUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F73467685AA6AF3244A9A65 /* Pods_ResplendentUtilities.framework */; };
 		D72DBE141D087E97004DD4D7 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D72DBE111D087E97004DD4D7 /* LICENSE */; };
-		D72DBE151D087E97004DD4D7 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = D72DBE121D087E97004DD4D7 /* README.md */; };
 		D72DBE161D087E97004DD4D7 /* ResplendentUtilities.podspec in Resources */ = {isa = PBXBuildFile; fileRef = D72DBE131D087E97004DD4D7 /* ResplendentUtilities.podspec */; };
 		D793CEE21D0785F000047A87 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D793CEE11D0785F000047A87 /* main.m */; };
 		D793CEE51D0785F000047A87 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D793CEE41D0785F000047A87 /* AppDelegate.m */; };
@@ -269,7 +268,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D72DBE151D087E97004DD4D7 /* README.md in Sources */,
 				D793CEE81D0785F000047A87 /* ViewController.m in Sources */,
 				D793CEFD1D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.m in Sources */,
 				D793CEE51D0785F000047A87 /* AppDelegate.m in Sources */,
