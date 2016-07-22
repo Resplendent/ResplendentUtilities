@@ -8,6 +8,7 @@
 
 #import "RUUnitTestManager.h"
 #import "RUSynthesizeUserDefaultMethods_Testing.h"
+#import "RUUnitTest__RUNotifications.h"
 
 #import "RUConstants.h"
 #import "RUConditionalReturn.h"
@@ -17,11 +18,15 @@
 #import "NSDictionary+RUReverse.h"
 #import "RUEnumIsInRangeSynthesization.h"
 #import "RUScreenHeightTypes.h"
+#import "NSMutableArray+RUAddObjectIfNotNil.h"
 
 
 
 
 
+/**
+ Don't use these enum types anymore, use `RUUnitTest` instead.
+ */
 typedef NS_ENUM(NSInteger, RUUnitTestManager__testType) {
 	RUUnitTestManager__testType_RUOrderedMutableDictionary,
 	RUUnitTestManager__testType_RUOrderedDictionary,
@@ -44,26 +49,29 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 @interface RUUnitTestManager ()
 
 #pragma mark - Run Unit Test
-+(void)runUnitTest:(RUUnitTestManager__testType)testType;
+-(void)runUnitTest:(RUUnitTestManager__testType)testType;
 
 #pragma mark - test_RUOrderedMutableDictionary
-+(void)test_RUOrderedMutableDictionary;
+-(void)test_RUOrderedMutableDictionary;
 
 #pragma mark - test_RUOrderedDictionary
-+(void)test_RUOrderedDictionary;
+-(void)test_RUOrderedDictionary;
 
 #pragma mark - Test UIGeometry+RUUtility
-+(void)test_UIGeometry_RUUtility;
+-(void)test_UIGeometry_RUUtility;
 
 #pragma mark - Test NSDictionary+RUReverse
-+(void)test_NSDictionary_RUReverse;
+-(void)test_NSDictionary_RUReverse;
 
 #pragma mark - Test NSDictionary+RUReverse and RUOrderedDictionary
-+(void)test_NSDictionary_RUReverse_and_RUOrderedDictionary;
+-(void)test_NSDictionary_RUReverse_and_RUOrderedDictionary;
 
 #pragma mark - Test RUScreenHeightTypes
-+(void)test_RUScreenHeightTypes;
-+(CGFloat)test_RUScreenHeightTypes_appropriateHeightForType:(RUScreenHeightType)screenHeightType;
+-(void)test_RUScreenHeightTypes;
+-(CGFloat)test_RUScreenHeightTypes_appropriateHeightForType:(RUScreenHeightType)screenHeightType;
+
+#pragma mark - unitTests
+-(nonnull NSArray<id<RUUnitTest>>*)unitTests;
 
 @end
 
@@ -76,15 +84,28 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 #pragma mark - Run Unit Test
 +(void)runUnitTests
 {
+	RUUnitTestManager* const unitTestManager = [RUUnitTestManager new];
+	[unitTestManager runUnitTests];
+}
+
+-(void)runUnitTests
+{
 	for (RUUnitTestManager__testType testType = RUUnitTestManager__testType__first;
 		 testType <= RUUnitTestManager__testType__last;
 		 testType++)
 	{
 		[self runUnitTest:testType];
 	}
+
+	[[self unitTests] enumerateObjectsUsingBlock:^(id<RUUnitTest>  _Nonnull unitTest, NSUInteger idx, BOOL * _Nonnull stop) {
+
+		NSString* const errorMessage = [unitTest ru_runUnitTest];
+		NSAssert(errorMessage == nil, errorMessage);
+
+	}];
 }
 
-+(void)runUnitTest:(RUUnitTestManager__testType)testType
+-(void)runUnitTest:(RUUnitTestManager__testType)testType
 {
 	kRUConditionalReturn(RUUnitTestManager__testType__isInRange(testType) == false, YES);
 
@@ -121,7 +142,7 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 }
 
 #pragma mark - test_RUOrderedMutableDictionary
-+(void)test_RUOrderedMutableDictionary
+-(void)test_RUOrderedMutableDictionary
 {
 	/*
 	 RUOrderedMutableDictionary validates itself in its `+initialize` method, so we are just calling the class method `class` to trigger it.
@@ -131,7 +152,7 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 }
 
 #pragma mark - test_RUOrderedDictionary
-+(void)test_RUOrderedDictionary
+-(void)test_RUOrderedDictionary
 {
 	/*
 	 RUOrderedMutableDictionary validates itself in its `+initialize` method, so we are just calling the class method `class` to trigger it.
@@ -141,7 +162,7 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 }
 
 #pragma mark - test_RUOrderedDictionary
-+(void)test_UIGeometry_RUUtility
+-(void)test_UIGeometry_RUUtility
 {
 	CGFloat const test_1_value = 123.456f;
 	UIEdgeInsets const test_1_answer = (UIEdgeInsets){
@@ -168,7 +189,7 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 }
 
 #pragma mark - NSDictionary+RUReverse
-+(void)test_NSDictionary_RUReverse
+-(void)test_NSDictionary_RUReverse
 {
 	NSDictionary<NSString*,NSNumber*>* testDictionary =
 	@{
@@ -187,7 +208,7 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 }
 
 #pragma mark - Test NSDictionary+RUReverse and RUOrderedDictionary
-+(void)test_NSDictionary_RUReverse_and_RUOrderedDictionary
+-(void)test_NSDictionary_RUReverse_and_RUOrderedDictionary
 {
 	static NSInteger const lastValue = 100;
 	static NSInteger const startValue = -lastValue;
@@ -231,7 +252,7 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 }
 
 #pragma mark - Test RUScreenHeightTypes
-+(void)test_RUScreenHeightTypes
+-(void)test_RUScreenHeightTypes
 {
 	RUScreenHeightType const screenHeightType = RUScreenHeightType__forCurrentScreen();
 	CGFloat const screenHeightType_appropriateHeight = [self test_RUScreenHeightTypes_appropriateHeightForType:screenHeightType];
@@ -244,7 +265,7 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 			 @"height mismatch for screenHeightType %li",(long)screenHeightType);
 }
 
-+(CGFloat)test_RUScreenHeightTypes_appropriateHeightForType:(RUScreenHeightType)screenHeightType
+-(CGFloat)test_RUScreenHeightTypes_appropriateHeightForType:(RUScreenHeightType)screenHeightType
 {
 	switch (screenHeightType)
 	{
@@ -282,6 +303,16 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 
 	NSAssert(false, @"unhandled screenHeightType %li",(long)screenHeightType);
 	return 0.0f;
+}
+
+#pragma mark - unitTests
+-(nonnull NSArray<id<RUUnitTest>>*)unitTests
+{
+	NSMutableArray<id<RUUnitTest>>* const unitTests = [NSMutableArray<id<RUUnitTest>> array];
+
+	[unitTests ru_addObjectIfNotNil:[RUUnitTest__RUNotifications new]];
+
+	return [NSArray<id<RUUnitTest>> arrayWithArray:unitTests];
 }
 
 @end
