@@ -10,6 +10,7 @@
 		4CB5EEACD3115A6DDFE775F3 /* Pods_ResplendentUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F73467685AA6AF3244A9A65 /* Pods_ResplendentUtilities.framework */; };
 		D72DBE141D087E97004DD4D7 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D72DBE111D087E97004DD4D7 /* LICENSE */; };
 		D72DBE161D087E97004DD4D7 /* ResplendentUtilities.podspec in Resources */ = {isa = PBXBuildFile; fileRef = D72DBE131D087E97004DD4D7 /* ResplendentUtilities.podspec */; };
+		D731A96E1D42B8C400A12D65 /* RUUnitTest__RUNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = D731A96D1D42B8C400A12D65 /* RUUnitTest__RUNotifications.m */; };
 		D793CEE21D0785F000047A87 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D793CEE11D0785F000047A87 /* main.m */; };
 		D793CEE51D0785F000047A87 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D793CEE41D0785F000047A87 /* AppDelegate.m */; };
 		D793CEE81D0785F000047A87 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D793CEE71D0785F000047A87 /* ViewController.m */; };
@@ -27,6 +28,9 @@
 		D72DBE111D087E97004DD4D7 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		D72DBE121D087E97004DD4D7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		D72DBE131D087E97004DD4D7 /* ResplendentUtilities.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ResplendentUtilities.podspec; path = ../ResplendentUtilities.podspec; sourceTree = "<group>"; };
+		D731A96B1D42B7FF00A12D65 /* RUUnitTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUnitTest.h; sourceTree = "<group>"; };
+		D731A96C1D42B8C400A12D65 /* RUUnitTest__RUNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUnitTest__RUNotifications.h; sourceTree = "<group>"; };
+		D731A96D1D42B8C400A12D65 /* RUUnitTest__RUNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUUnitTest__RUNotifications.m; sourceTree = "<group>"; };
 		D793CEDD1D0785F000047A87 /* ResplendentUtilities.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResplendentUtilities.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D793CEE11D0785F000047A87 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D793CEE31D0785F000047A87 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -80,6 +84,16 @@
 				D72DBE131D087E97004DD4D7 /* ResplendentUtilities.podspec */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		D731A96A1D42B79700A12D65 /* RUUnitTest */ = {
+			isa = PBXGroup;
+			children = (
+				D731A96C1D42B8C400A12D65 /* RUUnitTest__RUNotifications.h */,
+				D731A96D1D42B8C400A12D65 /* RUUnitTest__RUNotifications.m */,
+				D731A96B1D42B7FF00A12D65 /* RUUnitTest.h */,
+			);
+			path = RUUnitTest;
 			sourceTree = "<group>";
 		};
 		D793CED41D0785F000047A87 = {
@@ -139,6 +153,7 @@
 			children = (
 				D793CEF91D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.h */,
 				D793CEFA1D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.m */,
+				D731A96A1D42B79700A12D65 /* RUUnitTest */,
 				D793CEFB1D07876D00047A87 /* RUUnitTestManager.h */,
 				D793CEFC1D07876D00047A87 /* RUUnitTestManager.m */,
 			);
@@ -268,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D731A96E1D42B8C400A12D65 /* RUUnitTest__RUNotifications.m in Sources */,
 				D793CEE81D0785F000047A87 /* ViewController.m in Sources */,
 				D793CEFD1D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.m in Sources */,
 				D793CEE51D0785F000047A87 /* AppDelegate.m in Sources */,
