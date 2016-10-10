@@ -42,7 +42,6 @@
 #import "UIImage+RUImageColorMasking.h"
 #import "UIImage+RUImageFromColor.h"
 #import "UIImage+RULaunchImage.h"
-#import "UIImage+RUResizing.h"
 #import "UIImage+RURotation.h"
 #import "UIImage+RUSaveToAssetsLibrary.h"
 #import "UIView+RUSnapshot.h"
