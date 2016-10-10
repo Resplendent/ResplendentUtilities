@@ -78,7 +78,6 @@
 		46CC4671D9E1B0869D79E2932D145D74 /* RUSlideMenuNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF363ACF19B188C132FD0FD457279E1E /* RUSlideMenuNavigationController.m */; };
 		48D51FF3E79A0EFADE1E0974718EC553 /* UIColor+RUHexString.h in Headers */ = {isa = PBXBuildFile; fileRef = 69C44D0ECECA15C60F6CE245F5227B2A /* UIColor+RUHexString.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4A8576B42DB6B5CE3C8775C609123C7F /* RUNotifications.h in Headers */ = {isa = PBXBuildFile; fileRef = ADB74F2023DDB8883BEE566736B04A5B /* RUNotifications.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4AE9A9C664EFDA1C045C9AF7C2C4E706 /* UIImage+RUResizing.h in Headers */ = {isa = PBXBuildFile; fileRef = 51FD95D5E82792F9126E94D9853E712D /* UIImage+RUResizing.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4B1E8333396FF0756382352031ECE9B6 /* UIScrollView+RUAboveContentView.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D42EAC9ECF12A16942EB2B40D3916B3 /* UIScrollView+RUAboveContentView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4B785D84A13A2182B5D66A2028819F7A /* UINavigationController+RUColoredNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E8F3B7CE4DFBC350B8CCF3EAAB93D4D /* UINavigationController+RUColoredNavigationBar.m */; };
 		4BD717F3F25ACBF81D1D88E8C3667D4B /* NSMutableDictionary+RUUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = E41CBCF0B50CB9030AAE068378F53D00 /* NSMutableDictionary+RUUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -119,7 +118,6 @@
 		6FFF4AFFC1D5AAEC17B9D489741012BF /* RUAsynchronousUIImageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE33BFC3598969926C42D843716D9C /* RUAsynchronousUIImageRequest.m */; };
 		714ACDDF5110495C197DC75EC94AE3FC /* UITextField+RUSelectedTextRange.h in Headers */ = {isa = PBXBuildFile; fileRef = 09BCB2B823E63711E95757062CB60832 /* UITextField+RUSelectedTextRange.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		740421A6D01CCFDBFB7E843BEDE5821D /* UIImage+RULaunchImage.h in Headers */ = {isa = PBXBuildFile; fileRef = ED8042D094A11946FC7B4748EAB4DA2E /* UIImage+RULaunchImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		77591CF4D78E8C2D79B6C3C07E7EC11A /* UIImage+RUResizing.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DE0910D17B53AE0A9B5A7958A1C454A /* UIImage+RUResizing.m */; };
 		77F8DEC931F1ECCBD471CD8036EDEC12 /* UITabBarController+RUTabBarVisibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D17FD254CB7C20B21E1BFF7D8581EE9 /* UITabBarController+RUTabBarVisibility.m */; };
 		7A2A9AE7E89FF557AC860A73E7ED13E1 /* RUViewStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 798D0E7AF21EABCD41185DCEC657D09F /* RUViewStack.m */; };
 		7AD4A55A0731C35564C32C086D407875 /* UIViewController+RUDismissOrPop.h in Headers */ = {isa = PBXBuildFile; fileRef = 2EA3A8A1AA7B96AC74EB1C47992E5E45 /* UIViewController+RUDismissOrPop.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -377,7 +375,6 @@
 		4FA42F554A2A1D99B9DC8C8E32913F90 /* RUDeallocHook.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RUDeallocHook.m; sourceTree = "<group>"; };
 		507E5578D1A5EB070170523609EAC5EA /* NSString+RUEncodedUrl.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSString+RUEncodedUrl.h"; sourceTree = "<group>"; };
 		50AAE7893AED4918BD79C22DE10C6D1A /* NSString+MKCoordinateRegion.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSString+MKCoordinateRegion.m"; sourceTree = "<group>"; };
-		51FD95D5E82792F9126E94D9853E712D /* UIImage+RUResizing.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIImage+RUResizing.h"; sourceTree = "<group>"; };
 		52B381043BC861704CABD99300A5CE0B /* RUColorPickerView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RUColorPickerView.m; sourceTree = "<group>"; };
 		53A9AEB04C25A6431500DBEF474AA363 /* NSString+RUEmailValidation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSString+RUEmailValidation.h"; sourceTree = "<group>"; };
 		53CF80CE7A25D91E5C85EC2ABAA61BE9 /* RUScreenHeightTypes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RUScreenHeightTypes.h; sourceTree = "<group>"; };
@@ -443,7 +440,6 @@
 		8B1125363B0415C5121BD6055DFE9A9C /* NSString+RUStringContainsUtil.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSString+RUStringContainsUtil.m"; sourceTree = "<group>"; };
 		8C913021F4FFB5D82B9639B27C309BFF /* Pods-ResplendentUtilities.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ResplendentUtilities.release.xcconfig"; sourceTree = "<group>"; };
 		8D84A63F92294EE7242217F0804ABB7B /* RUKeyboardAdjustmentHelper.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RUKeyboardAdjustmentHelper.m; sourceTree = "<group>"; };
-		8DE0910D17B53AE0A9B5A7958A1C454A /* UIImage+RUResizing.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RUResizing.m"; sourceTree = "<group>"; };
 		8E43C54AC01E904964351BA24F78B970 /* UIFont+RUHelvetica.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIFont+RUHelvetica.m"; sourceTree = "<group>"; };
 		8E59557DE57B295DC981FD4BF8056DE2 /* RUImageViewFullscreenRotatingView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RUImageViewFullscreenRotatingView.h; sourceTree = "<group>"; };
 		90FF6CF176592DA0FAC44C06D56E59FE /* NSMutableArray+RUAddObjectIfNotNil.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+RUAddObjectIfNotNil.h"; sourceTree = "<group>"; };
@@ -1035,8 +1031,6 @@
 				1AE26324B229BCA2B54200299014E7E9 /* UIImage+RUImageFromColor.m */,
 				ED8042D094A11946FC7B4748EAB4DA2E /* UIImage+RULaunchImage.h */,
 				7377F5D0B4AA7C92ECE6B92F3A5BC7AB /* UIImage+RULaunchImage.m */,
-				51FD95D5E82792F9126E94D9853E712D /* UIImage+RUResizing.h */,
-				8DE0910D17B53AE0A9B5A7958A1C454A /* UIImage+RUResizing.m */,
 				3F2B929559A53F8B3E2470317FC8003C /* UIImage+RURotation.h */,
 				F5B1DE12AA268CE25708D076F07A3907 /* UIImage+RURotation.m */,
 				66ED04FC24DD9E317136EB45159EB5F1 /* UIImage+RUSaveToAssetsLibrary.h */,
@@ -1461,7 +1455,6 @@
 				3DF9F1A9AAD8E7BC995BD222D040D1AB /* UIImage+RUImageColorMasking.h in Headers */,
 				209BE0EDD67D1A22D4CCB7FDB7EB8661 /* UIImage+RUImageFromColor.h in Headers */,
 				740421A6D01CCFDBFB7E843BEDE5821D /* UIImage+RULaunchImage.h in Headers */,
-				4AE9A9C664EFDA1C045C9AF7C2C4E706 /* UIImage+RUResizing.h in Headers */,
 				C9B83C09A5FF0BD32CA23F21679C66CC /* UIImage+RURotation.h in Headers */,
 				DE5E0465BA28E202B5D466972812DF39 /* UIImage+RUSaveToAssetsLibrary.h in Headers */,
 				C954CDA6F37930F6FC9F0E2E45D0A146 /* UIImageView+RUAsynchronousImageFetching.h in Headers */,
@@ -1661,7 +1654,6 @@
 				06A410FCEA33687824605EBF65F9E10D /* UIImage+RUImageColorMasking.m in Sources */,
 				BE35531913DC70F47DE1CFE2A0225E44 /* UIImage+RUImageFromColor.m in Sources */,
 				31DB3846DC4903CEC930CA7A3FF78EA7 /* UIImage+RULaunchImage.m in Sources */,
-				77591CF4D78E8C2D79B6C3C07E7EC11A /* UIImage+RUResizing.m in Sources */,
 				A1E8EB669142D429DF17A7233D395F4E /* UIImage+RURotation.m in Sources */,
 				86819B94AA217A670BD8F65B30E1455C /* UIImage+RUSaveToAssetsLibrary.m in Sources */,
 				E4C53B51693839CA1C58DBEA6855A11D /* UIImageView+RUAsynchronousImageFetching.m in Sources */,
