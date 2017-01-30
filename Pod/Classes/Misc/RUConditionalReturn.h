@@ -12,9 +12,16 @@
 
 
 
+/**
+ This macro is meant for handling the shared assertion logic. Note that this macro expects a condition as a parameter, which if true will crash fail an assertion, which is the opposite boolean logic of what an assertion expects.
+
+ @param assert The condition to test. If the condition evalues to `TRUE`, then an assertion is failed, and an exception will be thrown.
+ */
+#define kRUConditionalReturn__assertion(assert) NSCAssert(!(assert),@"Failed condition");
+
 #define kRUConditionalReturn(condition,assert) \
 if (condition) { \
-	NSCAssert((!assert),@"Failed condition"); \
+	kRUConditionalReturn__assertion(assert); \
 	return; \
 }
 
@@ -25,7 +32,7 @@ if (condition) { \
 	{ \
 		[alertView show]; \
 	} \
-	NSCAssert((!assert),@"Failed condition"); \
+	kRUConditionalReturn__assertion(assert); \
 	return; \
 }
 
@@ -33,7 +40,7 @@ if (condition) { \
 
 #define kRUConditionalReturn_ReturnValue(condition,assert,returnValue) \
 if (condition) { \
-NSCAssert((!assert),@"Failed condition"); \
+kRUConditionalReturn__assertion(assert); \
 return returnValue; \
 }
 
@@ -48,7 +55,7 @@ kRUConditionalReturn_ReturnValue(condition,assert,true)
 
 #define kRUConditionalReturn_AlertView_ReturnValue(condition,assert,alertView,returnValue) \
 if (condition) { \
-	NSCAssert((!assert),@"Failed condition"); \
+	kRUConditionalReturn__assertion(assert); \
 	if (alertView != nil) \
 	{ \
 		[alertView show]; \

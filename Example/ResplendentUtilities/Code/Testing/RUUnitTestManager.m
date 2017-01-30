@@ -9,6 +9,7 @@
 #import "RUUnitTestManager.h"
 #import "RUSynthesizeUserDefaultMethods_Testing.h"
 #import "RUUnitTest__RUNotifications.h"
+#import "RUUnitTest__RUConditionalReturn.h"
 
 #import "RUConstants.h"
 #import "RUConditionalReturn.h"
@@ -19,6 +20,7 @@
 #import "RUEnumIsInRangeSynthesization.h"
 #import "RUScreenHeightTypes.h"
 #import "NSMutableArray+RUAddObjectIfNotNil.h"
+#import "RUDLog.h"
 
 
 
@@ -35,7 +37,7 @@ typedef NS_ENUM(NSInteger, RUUnitTestManager__testType) {
 	RUUnitTestManager__testType_NSDictionary_RUReverse_and_RUOrderedDictionary,
 	RUUnitTestManager__testType_RUSynthesizeUserDefaultMethods,
 	RUUnitTestManager__testType_RUScreenHeightTypes,
-	
+
 	RUUnitTestManager__testType__first	= RUUnitTestManager__testType_RUOrderedMutableDictionary,
 	RUUnitTestManager__testType__last	= RUUnitTestManager__testType_RUScreenHeightTypes,
 };
@@ -90,19 +92,27 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 
 -(void)runUnitTests
 {
-	for (RUUnitTestManager__testType testType = RUUnitTestManager__testType__first;
-		 testType <= RUUnitTestManager__testType__last;
-		 testType++)
-	{
-		[self runUnitTest:testType];
-	}
+	RUDLog(@"** About to start unit tests.");
 
 	[[self unitTests] enumerateObjectsUsingBlock:^(id<RUUnitTest>  _Nonnull unitTest, NSUInteger idx, BOOL * _Nonnull stop) {
+
+		RUDLog(@"* Will run unit test %@",unitTest);
 
 		NSString* const errorMessage = [unitTest ru_runUnitTest];
 		NSAssert(errorMessage == nil, errorMessage);
 
 	}];
+
+	for (RUUnitTestManager__testType testType = RUUnitTestManager__testType__first;
+		 testType <= RUUnitTestManager__testType__last;
+		 testType++)
+	{
+		RUDLog(@"* Will run unit test of type %li",(long)testType);
+		
+		[self runUnitTest:testType];
+	}
+
+	RUDLog(@"** Finished unit tests.");
 }
 
 -(void)runUnitTest:(RUUnitTestManager__testType)testType
@@ -118,15 +128,15 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 		case RUUnitTestManager__testType_RUOrderedDictionary:
 			[self test_RUOrderedDictionary];
 			break;
-			
+
 		case RUUnitTestManager__testType_UIGeometry_RUUtility:
 			[self test_UIGeometry_RUUtility];
 			break;
-			
+
 		case RUUnitTestManager__testType_NSDictionary_RUReverse:
 			[self test_NSDictionary_RUReverse];
 			break;
-			
+
 		case RUUnitTestManager__testType_NSDictionary_RUReverse_and_RUOrderedDictionary:
 			[self test_NSDictionary_RUReverse_and_RUOrderedDictionary];
 			break;
@@ -134,7 +144,7 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 		case RUUnitTestManager__testType_RUSynthesizeUserDefaultMethods:
 			[RUSynthesizeUserDefaultMethods_Testing runTests];
 			break;
-			
+
 		case RUUnitTestManager__testType_RUScreenHeightTypes:
 			[self test_RUScreenHeightTypes];
 			break;
@@ -147,7 +157,7 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 	/*
 	 RUOrderedMutableDictionary validates itself in its `+initialize` method, so we are just calling the class method `class` to trigger it.
 	 */
-	
+
 	[RUOrderedMutableDictionary class];
 }
 
@@ -157,7 +167,7 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 	/*
 	 RUOrderedMutableDictionary validates itself in its `+initialize` method, so we are just calling the class method `class` to trigger it.
 	 */
-	
+
 	[RUOrderedDictionary class];
 }
 
@@ -171,18 +181,18 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 		.top		= test_1_value,
 		.bottom		= test_1_value,
 	};
-	
+
 	UIEdgeInsets const test_1_attemptedAnswer = RU_UIEdgeInsetsMakeAll(test_1_value);
 	NSAssert(UIEdgeInsetsEqualToEdgeInsets(test_1_answer, test_1_attemptedAnswer),
 			 @"test_1_attemptedAnswer should have been %@, but instead was %@",NSStringFromUIEdgeInsets(test_1_answer),NSStringFromUIEdgeInsets(test_1_attemptedAnswer));
-	
+
 	UIEdgeInsets const test_2_answer = (UIEdgeInsets){
 		.left		= -test_1_answer.left,
 		.right		= -test_1_answer.right,
 		.top		= -test_1_answer.top,
 		.bottom		= -test_1_answer.bottom,
 	};
-	
+
 	UIEdgeInsets test_2_attemptedAnswer = RU_UIEdgeInsetsInvert(test_1_answer);
 	NSAssert(UIEdgeInsetsEqualToEdgeInsets(test_2_answer, test_2_attemptedAnswer),
 			 @"test_2_attemptedAnswer should have been %@, but instead was %@",NSStringFromUIEdgeInsets(test_2_answer),NSStringFromUIEdgeInsets(test_2_attemptedAnswer));
@@ -197,13 +207,13 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 	  @"Two"	: @(2),
 	  @"Three"	: @(3),
 	  };
-	
+
 	NSDictionary<NSNumber*,NSString*>* testDictionary_reversed = [testDictionary ru_reverseDictionary];
-	
+
 	[testDictionary enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSNumber * _Nonnull obj, BOOL * _Nonnull stop) {
-		
+
 		NSAssert([[testDictionary_reversed objectForKey:obj] isEqualToString:key], @"testDictionary_reversed %@ should have object %@ for key %@",testDictionary_reversed,key,obj);
-		
+
 	}];
 }
 
@@ -212,10 +222,10 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 {
 	static NSInteger const lastValue = 100;
 	static NSInteger const startValue = -lastValue;
-	
+
 	NSMutableArray<NSNumber*>* orderedNumbers_mutable = [NSMutableArray array];
 	NSMutableArray<NSString*>* orderedStrings_mutable = [NSMutableArray array];
-	
+
 	for (NSInteger i = startValue;
 		 i <= lastValue;
 		 i++)
@@ -224,13 +234,13 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 		[orderedNumbers_mutable addObject:number];
 		[orderedStrings_mutable addObject:number.stringValue];
 	}
-	
+
 	kRUConditionalReturn(orderedNumbers_mutable.count != (1 + lastValue - startValue), YES);
 	kRUConditionalReturn(orderedStrings_mutable.count != (1 + lastValue - startValue), YES);
-	
+
 	NSArray<NSNumber*>* orderedNumbers = [orderedNumbers_mutable copy];
 	NSArray<NSString*>* orderedStrings = [orderedStrings_mutable copy];
-	
+
 	// staticConstructor
 	RUOrderedDictionary<NSString*,NSNumber*>* testDictionary = [RUOrderedDictionary<NSString*,NSNumber*>
 																dictionaryWithObjects:orderedNumbers
@@ -310,6 +320,7 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 {
 	NSMutableArray<id<RUUnitTest>>* const unitTests = [NSMutableArray<id<RUUnitTest>> array];
 
+	[unitTests ru_addObjectIfNotNil:[RUUnitTest__RUConditionalReturn new]];
 	[unitTests ru_addObjectIfNotNil:[RUUnitTest__RUNotifications new]];
 
 	return [NSArray<id<RUUnitTest>> arrayWithArray:unitTests];
