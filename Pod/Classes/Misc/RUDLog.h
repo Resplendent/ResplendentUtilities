@@ -13,7 +13,9 @@
 
 
 
-#define kRUDLogDeclaration(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define kRUDLogStringFormatDeclaration(string, ...) (@"%s [Line %d] " string), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__
+#define kRUDLogDeclaration(fmt, ...) NSLog(kRUDLogStringFormatDeclaration(fmt, ##__VA_ARGS__))
+
 
 
 

@@ -10,7 +10,8 @@
 		4CB5EEACD3115A6DDFE775F3 /* Pods_ResplendentUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F73467685AA6AF3244A9A65 /* Pods_ResplendentUtilities.framework */; };
 		D72DBE141D087E97004DD4D7 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D72DBE111D087E97004DD4D7 /* LICENSE */; };
 		D72DBE161D087E97004DD4D7 /* ResplendentUtilities.podspec in Resources */ = {isa = PBXBuildFile; fileRef = D72DBE131D087E97004DD4D7 /* ResplendentUtilities.podspec */; };
-		D731A96E1D42B8C400A12D65 /* RUUnitTest__RUNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = D731A96D1D42B8C400A12D65 /* RUUnitTest__RUNotifications.m */; };
+		D73BB6E31E3F9CE400F6BFA4 /* RUUnitTest__RUNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = D73BB6E21E3F9CE400F6BFA4 /* RUUnitTest__RUNotifications.m */; };
+		D73BB6E81E3F9D1700F6BFA4 /* RUUnitTest__RUConditionalReturn.m in Sources */ = {isa = PBXBuildFile; fileRef = D73BB6E71E3F9D1700F6BFA4 /* RUUnitTest__RUConditionalReturn.m */; };
 		D793CEE21D0785F000047A87 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D793CEE11D0785F000047A87 /* main.m */; };
 		D793CEE51D0785F000047A87 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D793CEE41D0785F000047A87 /* AppDelegate.m */; };
 		D793CEE81D0785F000047A87 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D793CEE71D0785F000047A87 /* ViewController.m */; };
@@ -28,9 +29,11 @@
 		D72DBE111D087E97004DD4D7 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		D72DBE121D087E97004DD4D7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		D72DBE131D087E97004DD4D7 /* ResplendentUtilities.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ResplendentUtilities.podspec; path = ../ResplendentUtilities.podspec; sourceTree = "<group>"; };
-		D731A96B1D42B7FF00A12D65 /* RUUnitTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUnitTest.h; sourceTree = "<group>"; };
-		D731A96C1D42B8C400A12D65 /* RUUnitTest__RUNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUnitTest__RUNotifications.h; sourceTree = "<group>"; };
-		D731A96D1D42B8C400A12D65 /* RUUnitTest__RUNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUUnitTest__RUNotifications.m; sourceTree = "<group>"; };
+		D73BB6E11E3F9CE400F6BFA4 /* RUUnitTest__RUNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUnitTest__RUNotifications.h; sourceTree = "<group>"; };
+		D73BB6E21E3F9CE400F6BFA4 /* RUUnitTest__RUNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUUnitTest__RUNotifications.m; sourceTree = "<group>"; };
+		D73BB6E41E3F9CF600F6BFA4 /* RUUnitTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RUUnitTest.h; sourceTree = "<group>"; };
+		D73BB6E61E3F9D1700F6BFA4 /* RUUnitTest__RUConditionalReturn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUnitTest__RUConditionalReturn.h; sourceTree = "<group>"; };
+		D73BB6E71E3F9D1700F6BFA4 /* RUUnitTest__RUConditionalReturn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUUnitTest__RUConditionalReturn.m; sourceTree = "<group>"; };
 		D793CEDD1D0785F000047A87 /* ResplendentUtilities.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResplendentUtilities.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D793CEE11D0785F000047A87 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D793CEE31D0785F000047A87 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -89,11 +92,29 @@
 		D731A96A1D42B79700A12D65 /* RUUnitTest */ = {
 			isa = PBXGroup;
 			children = (
-				D731A96C1D42B8C400A12D65 /* RUUnitTest__RUNotifications.h */,
-				D731A96D1D42B8C400A12D65 /* RUUnitTest__RUNotifications.m */,
-				D731A96B1D42B7FF00A12D65 /* RUUnitTest.h */,
+				D73BB6E51E3F9D0700F6BFA4 /* RUUnitTest__RUConditionalReturn */,
+				D73BB6DF1E3F9CE400F6BFA4 /* RUUnitTest__RUNotifications */,
+				D73BB6E41E3F9CF600F6BFA4 /* RUUnitTest.h */,
 			);
 			path = RUUnitTest;
+			sourceTree = "<group>";
+		};
+		D73BB6DF1E3F9CE400F6BFA4 /* RUUnitTest__RUNotifications */ = {
+			isa = PBXGroup;
+			children = (
+				D73BB6E11E3F9CE400F6BFA4 /* RUUnitTest__RUNotifications.h */,
+				D73BB6E21E3F9CE400F6BFA4 /* RUUnitTest__RUNotifications.m */,
+			);
+			path = RUUnitTest__RUNotifications;
+			sourceTree = "<group>";
+		};
+		D73BB6E51E3F9D0700F6BFA4 /* RUUnitTest__RUConditionalReturn */ = {
+			isa = PBXGroup;
+			children = (
+				D73BB6E61E3F9D1700F6BFA4 /* RUUnitTest__RUConditionalReturn.h */,
+				D73BB6E71E3F9D1700F6BFA4 /* RUUnitTest__RUConditionalReturn.m */,
+			);
+			path = RUUnitTest__RUConditionalReturn;
 			sourceTree = "<group>";
 		};
 		D793CED41D0785F000047A87 = {
@@ -189,11 +210,12 @@
 		D793CED51D0785F000047A87 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = Resplendent;
 				TargetAttributes = {
 					D793CEDC1D0785F000047A87 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = AAB4VMM3YL;
 					};
 				};
 			};
@@ -243,7 +265,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		57CE19F08620CEC75544C573 /* [CP] Embed Pods Frameworks */ = {
@@ -283,7 +305,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D731A96E1D42B8C400A12D65 /* RUUnitTest__RUNotifications.m in Sources */,
+				D73BB6E31E3F9CE400F6BFA4 /* RUUnitTest__RUNotifications.m in Sources */,
+				D73BB6E81E3F9D1700F6BFA4 /* RUUnitTest__RUConditionalReturn.m in Sources */,
 				D793CEE81D0785F000047A87 /* ViewController.m in Sources */,
 				D793CEFD1D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.m in Sources */,
 				D793CEE51D0785F000047A87 /* AppDelegate.m in Sources */,
@@ -328,10 +351,13 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -373,10 +399,13 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -403,6 +432,7 @@
 			baseConfigurationReference = 52FC15B44B409A8EA1263685 /* Pods-ResplendentUtilities.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = AAB4VMM3YL;
 				INFOPLIST_FILE = ResplendentUtilities/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -416,6 +446,7 @@
 			baseConfigurationReference = A7A7E9C9E51982F74B15CF7F /* Pods-ResplendentUtilities.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = AAB4VMM3YL;
 				INFOPLIST_FILE = ResplendentUtilities/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

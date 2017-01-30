@@ -113,7 +113,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 - (void)moveHorizontallyToLocation:(CGFloat)location
 {
 	CGRect rect = self.view.frame;
-	UIInterfaceOrientation orientation = self.interfaceOrientation;
+	UIInterfaceOrientation const orientation = [[UIApplication sharedApplication] statusBarOrientation];
 	RUSlideNavigationController_MenuType menu = [self menuTypeForHorizontalLocation:location];
 	
 	if (UIInterfaceOrientationIsLandscape(orientation))
@@ -319,7 +319,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 - (CGFloat)horizontalViewLocation
 {
 	CGRect rect = self.view.frame;
-	UIInterfaceOrientation orientation = self.interfaceOrientation;
+	UIInterfaceOrientation const orientation = [[UIApplication sharedApplication] statusBarOrientation];
 
 	if (UIInterfaceOrientationIsLandscape(orientation))
 	{
@@ -389,7 +389,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 		yOffset += statusBarHeight;
 	}
 
-	UIInterfaceOrientation interfaceOrientation = self.interfaceOrientation;
+	UIInterfaceOrientation const interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
 	if (UIInterfaceOrientationIsLandscape(interfaceOrientation))
 	{
 		rect.origin.x = (interfaceOrientation == UIInterfaceOrientationLandscapeRight) ? 0 : yOffset;
@@ -426,7 +426,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 - (CGFloat)horizontalSize
 {
 	CGRect rect = self.view.frame;
-	UIInterfaceOrientation orientation = self.interfaceOrientation;
+	UIInterfaceOrientation const orientation = [[UIApplication sharedApplication] statusBarOrientation];
 	
 	if (UIInterfaceOrientationIsLandscape(orientation))
 	{
@@ -460,7 +460,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 
 - (CGFloat)slideOffset
 {
-	UIInterfaceOrientation interfaceOrientation = self.interfaceOrientation;
+	UIInterfaceOrientation const interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
 
 	return (UIInterfaceOrientationIsLandscape(interfaceOrientation))
 	? self.landscapeSlideOffset
