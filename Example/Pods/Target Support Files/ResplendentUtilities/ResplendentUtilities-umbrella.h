@@ -150,7 +150,6 @@
 #import "RUScrollView.h"
 #import "RUTableView.h"
 #import "RUSubviewTouchesView.h"
-#import "RUAlertView.h"
 #import "RUColoredNavigationBar.h"
 #import "RUSlideMenuNavigationController.h"
 #import "RUSlideMenuNavigationControllerProtocols.h"
