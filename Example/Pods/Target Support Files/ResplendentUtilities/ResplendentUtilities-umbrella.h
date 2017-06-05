@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "CALayer+RUCornerRadius.h"
 #import "CALayer+RUMask.h"
 #import "CAShapeLayer+RUMessageBox.h"
 #import "CMDeviceMotion+RUOrientation.h"
