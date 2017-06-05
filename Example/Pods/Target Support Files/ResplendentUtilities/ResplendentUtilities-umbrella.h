@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "CALayer+RUCornerRadius.h"
 #import "CALayer+RUMask.h"
 #import "CAShapeLayer+RUMessageBox.h"
 #import "CMDeviceMotion+RUOrientation.h"
@@ -149,7 +150,6 @@
 #import "RUScrollView.h"
 #import "RUTableView.h"
 #import "RUSubviewTouchesView.h"
-#import "RUAlertView.h"
 #import "RUColoredNavigationBar.h"
 #import "RUSlideMenuNavigationController.h"
 #import "RUSlideMenuNavigationControllerProtocols.h"
