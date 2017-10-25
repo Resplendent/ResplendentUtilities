@@ -12,12 +12,11 @@
 
 
 
-#define RU_UIApplication_UserNotificationsType(suffix) UIUserNotificationType##suffix
-#define RU_UIApplication_RemoteNotificationsType(suffix) UIRemoteNotificationType##suffix
-
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
+#define RU_UIApplication_UserNotificationsType(suffix) UIUserNotificationType##suffix
 #define RU_UIApplication_AppropriateNotificationsType(suffix) RU_UIApplication_UserNotificationsType(suffix)
 #else
+#define RU_UIApplication_RemoteNotificationsType(suffix) UIRemoteNotificationType##suffix
 #define RU_UIApplication_AppropriateNotificationsType(suffix) RU_UIApplication_RemoteNotificationsType(suffix)
 #endif
 
