@@ -114,7 +114,7 @@
 }
 
 #pragma mark - Animations
--(void)animateWithFallfrontStart:(void (^)())start middle:(void (^)())middle end:(void (^)(BOOL finished))completion
+-(void)animateWithFallfrontStart:(void (^)(void))start middle:(void (^)(void))middle end:(void (^)(BOOL finished))completion
 {
     [UIView animateWithDuration:kAnimateWithFallfrontDuration1 animations:^{
         [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
@@ -141,7 +141,7 @@
     return;
 }
 
--(void)animateWithFallbackStart:(void (^)())start middle:(void (^)())middle end:(void (^)(BOOL finished))completion
+-(void)animateWithFallbackStart:(void (^)(void))start middle:(void (^)(void))middle end:(void (^)(BOOL finished))completion
 {
     CATransform3D initialTransform = self.layer.transform;
     initialTransform.m34 = 1.0 / -900;
@@ -166,7 +166,7 @@
     }];
 }
 
--(void)animateMoveBackStart:(void (^)())start completion:(void (^)(BOOL finished))completion
+-(void)animateMoveBackStart:(void (^)(void))start completion:(void (^)(BOOL finished))completion
 {
     CATransform3D initialTransform = self.layer.transform;
     initialTransform.m34 = 1.0 / -900;
@@ -182,7 +182,7 @@
     } completion:completion];
 }
 
--(void)animateMoveFrontStart:(void (^)())start completion:(void (^)(BOOL finished))completion
+-(void)animateMoveFrontStart:(void (^)(void))start completion:(void (^)(BOOL finished))completion
 {
     CATransform3D initialTransform = self.layer.transform;
     initialTransform.m34 = 1.0 / -900;

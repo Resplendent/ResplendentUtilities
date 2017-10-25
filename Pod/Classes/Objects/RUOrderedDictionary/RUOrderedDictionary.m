@@ -221,7 +221,7 @@
 
 	__block NSInteger lastKeyNumber = NSNotFound;
 
-	void (^reset_lastKeyNumber)() = ^{
+	void (^reset_lastKeyNumber)(void) = ^{
 		lastKeyNumber = NSNotFound;
 	};
 

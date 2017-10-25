@@ -174,11 +174,11 @@ CG_INLINE void increaseHeight(UIView* view,CGFloat heightIncrease)
 -(void)setShadowHeight:(float)shadowHeight radius:(float)radius opacity:(float)opacity;
 
 //Animations
--(void)animateWithFallbackStart:(void (^)())start middle:(void (^)())middle end:(void (^)(BOOL finished))completion;
--(void)animateWithFallfrontStart:(void (^)())start middle:(void (^)())middle end:(void (^)(BOOL finished))completion;
+-(void)animateWithFallbackStart:(void (^)(void))start middle:(void (^)(void))middle end:(void (^)(BOOL finished))completion;
+-(void)animateWithFallfrontStart:(void (^)(void))start middle:(void (^)(void))middle end:(void (^)(BOOL finished))completion;
 
--(void)animateMoveBackStart:(void (^)())start completion:(void (^)(BOOL finished))completion;
--(void)animateMoveFrontStart:(void (^)())start completion:(void (^)(BOOL finished))completion;
+-(void)animateMoveBackStart:(void (^)(void))start completion:(void (^)(BOOL finished))completion;
+-(void)animateMoveFrontStart:(void (^)(void))start completion:(void (^)(BOOL finished))completion;
 
 -(void)increaseWidth:(CGFloat)width;
 -(void)increaseHeight:(CGFloat)height;

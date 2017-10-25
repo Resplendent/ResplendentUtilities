@@ -48,7 +48,7 @@ typedef NS_ENUM(NSInteger, RUModalView_TransitionAnimation_Type) {
 -(void)didTapSelf:(UITapGestureRecognizer*)tap; //Shouldn't be called directly, meant for subclassing.
 -(BOOL)shouldDismissForTapSelfWithTouch:(UITouch*)touch;
 
--(void)showInView:(UIView*)presenterView completion:(void(^)())completion;
--(void)dismiss:(BOOL)animate completion:(void(^)())completion;
+-(void)showInView:(UIView*)presenterView completion:(void(^)(void))completion;
+-(void)dismiss:(BOOL)animate completion:(void(^)(void))completion;
 
 @end
