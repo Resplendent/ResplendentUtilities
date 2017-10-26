@@ -138,7 +138,7 @@
 	__weak typeof(self) weak_self = self;
 	__weak typeof(oldCurrentlyVisibleView) oldCurrentlyVisibleView_weak = oldCurrentlyVisibleView;
 	__weak typeof(newCurrentlyVisibleView) newCurrentlyVisibleView_weak = newCurrentlyVisibleView;
-	void (^setFinalFramesBlock)() = ^{
+	void (^setFinalFramesBlock)(void) = ^{
 		kRUConditionalReturn(weak_self == nil, NO);
 		
 		if (oldCurrentlyVisibleView_weak)
@@ -154,7 +154,7 @@
 	};
 
 	//removeOldCurrentlyVisibleViewBlock
-	void (^removeOldCurrentlyVisibleViewBlock)() = ^{
+	void (^removeOldCurrentlyVisibleViewBlock)(void) = ^{
 
 		if (oldCurrentlyVisibleView_weak)
 		{
@@ -239,7 +239,7 @@
 	CGRect newFrame = [self visibleViewFrameForView:currentlyVisibleView_weak];
 	kRUConditionalReturn(CGRectEqualToRect(currentlyVisibleView_weak.frame, newFrame), YES);
 	
-	void (^frameChangeBlock)() = ^{
+	void (^frameChangeBlock)(void) = ^{
 		kRUConditionalReturn(weak_self == nil, NO);
 		kRUConditionalReturn(currentlyVisibleView_weak == nil, NO);
 

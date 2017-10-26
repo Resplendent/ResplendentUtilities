@@ -29,9 +29,9 @@
 
 @property (nonatomic, assign) UIEdgeInsets menuViewFrameInsets;
 
-- (void)bounceMenu:(RUSlideNavigationController_MenuType)menu withCompletion:(void (^)())completion;
-- (void)openMenu:(RUSlideNavigationController_MenuType)menu withCompletion:(void (^)())completion;
-- (void)closeMenuWithCompletion:(void (^)())completion;
+- (void)bounceMenu:(RUSlideNavigationController_MenuType)menu withCompletion:(void (^)(void))completion;
+- (void)openMenu:(RUSlideNavigationController_MenuType)menu withCompletion:(void (^)(void))completion;
+- (void)closeMenuWithCompletion:(void (^)(void))completion;
 - (void)toggleLeftMenu;
 - (void)toggleRightMenu;
 - (BOOL)isMenuOpen;

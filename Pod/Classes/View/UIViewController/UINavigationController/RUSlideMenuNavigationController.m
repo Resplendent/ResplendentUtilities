@@ -58,9 +58,9 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 
 - (void)moveHorizontallyToLocation:(CGFloat)location;
 - (void)updateMenuAnimation:(RUSlideNavigationController_MenuType)menu;
-- (void)openMenu:(RUSlideNavigationController_MenuType)menu withDuration:(float)duration andCompletion:(void (^)())completion;
-- (void)closeMenuWithDuration:(float)duration andCompletion:(void (^)())completion;
-- (void)toggleMenu:(RUSlideNavigationController_MenuType)menu withCompletion:(void (^)())completion;
+- (void)openMenu:(RUSlideNavigationController_MenuType)menu withDuration:(float)duration andCompletion:(void (^)(void))completion;
+- (void)closeMenuWithDuration:(float)duration andCompletion:(void (^)(void))completion;
+- (void)toggleMenu:(RUSlideNavigationController_MenuType)menu withCompletion:(void (^)(void))completion;
 
 - (void)enableTapGestureToCloseMenu:(BOOL)enable;
 
@@ -141,7 +141,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 	[self.menuAnimator animateMenu:menu withProgress:progress];
 }
 
-- (void)openMenu:(RUSlideNavigationController_MenuType)menu withDuration:(float)duration andCompletion:(void (^)())completion
+- (void)openMenu:(RUSlideNavigationController_MenuType)menu withDuration:(float)duration andCompletion:(void (^)(void))completion
 {
 	[self enableTapGestureToCloseMenu:YES];
 	
@@ -162,17 +162,17 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 					 }];
 }
 
-- (void)openMenu:(RUSlideNavigationController_MenuType)menu withCompletion:(void (^)())completion
+- (void)openMenu:(RUSlideNavigationController_MenuType)menu withCompletion:(void (^)(void))completion
 {
 	[self openMenu:menu withDuration:kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION andCompletion:completion];
 }
 
-- (void)closeMenuWithCompletion:(void (^)())completion
+- (void)closeMenuWithCompletion:(void (^)(void))completion
 {
 	[self closeMenuWithDuration:kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION andCompletion:completion];
 }
 
-- (void)closeMenuWithDuration:(float)duration andCompletion:(void (^)())completion
+- (void)closeMenuWithDuration:(float)duration andCompletion:(void (^)(void))completion
 {
 	[self enableTapGestureToCloseMenu:NO];
 
@@ -194,7 +194,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 }
 
 #pragma mark - Menu
-- (void)bounceMenu:(RUSlideNavigationController_MenuType)menu withCompletion:(void (^)())completion
+- (void)bounceMenu:(RUSlideNavigationController_MenuType)menu withCompletion:(void (^)(void))completion
 {
 	[self prepareMenuForReveal:menu forcePrepare:YES];
 	NSInteger movementDirection = (menu == RUSlideNavigationController_MenuType_Left) ? 1 : -1;
@@ -307,7 +307,7 @@ CGFloat const kRUSlideMenuNavigationController_MENU_SLIDE_ANIMATION_DURATION = .
 	[self toggleMenu:RUSlideNavigationController_MenuType_Right withCompletion:nil];
 }
 
-- (void)toggleMenu:(RUSlideNavigationController_MenuType)menu withCompletion:(void (^)())completion
+- (void)toggleMenu:(RUSlideNavigationController_MenuType)menu withCompletion:(void (^)(void))completion
 {
 	if ([self isMenuOpen])
 		[self closeMenuWithCompletion:completion];

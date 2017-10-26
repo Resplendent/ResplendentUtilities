@@ -27,7 +27,7 @@ static NSString* __kRUSynthesizeUserDefaultMethods_AssociatedKey_Name(varName) =
 	[userDefaults synchronize]; \
 	if (completion) \
 	{ \
-		void (^completionBlock)() = completion; \
+		void (^completionBlock)(id _Nullable variableName) = completion; \
 		completionBlock(varName); \
 	} \
 

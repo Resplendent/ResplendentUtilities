@@ -212,10 +212,10 @@
 
 	kRUConditionalReturn_ReturnValueFalse(orderedNumbers_mutable.count != (1 + lastValue - startValue), YES);
 
-	NSArray<NSNumber*>* orderedNumbers = [orderedNumbers_mutable copy];
+	NSArray<NSNumber*>* const orderedNumbers = [orderedNumbers_mutable copy];
 
 	// looping, with capacity
-	RUOrderedMutableDictionary<NSNumber*,NSNumber*>* orderedMutableDictionary_looping = [RUOrderedMutableDictionary dictionaryWithCapacity:orderedNumbers.count];
+	RUOrderedMutableDictionary<NSNumber*,NSNumber*>* const orderedMutableDictionary_looping = [RUOrderedMutableDictionary dictionaryWithCapacity:orderedNumbers.count];
 	kRUConditionalReturn_ReturnValueFalse((orderedMutableDictionary_looping == nil), YES);
 
 	[orderedNumbers enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -224,36 +224,41 @@
 	kRUConditionalReturn_ReturnValueFalse((orderedMutableDictionary_looping.count != orderedNumbers.count), YES);
 
 	// staticConstructor
-	RUOrderedMutableDictionary* orderedDictionary_staticConstructor = [RUOrderedMutableDictionary dictionaryWithObjects:orderedNumbers
+	RUOrderedMutableDictionary<NSNumber*,NSNumber*>* const orderedDictionary_staticConstructor = [RUOrderedMutableDictionary dictionaryWithObjects:orderedNumbers
 																												forKeys:orderedNumbers];
 	kRUConditionalReturn_ReturnValueFalse((orderedDictionary_staticConstructor == nil), YES);
 
 	// instanceConstructor
-	RUOrderedMutableDictionary* orderedDictionary_instanceConstructor = [[RUOrderedMutableDictionary alloc]initWithObjects:orderedNumbers
+	RUOrderedMutableDictionary<NSNumber*,NSNumber*>* const orderedDictionary_instanceConstructor = [[RUOrderedMutableDictionary alloc]initWithObjects:orderedNumbers
 																												   forKeys:orderedNumbers];
 	kRUConditionalReturn_ReturnValueFalse((orderedDictionary_instanceConstructor == nil), YES);
 
 	// mutable copy
-	RUOrderedMutableDictionary* orderedDictionary_instanceConstructor_mutableCopy = [orderedDictionary_instanceConstructor mutableCopy];
+	RUOrderedMutableDictionary<NSNumber*,NSNumber*>* const orderedDictionary_instanceConstructor_mutableCopy = [orderedDictionary_instanceConstructor mutableCopy];
 	kRUConditionalReturn_ReturnValueFalse((orderedDictionary_instanceConstructor_mutableCopy == nil), YES);
 
-	NSArray<RUOrderedDictionary*>* orderedDictionariesToTest = @[
-																 orderedMutableDictionary_looping,
-																 orderedDictionary_staticConstructor,
-																 orderedDictionary_instanceConstructor,
-																 orderedDictionary_instanceConstructor_mutableCopy,
-																 ];
+	NSMutableArray<RUOrderedMutableDictionary<NSNumber*,NSNumber*>*>* const orderedDictionariesToTest = [NSMutableArray<RUOrderedMutableDictionary<NSNumber*,NSNumber*>*> array];
+	[orderedDictionariesToTest addObject:orderedMutableDictionary_looping];
+	[orderedDictionariesToTest addObject:orderedDictionary_staticConstructor];
+	[orderedDictionariesToTest addObject:orderedDictionary_instanceConstructor];
+	[orderedDictionariesToTest addObject:orderedDictionary_instanceConstructor_mutableCopy];
 
-	for (RUOrderedMutableDictionary* orderedDictionaryToTest in orderedDictionariesToTest)
-	{
-		kRUConditionalReturn_ReturnValueFalse(([self RUOrderedMutableDictionary_performUnitTestOn:orderedDictionaryToTest
-																		  againstKeyAndValueArray:orderedNumbers
-																						lastValue:lastValue
-																					   startValue:startValue] == false), YES);
-	}
+	__block BOOL orderedDictionariesToTest_failedUnitTest = NO;
+	[orderedDictionariesToTest enumerateObjectsUsingBlock:^(RUOrderedMutableDictionary<NSNumber *,NSNumber *> * _Nonnull orderedDictionaryToTest, NSUInteger idx, BOOL * _Nonnull stop) {
+		if ([self RUOrderedMutableDictionary_performUnitTestOn:orderedDictionaryToTest
+									   againstKeyAndValueArray:orderedNumbers
+													 lastValue:lastValue
+													startValue:startValue] == false)
+		{
+			orderedDictionariesToTest_failedUnitTest = YES;
+			*stop = YES;
+		}
+	}];
 
-	// copy
-	RUOrderedDictionary* orderedDictionary_instanceConstructor_copy = [orderedDictionary_instanceConstructor copy];
+	kRUConditionalReturn_ReturnValueFalse(orderedDictionariesToTest_failedUnitTest == YES, YES);
+
+	/* Test a copy. */
+	RUOrderedDictionary* const orderedDictionary_instanceConstructor_copy = [orderedDictionary_instanceConstructor copy];
 	kRUConditionalReturn_ReturnValueFalse((orderedDictionary_instanceConstructor_copy == nil), YES);
 	kRUConditionalReturn_ReturnValueFalse([RUOrderedDictionary RUOrderedDictionary_performUnitTestOn:orderedDictionary_instanceConstructor_copy
 																			 againstKeyAndValueArray:orderedNumbers
@@ -273,7 +278,7 @@
 
 	__block NSInteger lastKeyNumber = NSNotFound;
 
-	void (^reset_lastKeyNumber)() = ^{
+	void (^reset_lastKeyNumber)(void) = ^{
 		lastKeyNumber = NSNotFound;
 	};
 

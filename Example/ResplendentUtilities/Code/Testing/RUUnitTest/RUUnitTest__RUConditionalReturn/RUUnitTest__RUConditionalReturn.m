@@ -95,7 +95,7 @@
 {
 	[self setErrorMessage:nil];
 
-	NSMutableArray<void (^)()>* unitTestBlocks_checkErrorMessageAfterEach = [NSMutableArray<void(^)()> array];
+	NSMutableArray<void (^)(void)>* unitTestBlocks_checkErrorMessageAfterEach = [NSMutableArray<void(^)(void)> array];
 
 	/*
 	 Add tests

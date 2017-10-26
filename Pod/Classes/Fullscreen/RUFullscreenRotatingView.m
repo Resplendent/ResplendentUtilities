@@ -206,13 +206,13 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 
 -(void)hideAnimated:(BOOL)animated completion:(void(^)(BOOL didHide))completion
 {
-    void (^hideAnimation)() = ^{
+    void (^hideAnimation)(void) = ^{
         [_shadowView setAlpha:0.0f];
         [self transitionToOrientation:UIInterfaceOrientationPortrait animated:animated];
         [self performHideAnimation];
     };
 
-    void (^finishHide)() = ^{
+    void (^finishHide)(void) = ^{
         [self removeFromSuperview];
         _state = RUFullscreenRotatingViewStateHiding;
 

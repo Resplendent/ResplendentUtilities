@@ -44,10 +44,10 @@
 }
 
 #define RUSynthesizeShowFunctionDeclarationForViewWithCompletion(methodName) \
--(void)show##methodName:(BOOL)show animated:(BOOL)animated completion:(void(^)())completion
+-(void)show##methodName:(BOOL)show animated:(BOOL)animated completion:(void(^)(void))completion
 
 #define RUSynthesizeFadingShowFunctionForViewWithCompletion(methodName, view) \
--(void)show##methodName:(BOOL)show animated:(BOOL)animated completion:(void(^)())completion \
+-(void)show##methodName:(BOOL)show animated:(BOOL)animated completion:(void(^)(void))completion \
 { \
 if (animated) \
 { \

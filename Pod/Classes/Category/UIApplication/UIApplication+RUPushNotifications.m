@@ -15,7 +15,9 @@
 
 @interface UIApplication (_RUPushNotifications)
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_8_0
 @property (nonatomic, readonly) RU_UIApplication_RemoteNotificationsType() ruRemoteTypesToRegisterFor;
+#endif
 
 -(BOOL)ruOpenDeviceSettingsPage;
 
@@ -27,12 +29,14 @@
 
 @implementation UIApplication (_RUPushNotifications)
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_8_0
 -(RU_UIApplication_RemoteNotificationsType())ruRemoteTypesToRegisterFor
 {
 	return (RU_UIApplication_RemoteNotificationsType(Badge) |
 			RU_UIApplication_RemoteNotificationsType(Sound) |
 			RU_UIApplication_RemoteNotificationsType(Alert));
 }
+#endif
 
 -(BOOL)ruOpenDeviceSettingsPage
 {
@@ -70,7 +74,8 @@
 	}
 	else
 	{
-		return (self.enabledRemoteNotificationTypes == self.ruRemoteTypesToRegisterFor);
+		NSAssert(false, @"unhandled");
+		return NO;
 	}
 #else
 	return (self.enabledRemoteNotificationTypes == self.ruTypesToRegisterFor);
@@ -96,7 +101,7 @@
 		}
 		else
 		{
-			[self registerForRemoteNotificationTypes:self.ruRemoteTypesToRegisterFor];
+			NSAssert(false, @"unhandled");
 		}
 #else
 		[self registerForRemoteNotificationTypes:self.ruTypesToRegisterFor];

@@ -78,7 +78,7 @@
 }
 
 #pragma mark - Public Display Content methods
--(void)showInView:(UIView*)presenterView completion:(void(^)())completion
+-(void)showInView:(UIView*)presenterView completion:(void(^)(void))completion
 {
     if (presenterView == nil)
 	{
@@ -119,7 +119,7 @@
     }];
 }
 
--(void)dismiss:(BOOL)animate completion:(void(^)())completion
+-(void)dismiss:(BOOL)animate completion:(void(^)(void))completion
 {
 	if (self.isTransitioning)
 	{
