@@ -53,7 +53,7 @@ __attribute__((constructor)) static void ru_UIFont_RUHelveticaNeue_initializeSom
 		}
 	}
 	
-	NSAssert(font != nil, @"couldn't create font of type %li and size %f",type,size);
+	NSAssert(font != nil, @"couldn't create font of type %li and size %f",(long)type,size);
 
 	kRUConditionalReturn_ReturnValueNil([font.fontName isEqualToString:fontName] == false, YES);
 	
@@ -136,7 +136,7 @@ __attribute__((constructor)) static void ru_UIFont_RUHelveticaNeue_initializeSom
 			break;
 	}
 
-	NSAssert(false, @"unhandled type %li",type);
+	NSAssert(false, @"unhandled type %li",(long)type);
 	return nil;
 }
 
