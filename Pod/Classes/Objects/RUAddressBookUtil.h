@@ -11,8 +11,8 @@
 @class RUAddressBookUtilImageRequest;
 
 typedef void (^RUAddressBookUtilAskForPermissionsCompletionBlock)(BOOL alreadyAsked, BOOL granted);
-typedef id (^RUAddressBookUtilCreateObjectWithDictBlock)(NSDictionary* properites,NSUInteger contactIndex);
-typedef void (^RUAddressBookUtilGetImageDataBlock)(NSData* imageData,RUAddressBookUtilImageRequest* request);
+typedef id _Nonnull (^RUAddressBookUtilCreateObjectWithDictBlock)(NSDictionary* _Nonnull properites, NSUInteger contactIndex);
+typedef void (^RUAddressBookUtilGetImageDataBlock)(NSData* _Nonnull imageData,RUAddressBookUtilImageRequest* _Nonnull request);
 
 typedef enum {
     RUAddressBookUtilImageRequestStateNone = 0,
@@ -22,19 +22,20 @@ typedef enum {
     RUAddressBookUtilImageRequestStateCanceled = 300,
 }RUAddressBookUtilImageRequestState;
 
-//++++Image load request interface
+
+
+
+
+/* Image load request interface */
 @interface RUAddressBookUtilImageRequest : NSObject
 
-//@property (nonatomic, readonly) BOOL canceled;
-//@property (nonatomic, readonly) BOOL fetching;
-@property (nonatomic, readonly) RUAddressBookUtilImageRequestState state;
-@property (nonatomic, readonly) RUAddressBookUtilGetImageDataBlock completionBlock;
-@property (nonatomic, readonly) CFIndex contactIndex;
+@property (nonatomic, readonly, assign) RUAddressBookUtilImageRequestState state;
+@property (nonatomic, readonly, strong, nullable) RUAddressBookUtilGetImageDataBlock completionBlock;
+@property (nonatomic, readonly, assign) CFIndex contactIndex;
 
 -(void)cancel;
 
 @end
-//----
 
 
 
@@ -48,16 +49,30 @@ typedef enum
     kRUAddressBookUtilPhonePropertyTypeImage
 }kRUAddressBookUtilPhonePropertyType;
 
+
+
+
+
 @interface RUAddressBookUtil : NSObject
 
-+(void)askUserForPermissionWithCompletion:(RUAddressBookUtilAskForPermissionsCompletionBlock)completion;
+#pragma mark - askUserForPermission
++(void)askUserForPermissionWithCompletion:(nullable RUAddressBookUtilAskForPermissionsCompletionBlock)completion;
 
-+(NSDictionary*)getArraysFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties;
-+(NSArray*)getContactsPhoneNumbersArray;
+#pragma mark - getFromAddressBook
+/**
+ Gets contacts values from the address book given the types passed in.
 
-//+(NSArray*)getDictionariesFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties;
-+(NSArray*)getObjectsFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties objectCreationBlock:(RUAddressBookUtilCreateObjectWithDictBlock)objectCreationBlock;
+ @param phoneProperties An array of numbers. Each number should be a valid `kRUAddressBookUtilPhonePropertyType` integer.
+ @return Get back a dictionary where each value from `phoneProperties` is a key, and the value is the array of
+ */
++(nullable NSDictionary<NSString*,NSArray<NSString*>*>*)getArraysFromAddressBookWithPhonePropertyTypes:(nullable NSArray<NSNumber*>*)phoneProperties;
 
-+(RUAddressBookUtilImageRequest*)getImageDataFromAddressBookForContactIndex:(CFIndex)contactIndex completion:(RUAddressBookUtilGetImageDataBlock)completion;
++(nullable NSArray*)getContactsPhoneNumbersArray;
+
++(nullable NSArray<id>*)getObjectsFromAddressBookWithPhonePropertyTypes:(nullable NSArray<NSNumber*>*)phoneProperties
+													objectCreationBlock:(nonnull RUAddressBookUtilCreateObjectWithDictBlock)objectCreationBlock;
+
++(nullable RUAddressBookUtilImageRequest*)getImageDataFromAddressBookForContactIndex:(CFIndex)contactIndex
+																		  completion:(nonnull RUAddressBookUtilGetImageDataBlock)completion;
 
 @end

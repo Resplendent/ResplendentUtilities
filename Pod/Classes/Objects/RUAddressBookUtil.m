@@ -7,32 +7,38 @@
 //
 
 #import "RUAddressBookUtil.h"
-#import <AddressBook/AddressBook.h>
 #import "RUDLog.h"
 #import "RUConstants.h"
+#import "NSString+RUMacros.h"
+#import "RUConditionalReturn.h"
+#import "NSBundle+RUPListGetters.h"
+
+#import <AddressBook/AddressBook.h>
 #import <UIKit/UIKit.h>
 
 
 
 
 
-typedef enum {
-    RUAddressBookUtilABMultiValueRefTypeUnknown,
-    RUAddressBookUtilABMultiValueRefTypeNSString,
-    RUAddressBookUtilABMultiValueRefTypeArray,
-    RUAddressBookUtilABMultiValueRefTypeData
-}RUAddressBookUtilABMultiValueRefType;
+typedef NS_ENUM(NSInteger, RUAddressBookUtilABMultiValueRefType) {
+	RUAddressBookUtilABMultiValueRefType_Unknown,
+	RUAddressBookUtilABMultiValueRefType_NSString,
+	RUAddressBookUtilABMultiValueRefType_Array,
+	RUAddressBookUtilABMultiValueRefType_Data,
+
+	RUAddressBookUtilABMultiValueRefType__first		= RUAddressBookUtilABMultiValueRefType_NSString,
+	RUAddressBookUtilABMultiValueRefType__last		= RUAddressBookUtilABMultiValueRefType_Data,
+};
 
 
 
 
 
-NSString* const kRUAddressBookUtilHasAskedUserForContacts = @"kRUAddressBookUtilHasAskedUserForContacts";
+kRUDefineNSStringConstant(kRUAddressBookUtilHasAskedUserForContacts);
 
 //++++ RUAddressBookUtilImageRequestQueue
 const char * kRUAddressBookUtilGetImageDataQueueLabel = "RUAddressBookUtil.RUAddressBookUtilImageRequestQueue.getImageDataQueueLabel";
 const char * kRUAddressBookUtilManageQueueArrayLabel = "RUAddressBookUtil.RUAddressBookUtilImageRequestQueue.manageQueueArrayLabel";
-//static dispatch_queue_t getImageDataQueue;
 
 
 
@@ -47,8 +53,8 @@ const char * kRUAddressBookUtilManageQueueArrayLabel = "RUAddressBookUtil.RUAddr
     RUAddressBookUtilImageRequest* _currentImageRequest;
 }
 
--(void)addRequestToQueue:(RUAddressBookUtilImageRequest*)request;
--(void)removeRequestFromQueue:(RUAddressBookUtilImageRequest*)request;
+-(void)addRequestToQueue:(nonnull RUAddressBookUtilImageRequest*)request;
+-(void)removeRequestFromQueue:(nonnull RUAddressBookUtilImageRequest*)request;
 -(void)clearCurrentRequestAndCheckForNextRequest;
 -(void)checkForNextRequest;
 -(void)runCurrentRequest;
@@ -66,8 +72,8 @@ const char * kRUAddressBookUtilManageQueueArrayLabel = "RUAddressBookUtil.RUAddr
 
 -(id)initWithContactIndex:(CFIndex)contactIndex queue:(RUAddressBookUtilImageRequestQueue*)queue completionBlock:(RUAddressBookUtilGetImageDataBlock)completionBlock;
 
-//Synchronously loads image data, so should be done with thread competency. Will throw exception if request is already fetching
--(NSData*)fetchImageData;
+/* Synchronously loads image data, so should be done with thread competency. Will throw exception if request is already fetching. */
+-(nullable NSData*)fetchImageData;
 
 @end
 
@@ -98,7 +104,8 @@ static NSMutableArray* sharedInstances;
 
 +(NSData*)imageDataFromAddressBookForContactIndex:(CFIndex)contactIndex;
 
-+(ABAddressBookRef)currentAddressBook;
+//+(ABAddressBookRef)currentAddressBook;
++(void)currentAddressBook:(ABAddressBookRef*)addressBookRef;
 
 @end
 
@@ -145,39 +152,67 @@ id kRUAddressBookUtilPersonPropertyForPhonePropertyType(ABRecordRef person,kRUAd
 {
     switch (abMultiValueRefTypeForPersonWithPropertyType(type))
     {
-        case RUAddressBookUtilABMultiValueRefTypeNSString:
-            return (__bridge NSArray*)ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType(type));
+        case RUAddressBookUtilABMultiValueRefType_NSString:
+		{
+			CFTypeRef const recordRef = ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType(type));
+			kRUConditionalReturn_ReturnValueNil(recordRef == nil, NO);
+
+			NSArray* const records = [NSArray arrayWithArray:(__bridge NSArray*)recordRef];
+			CFRelease(recordRef);
+			return records;
+		}
             break;
 
-        case RUAddressBookUtilABMultiValueRefTypeArray:
-            return kRUAddressBookUtilPersonPropertiesArray(ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType(type)));
+        case RUAddressBookUtilABMultiValueRefType_Array:
+		{
+			ABMultiValueRef const personPropertiesRecord = ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType(type));
+			id property = kRUAddressBookUtilPersonPropertiesArray(personPropertiesRecord);
+			CFRelease(personPropertiesRecord);
+
+			return property;
+		}
             break;
 
-        case RUAddressBookUtilABMultiValueRefTypeData:
-            return (__bridge NSData*)ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+        case RUAddressBookUtilABMultiValueRefType_Data:
+		{
+			CFDataRef const dataRef = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+			kRUConditionalReturn_ReturnValueNil(dataRef == nil, NO);
+
+			NSData* const data = [NSData dataWithData:(__bridge NSData*)dataRef];
+			CFRelease(dataRef);
+			return data;
+		}
             break;
 
-        case RUAddressBookUtilABMultiValueRefTypeUnknown:
+        case RUAddressBookUtilABMultiValueRefType_Unknown:
             break;
     }
-    
+
     @throw [NSException exceptionWithName:NSInvalidArgumentException reason:RUStringWithFormat(@"unhandled property type %i",type) userInfo:nil];
 }
 
 NSMutableArray* kRUAddressBookUtilPersonPropertiesArray(ABMultiValueRef personPropertiesRecord)
 {
-    CFIndex personPropertiesCount = ABMultiValueGetCount(personPropertiesRecord);
-    
-    NSMutableArray* personPropertiesArray = [NSMutableArray array];
-    
+    CFIndex const personPropertiesCount = ABMultiValueGetCount(personPropertiesRecord);
+
+    NSMutableArray* const personPropertiesArray = [NSMutableArray array];
+
     for (int phoneIndex = 0; phoneIndex < personPropertiesCount; phoneIndex++)
     {
-        NSString* personProperty = (__bridge NSString*)ABMultiValueCopyValueAtIndex(personPropertiesRecord, phoneIndex);
-        
-        if (personProperty)
-            [personPropertiesArray addObject:personProperty];
+		CFTypeRef const personProperty_ref = ABMultiValueCopyValueAtIndex(personPropertiesRecord, phoneIndex);
+		if (personProperty_ref)
+		{
+			NSString* const personProperty = (__bridge NSString*)personProperty_ref;
+
+			if (personProperty)
+			{
+				[personPropertiesArray addObject:personProperty];
+			}
+
+			CFRelease(personProperty_ref);
+		}
     }
-    
+
     return personPropertiesArray;
 }
 
@@ -187,20 +222,20 @@ RUAddressBookUtilABMultiValueRefType abMultiValueRefTypeForPersonWithPropertyTyp
     {
         case kRUAddressBookUtilPhonePropertyTypeEmail:
         case kRUAddressBookUtilPhonePropertyTypePhone:
-            return RUAddressBookUtilABMultiValueRefTypeArray;
+            return RUAddressBookUtilABMultiValueRefType_Array;
 
         case kRUAddressBookUtilPhonePropertyTypeFirstName:
         case kRUAddressBookUtilPhonePropertyTypeLastName:
-            return RUAddressBookUtilABMultiValueRefTypeNSString;
+            return RUAddressBookUtilABMultiValueRefType_NSString;
             break;
 
         case kRUAddressBookUtilPhonePropertyTypeImage:
-            return RUAddressBookUtilABMultiValueRefTypeData;
+            return RUAddressBookUtilABMultiValueRefType_Data;
             break;
     }
 
     RUDLog(@"unknown property type %i",propertyType);
-    return RUAddressBookUtilABMultiValueRefTypeUnknown;
+    return RUAddressBookUtilABMultiValueRefType_Unknown;
 }
 
 ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePropertyType propertyType)
@@ -233,74 +268,69 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
 #pragma mark - Image methods
 +(NSData*)imageDataFromAddressBookForContactIndex:(CFIndex)contactIndex
 {
-    ABAddressBookRef addressbook = self.currentAddressBook;
-    
-    if(addressbook)
-    {
-        if ([self usesNativePermissions])
-        {
-            if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
-            {
-                // The user has previously given access, add the contact
-            }
-            else
-            {
-                RUDLog(@"previously rejected permission");
-                return nil;
-            }
-        }
-        else
-        {
-            NSNumber* askedPermission = [self cachedHasAskedUserForContacts];
-            
-            if (!(askedPermission && askedPermission.boolValue))
-                return nil;
-        }
-        
-        CFArrayRef people =  ABAddressBookCopyArrayOfAllPeople(addressbook);
-        
-        if (people)
-        {
-            ABRecordRef person = CFArrayGetValueAtIndex(people, contactIndex);
-            
-            if (person)
-            {
-                NSData* imageData = kRUAddressBookUtilPersonPropertyForPhonePropertyType(person, kRUAddressBookUtilPhonePropertyTypeImage);
-                
-                return imageData;
-            }
-            else
-            {
-                RUDLog(@"no person");
-                return nil;
-            }
-        }
-        else
-        {
-            RUDLog(@"no people");
-            return nil;
-        }
-    }
-    else
-    {
-        RUDLog(@"no address book");
-        return nil;
-    }
+	if ([self usesNativePermissions])
+	{
+		if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+		{
+			// The user has previously given access, add the contact
+		}
+		else
+		{
+			RUDLog(@"previously rejected permission");
+			return nil;
+		}
+	}
+	else
+	{
+		NSNumber* askedPermission = [self cachedHasAskedUserForContacts];
+		
+		if (!(askedPermission && askedPermission.boolValue))
+			return nil;
+	}
+
+	ABAddressBookRef addressbook = nil;
+	[self currentAddressBook:&addressbook];
+	kRUConditionalReturn_ReturnValueNil(addressbook == nil, YES);
+
+//	ABAddressBookRef const addressbook = [self currentAddressBook];
+//	kRUConditionalReturn_ReturnValueNil(addressbook == nil, YES);
+
+	CFArrayRef const people = ABAddressBookCopyArrayOfAllPeople(addressbook);
+	CFRelease(addressbook);
+	kRUConditionalReturn_ReturnValueNil(people == nil, YES);
+
+	if (people)
+	{
+		ABRecordRef const person = CFArrayGetValueAtIndex(people, contactIndex);
+		CFRelease(people);
+		
+		if (person)
+		{
+			NSData* const imageData = kRUAddressBookUtilPersonPropertyForPhonePropertyType(person, kRUAddressBookUtilPhonePropertyTypeImage);
+			
+			return imageData;
+		}
+		else
+		{
+			RUDLog(@"no person");
+			return nil;
+		}
+	}
+	else
+	{
+		RUDLog(@"no people");
+		return nil;
+	}
 }
 
-+(RUAddressBookUtilImageRequest*)getImageDataFromAddressBookForContactIndex:(CFIndex)contactIndex completion:(RUAddressBookUtilGetImageDataBlock)completion
++(nullable RUAddressBookUtilImageRequest*)getImageDataFromAddressBookForContactIndex:(CFIndex)contactIndex
+																		  completion:(nonnull RUAddressBookUtilGetImageDataBlock)completion
 {
-    if (completion)
-    {
-        RUAddressBookUtilImageRequest* request = [[RUAddressBookUtilImageRequest alloc] initWithContactIndex:contactIndex queue:getImageDataRequestQueue completionBlock:completion];
-        [getImageDataRequestQueue addRequestToQueue:request];
-        return request;
-    }
-    else
-    {
-        RUDLog(@"must pass completion block");
-        return nil;
-    }
+	kRUConditionalReturn_ReturnValueNil(completion == nil, YES);
+
+	RUAddressBookUtilImageRequest* const request = [[RUAddressBookUtilImageRequest alloc] initWithContactIndex:contactIndex queue:getImageDataRequestQueue completionBlock:completion];
+	[getImageDataRequestQueue addRequestToQueue:request];
+	return request;
 }
 
 #pragma mark - Static methods
@@ -309,289 +339,275 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
     return (&ABAddressBookRequestAccessWithCompletion != nil);
 }
 
-+(void)askUserForPermissionWithCompletion:(RUAddressBookUtilAskForPermissionsCompletionBlock)completion
+#pragma mark - askUserForPermission
++(void)askUserForPermissionWithCompletion:(nullable RUAddressBookUtilAskForPermissionsCompletionBlock)completion
 {
-    ABAddressBookRef addressbook = self.currentAddressBook;
+	RUAddressBookUtilAskForPermissionsCompletionBlock const completion_with_check = ^(BOOL alreadyAsked, BOOL granted) {
+		kRUConditionalReturn(completion == nil, NO);
+
+		completion(alreadyAsked,granted);
+	};
 
     if ([self usesNativePermissions])
     {
         if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)
         {
+			ABAddressBookRef addressbook = nil;
+			[self currentAddressBook:&addressbook];
+			kRUConditionalReturn(addressbook == nil, YES);
+
             ABAddressBookRequestAccessWithCompletion(addressbook, ^(bool granted, CFErrorRef error) {
-                // First time access has been granted, add the contact
-//                if (granted)
-//                    RUDLog(@"got permission");
-//                else
-//                    RUDLog(@"rejected");
-                
-                if (completion)
-                    completion(NO,granted);
+				CFRelease(addressbook);
+				completion_with_check(NO,granted);
             });
         }
         else
         {
             if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
             {
-                if (completion)
-                    completion(YES,YES);
+				completion_with_check(YES,YES);
             }
             else
             {
-                if (completion)
-                    completion(YES,NO);
+				completion_with_check(YES,NO);
             }
         }
     }
     else
     {
-        NSNumber* hasAskedForPermission = [self cachedHasAskedUserForContacts];
+        NSNumber* const hasAskedForPermission = [self cachedHasAskedUserForContacts];
         if (hasAskedForPermission)
         {
-            completion(YES,hasAskedForPermission.boolValue);
+            completion_with_check(YES,hasAskedForPermission.boolValue);
         }
         else
         {
             RUAddressBookUtil* addressBookUtilInstance = [RUAddressBookUtil new];
             [addressBookUtilInstance setAlertViewCompletion:completion];
-            
+
             if (!sharedInstances)
                 sharedInstances = [NSMutableArray array];
-            
+
             [sharedInstances addObject:addressBookUtilInstance];
-            
-            [[[UIAlertView alloc] initWithTitle:@"Albumatic Would Like to Access Your Contacts" message:nil delegate:addressBookUtilInstance cancelButtonTitle:@"Don't Allow" otherButtonTitles:@"OK", nil]show];
+
+            [[[UIAlertView alloc] initWithTitle:RUStringWithFormat(@"%@ Would Like to Access Your Contacts",[[NSBundle mainBundle] ru_CFBundleName])
+										message:nil
+									   delegate:addressBookUtilInstance
+							  cancelButtonTitle:@"Don't Allow"
+							  otherButtonTitles:@"OK", nil]
+			 show];
         }
     }
 }
 
-//phoneProperties must be an array of ABPropertyID types
-+(NSDictionary*)getArraysFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties
+#pragma mark - getFromAddressBook
++(nullable NSDictionary<NSString*,NSArray<NSString*>*>*)getArraysFromAddressBookWithPhonePropertyTypes:(nullable NSArray<NSNumber*>*)phoneProperties
 {
-    ABAddressBookRef addressbook = self.currentAddressBook;
+	if ([self usesNativePermissions])
+	{
+		if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
+		{
+			// The user has previously given access, add the contact
+			RUDLog(@"has permission");
+		}
+		else
+		{
+			RUDLog(@"previously rejected permission");
+			return nil;
+		}
+	}
+	else
+	{
+		NSNumber* const askedPermission = [self cachedHasAskedUserForContacts];
 
-    if(addressbook)
-    {
-        if ([self usesNativePermissions])
-        {
-            if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
-            {
-                // The user has previously given access, add the contact
-                RUDLog(@"has permission");
-            }
-            else
-            {
-                RUDLog(@"previously rejected permission");
-                return nil;
-            }
-        }
-        else
-        {
-            NSNumber* askedPermission = [self cachedHasAskedUserForContacts];
+		if (!(askedPermission && askedPermission.boolValue))
+			return nil;
+	}
 
-            if (!(askedPermission && askedPermission.boolValue))
-                return nil;
-        }
+	ABAddressBookRef addressbook = nil;
+	[self currentAddressBook:&addressbook];
+	kRUConditionalReturn_ReturnValueNil(addressbook == nil, YES);
 
-        NSMutableDictionary* arrayDictionary = [NSMutableDictionary dictionaryWithCapacity:phoneProperties.count];
-        
-        //Add the arrays to the dictionary
-        for (NSNumber* phoneProperty in phoneProperties)
-        {
-            [arrayDictionary setObject:[NSMutableArray array] forKey:phoneProperty.stringValue];
-        }
+	CFArrayRef const people =  ABAddressBookCopyArrayOfAllPeople(addressbook);
+	CFRelease(addressbook);
+	kRUConditionalReturn_ReturnValueNil(people == nil, YES);
 
-        CFArrayRef people =  ABAddressBookCopyArrayOfAllPeople(addressbook);
+	NSMutableDictionary<NSString*,NSMutableArray<NSString*>*>* const arrayDictionary_mutable = [NSMutableDictionary<NSString*,NSMutableArray<NSString*>*> dictionaryWithCapacity:phoneProperties.count];
 
-        if( people )
-        {
-            CFIndex contactCount = CFArrayGetCount(people);
-            
-            for (int contantIndex = 0; contantIndex < contactCount; contantIndex++)
-            {
-                ABRecordRef person = CFArrayGetValueAtIndex(people, contantIndex);
+	[phoneProperties enumerateObjectsUsingBlock:^(NSNumber * _Nonnull phoneProperty, NSUInteger idx, BOOL * _Nonnull stop) {
+		[arrayDictionary_mutable setObject:[NSMutableArray<NSString*> array] forKey:phoneProperty.stringValue];
+	}];
 
-                for (NSNumber* phoneProperty in phoneProperties)
-                {
-                    NSMutableArray* propArray = [arrayDictionary objectForKey:phoneProperty.stringValue];
-                    ABMultiValueRef personProperties = (ABMultiValueRef)ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType((kRUAddressBookUtilPhonePropertyType)phoneProperty.integerValue));
 
-                    NSString* personProperty = nil;
+	if (people)
+	{
+		CFIndex const contactCount = CFArrayGetCount(people);
 
-                    CFIndex personPropertiesCount = ABMultiValueGetCount(personProperties);
+		for (int contact_index = 0; contact_index < contactCount; contact_index++)
+		{
+			ABRecordRef const person = CFArrayGetValueAtIndex(people, contact_index);
 
-                    for (int phoneIndex = 0; phoneIndex < personPropertiesCount; phoneIndex++)
-                    {
-                        personProperty = (__bridge NSString*)ABMultiValueCopyValueAtIndex(personProperties, phoneIndex);
+			if (person != nil)
+			{
+				for (NSNumber* phoneProperty in phoneProperties)
+				{
+					NSMutableArray<NSString*>* const propArray = [arrayDictionary_mutable objectForKey:phoneProperty.stringValue];
+					CFTypeRef const person_record = ABRecordCopyValue(person, abMultiValueRefForPersonWithPropertyType((kRUAddressBookUtilPhonePropertyType)phoneProperty.integerValue));
+					ABMultiValueRef const personProperties = (ABMultiValueRef)person_record;
 
-                        if (personProperty)
-                            [propArray addObject:personProperty];
-                    }
-                }
-            }
-        }
+					CFIndex const personPropertiesCount = ABMultiValueGetCount(personProperties);
 
-        return arrayDictionary;
-    }
-    else
-    {
-        RUDLog(@"no address book");
-        return nil;
-    }
+					for (int phoneIndex = 0; phoneIndex < personPropertiesCount; phoneIndex++)
+					{
+						CFTypeRef const personProperty_ref = ABMultiValueCopyValueAtIndex(personProperties, phoneIndex);
+						if (personProperty_ref)
+						{
+							NSString* const personProperty = (__bridge NSString*)personProperty_ref;
+
+							if (personProperty)
+							{
+								[propArray addObject:personProperty];
+							}
+
+							CFRelease(personProperty_ref);
+						}
+					}
+
+					CFRelease(person_record);
+				}
+			}
+		}
+
+		CFRelease(people);
+	}
+
+	NSMutableDictionary<NSString*,NSArray<NSString*>*>* const arrayDictionary = [NSMutableDictionary<NSString*,NSArray<NSString*>*> dictionaryWithCapacity:phoneProperties.count];
+	[arrayDictionary_mutable enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSMutableArray<NSString *> * _Nonnull obj, BOOL * _Nonnull stop) {
+		[arrayDictionary setObject:[NSArray<NSString*> arrayWithArray:obj] forKey:key];
+	}];
+
+	return [NSDictionary<NSString*,NSArray<NSString*>*> dictionaryWithDictionary:arrayDictionary];
 }
 
-+(NSArray*)getObjectsFromAddressBookWithPhonePropertyTypes:(NSArray*)phoneProperties objectCreationBlock:(RUAddressBookUtilCreateObjectWithDictBlock)objectCreationBlock
++(nullable NSArray<id>*)getObjectsFromAddressBookWithPhonePropertyTypes:(nullable NSArray<NSNumber*>*)phoneProperties
+													objectCreationBlock:(nonnull RUAddressBookUtilCreateObjectWithDictBlock)objectCreationBlock
 {
-    if (!objectCreationBlock)
-    {
-        RUDLog(@"need to pass non nil objectCreationBlock");
-        return nil;
-    }
+	kRUConditionalReturn_ReturnValueNil(objectCreationBlock == nil, YES);
 
-    ABAddressBookRef addressbook = self.currentAddressBook;
-    
-    if(addressbook)
-    {
-        if ([self usesNativePermissions])
-        {
-            if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized)
-            {
-                // The user has previously given access, add the contact
-            }
-            else
-            {
-                RUDLog(@"previously rejected permission");
-                return nil;
-            }
-        }
-        else
-        {
-            NSNumber* askedPermission = [self cachedHasAskedUserForContacts];
-            
-            if (!(askedPermission && askedPermission.boolValue))
-                return nil;
-        }
+	if ([self usesNativePermissions])
+	{
+		/* If the user hasn't previously authorized, then don't add the contact. */
+		kRUConditionalReturn_ReturnValueNil(ABAddressBookGetAuthorizationStatus() != kABAuthorizationStatusAuthorized, NO);
+	}
+	else
+	{
+		NSNumber* const askedPermission = [self cachedHasAskedUserForContacts];
 
-        NSMutableArray* objectsArray = [NSMutableArray array];
+		kRUConditionalReturn_ReturnValueNil((askedPermission == nil)
+											||
+											(askedPermission.boolValue == false),
+											NO);
+	}
 
-        CFArrayRef people =  ABAddressBookCopyArrayOfAllPeople(addressbook);
+	ABAddressBookRef addressbook = nil;
+	[self currentAddressBook:&addressbook];
+	kRUConditionalReturn_ReturnValueNil(addressbook == nil, YES);
 
-        if( people )
-        {
-            CFIndex contactCount = CFArrayGetCount(people);
+	CFArrayRef const people =  ABAddressBookCopyArrayOfAllPeople(addressbook);
+	CFRelease(addressbook);
+	kRUConditionalReturn_ReturnValueNil(people == nil, YES);
 
-            for (int contantIndex = 0; contantIndex < contactCount; contantIndex++)
-            {
-                ABRecordRef person = CFArrayGetValueAtIndex(people, contantIndex);
+	NSMutableArray<id>* const objectsArray = [NSMutableArray array];
+	CFIndex const contactCount = CFArrayGetCount(people);
 
-                NSMutableDictionary* personPropertyDictionary = [NSMutableDictionary dictionary];
-                for (NSNumber* phoneProperty in phoneProperties)
-                {
-                    id personPropertiesRecord = kRUAddressBookUtilPersonPropertyForPhonePropertyType(person, (kRUAddressBookUtilPhonePropertyType)phoneProperty.integerValue);
+	for (int contact_index = 0;
+		 contact_index < contactCount;
+		 contact_index++)
+	{
+		ABRecordRef const person = CFArrayGetValueAtIndex(people, contact_index);
 
-                    if (personPropertiesRecord)
-                    {
-                        [personPropertyDictionary setObject:personPropertiesRecord forKey:phoneProperty.stringValue];
-                    }
-                }
+		NSMutableDictionary* const personPropertyDictionary = [NSMutableDictionary dictionary];
+		[phoneProperties enumerateObjectsUsingBlock:^(NSNumber * _Nonnull phoneProperty, NSUInteger idx, BOOL * _Nonnull stop) {
+			id const personPropertiesRecord = kRUAddressBookUtilPersonPropertyForPhonePropertyType(person, (kRUAddressBookUtilPhonePropertyType)phoneProperty.integerValue);
 
-                id object = objectCreationBlock(personPropertyDictionary,contantIndex);
-                if (object)
-                {
-                    [objectsArray addObject:object];
-                }
-            }
-        }
+			if (personPropertiesRecord)
+			{
+				[personPropertyDictionary setObject:personPropertiesRecord forKey:phoneProperty.stringValue];
+			}
+		}];
 
-        return objectsArray;
-    }
-    else
-    {
-        RUDLog(@"no address book");
-        return nil;
-    }
+		id const object = objectCreationBlock(personPropertyDictionary,contact_index);
+		if (object)
+		{
+			[objectsArray addObject:object];
+		}
+	}
+
+	CFRelease(people);
+
+	return objectsArray;
 }
 
-+(NSArray*)getContactsPhoneNumbersArray
++(nullable NSArray*)getContactsPhoneNumbersArray
 {
-    NSMutableArray* phoneNumbersArray = [NSMutableArray array];
-    ABAddressBookRef addressbook = self.currentAddressBook;
-    if( addressbook )
-    {
-        ABRecordRef source = ABAddressBookCopyDefaultSource(addressbook);
-        CFArrayRef people = ABAddressBookCopyArrayOfAllPeopleInSource(addressbook, source);
+	ABAddressBookRef addressbook = nil;
+	[self currentAddressBook:&addressbook];
+	kRUConditionalReturn_ReturnValueNil(addressbook == nil, YES);
 
-        if( people )
-        {
-            CFIndex contactCount = CFArrayGetCount(people);
-            
-            for (int contantIndex = 0; contantIndex < contactCount; contantIndex++)
-            {
-                ABRecordRef person = CFArrayGetValueAtIndex(people, contantIndex);
-                ABMultiValueRef phoneNumbers = (ABMultiValueRef)ABRecordCopyValue(person, kABPersonPhoneProperty);
-                NSString* phoneNumber = nil;
+	ABRecordRef const source = ABAddressBookCopyDefaultSource(addressbook);
+	CFRelease(addressbook);
+	kRUConditionalReturn_ReturnValueNil(source == nil, NO);
 
-                for (int phoneIndex = 0; phoneIndex < ABMultiValueGetCount(phoneNumbers); phoneIndex++)
-                {
-//                    phoneNumberLabel = (__bridge NSString *)ABMultiValueCopyLabelAtIndex(phoneNumbers, phoneIndex);
-//                    RUDLog(@"phoneNumberLabel: %@",phoneNumberLabel);
-                    phoneNumber = (__bridge NSString*)ABMultiValueCopyValueAtIndex(phoneNumbers, phoneIndex);
+	CFArrayRef const people = ABAddressBookCopyArrayOfAllPeopleInSource(addressbook, source);
+	CFRelease(source);
+	kRUConditionalReturn_ReturnValueNil(people == nil, NO);
 
-                    if (phoneNumber)
-                        [phoneNumbersArray addObject:phoneNumber];
+	NSMutableArray* const phoneNumbersArray = [NSMutableArray array];
 
-//                    if([phoneNumberLabel isEqualToString:(NSString *)kABPersonPhoneMobileLabel]) {
-//                        NSLog(@"mobile:");
-//                        RUDLog(@"phoneNumber: %@",phoneNumber);
-//                    } else if ([phoneNumberLabel isEqualToString:(NSString*)kABPersonPhoneIPhoneLabel]) {
-//                        NSLog(@"iphone:");
-//                    } else if ([phoneNumberLabel isEqualToString:(NSString*)kABPersonPhonePagerLabel]) {
-//                        NSLog(@"pager:");
-//                    }
-                }
-            }
-        }
-    }
+	CFIndex const contactCount = CFArrayGetCount(people);
 
-    RUDLog(@"phoneNumbersArray: %@",phoneNumbersArray);
+	for (int contact_index = 0; contact_index < contactCount; contact_index++)
+	{
+		ABRecordRef const person = CFArrayGetValueAtIndex(people, contact_index);
+		ABMultiValueRef const phoneNumbers = (ABMultiValueRef)ABRecordCopyValue(person, kABPersonPhoneProperty);
+
+		for (int phoneIndex = 0; phoneIndex < ABMultiValueGetCount(phoneNumbers); phoneIndex++)
+		{
+			CFTypeRef const phoneNumber_ref = ABMultiValueCopyValueAtIndex(phoneNumbers, phoneIndex);
+			if (phoneNumber_ref)
+			{
+				NSString* const phoneNumber = (__bridge NSString*)phoneNumber_ref;
+
+				if (phoneNumber)
+				{
+					[phoneNumbersArray addObject:phoneNumber];
+				}
+
+				CFRelease(phoneNumber_ref);
+			}
+		}
+
+		CFRelease(phoneNumbers);
+	}
+
+	CFRelease(people);
+
     return phoneNumbersArray;
 }
 
 #pragma mark - Getters
-+(ABAddressBookRef)currentAddressBook
++(void)currentAddressBook:(ABAddressBookRef*)addressBookRef
 {
-    ABAddressBookRef addressBookRef = NULL;
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
-    addressBookRef = ABAddressBookCreate();
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
+	*addressBookRef = ABAddressBookCreate();
 #else
-    CFErrorRef error = nil;
-    //        NSError *error = nil;
-    addressBookRef = ABAddressBookCreateWithOptions(NULL, (CFErrorRef *)&error);
-    if (error)
-    {
-        RUDLog(@"error: %@",error);
-    }
+	CFErrorRef error = nil;
+	*addressBookRef = ABAddressBookCreateWithOptions(NULL, (CFErrorRef *)&error);
+	if (error)
+	{
+		RUDLog(@"error: %@",error);
+	}
 #endif
-
-//    ABAddressBookRef addressBookRef = NULL;
-//    if (&ABAddressBookCreateWithOptions)
-//    {
-//        CFErrorRef error = nil;
-//        //        NSError *error = nil;
-//        addressBookRef = ABAddressBookCreateWithOptions(NULL, (CFErrorRef *)&error);
-//        if (error)
-//        {
-//            RUDLog(@"error: %@",error);
-//        }
-//    }
-//    else
-//    {
-//#pragma GCC diagnostic push
-//#pragma GCC diagnostic ignored "-Wdeprecated"
-//        addressBookRef = ABAddressBookCreate();
-//#pragma GCC diagnostic pop
-//    }
-
-    return addressBookRef;
 }
 
 @end
@@ -747,79 +763,69 @@ BOOL kRUAddressBookUtilImageRequestQueueRequestHasAcceptableRemoveState(RUAddres
 }
 
 #pragma mark - Public methods
--(void)removeRequestFromQueue:(RUAddressBookUtilImageRequest*)request
+-(void)removeRequestFromQueue:(nonnull RUAddressBookUtilImageRequest*)request
 {
-    if (request)
-    {
-        switch (request.state)
-        {
-            case RUAddressBookUtilImageRequestStatePending:
-            case RUAddressBookUtilImageRequestStateFetching:
-            case RUAddressBookUtilImageRequestStateNone:
-                [NSException raise:NSInternalInconsistencyException format:@"request %@ must be canceled or finished if it wants to be removed from queue %@",request,self];
-                break;
+	kRUConditionalReturn(request == nil, YES);
 
-            case RUAddressBookUtilImageRequestStateCanceled:
-            case RUAddressBookUtilImageRequestStateFinished:
-            {
-                dispatch_async(_manageQueueArrayQueue, ^{
-                    NSInteger requestIndex = [_queueArray indexOfObject:request];
-                    if (requestIndex == NSNotFound)
-                    {
-                        RUDLog(@"Already removed");
-                    }
-                    else
-                    {
-//                        RUDLog(@"removing %@ from queue: %@",request,_queueArray);
-                        [_queueArray removeObjectAtIndex:requestIndex];
-//                        RUDLog(@"removedfrom queue: %@",_queueArray);
-                    }
-                });
-            }
-                break;
-        }
-    }
-    else
-    {
-        RUDLog(@"shouldn't pass nil request");
-    }
+	switch (request.state)
+	{
+		case RUAddressBookUtilImageRequestStatePending:
+		case RUAddressBookUtilImageRequestStateFetching:
+		case RUAddressBookUtilImageRequestStateNone:
+			[NSException raise:NSInternalInconsistencyException format:@"request %@ must be canceled or finished if it wants to be removed from queue %@",request,self];
+			break;
+
+		case RUAddressBookUtilImageRequestStateCanceled:
+		case RUAddressBookUtilImageRequestStateFinished:
+		{
+			dispatch_async(_manageQueueArrayQueue, ^{
+				NSInteger requestIndex = [_queueArray indexOfObject:request];
+				if (requestIndex == NSNotFound)
+				{
+					RUDLog(@"Already removed");
+				}
+				else
+				{
+					//                        RUDLog(@"removing %@ from queue: %@",request,_queueArray);
+					[_queueArray removeObjectAtIndex:requestIndex];
+					//                        RUDLog(@"removedfrom queue: %@",_queueArray);
+				}
+			});
+		}
+			break;
+	}
 }
 
--(void)addRequestToQueue:(RUAddressBookUtilImageRequest*)request
+-(void)addRequestToQueue:(nonnull RUAddressBookUtilImageRequest*)request
 {
-    if (request)
-    {
-        dispatch_async(_manageQueueArrayQueue, ^{
-            switch (request.state)
-            {
-                case RUAddressBookUtilImageRequestStateNone:
-                    [request setState:RUAddressBookUtilImageRequestStatePending];
-                    [_queueArray addObject:request];
-                    [self checkForNextRequest];
-                    break;
+	kRUConditionalReturn(request == nil, YES);
 
-                case RUAddressBookUtilImageRequestStatePending:
-                    RUDLog(@"already pending");
-                    break;
+	dispatch_async(_manageQueueArrayQueue, ^{
+		switch (request.state)
+		{
+			case RUAddressBookUtilImageRequestStateNone:
+				[request setState:RUAddressBookUtilImageRequestStatePending];
+				[_queueArray addObject:request];
+				[self checkForNextRequest];
+				break;
 
-                case RUAddressBookUtilImageRequestStateCanceled:
-//                    RUDLog(@"request was canceled");
-                    break;
+			case RUAddressBookUtilImageRequestStatePending:
+				RUDLog(@"already pending");
+				break;
 
-                case RUAddressBookUtilImageRequestStateFetching:
-                    RUDLog(@"already fetching");
-                    break;
+			case RUAddressBookUtilImageRequestStateCanceled:
+				//                    RUDLog(@"request was canceled");
+				break;
 
-                case RUAddressBookUtilImageRequestStateFinished:
-                    RUDLog(@"already finished");
-                    break;
-            }
-        });
-    }
-    else
-    {
-        RUDLog(@"shouldn't pass a nil request");
-    }
+			case RUAddressBookUtilImageRequestStateFetching:
+				RUDLog(@"already fetching");
+				break;
+
+			case RUAddressBookUtilImageRequestStateFinished:
+				RUDLog(@"already finished");
+				break;
+		}
+	});
 }
 
 -(void)clearCurrentRequestAndCheckForNextRequest
@@ -851,11 +857,11 @@ BOOL kRUAddressBookUtilImageRequestQueueRequestHasAcceptableRemoveState(RUAddres
                     case RUAddressBookUtilImageRequestStateFinished:
                         RUDLog(@"already finished");
                         break;
-                        
+
                     case RUAddressBookUtilImageRequestStateFetching:
                         RUDLog(@"already fetching");
                         break;
-                        
+
                     case RUAddressBookUtilImageRequestStateNone:
                         RUDLog(@"none");
                         break;
@@ -883,7 +889,7 @@ BOOL kRUAddressBookUtilImageRequestQueueRequestHasAcceptableRemoveState(RUAddres
             if (_currentImageRequest.state == RUAddressBookUtilImageRequestStateFinished)
             {
                 __block RUAddressBookUtilImageRequest* currentImageRequest = _currentImageRequest;
-                
+
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (currentImageRequest.state == RUAddressBookUtilImageRequestStateFinished)
                     {
@@ -900,7 +906,7 @@ BOOL kRUAddressBookUtilImageRequestQueueRequestHasAcceptableRemoveState(RUAddres
             {
                 RUDLog(@"request: '%@' queue: '%@'",_currentImageRequest,self);
             }
-            
+
             [self clearCurrentRequestAndCheckForNextRequest];
         }
         else
