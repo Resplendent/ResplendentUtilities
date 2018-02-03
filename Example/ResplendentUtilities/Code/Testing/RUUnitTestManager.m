@@ -297,6 +297,10 @@ RUEnumIsInRangeSynthesization_autoFirstLast(RUUnitTestManager__testType)
 		case RUScreenHeightType_736:
 			return 736.0f;
 			break;
+			
+		case RUScreenHeightType_812:
+			return 812.0f;
+			break;
 
 		case RUScreenHeightType_iPad_512:
 			return 512.0f;
