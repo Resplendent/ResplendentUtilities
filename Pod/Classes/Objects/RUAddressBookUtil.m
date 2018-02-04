@@ -48,10 +48,13 @@ const char * kRUAddressBookUtilManageQueueArrayLabel = "RUAddressBookUtil.RUAddr
 {
     dispatch_queue_t _getImageDataQueue;
     dispatch_queue_t _manageQueueArrayQueue;
-
-    NSMutableArray* _queueArray;
-    RUAddressBookUtilImageRequest* _currentImageRequest;
 }
+
+#pragma mark - queueArray
+@property (nonatomic, strong, nullable) NSMutableArray<RUAddressBookUtilImageRequest*>* queueArray;
+
+#pragma mark - currentImageRequest
+@property (nonatomic, strong, nullable) RUAddressBookUtilImageRequest* currentImageRequest;
 
 -(void)addRequestToQueue:(nonnull RUAddressBookUtilImageRequest*)request;
 -(void)removeRequestFromQueue:(nonnull RUAddressBookUtilImageRequest*)request;
@@ -735,7 +738,7 @@ ABPropertyID abMultiValueRefForPersonWithPropertyType(kRUAddressBookUtilPhonePro
 
 -(NSString *)description
 {
-    return RUStringWithFormat(@"%@ at '%p' queueArray: '%@'",NSStringFromClass(self.class),self,_queueArray);
+    return RUStringWithFormat(@"%@ at '%p' queueArray: '%@'",NSStringFromClass(self.class),self,self.queueArray);
 }
 
 //+(void)removeRequestFromQueue:(RUAddressBookUtilImageRequest*)request
@@ -778,8 +781,9 @@ BOOL kRUAddressBookUtilImageRequestQueueRequestHasAcceptableRemoveState(RUAddres
 		case RUAddressBookUtilImageRequestStateCanceled:
 		case RUAddressBookUtilImageRequestStateFinished:
 		{
+			__weak typeof(self) const self_weak = self;
 			dispatch_async(_manageQueueArrayQueue, ^{
-				NSInteger requestIndex = [_queueArray indexOfObject:request];
+				NSInteger requestIndex = [self_weak.queueArray indexOfObject:request];
 				if (requestIndex == NSNotFound)
 				{
 					RUDLog(@"Already removed");
@@ -787,7 +791,7 @@ BOOL kRUAddressBookUtilImageRequestQueueRequestHasAcceptableRemoveState(RUAddres
 				else
 				{
 					//                        RUDLog(@"removing %@ from queue: %@",request,_queueArray);
-					[_queueArray removeObjectAtIndex:requestIndex];
+					[self_weak.queueArray removeObjectAtIndex:requestIndex];
 					//                        RUDLog(@"removedfrom queue: %@",_queueArray);
 				}
 			});
@@ -800,12 +804,13 @@ BOOL kRUAddressBookUtilImageRequestQueueRequestHasAcceptableRemoveState(RUAddres
 {
 	kRUConditionalReturn(request == nil, YES);
 
+	__weak typeof(self) const self_weak = self;
 	dispatch_async(_manageQueueArrayQueue, ^{
 		switch (request.state)
 		{
 			case RUAddressBookUtilImageRequestStateNone:
 				[request setState:RUAddressBookUtilImageRequestStatePending];
-				[_queueArray addObject:request];
+				[self_weak.queueArray addObject:request];
 				[self checkForNextRequest];
 				break;
 
@@ -830,23 +835,24 @@ BOOL kRUAddressBookUtilImageRequestQueueRequestHasAcceptableRemoveState(RUAddres
 
 -(void)clearCurrentRequestAndCheckForNextRequest
 {
-    [self removeRequestFromQueue:_currentImageRequest];
-    _currentImageRequest = nil;
+    [self removeRequestFromQueue:self.currentImageRequest];
+    self.currentImageRequest = nil;
     [self checkForNextRequest];
 }
 
 -(void)checkForNextRequest
 {
+	__weak typeof(self) const self_weak = self;
     dispatch_async(_manageQueueArrayQueue, ^{
-        if (!_currentImageRequest)
+        if (!self_weak.currentImageRequest)
         {
-            if (_queueArray.count)
+            if (self_weak.queueArray.count)
             {
-                RUAddressBookUtilImageRequest* firstRequest = [_queueArray objectAtIndex:0];
+                RUAddressBookUtilImageRequest* firstRequest = [self_weak.queueArray objectAtIndex:0];
                 switch (firstRequest.state)
                 {
                     case RUAddressBookUtilImageRequestStatePending:
-                        _currentImageRequest = firstRequest;
+                        self_weak.currentImageRequest = firstRequest;
                         [self runCurrentRequest];
                         break;
 
@@ -881,14 +887,15 @@ BOOL kRUAddressBookUtilImageRequestQueueRequestHasAcceptableRemoveState(RUAddres
 
 -(void)runCurrentRequest
 {
+	__weak typeof(self) const self_weak = self;
     dispatch_async(_getImageDataQueue, ^{
-        if (_currentImageRequest.state == RUAddressBookUtilImageRequestStatePending)
+        if (self_weak.currentImageRequest.state == RUAddressBookUtilImageRequestStatePending)
         {
             //Fetch and process image data
-            NSData* imageData = [_currentImageRequest fetchImageData];
-            if (_currentImageRequest.state == RUAddressBookUtilImageRequestStateFinished)
+            NSData* imageData = [self_weak.currentImageRequest fetchImageData];
+            if (self_weak.currentImageRequest.state == RUAddressBookUtilImageRequestStateFinished)
             {
-                __block RUAddressBookUtilImageRequest* currentImageRequest = _currentImageRequest;
+                __block RUAddressBookUtilImageRequest* currentImageRequest = self_weak.currentImageRequest;
 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (currentImageRequest.state == RUAddressBookUtilImageRequestStateFinished)
@@ -898,20 +905,20 @@ BOOL kRUAddressBookUtilImageRequestQueueRequestHasAcceptableRemoveState(RUAddres
                     }
                     else
                     {
-                        RUDLog(@"request: '%@' queue: '%@'",_currentImageRequest,self);
+                        RUDLog(@"request: '%@' queue: '%@'",self_weak.currentImageRequest,self_weak);
                     }
                 });
             }
             else
             {
-                RUDLog(@"request: '%@' queue: '%@'",_currentImageRequest,self);
+                RUDLog(@"request: '%@' queue: '%@'",self_weak.currentImageRequest,self_weak);
             }
 
             [self clearCurrentRequestAndCheckForNextRequest];
         }
         else
         {
-            RUDLog(@"request: '%@' queue: '%@'",_currentImageRequest,self);
+            RUDLog(@"request: '%@' queue: '%@'",self_weak.currentImageRequest,self_weak);
             [self clearCurrentRequestAndCheckForNextRequest];
         }
     });
