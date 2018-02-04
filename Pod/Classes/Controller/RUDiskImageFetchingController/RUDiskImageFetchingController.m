@@ -23,7 +23,7 @@
 @interface RUDiskImageFetchingController ()
 
 #if kRUDiskImageFetchingController__UseFileManager
-@property (nonatomic, readonly) NSFileManager* fileManager;
+@property (nonatomic, strong, nullable) NSFileManager* fileManager;
 #endif
 
 @property (nonatomic, readonly) NSCache* memCache;
@@ -58,9 +58,10 @@
 
 		_queue = dispatch_queue_create(nameSpace, DISPATCH_QUEUE_SERIAL);
 
+		__weak typeof(self) const self_weak = self;
 #if kRUDiskImageFetchingController__UseFileManager
 		dispatch_sync(self.queue, ^{
-			_fileManager = [NSFileManager new];
+			[self_weak setFileManager:[NSFileManager new]];
 		});
 #endif
 
