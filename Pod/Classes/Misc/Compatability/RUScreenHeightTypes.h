@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, RUScreenHeightType) {
 	RUScreenHeightType_568,
 	RUScreenHeightType_667,
 	RUScreenHeightType_736,
+	RUScreenHeightType_812,
 
 	RUScreenHeightType_iPad_512,
 	RUScreenHeightType_iPad_1024,
@@ -42,6 +43,7 @@ static inline RUScreenHeightType RUScreenHeightType__forCurrentScreen()
 	  @(568.0f)		: @(RUScreenHeightType_568),
 	  @(667.0f)		: @(RUScreenHeightType_667),
 	  @(736.0f)		: @(RUScreenHeightType_736),
+	  @(812.0f)		: @(RUScreenHeightType_812),
 
 	  @(512.0f)		: @(RUScreenHeightType_iPad_512),
 	  @(1024.0f)	: @(RUScreenHeightType_iPad_1024),
