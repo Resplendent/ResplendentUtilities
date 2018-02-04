@@ -85,12 +85,13 @@ static NSMutableDictionary* fetchedImages;
     [self cancelFetch];
     _delegate = delegate;
     _canceled = NO;
-    
+	
+	__weak typeof(self) const self_weak = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self cancelFetchClearDelegate:NO];
-        _canceled = NO;
+        self_weak.canceled = NO;
         
-        UIImage* cachedImage = [RUAsynchronousUIImageRequest cachedImageForCacheName:_cacheName];
+        UIImage* cachedImage = [RUAsynchronousUIImageRequest cachedImageForCacheName:self_weak.cacheName];
         
         if (cachedImage)
         {
@@ -103,12 +104,12 @@ static NSMutableDictionary* fetchedImages;
         else
         {
             //        _delegate = delegate;
-            _connection = [[NSURLConnection alloc]
-                           initWithRequest:[NSURLRequest requestWithURL:_url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10.0]
+            self_weak.connection = [[NSURLConnection alloc]
+                           initWithRequest:[NSURLRequest requestWithURL:self_weak.url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10.0]
                            delegate:self
                            startImmediately:NO];
-            [_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
-            [_connection start];
+            [self_weak.connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+            [self_weak.connection start];
         }
     });
 }
@@ -116,17 +117,17 @@ static NSMutableDictionary* fetchedImages;
 #pragma mark - Public methods
 -(void)cancelFetchClearDelegate:(BOOL)clearDelegate
 {
-    _canceled = YES;
+    [self setCanceled:YES];
     
     if (clearDelegate)
     {
-        _delegate = nil;
+        [self setDelegate:nil];
     }
     
-    if (_connection)
+    if (self.connection)
     {
-        [_connection cancel];
-        _connection = nil;
+        [self.connection cancel];
+        [self setConnection:nil];
     }
 }
 
@@ -138,18 +139,18 @@ static NSMutableDictionary* fetchedImages;
 #pragma mark - NSURLConnectionDataDelegate methods
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    if (_connection == connection)
+    if (self.connection == connection)
     {
-        if (!_data)
-            _data = [[NSMutableData alloc] initWithCapacity:2024];
-        
-        [_data appendData:data];
+        if (!self.data)
+			[self setData:[[NSMutableData alloc] initWithCapacity:2024]];
+			
+        [self.data appendData:data];
     }
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    if (_connection == connection)
+    if (self.connection == connection)
     {
         [self ruAsynchronousUIImageFinishedWithImage:nil error:error];
     }
@@ -157,16 +158,16 @@ static NSMutableDictionary* fetchedImages;
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    if (_connection == connection)
+    if (self.connection == connection)
     {
         if (!self.canceled)
         {
-            UIImage* image = [[UIImage alloc] initWithData:_data];
+            UIImage* image = [[UIImage alloc] initWithData:self.data];
             
             if (image)
-                [fetchedImages setObject:image forKey:_cacheName];
+                [fetchedImages setObject:image forKey:self.cacheName];
             else
-                [fetchedImages removeObjectForKey:_cacheName];
+                [fetchedImages removeObjectForKey:self.cacheName];
             
 #if kAsynchronousUIImageRequestEnableShowLastImage
             if (showLastImageView)

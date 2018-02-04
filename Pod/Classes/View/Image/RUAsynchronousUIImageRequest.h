@@ -10,27 +10,31 @@
 #import "RUAsynchronousUIImageRequestProtocols.h"
 
 @interface RUAsynchronousUIImageRequest : NSObject <NSURLConnectionDataDelegate>
-{
-    NSURLConnection*    _connection;
-    NSMutableData*      _data;
-    NSString*           _cacheName;
-}
 
-@property (nonatomic, readonly) NSURL* url;
-@property (nonatomic, readonly) BOOL canceled;
-@property (nonatomic, readonly, assign) id<RUAsynchronousUIImageRequestDelegate> delegate;
+#pragma mark - connection
+@property (nonatomic, strong, nullable) NSURLConnection* connection;
 
--(id)initAndFetchWithURLString:(NSString*)urlString delegate:(id<RUAsynchronousUIImageRequestDelegate>)delegate;
--(id)initAndFetchWithURLString:(NSString*)urlString cacheName:(NSString*)cacheName delegate:(id<RUAsynchronousUIImageRequestDelegate>)delegate;
+#pragma mark - data
+@property (nonatomic, strong, nullable) NSMutableData* data;
 
--(id)initAndFetchWithURL:(NSURL*)url delegate:(id<RUAsynchronousUIImageRequestDelegate>)delegate;
--(id)initAndFetchWithURL:(NSURL*)url cacheName:(NSString*)cacheName delegate:(id<RUAsynchronousUIImageRequestDelegate>)delegate;
+#pragma mark - cacheName
+@property (nonatomic, strong, nullable) NSString* cacheName;
+
+@property (nonatomic, strong, nullable) NSURL* url;
+@property (nonatomic, assign) BOOL canceled;
+@property (nonatomic, assign, nullable) id<RUAsynchronousUIImageRequestDelegate> delegate;
+
+-(nullable id)initAndFetchWithURLString:(nullable NSString*)urlString delegate:(nullable id<RUAsynchronousUIImageRequestDelegate>)delegate;
+-(nullable id)initAndFetchWithURLString:(nullable NSString*)urlString cacheName:(nullable NSString*)cacheName delegate:(nullable id<RUAsynchronousUIImageRequestDelegate>)delegate;
+
+-(nullable id)initAndFetchWithURL:(nullable NSURL*)url delegate:(nullable id<RUAsynchronousUIImageRequestDelegate>)delegate;
+-(nullable id)initAndFetchWithURL:(nullable NSURL*)url cacheName:(nullable NSString*)cacheName delegate:(nullable id<RUAsynchronousUIImageRequestDelegate>)delegate;
 
 -(void)cancelFetch;
 
-+(void)removeCacheImageByCacheName:(NSString*)cacheName;
++(void)removeCacheImageByCacheName:(nullable NSString*)cacheName;
 +(void)clearCache;
 
-+(UIImage*)cachedImageForCacheName:(NSString*)cacheName;
++(nullable UIImage*)cachedImageForCacheName:(nullable NSString*)cacheName;
 
 @end
