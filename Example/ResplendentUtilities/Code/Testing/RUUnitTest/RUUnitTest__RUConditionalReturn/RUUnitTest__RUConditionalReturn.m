@@ -119,7 +119,7 @@
 	/*
 	 Perform tests
 	 */
-	[unitTestBlocks_checkErrorMessageAfterEach enumerateObjectsUsingBlock:^(void (^ _Nonnull unitTestBlock)(), NSUInteger idx, BOOL * _Nonnull stop) {
+	[unitTestBlocks_checkErrorMessageAfterEach enumerateObjectsUsingBlock:^(void (^ _Nonnull unitTestBlock)(void), NSUInteger idx, BOOL * _Nonnull stop) {
 		NSAssert(self.errorMessage == nil, @"Should be entering each test with a null error message.");
 
 		unitTestBlock();

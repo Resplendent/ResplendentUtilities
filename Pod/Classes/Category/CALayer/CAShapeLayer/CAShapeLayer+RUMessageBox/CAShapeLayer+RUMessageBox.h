@@ -14,8 +14,9 @@
 
 @interface CAShapeLayer (RUMessageBox)
 
-+(CAShapeLayer*)ruMessageBoxMaskForRect:(CGRect)rect arrowHeight:(CGFloat)arrowHeight arrowWidth:(CGFloat)arrowWidth arrowLeftPadding:(CGFloat)arrowLeftPadding cornerRadius:(CGFloat)cornerRadius;
-+(CGMutablePathRef)ruMessageBoxPathForRect:(CGRect)rect arrowHeight:(CGFloat)arrowHeight arrowWidth:(CGFloat)arrowWidth arrowLeftPadding:(CGFloat)arrowLeftPadding cornerRadius:(CGFloat)cornerRadius;
-+(CGRect)ruMessageBoxShellRectForRect:(CGRect)rect arrowHeight:(CGFloat)arrowHeight cornerRadius:(CGFloat)cornerRadius;
+#pragma mark - messageBox
++(nonnull CAShapeLayer*)ru_messageBoxMask_with_rect:(CGRect)rect arrowHeight:(CGFloat)arrowHeight arrowWidth:(CGFloat)arrowWidth arrowLeftPadding:(CGFloat)arrowLeftPadding cornerRadius:(CGFloat)cornerRadius;
++(nonnull UIBezierPath*)ru_messageBoxPath_with_rect:(CGRect)rect arrowHeight:(CGFloat)arrowHeight arrowWidth:(CGFloat)arrowWidth arrowLeftPadding:(CGFloat)arrowLeftPadding cornerRadius:(CGFloat)cornerRadius;
++(CGRect)ru_messageBoxShellRect_with_rect:(CGRect)rect arrowHeight:(CGFloat)arrowHeight;
 
 @end
