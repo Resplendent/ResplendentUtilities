@@ -155,12 +155,13 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 
         _state = RUFullscreenRotatingViewStateMovingToShow;
 
+		__weak typeof(self) const self_weak = self;
         [UIView animateWithDuration:self.showAnimationDuration animations:^{
-            [self performShowAnimation];
+            [self_weak performShowAnimation];
         } completion:^(BOOL finished) {
-            _state = RUFullscreenRotatingViewStateShowing;
-            [self setOrientationNotificationsEnabled:YES];
-            [self didShow];
+			[self_weak setState:RUFullscreenRotatingViewStateShowing];
+            [self_weak setOrientationNotificationsEnabled:YES];
+            [self_weak didShow];
             if (completion)
                 completion(YES);
         }];
@@ -206,19 +207,20 @@ CGFloat const kRUFullscreenRotatingViewDefaultRotationAnimationDuration = 0.25;
 
 -(void)hideAnimated:(BOOL)animated completion:(void(^)(BOOL didHide))completion
 {
+	__weak typeof(self) const self_weak = self;
     void (^hideAnimation)(void) = ^{
-        [_shadowView setAlpha:0.0f];
-        [self transitionToOrientation:UIInterfaceOrientationPortrait animated:animated];
-        [self performHideAnimation];
+		[self_weak.shadowView setAlpha:0.0f];
+        [self_weak transitionToOrientation:UIInterfaceOrientationPortrait animated:animated];
+        [self_weak performHideAnimation];
     };
 
     void (^finishHide)(void) = ^{
-        [self removeFromSuperview];
-        _state = RUFullscreenRotatingViewStateHiding;
+        [self_weak removeFromSuperview];
+		[self_weak setState:RUFullscreenRotatingViewStateHiding];
 
-        [self didHide];
+        [self_weak didHide];
         
-		[self.hideDelegate fullscreenRotatingView:self didHide:animated];
+		[self_weak.hideDelegate fullscreenRotatingView:self_weak didHide:animated];
 
         if (completion)
             completion(YES);

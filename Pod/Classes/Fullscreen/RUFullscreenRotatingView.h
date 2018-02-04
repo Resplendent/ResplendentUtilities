@@ -25,14 +25,14 @@ typedef enum{
 
 
 @interface RUFullscreenRotatingView : UIView
-{
-    UIView* _shadowView;
-}
 
-@property (nonatomic, readonly) UIView* contentView;
-@property (nonatomic, readonly) UITapGestureRecognizer* contentViewTapToDismissGesture;
+#pragma mark - shadowView
+@property (nonatomic, strong, nullable) UIView* shadowView;
 
-@property (nonatomic, assign) id<RUFullscreenRotatingViewHideDelegate> hideDelegate;
+@property (nonatomic, readonly, nullable) UIView* contentView;
+@property (nonatomic, readonly, nullable) UITapGestureRecognizer* contentViewTapToDismissGesture;
+
+@property (nonatomic, assign, nullable) id<RUFullscreenRotatingViewHideDelegate> hideDelegate;
 
 @property (nonatomic, assign) BOOL forceLayoutSubviewsOnTransition;
 
@@ -40,7 +40,7 @@ typedef enum{
 @property (nonatomic, assign) NSTimeInterval hideAnimationDuration;
 @property (nonatomic, assign) NSTimeInterval rotationAnimationDuration;
 
-@property (nonatomic, readonly) RUFullscreenRotatingViewState state;
+@property (nonatomic, assign) RUFullscreenRotatingViewState state;
 
 @property (nonatomic, readonly) CGRect adjustedContentViewFrame;
 
@@ -48,10 +48,10 @@ typedef enum{
 @property (nonatomic, readonly) BOOL preparedToShow;
 @property (nonatomic, readonly) BOOL readyToHide;
 
--(void)showOnView:(UIView*)view completion:(void (^)(BOOL didShow))completion;
+-(void)showOnView:(nullable UIView*)view completion:(nullable void (^)(BOOL didShow))completion;
 
 -(void)hide;
--(void)hideAnimated:(BOOL)animated completion:(void(^)(BOOL didHide))completion;
+-(void)hideAnimated:(BOOL)animated completion:(nullable void(^)(BOOL didHide))completion;
 
 //Meant for subclassing, shouldn't be called directly. Subclasses must call their super
 -(void)willPerformShowAnimation;
