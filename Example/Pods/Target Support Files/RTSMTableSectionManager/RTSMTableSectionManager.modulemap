@@ -1,0 +1,6 @@
+framework module RTSMTableSectionManager {
+  umbrella header "RTSMTableSectionManager-umbrella.h"
+
+  export *
+  module * { export * }
+}

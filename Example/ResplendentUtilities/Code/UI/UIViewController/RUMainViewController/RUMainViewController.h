@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  RUMainViewController.h
 //  ResplendentUtilities
 //
 //  Created by Benjamin Maer on 6/7/16.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface RUMainViewController : UIViewController
 
 
 @end

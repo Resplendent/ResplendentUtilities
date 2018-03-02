@@ -23,11 +23,17 @@ typedef NS_ENUM(NSUInteger, RUGradientViewDirection) {
 
 @interface RUGradientView : UIView
 
+#pragma mark - gradientDirection
 @property (nonatomic, assign) RUGradientViewDirection gradientDirection;
 
-@property (nonatomic,strong) UIColor* startGradientColor;
-@property (nonatomic,strong) UIColor* endGradientColor;
+#pragma mark - startGradientColor
+@property (nonatomic, strong, nullable) IBInspectable UIColor* startGradientColor;
 
--(id)initWithStartGradientColor:(UIColor*)startGradientColor endGradientColor:(UIColor*)endGradientColor;
+#pragma mark - endGradientColor
+@property (nonatomic, strong, nullable) IBInspectable UIColor* endGradientColor;
+
+#pragma mark - init
+-(nullable instancetype)initWithStartGradientColor:(nullable UIColor*)startGradientColor
+								  endGradientColor:(nullable UIColor*)endGradientColor;
 
 @end
