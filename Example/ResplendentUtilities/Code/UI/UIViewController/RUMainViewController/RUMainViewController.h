@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  RUMainViewController.h
 //  ResplendentUtilities
 //
 //  Created by Benjamin Maer on 6/7/16.
@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
-
-@property (strong, nonatomic) UIWindow *window;
+@interface RUMainViewController : UIViewController
 
 
 @end

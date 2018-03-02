@@ -16,8 +16,10 @@
 
 @interface RUGradientView ()
 
-@property (nonatomic, readonly) BOOL readyToDrawGradient;
+#pragma mark - readyToDrawGradient
+-(BOOL)readyToDrawGradient;
 
+#pragma mark - gradient
 -(CGPoint)gradientStartPoint;
 -(CGPoint)gradientEndPoint;
 
@@ -29,40 +31,52 @@
 
 @implementation RUGradientView
 
+#pragma mark - UIView
 - (void)drawRect:(CGRect)rect
 {
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextRef const context = UIGraphicsGetCurrentContext();
     CGContextClearRect(context, self.bounds);
 
     [super drawRect:rect];
 
     [self ru_drawBackgroundColor:context];
 
-    if (self.readyToDrawGradient)
+    if ([self readyToDrawGradient])
     {
-        CGGradientRef gradientRef = CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(),(__bridge CFArrayRef) @[(id)_startGradientColor.CGColor, (id)_endGradientColor.CGColor], NULL);
+        CGGradientRef const gradientRef = CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(),(__bridge CFArrayRef) @[(id)_startGradientColor.CGColor, (id)_endGradientColor.CGColor], NULL);
         CGContextDrawLinearGradient(context, gradientRef, self.gradientStartPoint, self.gradientEndPoint, 0);
         CGGradientRelease(gradientRef);
-
     }
 }
 
-#pragma mark - Gradient Points
+#pragma mark - init
+-(nullable instancetype)initWithStartGradientColor:(nullable UIColor*)startGradientColor
+								  endGradientColor:(nullable UIColor*)endGradientColor
+{
+	if (self = [self init])
+	{
+		[self setStartGradientColor:startGradientColor];
+		[self setEndGradientColor:endGradientColor];
+	}
+	
+	return self;
+}
+
+#pragma mark - gradient
 -(CGPoint)gradientStartPoint
 {
     switch (self.gradientDirection)
     {
         case RUGradientViewDirectionVertical:
             return (CGPoint){CGRectGetWidth(self.bounds) / 2.0f,0};
+			break;
 
         case RUGradientViewDirectionHorizontal:
             return (CGPoint){0,CGRectGetHeight(self.bounds) / 2.0f};
-
-        default:
-            NSAssert(false, RUStringWithFormat(@"Unhandled gradientDirection %lu",(unsigned long)self.gradientDirection));
-            break;
+			break;
     }
 
+	NSAssert(false, RUStringWithFormat(@"Unhandled gradientDirection %lu",(unsigned long)self.gradientDirection));
     return CGPointZero;
 }
 
@@ -72,19 +86,18 @@
     {
         case RUGradientViewDirectionVertical:
             return (CGPoint){CGRectGetWidth(self.bounds) / 2.0f,CGRectGetHeight(self.bounds)};
+			break;
             
         case RUGradientViewDirectionHorizontal:
             return (CGPoint){CGRectGetWidth(self.bounds),CGRectGetHeight(self.bounds) / 2.0f};
-
-        default:
-            NSAssert(false, RUStringWithFormat(@"Unhandled gradientDirection %lu",(unsigned long)self.gradientDirection));
-            break;
+			break;
     }
 
+	NSAssert(false, RUStringWithFormat(@"Unhandled gradientDirection %lu",(unsigned long)self.gradientDirection));
     return CGPointZero;
 }
 
-#pragma mark - Setter methods
+#pragma mark - startGradientColor
 -(void)setStartGradientColor:(UIColor *)startGradientColor
 {
     if (self.startGradientColor == startGradientColor)
@@ -93,9 +106,12 @@
     _startGradientColor = startGradientColor;
 
     if (self.readyToDrawGradient)
-        [self setNeedsDisplay];
+	{
+		[self setNeedsDisplay];
+	}
 }
 
+#pragma mark - endGradientColor
 -(void)setEndGradientColor:(UIColor *)endGradientColor
 {
     if (self.endGradientColor == endGradientColor)
@@ -104,25 +120,15 @@
     _endGradientColor = endGradientColor;
 
     if (self.readyToDrawGradient)
-        [self setNeedsDisplay];
+	{
+		[self setNeedsDisplay];
+	}
 }
 
-#pragma mark - Getter methods
+#pragma mark - readyToDrawGradient
 -(BOOL)readyToDrawGradient
 {
     return (_startGradientColor && _endGradientColor);
-}
-
-#pragma mark - Static Constructors
--(id)initWithStartGradientColor:(UIColor*)startGradientColor endGradientColor:(UIColor*)endGradientColor
-{
-    if (self = [self init])
-    {
-        [self setStartGradientColor:startGradientColor];
-        [self setEndGradientColor:endGradientColor];
-    }
-
-    return self;
 }
 
 @end

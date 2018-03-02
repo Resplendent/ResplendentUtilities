@@ -13,13 +13,16 @@
 		D73BB6E31E3F9CE400F6BFA4 /* RUUnitTest__RUNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = D73BB6E21E3F9CE400F6BFA4 /* RUUnitTest__RUNotifications.m */; };
 		D73BB6E81E3F9D1700F6BFA4 /* RUUnitTest__RUConditionalReturn.m in Sources */ = {isa = PBXBuildFile; fileRef = D73BB6E71E3F9D1700F6BFA4 /* RUUnitTest__RUConditionalReturn.m */; };
 		D793CEE21D0785F000047A87 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D793CEE11D0785F000047A87 /* main.m */; };
-		D793CEE51D0785F000047A87 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D793CEE41D0785F000047A87 /* AppDelegate.m */; };
-		D793CEE81D0785F000047A87 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D793CEE71D0785F000047A87 /* ViewController.m */; };
 		D793CEED1D0785F000047A87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D793CEEC1D0785F000047A87 /* Assets.xcassets */; };
 		D793CEFD1D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = D793CEFA1D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.m */; };
 		D793CEFE1D07876D00047A87 /* RUUnitTestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D793CEFC1D07876D00047A87 /* RUUnitTestManager.m */; };
 		D793CF021D0789EB00047A87 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D793CEEE1D0785F000047A87 /* LaunchScreen.storyboard */; };
-		D793CF031D0789EB00047A87 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D793CEE91D0785F000047A87 /* Main.storyboard */; };
+		D7CA67D92049D2B200191FB4 /* RUMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CA67D72049D2B200191FB4 /* RUMainViewController.m */; };
+		D7CA67DB2049D2D800191FB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7CA67DA2049D2D800191FB4 /* Main.storyboard */; };
+		D7CA67DD2049D36900191FB4 /* RUMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7CA67DC2049D36900191FB4 /* RUMainViewController.xib */; };
+		D7EBF62A2049F5BE00E71A92 /* RUGradientViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7EBF6282049F5BE00E71A92 /* RUGradientViewController.m */; };
+		D7EBF62B2049F5BE00E71A92 /* RUGradientViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7EBF6292049F5BE00E71A92 /* RUGradientViewController.xib */; };
+		D7EBF6302049F76600E71A92 /* RUAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D7EBF62F2049F76600E71A92 /* RUAppDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,11 +39,6 @@
 		D73BB6E71E3F9D1700F6BFA4 /* RUUnitTest__RUConditionalReturn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUUnitTest__RUConditionalReturn.m; sourceTree = "<group>"; };
 		D793CEDD1D0785F000047A87 /* ResplendentUtilities.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ResplendentUtilities.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D793CEE11D0785F000047A87 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		D793CEE31D0785F000047A87 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		D793CEE41D0785F000047A87 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		D793CEE61D0785F000047A87 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		D793CEE71D0785F000047A87 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		D793CEEA1D0785F000047A87 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D793CEEC1D0785F000047A87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D793CEEF1D0785F000047A87 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D793CEF11D0785F000047A87 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -48,6 +46,15 @@
 		D793CEFA1D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUSynthesizeUserDefaultMethods_Testing.m; sourceTree = "<group>"; };
 		D793CEFB1D07876D00047A87 /* RUUnitTestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUUnitTestManager.h; sourceTree = "<group>"; };
 		D793CEFC1D07876D00047A87 /* RUUnitTestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUUnitTestManager.m; sourceTree = "<group>"; };
+		D7CA67D72049D2B200191FB4 /* RUMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUMainViewController.m; sourceTree = "<group>"; };
+		D7CA67D82049D2B200191FB4 /* RUMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUMainViewController.h; sourceTree = "<group>"; };
+		D7CA67DA2049D2D800191FB4 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		D7CA67DC2049D36900191FB4 /* RUMainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RUMainViewController.xib; sourceTree = "<group>"; };
+		D7EBF6272049F5BE00E71A92 /* RUGradientViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RUGradientViewController.h; sourceTree = "<group>"; };
+		D7EBF6282049F5BE00E71A92 /* RUGradientViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RUGradientViewController.m; sourceTree = "<group>"; };
+		D7EBF6292049F5BE00E71A92 /* RUGradientViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RUGradientViewController.xib; sourceTree = "<group>"; };
+		D7EBF62E2049F76600E71A92 /* RUAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUAppDelegate.h; sourceTree = "<group>"; };
+		D7EBF62F2049F76600E71A92 /* RUAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RUAppDelegate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,16 +146,12 @@
 		D793CEDF1D0785F000047A87 /* ResplendentUtilities */ = {
 			isa = PBXGroup;
 			children = (
-				D793CEE31D0785F000047A87 /* AppDelegate.h */,
-				D793CEE41D0785F000047A87 /* AppDelegate.m */,
 				D793CEEC1D0785F000047A87 /* Assets.xcassets */,
 				D793CEF71D07876D00047A87 /* Code */,
 				D793CEF11D0785F000047A87 /* Info.plist */,
 				D793CEEE1D0785F000047A87 /* LaunchScreen.storyboard */,
-				D793CEE91D0785F000047A87 /* Main.storyboard */,
+				D7CA67D42049D26100191FB4 /* Resources */,
 				D793CEE01D0785F000047A87 /* Supporting Files */,
-				D793CEE61D0785F000047A87 /* ViewController.h */,
-				D793CEE71D0785F000047A87 /* ViewController.m */,
 			);
 			path = ResplendentUtilities;
 			sourceTree = "<group>";
@@ -164,7 +167,9 @@
 		D793CEF71D07876D00047A87 /* Code */ = {
 			isa = PBXGroup;
 			children = (
+				D7EBF62C2049F76600E71A92 /* Classes */,
 				D793CEF81D07876D00047A87 /* Testing */,
+				D7CA67CE2049D1A500191FB4 /* UI */,
 			);
 			path = Code;
 			sourceTree = "<group>";
@@ -179,6 +184,76 @@
 				D793CEFC1D07876D00047A87 /* RUUnitTestManager.m */,
 			);
 			path = Testing;
+			sourceTree = "<group>";
+		};
+		D7CA67CE2049D1A500191FB4 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				D7CA67CF2049D1A500191FB4 /* UIViewController */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		D7CA67CF2049D1A500191FB4 /* UIViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D7EBF6262049F5AB00E71A92 /* RUGradientViewController */,
+				D7CA67D62049D2B200191FB4 /* RUMainViewController */,
+			);
+			path = UIViewController;
+			sourceTree = "<group>";
+		};
+		D7CA67D42049D26100191FB4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D7CA67D52049D26100191FB4 /* Storyboards */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D7CA67D52049D26100191FB4 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				D7CA67DA2049D2D800191FB4 /* Main.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		D7CA67D62049D2B200191FB4 /* RUMainViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D7CA67D82049D2B200191FB4 /* RUMainViewController.h */,
+				D7CA67D72049D2B200191FB4 /* RUMainViewController.m */,
+				D7CA67DC2049D36900191FB4 /* RUMainViewController.xib */,
+			);
+			path = RUMainViewController;
+			sourceTree = "<group>";
+		};
+		D7EBF6262049F5AB00E71A92 /* RUGradientViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D7EBF6272049F5BE00E71A92 /* RUGradientViewController.h */,
+				D7EBF6282049F5BE00E71A92 /* RUGradientViewController.m */,
+				D7EBF6292049F5BE00E71A92 /* RUGradientViewController.xib */,
+			);
+			path = RUGradientViewController;
+			sourceTree = "<group>";
+		};
+		D7EBF62C2049F76600E71A92 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				D7EBF62D2049F76600E71A92 /* RUAppDelegate */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		D7EBF62D2049F76600E71A92 /* RUAppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				D7EBF62E2049F76600E71A92 /* RUAppDelegate.h */,
+				D7EBF62F2049F76600E71A92 /* RUAppDelegate.m */,
+			);
+			path = RUAppDelegate;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -210,6 +285,7 @@
 		D793CED51D0785F000047A87 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = RU;
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Resplendent;
 				TargetAttributes = {
@@ -242,9 +318,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7CA67DD2049D36900191FB4 /* RUMainViewController.xib in Resources */,
 				D72DBE161D087E97004DD4D7 /* ResplendentUtilities.podspec in Resources */,
+				D7EBF62B2049F5BE00E71A92 /* RUGradientViewController.xib in Resources */,
+				D7CA67DB2049D2D800191FB4 /* Main.storyboard in Resources */,
 				D793CF021D0789EB00047A87 /* LaunchScreen.storyboard in Resources */,
-				D793CF031D0789EB00047A87 /* Main.storyboard in Resources */,
 				D72DBE141D087E97004DD4D7 /* LICENSE in Resources */,
 				D793CEED1D0785F000047A87 /* Assets.xcassets in Resources */,
 			);
@@ -278,10 +356,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-ResplendentUtilities/Pods-ResplendentUtilities-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/RTSMTableSectionManager/RTSMTableSectionManager.framework",
 				"${BUILT_PRODUCTS_DIR}/ResplendentUtilities/ResplendentUtilities.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RTSMTableSectionManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ResplendentUtilities.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -312,10 +392,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D73BB6E31E3F9CE400F6BFA4 /* RUUnitTest__RUNotifications.m in Sources */,
+				D7EBF62A2049F5BE00E71A92 /* RUGradientViewController.m in Sources */,
+				D7CA67D92049D2B200191FB4 /* RUMainViewController.m in Sources */,
 				D73BB6E81E3F9D1700F6BFA4 /* RUUnitTest__RUConditionalReturn.m in Sources */,
-				D793CEE81D0785F000047A87 /* ViewController.m in Sources */,
+				D7EBF6302049F76600E71A92 /* RUAppDelegate.m in Sources */,
 				D793CEFD1D07876D00047A87 /* RUSynthesizeUserDefaultMethods_Testing.m in Sources */,
-				D793CEE51D0785F000047A87 /* AppDelegate.m in Sources */,
 				D793CEFE1D07876D00047A87 /* RUUnitTestManager.m in Sources */,
 				D793CEE21D0785F000047A87 /* main.m in Sources */,
 			);
@@ -324,14 +405,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		D793CEE91D0785F000047A87 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D793CEEA1D0785F000047A87 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		D793CEEE1D0785F000047A87 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

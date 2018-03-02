@@ -1,18 +1,18 @@
 //
-//  AppDelegate.m
+//  RUAppDelegate.m
 //  ResplendentUtilities
 //
 //  Created by Benjamin Maer on 6/7/16.
 //  Copyright © 2016 Resplendent. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "RUAppDelegate.h"
 
-@interface AppDelegate ()
+@interface RUAppDelegate ()
 
 @end
 
-@implementation AppDelegate
+@implementation RUAppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
